@@ -1,0 +1,85 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\seshb\\source\\repos\\EntityAvtoSalon\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{72FBEBE5-6FC3-4716-8F08-37F99DE07350}|EntityAvtoSalon\\EntityAvtoSalon.csproj|c:\\users\\seshb\\source\\repos\\entityavtosalon\\entityavtosalon\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72FBEBE5-6FC3-4716-8F08-37F99DE07350}|EntityAvtoSalon\\EntityAvtoSalon.csproj|solutionrelative:entityavtosalon\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72FBEBE5-6FC3-4716-8F08-37F99DE07350}|EntityAvtoSalon\\EntityAvtoSalon.csproj|c:\\users\\seshb\\source\\repos\\entityavtosalon\\entityavtosalon\\applicationcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72FBEBE5-6FC3-4716-8F08-37F99DE07350}|EntityAvtoSalon\\EntityAvtoSalon.csproj|solutionrelative:entityavtosalon\\applicationcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72FBEBE5-6FC3-4716-8F08-37F99DE07350}|EntityAvtoSalon\\EntityAvtoSalon.csproj|c:\\users\\seshb\\source\\repos\\entityavtosalon\\entityavtosalon\\car.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72FBEBE5-6FC3-4716-8F08-37F99DE07350}|EntityAvtoSalon\\EntityAvtoSalon.csproj|solutionrelative:entityavtosalon\\car.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 3,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ApplicationContext.cs",
+              "DocumentMoniker": "C:\\Users\\seshb\\source\\repos\\EntityAvtoSalon\\EntityAvtoSalon\\ApplicationContext.cs",
+              "RelativeDocumentMoniker": "EntityAvtoSalon\\ApplicationContext.cs",
+              "ToolTip": "C:\\Users\\seshb\\source\\repos\\EntityAvtoSalon\\EntityAvtoSalon\\ApplicationContext.cs",
+              "RelativeToolTip": "EntityAvtoSalon\\ApplicationContext.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAYAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-03T14:48:40.332Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Car.cs",
+              "DocumentMoniker": "C:\\Users\\seshb\\source\\repos\\EntityAvtoSalon\\EntityAvtoSalon\\Car.cs",
+              "RelativeDocumentMoniker": "EntityAvtoSalon\\Car.cs",
+              "ToolTip": "C:\\Users\\seshb\\source\\repos\\EntityAvtoSalon\\EntityAvtoSalon\\Car.cs",
+              "RelativeToolTip": "EntityAvtoSalon\\Car.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA0AAAAiAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-03T14:46:41.345Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\seshb\\source\\repos\\EntityAvtoSalon\\EntityAvtoSalon\\Program.cs",
+              "RelativeDocumentMoniker": "EntityAvtoSalon\\Program.cs",
+              "ToolTip": "C:\\Users\\seshb\\source\\repos\\EntityAvtoSalon\\EntityAvtoSalon\\Program.cs",
+              "RelativeToolTip": "EntityAvtoSalon\\Program.cs",
+              "ViewState": "AQIAAAkAAAAAAAAAAAAAAB8AAAAjAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-03T14:45:53.007Z",
+              "EditorCaption": ""
+            }
+          ]
+        },
+        {
+          "DockedWidth": 95,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

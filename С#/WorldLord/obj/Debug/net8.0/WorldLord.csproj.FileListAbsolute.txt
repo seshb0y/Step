@@ -1,0 +1,14 @@
+C:\Users\seshb\source\repos\WorldLord\WorldLord\bin\Debug\net8.0\WorldLord.exe
+C:\Users\seshb\source\repos\WorldLord\WorldLord\bin\Debug\net8.0\WorldLord.deps.json
+C:\Users\seshb\source\repos\WorldLord\WorldLord\bin\Debug\net8.0\WorldLord.runtimeconfig.json
+C:\Users\seshb\source\repos\WorldLord\WorldLord\bin\Debug\net8.0\WorldLord.dll
+C:\Users\seshb\source\repos\WorldLord\WorldLord\bin\Debug\net8.0\WorldLord.pdb
+C:\Users\seshb\source\repos\WorldLord\WorldLord\obj\Debug\net8.0\WorldLord.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\seshb\source\repos\WorldLord\WorldLord\obj\Debug\net8.0\WorldLord.AssemblyInfoInputs.cache
+C:\Users\seshb\source\repos\WorldLord\WorldLord\obj\Debug\net8.0\WorldLord.AssemblyInfo.cs
+C:\Users\seshb\source\repos\WorldLord\WorldLord\obj\Debug\net8.0\WorldLord.csproj.CoreCompileInputs.cache
+C:\Users\seshb\source\repos\WorldLord\WorldLord\obj\Debug\net8.0\WorldLord.dll
+C:\Users\seshb\source\repos\WorldLord\WorldLord\obj\Debug\net8.0\refint\WorldLord.dll
+C:\Users\seshb\source\repos\WorldLord\WorldLord\obj\Debug\net8.0\WorldLord.pdb
+C:\Users\seshb\source\repos\WorldLord\WorldLord\obj\Debug\net8.0\WorldLord.genruntimeconfig.cache
+C:\Users\seshb\source\repos\WorldLord\WorldLord\obj\Debug\net8.0\ref\WorldLord.dll

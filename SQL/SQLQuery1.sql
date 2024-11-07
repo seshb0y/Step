@@ -1,0 +1,175 @@
+use Hospital;
+--CREATE TABLE Diseases
+--(
+--	Id int PRIMARY KEY IDENTITY NOT NULL,
+--	Name nvarchar(100) NOT NULL CHECK(Name != '') UNIQUE
+--);
+--INSERT INTO Diseases values
+--('Гайморит'),
+--('Дальнозоркость'),
+--('Инсульт'),
+--('Катаракта'),
+--('Мигрень'),
+--('Миокардит'),
+--('Отит'),
+--('Тахикардия')
+
+--CREATE TABLE Departments
+--(
+--	Id int PRIMARY KEY IDENTITY NOT NULL,
+--	Building int NOT NULL CHECK(Building >=1 and Building <= 5),
+--	Financing money NOT NULL CHECK(Financing >= 0) DEFAULT 0,
+--	Name nvarchar(100) NOT NULL CHECK(Name != '') UNIQUE
+--);
+--INSERT INTO Departments values
+--(1, 30000,'Травматология'),
+--(2, 25000,'Инцекционное'),
+--(3, 10000,'Нейрохирургическое'),
+--(4, 15000,'Кариологическое'),
+--(5, 20000,'Генекологическое')
+
+--CREATE TABLE Doctors
+--(
+--	Id int PRIMARY KEY IDENTITY NOT NULL,
+--	Name nvarchar(max) NOT NULL CHECK(Name != ''),
+--	Salary money NOT NULL CHECK(Salary>0),
+--	Surname nvarchar(max) NOT NULL CHECK(Surname!='')
+--);
+--INSERT INTO Doctors values
+--('Boris', 1300, 'Nadejdin'),
+--('Yuriy', 700, 'Ushakov'),
+--('Evgeniy', 1000, 'Sherbakov'),
+--('Justin', 600, 'Head'),
+--('Antony', 2000, 'Jardov')
+
+--CREATE TABLE Interns
+--(
+--	Id int PRIMARY KEY IDENTITY NOT NULL,
+--	DoctorId int NOT NULL,
+--	FOREIGN KEY (DoctorId) REFERENCES Doctors (ID)
+--);
+--INSERT INTO Interns values
+--(2),
+--(5),
+--(3),
+--(7),
+--(9)
+
+--CREATE TABLE Professors
+--(
+--	Id int PRIMARY KEY IDENTITY NOT NULL,
+--	DoctorId int NOT NULL,
+--	FOREIGN KEY (DoctorId) REFERENCES Doctors (ID)
+--);
+--INSERT INTO Professors values
+--(1),
+--(4),
+--(6),
+--(8),
+--(9)
+
+--CREATE TABLE Wards
+--(
+--	Id int PRIMARY KEY IDENTITY NOT NULL,
+--	Name nvarchar(20) NOT NULL CHECK(Name != '') UNIQUE,
+--	Places int NOT NULL CHECK(Places>0),
+--	DepartmentId int NOT NULL,
+--	FOREIGN KEY (DepartmentId) REFERENCES Departments (ID),
+--);
+--INSERT INTO Wards values
+--('Хирургическое', 20, 4),
+--('Хирургическое №2', 5, 5),
+--('Pulmonological №2', 13, 2),
+--('Physiotherapeutic №2', 25, 2),
+--('X-ray №2', 13, 3),
+--('Endoscopic №2', 23, 1),
+--('Dental №2', 12, 1),
+--('Хирургическое №3', 34, 4),
+--('Pulmonological №3', 21, 2),
+--('Physiotherapeutic №3', 10, 2),
+--('X-ray №3', 3, 5),
+--('Endoscopic №3', 16, 1),
+--('Dental №3', 32, 5)
+
+
+--CREATE TABLE Examinations
+--(
+--	Id int PRIMARY KEY IDENTITY NOT NULL,
+--	Name nvarchar(100) NOT NULL CHECK(Name != '') UNIQUE,
+--);
+--INSERT INTO Examinations values
+--('Traumatological'),
+--('Infectious'),
+--('Neurosurgical'),
+--('Maternity'),
+--('Burn')
+
+--CREATE TABLE DoctorsExaminations
+--(
+--	Id int PRIMARY KEY IDENTITY NOT NULL,
+--	Date date NOT NULL DEFAULT CURRENT_TIMESTAMP,
+--	CHECK(Date < CURRENT_TIMESTAMP),
+--	DiseaseId int NOT NULL,
+--	DoctorId int NOT NULL,
+--	ExaminationId int NOT NULL,
+--	WardId int NOT NULL,
+--	FOREIGN KEY (DiseaseId) REFERENCES Diseases (ID),
+--	FOREIGN KEY (DoctorId) REFERENCES Doctors (ID),
+--	FOREIGN KEY (ExaminationId) REFERENCES Examinations (ID),
+--	FOREIGN KEY (WardId) REFERENCES Wards (ID)
+--);
+--INSERT INTO DoctorsExaminations values
+--(default, 2, 9, 1, 12),
+--(default, 4, 2, 5, 6),
+--(default, 7, 1, 3, 16),
+--(default, 5, 6, 2, 2),
+--('22-05-2024', 2, 10, 2, 2),
+--('12-07-2024', 3, 9, 5, 3),
+--('15-05-2024', 4, 1, 3, 4),
+--('29-07-2024', 1, 2, 1, 5),
+--('10-06-2024', 5, 5, 4, 2),
+--('02-05-2024', 7, 6, 5, 3),
+--('08-04-2024', 4, 3, 2, 4),
+--('10-03-2024', 2, 4, 5, 5),
+--('19-05-2024', 3, 7, 4, 2),
+--('20-07-2024', 7, 8, 1, 1),
+--('05-07-2024', 5, 3, 2, 3),
+--('07-03-2024', 8, 10, 3, 1),
+--('17-05-2024', 6, 8, 4, 4),
+--('17-04-2024', 5, 4, 2, 3)
+--('22-06-2024', 6, 2, 4, 6),
+--('21-05-2024', 2, 10, 2, 7),
+--('11-07-2024', 3, 9, 5, 8),
+--('09-05-2024', 4, 1, 3, 9),
+--('19-07-2024', 1, 2, 1, 10),
+--('15-06-2024', 5, 5, 4, 11),
+--('04-05-2024', 7, 6, 5, 12),
+--('06-04-2024', 4, 3, 2, 13),
+--('18-03-2024', 2, 4, 5, 14),
+--('11-05-2024', 3, 7, 4, 15),
+--('26-07-2024', 7, 8, 1, 16),
+--('09-07-2024', 5, 3, 2, 17),
+--('01-03-2024', 8, 10, 3, 18),
+--('12-05-2024', 6, 8, 4, 13),
+--('18-04-2024', 5, 4, 2, 12),
+--('20-06-2024', 6, 2, 4, 6),
+--('27-05-2024', 2, 10, 2, 7),
+--('14-07-2024', 3, 9, 5, 8),
+--('07-05-2024', 4, 1, 3, 9),
+--('14-07-2024', 1, 2, 1, 10),
+--('13-06-2024', 5, 5, 4, 11),
+--('05-05-2024', 7, 6, 5, 12),
+--('09-04-2024', 4, 3, 2, 13),
+--('10-03-2024', 2, 4, 5, 14),
+--('15-05-2024', 3, 7, 4, 15),
+--('24-07-2024', 7, 8, 1, 16),
+--('02-07-2024', 5, 3, 2, 17),
+--('07-03-2024', 8, 10, 3, 18)
+
+
+
+
+
+
+
+

@@ -1,0 +1,6 @@
+C:\Users\Batyr_lg06\source\repos\ConsoleApp3\PersonLib\bin\Debug\PersonLib.dll
+C:\Users\Batyr_lg06\source\repos\ConsoleApp3\PersonLib\bin\Debug\PersonLib.pdb
+C:\Users\Batyr_lg06\source\repos\ConsoleApp3\PersonLib\obj\Debug\PersonLib.csproj.AssemblyReference.cache
+C:\Users\Batyr_lg06\source\repos\ConsoleApp3\PersonLib\obj\Debug\PersonLib.csproj.CoreCompileInputs.cache
+C:\Users\Batyr_lg06\source\repos\ConsoleApp3\PersonLib\obj\Debug\PersonLib.dll
+C:\Users\Batyr_lg06\source\repos\ConsoleApp3\PersonLib\obj\Debug\PersonLib.pdb

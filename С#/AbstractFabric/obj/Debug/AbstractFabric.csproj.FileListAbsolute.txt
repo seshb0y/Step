@@ -1,0 +1,16 @@
+C:\Users\Batyr_lg06\source\repos\AbstractFabric\AbstractFabric\bin\Debug\AbstractFabric.exe.config
+C:\Users\Batyr_lg06\source\repos\AbstractFabric\AbstractFabric\bin\Debug\AbstractFabric.exe
+C:\Users\Batyr_lg06\source\repos\AbstractFabric\AbstractFabric\bin\Debug\AbstractFabric.pdb
+C:\Users\Batyr_lg06\source\repos\AbstractFabric\AbstractFabric\obj\Debug\AbstractFabric.csproj.AssemblyReference.cache
+C:\Users\Batyr_lg06\source\repos\AbstractFabric\AbstractFabric\obj\Debug\AbstractFabric.csproj.CoreCompileInputs.cache
+C:\Users\Batyr_lg06\source\repos\AbstractFabric\AbstractFabric\obj\Debug\AbstractFabric.exe
+C:\Users\Batyr_lg06\source\repos\AbstractFabric\AbstractFabric\obj\Debug\AbstractFabric.pdb
+C:\Users\seshb\source\repos\AbstractFabric\obj\Debug\AbstractFabric.exe
+C:\Users\seshb\source\repos\AbstractFabric\obj\Debug\AbstractFabric.pdb
+C:\Users\seshb\source\repos\AbstractFabric\AbstractFabric\bin\Debug\AbstractFabric.exe.config
+C:\Users\seshb\source\repos\AbstractFabric\AbstractFabric\bin\Debug\AbstractFabric.exe
+C:\Users\seshb\source\repos\AbstractFabric\AbstractFabric\bin\Debug\AbstractFabric.pdb
+C:\Users\seshb\source\repos\AbstractFabric\AbstractFabric\obj\Debug\AbstractFabric.csproj.AssemblyReference.cache
+C:\Users\seshb\source\repos\AbstractFabric\AbstractFabric\obj\Debug\AbstractFabric.csproj.CoreCompileInputs.cache
+C:\Users\seshb\source\repos\AbstractFabric\AbstractFabric\obj\Debug\AbstractFabric.exe
+C:\Users\seshb\source\repos\AbstractFabric\AbstractFabric\obj\Debug\AbstractFabric.pdb

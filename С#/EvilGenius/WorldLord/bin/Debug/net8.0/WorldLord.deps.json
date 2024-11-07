@@ -1,0 +1,41 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "WorldLord/1.0.0": {
+        "dependencies": {
+          "ConsoleTable": "1.0.1.1"
+        },
+        "runtime": {
+          "WorldLord.dll": {}
+        }
+      },
+      "ConsoleTable/1.0.1.1": {
+        "runtime": {
+          "lib/netcoreapp3.1/ConsoleTable.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "WorldLord/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "ConsoleTable/1.0.1.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-B0xE1Wn5dGFPPQFLuFhYFby8EuNeZCwLg0Xb8ofq6ZLxlVIEullu3CdrOGWpV6E4GI/fDzQTZkl/61RsbgQ29g==",
+      "path": "consoletable/1.0.1.1",
+      "hashPath": "consoletable.1.0.1.1.nupkg.sha512"
+    }
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Batyr_lg06\\Downloads\\EvilGenius\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{84BC461A-AC60-4DF3-8851-83A7437D14F5}|WorldLord\\WorldLord.csproj|c:\\users\\batyr_lg06\\downloads\\evilgenius\\worldlord\\worldlord.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{84BC461A-AC60-4DF3-8851-83A7437D14F5}|WorldLord\\WorldLord.csproj|solutionrelative:worldlord\\worldlord.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "WorldLord.csproj",
+              "DocumentMoniker": "C:\\Users\\Batyr_lg06\\Downloads\\EvilGenius\\WorldLord\\WorldLord.csproj",
+              "RelativeDocumentMoniker": "WorldLord\\WorldLord.csproj",
+              "ToolTip": "C:\\Users\\Batyr_lg06\\Downloads\\EvilGenius\\WorldLord\\WorldLord.csproj",
+              "RelativeToolTip": "WorldLord\\WorldLord.csproj",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2024-07-08T12:52:50.419Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

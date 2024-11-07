@@ -1,0 +1,10 @@
+C:\Users\Batyr_lg06\source\repos\ConsoleApp3\ConsoleApp3\bin\Debug\ConsoleApp3.exe.config
+C:\Users\Batyr_lg06\source\repos\ConsoleApp3\ConsoleApp3\bin\Debug\ConsoleApp3.exe
+C:\Users\Batyr_lg06\source\repos\ConsoleApp3\ConsoleApp3\bin\Debug\ConsoleApp3.pdb
+C:\Users\Batyr_lg06\source\repos\ConsoleApp3\ConsoleApp3\obj\Debug\ConsoleApp3.csproj.AssemblyReference.cache
+C:\Users\Batyr_lg06\source\repos\ConsoleApp3\ConsoleApp3\obj\Debug\ConsoleApp3.csproj.CoreCompileInputs.cache
+C:\Users\Batyr_lg06\source\repos\ConsoleApp3\ConsoleApp3\obj\Debug\ConsoleApp3.exe
+C:\Users\Batyr_lg06\source\repos\ConsoleApp3\ConsoleApp3\obj\Debug\ConsoleApp3.pdb
+C:\Users\Batyr_lg06\source\repos\ConsoleApp3\ConsoleApp3\bin\Debug\PersonLib.dll
+C:\Users\Batyr_lg06\source\repos\ConsoleApp3\ConsoleApp3\bin\Debug\PersonLib.pdb
+C:\Users\Batyr_lg06\source\repos\ConsoleApp3\ConsoleApp3\obj\Debug\ConsoleA.88426B56.Up2Date

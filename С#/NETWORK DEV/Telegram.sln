@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34723.18
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Telegram", "Telegram\Telegram.csproj", "{6F478249-F637-45A1-9DA5-BE4D93D51E34}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatServer", "ChatServer\ChatServer.csproj", "{015AA189-E3FC-45AA-9EA5-3A8670E33A9C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6F478249-F637-45A1-9DA5-BE4D93D51E34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F478249-F637-45A1-9DA5-BE4D93D51E34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F478249-F637-45A1-9DA5-BE4D93D51E34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F478249-F637-45A1-9DA5-BE4D93D51E34}.Release|Any CPU.Build.0 = Release|Any CPU
+		{015AA189-E3FC-45AA-9EA5-3A8670E33A9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{015AA189-E3FC-45AA-9EA5-3A8670E33A9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{015AA189-E3FC-45AA-9EA5-3A8670E33A9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{015AA189-E3FC-45AA-9EA5-3A8670E33A9C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2552D895-E3C3-43E8-9D42-FCE4CB5C7D3E}
+	EndGlobalSection
+EndGlobal

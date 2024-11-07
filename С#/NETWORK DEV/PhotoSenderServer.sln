@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.35013.160
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhotoSenderServer", "PhotoSenderServer\PhotoSenderServer.csproj", "{918B42FD-467E-49E9-99D8-454DA7F8D443}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhotoSenderClient", "PhotoSenderClient\PhotoSenderClient.csproj", "{1BB32D4B-C013-4AD3-A849-151578A02891}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{918B42FD-467E-49E9-99D8-454DA7F8D443}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{918B42FD-467E-49E9-99D8-454DA7F8D443}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{918B42FD-467E-49E9-99D8-454DA7F8D443}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{918B42FD-467E-49E9-99D8-454DA7F8D443}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1BB32D4B-C013-4AD3-A849-151578A02891}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1BB32D4B-C013-4AD3-A849-151578A02891}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1BB32D4B-C013-4AD3-A849-151578A02891}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1BB32D4B-C013-4AD3-A849-151578A02891}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C58CC09D-0155-4CCA-811E-47960440E59F}
+	EndGlobalSection
+EndGlobal

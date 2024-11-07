@@ -1,0 +1,10 @@
+C:\Users\Batyr_lg06\source\repos\TransportSalon\TransportSalon\bin\Debug\TransportSalon.exe.config
+C:\Users\Batyr_lg06\source\repos\TransportSalon\TransportSalon\bin\Debug\TransportSalon.exe
+C:\Users\Batyr_lg06\source\repos\TransportSalon\TransportSalon\bin\Debug\TransportSalon.pdb
+C:\Users\Batyr_lg06\source\repos\TransportSalon\TransportSalon\obj\Debug\TransportSalon.csproj.AssemblyReference.cache
+C:\Users\Batyr_lg06\source\repos\TransportSalon\TransportSalon\obj\Debug\TransportSalon.csproj.CoreCompileInputs.cache
+C:\Users\Batyr_lg06\source\repos\TransportSalon\TransportSalon\obj\Debug\TransportSalon.exe
+C:\Users\Batyr_lg06\source\repos\TransportSalon\TransportSalon\obj\Debug\TransportSalon.pdb
+C:\Users\Batyr_lg06\source\repos\TransportSalon\TransportSalon\bin\Debug\TransportLib.dll
+C:\Users\Batyr_lg06\source\repos\TransportSalon\TransportSalon\bin\Debug\TransportLib.pdb
+C:\Users\Batyr_lg06\source\repos\TransportSalon\TransportSalon\obj\Debug\Transpor.BF115814.Up2Date

@@ -1,0 +1,7 @@
+C:\Users\seshb\source\repos\Processes\Processes\bin\Debug\Processes.exe.config
+C:\Users\seshb\source\repos\Processes\Processes\bin\Debug\Processes.exe
+C:\Users\seshb\source\repos\Processes\Processes\bin\Debug\Processes.pdb
+C:\Users\seshb\source\repos\Processes\Processes\obj\Debug\Processes.csproj.AssemblyReference.cache
+C:\Users\seshb\source\repos\Processes\Processes\obj\Debug\Processes.csproj.CoreCompileInputs.cache
+C:\Users\seshb\source\repos\Processes\Processes\obj\Debug\Processes.exe
+C:\Users\seshb\source\repos\Processes\Processes\obj\Debug\Processes.pdb

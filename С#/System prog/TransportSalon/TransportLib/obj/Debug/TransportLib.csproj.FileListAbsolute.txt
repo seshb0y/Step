@@ -1,0 +1,6 @@
+C:\Users\Batyr_lg06\source\repos\TransportSalon\TransportLib\bin\Debug\TransportLib.dll
+C:\Users\Batyr_lg06\source\repos\TransportSalon\TransportLib\bin\Debug\TransportLib.pdb
+C:\Users\Batyr_lg06\source\repos\TransportSalon\TransportLib\obj\Debug\TransportLib.csproj.AssemblyReference.cache
+C:\Users\Batyr_lg06\source\repos\TransportSalon\TransportLib\obj\Debug\TransportLib.csproj.CoreCompileInputs.cache
+C:\Users\Batyr_lg06\source\repos\TransportSalon\TransportLib\obj\Debug\TransportLib.dll
+C:\Users\Batyr_lg06\source\repos\TransportSalon\TransportLib\obj\Debug\TransportLib.pdb
