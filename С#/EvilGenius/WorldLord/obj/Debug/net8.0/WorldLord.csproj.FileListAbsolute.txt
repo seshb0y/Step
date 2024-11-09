@@ -49,3 +49,21 @@ C:\Users\Batyr_lg06\Downloads\EvilGenius\WorldLord\obj\Debug\net8.0\refint\World
 C:\Users\Batyr_lg06\Downloads\EvilGenius\WorldLord\obj\Debug\net8.0\WorldLord.pdb
 C:\Users\Batyr_lg06\Downloads\EvilGenius\WorldLord\obj\Debug\net8.0\WorldLord.genruntimeconfig.cache
 C:\Users\Batyr_lg06\Downloads\EvilGenius\WorldLord\obj\Debug\net8.0\ref\WorldLord.dll
+D:\users_C\OneDrive\Рабочий стол\STEP\Step-IT\С#\EvilGenius\WorldLord\bin\Debug\net8.0\WorldLord.exe
+D:\users_C\OneDrive\Рабочий стол\STEP\Step-IT\С#\EvilGenius\WorldLord\bin\Debug\net8.0\WorldLord.deps.json
+D:\users_C\OneDrive\Рабочий стол\STEP\Step-IT\С#\EvilGenius\WorldLord\bin\Debug\net8.0\WorldLord.runtimeconfig.json
+D:\users_C\OneDrive\Рабочий стол\STEP\Step-IT\С#\EvilGenius\WorldLord\bin\Debug\net8.0\WorldLord.dll
+D:\users_C\OneDrive\Рабочий стол\STEP\Step-IT\С#\EvilGenius\WorldLord\bin\Debug\net8.0\WorldLord.pdb
+D:\users_C\OneDrive\Рабочий стол\STEP\Step-IT\С#\EvilGenius\WorldLord\bin\Debug\net8.0\ConsoleTable.dll
+D:\users_C\OneDrive\Рабочий стол\STEP\Step-IT\С#\EvilGenius\WorldLord\obj\Debug\net8.0\WorldLord.csproj.AssemblyReference.cache
+D:\users_C\OneDrive\Рабочий стол\STEP\Step-IT\С#\EvilGenius\WorldLord\obj\Debug\net8.0\WorldLord.GeneratedMSBuildEditorConfig.editorconfig
+D:\users_C\OneDrive\Рабочий стол\STEP\Step-IT\С#\EvilGenius\WorldLord\obj\Debug\net8.0\WorldLord.AssemblyInfoInputs.cache
+D:\users_C\OneDrive\Рабочий стол\STEP\Step-IT\С#\EvilGenius\WorldLord\obj\Debug\net8.0\WorldLord.AssemblyInfo.cs
+D:\users_C\OneDrive\Рабочий стол\STEP\Step-IT\С#\EvilGenius\WorldLord\obj\Debug\net8.0\WorldLord.csproj.CoreCompileInputs.cache
+D:\users_C\OneDrive\Рабочий стол\STEP\Step-IT\С#\EvilGenius\WorldLord\obj\Debug\net8.0\WorldLord.sourcelink.json
+D:\users_C\OneDrive\Рабочий стол\STEP\Step-IT\С#\EvilGenius\WorldLord\obj\Debug\net8.0\WorldLord.csproj.Up2Date
+D:\users_C\OneDrive\Рабочий стол\STEP\Step-IT\С#\EvilGenius\WorldLord\obj\Debug\net8.0\WorldLord.dll
+D:\users_C\OneDrive\Рабочий стол\STEP\Step-IT\С#\EvilGenius\WorldLord\obj\Debug\net8.0\refint\WorldLord.dll
+D:\users_C\OneDrive\Рабочий стол\STEP\Step-IT\С#\EvilGenius\WorldLord\obj\Debug\net8.0\WorldLord.pdb
+D:\users_C\OneDrive\Рабочий стол\STEP\Step-IT\С#\EvilGenius\WorldLord\obj\Debug\net8.0\WorldLord.genruntimeconfig.cache
+D:\users_C\OneDrive\Рабочий стол\STEP\Step-IT\С#\EvilGenius\WorldLord\obj\Debug\net8.0\ref\WorldLord.dll

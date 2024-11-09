@@ -33,24 +33,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Batyr_lg06\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\seshb\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Batyr_lg06\\Downloads\\EvilGenius\\WorldLord\\WorldLord.csproj",
+      "projectUniqueName": "D:\\users_C\\OneDrive\\Рабочий стол\\STEP\\Step-IT\\С#\\EvilGenius\\WorldLord\\WorldLord.csproj",
       "projectName": "WorldLord",
-      "projectPath": "C:\\Users\\Batyr_lg06\\Downloads\\EvilGenius\\WorldLord\\WorldLord.csproj",
-      "packagesPath": "C:\\Users\\Batyr_lg06\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Batyr_lg06\\Downloads\\EvilGenius\\WorldLord\\obj\\",
+      "projectPath": "D:\\users_C\\OneDrive\\Рабочий стол\\STEP\\Step-IT\\С#\\EvilGenius\\WorldLord\\WorldLord.csproj",
+      "packagesPath": "C:\\Users\\seshb\\.nuget\\packages\\",
+      "outputPath": "D:\\users_C\\OneDrive\\Рабочий стол\\STEP\\Step-IT\\С#\\EvilGenius\\WorldLord\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\Batyr_lg06\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Users\\seshb\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -58,7 +53,6 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -103,7 +97,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.302/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
