@@ -1,33 +1,33 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\seshb\\source\\repos\\Entity_Umico\\",
+  "WorkspaceRootPath": "D:\\users_C\\OneDrive\\\u0420\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\STEP\\Step-IT\\\u0421#\\ENTITY FRAMEWORK\\Entity_Umico\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{CF813309-BCAC-4535-B74B-E9829DEFF991}|Entity_Umico\\Entity_Umico.csproj|c:\\users\\seshb\\source\\repos\\entity_umico\\entity_umico\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{CF813309-BCAC-4535-B74B-E9829DEFF991}|Entity_Umico\\Entity_Umico.csproj|d:\\users_c\\onedrive\\\u0440\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\step\\step-it\\\u0441#\\entity framework\\entity_umico\\entity_umico\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{CF813309-BCAC-4535-B74B-E9829DEFF991}|Entity_Umico\\Entity_Umico.csproj|solutionrelative:entity_umico\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{CF813309-BCAC-4535-B74B-E9829DEFF991}|Entity_Umico\\Entity_Umico.csproj|c:\\users\\seshb\\source\\repos\\entity_umico\\entity_umico\\order.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{CF813309-BCAC-4535-B74B-E9829DEFF991}|Entity_Umico\\Entity_Umico.csproj|d:\\users_c\\onedrive\\\u0440\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\step\\step-it\\\u0441#\\entity framework\\entity_umico\\entity_umico\\order.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{CF813309-BCAC-4535-B74B-E9829DEFF991}|Entity_Umico\\Entity_Umico.csproj|solutionrelative:entity_umico\\order.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{CF813309-BCAC-4535-B74B-E9829DEFF991}|Entity_Umico\\Entity_Umico.csproj|c:\\users\\seshb\\source\\repos\\entity_umico\\entity_umico\\product.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{CF813309-BCAC-4535-B74B-E9829DEFF991}|Entity_Umico\\Entity_Umico.csproj|d:\\users_c\\onedrive\\\u0440\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\step\\step-it\\\u0441#\\entity framework\\entity_umico\\entity_umico\\product.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{CF813309-BCAC-4535-B74B-E9829DEFF991}|Entity_Umico\\Entity_Umico.csproj|solutionrelative:entity_umico\\product.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{CF813309-BCAC-4535-B74B-E9829DEFF991}|Entity_Umico\\Entity_Umico.csproj|c:\\users\\seshb\\source\\repos\\entity_umico\\entity_umico\\pickpoint.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{CF813309-BCAC-4535-B74B-E9829DEFF991}|Entity_Umico\\Entity_Umico.csproj|d:\\users_c\\onedrive\\\u0440\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\step\\step-it\\\u0441#\\entity framework\\entity_umico\\entity_umico\\pickpoint.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{CF813309-BCAC-4535-B74B-E9829DEFF991}|Entity_Umico\\Entity_Umico.csproj|solutionrelative:entity_umico\\pickpoint.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{CF813309-BCAC-4535-B74B-E9829DEFF991}|Entity_Umico\\Entity_Umico.csproj|c:\\users\\seshb\\source\\repos\\entity_umico\\entity_umico\\customer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{CF813309-BCAC-4535-B74B-E9829DEFF991}|Entity_Umico\\Entity_Umico.csproj|d:\\users_c\\onedrive\\\u0440\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\step\\step-it\\\u0441#\\entity framework\\entity_umico\\entity_umico\\customer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{CF813309-BCAC-4535-B74B-E9829DEFF991}|Entity_Umico\\Entity_Umico.csproj|solutionrelative:entity_umico\\customer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{CF813309-BCAC-4535-B74B-E9829DEFF991}|Entity_Umico\\Entity_Umico.csproj|c:\\users\\seshb\\source\\repos\\entity_umico\\entity_umico\\applicationcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{CF813309-BCAC-4535-B74B-E9829DEFF991}|Entity_Umico\\Entity_Umico.csproj|d:\\users_c\\onedrive\\\u0440\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\step\\step-it\\\u0441#\\entity framework\\entity_umico\\entity_umico\\applicationcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{CF813309-BCAC-4535-B74B-E9829DEFF991}|Entity_Umico\\Entity_Umico.csproj|solutionrelative:entity_umico\\applicationcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{CF813309-BCAC-4535-B74B-E9829DEFF991}|Entity_Umico\\Entity_Umico.csproj|c:\\users\\seshb\\source\\repos\\entity_umico\\entity_umico\\status.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{CF813309-BCAC-4535-B74B-E9829DEFF991}|Entity_Umico\\Entity_Umico.csproj|d:\\users_c\\onedrive\\\u0440\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\step\\step-it\\\u0441#\\entity framework\\entity_umico\\entity_umico\\status.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{CF813309-BCAC-4535-B74B-E9829DEFF991}|Entity_Umico\\Entity_Umico.csproj|solutionrelative:entity_umico\\status.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -48,48 +48,45 @@
               "$type": "Document",
               "DocumentIndex": 5,
               "Title": "ApplicationContext.cs",
-              "DocumentMoniker": "C:\\Users\\seshb\\source\\repos\\Entity_Umico\\Entity_Umico\\ApplicationContext.cs",
+              "DocumentMoniker": "D:\\users_C\\OneDrive\\\u0420\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\STEP\\Step-IT\\\u0421#\\ENTITY FRAMEWORK\\Entity_Umico\\Entity_Umico\\ApplicationContext.cs",
               "RelativeDocumentMoniker": "Entity_Umico\\ApplicationContext.cs",
-              "ToolTip": "C:\\Users\\seshb\\source\\repos\\Entity_Umico\\Entity_Umico\\ApplicationContext.cs",
+              "ToolTip": "D:\\users_C\\OneDrive\\\u0420\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\STEP\\Step-IT\\\u0421#\\ENTITY FRAMEWORK\\Entity_Umico\\Entity_Umico\\ApplicationContext.cs",
               "RelativeToolTip": "Entity_Umico\\ApplicationContext.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAA8AAAA3AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-11T14:15:52.923Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-11T14:15:52.923Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
               "Title": "Order.cs",
-              "DocumentMoniker": "C:\\Users\\seshb\\source\\repos\\Entity_Umico\\Entity_Umico\\Order.cs",
+              "DocumentMoniker": "D:\\users_C\\OneDrive\\\u0420\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\STEP\\Step-IT\\\u0421#\\ENTITY FRAMEWORK\\Entity_Umico\\Entity_Umico\\Order.cs",
               "RelativeDocumentMoniker": "Entity_Umico\\Order.cs",
-              "ToolTip": "C:\\Users\\seshb\\source\\repos\\Entity_Umico\\Entity_Umico\\Order.cs",
+              "ToolTip": "D:\\users_C\\OneDrive\\\u0420\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\STEP\\Step-IT\\\u0421#\\ENTITY FRAMEWORK\\Entity_Umico\\Entity_Umico\\Order.cs",
               "RelativeToolTip": "Entity_Umico\\Order.cs",
               "ViewState": "AQIAAAYAAAAAAAAAAAAMwBQAAABKAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-11T14:14:24.917Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-11T14:14:24.917Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
               "Title": "PickPoint.cs",
-              "DocumentMoniker": "C:\\Users\\seshb\\source\\repos\\Entity_Umico\\Entity_Umico\\PickPoint.cs",
+              "DocumentMoniker": "D:\\users_C\\OneDrive\\\u0420\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\STEP\\Step-IT\\\u0421#\\ENTITY FRAMEWORK\\Entity_Umico\\Entity_Umico\\PickPoint.cs",
               "RelativeDocumentMoniker": "Entity_Umico\\PickPoint.cs",
-              "ToolTip": "C:\\Users\\seshb\\source\\repos\\Entity_Umico\\Entity_Umico\\PickPoint.cs",
+              "ToolTip": "D:\\users_C\\OneDrive\\\u0420\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\STEP\\Step-IT\\\u0421#\\ENTITY FRAMEWORK\\Entity_Umico\\Entity_Umico\\PickPoint.cs",
               "RelativeToolTip": "Entity_Umico\\PickPoint.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAsAAAAsAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-11T14:14:11.58Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-11T14:14:11.58Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 6,
               "Title": "Status.cs",
-              "DocumentMoniker": "C:\\Users\\seshb\\source\\repos\\Entity_Umico\\Entity_Umico\\Status.cs",
+              "DocumentMoniker": "D:\\users_C\\OneDrive\\\u0420\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\STEP\\Step-IT\\\u0421#\\ENTITY FRAMEWORK\\Entity_Umico\\Entity_Umico\\Status.cs",
               "RelativeDocumentMoniker": "Entity_Umico\\Status.cs",
-              "ToolTip": "C:\\Users\\seshb\\source\\repos\\Entity_Umico\\Entity_Umico\\Status.cs",
+              "ToolTip": "D:\\users_C\\OneDrive\\\u0420\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\STEP\\Step-IT\\\u0421#\\ENTITY FRAMEWORK\\Entity_Umico\\Entity_Umico\\Status.cs",
               "RelativeToolTip": "Entity_Umico\\Status.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAqwAwAAABFAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -99,37 +96,35 @@
               "$type": "Document",
               "DocumentIndex": 4,
               "Title": "Customer.cs",
-              "DocumentMoniker": "C:\\Users\\seshb\\source\\repos\\Entity_Umico\\Entity_Umico\\Customer.cs",
+              "DocumentMoniker": "D:\\users_C\\OneDrive\\\u0420\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\STEP\\Step-IT\\\u0421#\\ENTITY FRAMEWORK\\Entity_Umico\\Entity_Umico\\Customer.cs",
               "RelativeDocumentMoniker": "Entity_Umico\\Customer.cs",
-              "ToolTip": "C:\\Users\\seshb\\source\\repos\\Entity_Umico\\Entity_Umico\\Customer.cs",
+              "ToolTip": "D:\\users_C\\OneDrive\\\u0420\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\STEP\\Step-IT\\\u0421#\\ENTITY FRAMEWORK\\Entity_Umico\\Entity_Umico\\Customer.cs",
               "RelativeToolTip": "Entity_Umico\\Customer.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAA8AAAABAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-11T14:13:35.114Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-11T14:13:35.114Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
               "Title": "Product.cs",
-              "DocumentMoniker": "C:\\Users\\seshb\\source\\repos\\Entity_Umico\\Entity_Umico\\Product.cs",
+              "DocumentMoniker": "D:\\users_C\\OneDrive\\\u0420\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\STEP\\Step-IT\\\u0421#\\ENTITY FRAMEWORK\\Entity_Umico\\Entity_Umico\\Product.cs",
               "RelativeDocumentMoniker": "Entity_Umico\\Product.cs",
-              "ToolTip": "C:\\Users\\seshb\\source\\repos\\Entity_Umico\\Entity_Umico\\Product.cs",
+              "ToolTip": "D:\\users_C\\OneDrive\\\u0420\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\STEP\\Step-IT\\\u0421#\\ENTITY FRAMEWORK\\Entity_Umico\\Entity_Umico\\Product.cs",
               "RelativeToolTip": "Entity_Umico\\Product.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAA0AAAAnAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-11T14:13:26.404Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-11T14:13:26.404Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\seshb\\source\\repos\\Entity_Umico\\Entity_Umico\\Program.cs",
+              "DocumentMoniker": "D:\\users_C\\OneDrive\\\u0420\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\STEP\\Step-IT\\\u0421#\\ENTITY FRAMEWORK\\Entity_Umico\\Entity_Umico\\Program.cs",
               "RelativeDocumentMoniker": "Entity_Umico\\Program.cs",
-              "ToolTip": "C:\\Users\\seshb\\source\\repos\\Entity_Umico\\Entity_Umico\\Program.cs",
+              "ToolTip": "D:\\users_C\\OneDrive\\\u0420\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\STEP\\Step-IT\\\u0421#\\ENTITY FRAMEWORK\\Entity_Umico\\Entity_Umico\\Program.cs",
               "RelativeToolTip": "Entity_Umico\\Program.cs",
-              "ViewState": "AQIAAC0BAAAAAAAAAAAAAFABAAAAAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA0AAAABAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-09-06T13:14:24.639Z",
               "EditorCaption": ""

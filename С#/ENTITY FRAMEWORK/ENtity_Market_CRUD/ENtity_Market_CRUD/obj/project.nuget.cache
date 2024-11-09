@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "QGVpVgkDk60=",
+  "dgSpecHash": "dZphaIOywH8=",
   "success": true,
-  "projectFilePath": "C:\\Users\\seshb\\source\\repos\\ENtity_Market_CRUD\\ENtity_Market_CRUD\\ENtity_Market_CRUD.csproj",
+  "projectFilePath": "D:\\users_C\\OneDrive\\Рабочий стол\\STEP\\Step-IT\\С#\\ENTITY FRAMEWORK\\ENtity_Market_CRUD\\ENtity_Market_CRUD\\ENtity_Market_CRUD.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\seshb\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Users\\seshb\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",

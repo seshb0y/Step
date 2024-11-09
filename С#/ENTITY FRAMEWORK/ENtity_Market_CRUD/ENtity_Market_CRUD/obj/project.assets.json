@@ -2753,11 +2753,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\seshb\\source\\repos\\ENtity_Market_CRUD\\ENtity_Market_CRUD\\ENtity_Market_CRUD.csproj",
+      "projectUniqueName": "D:\\users_C\\OneDrive\\Рабочий стол\\STEP\\Step-IT\\С#\\ENTITY FRAMEWORK\\ENtity_Market_CRUD\\ENtity_Market_CRUD\\ENtity_Market_CRUD.csproj",
       "projectName": "ENtity_Market_CRUD",
-      "projectPath": "C:\\Users\\seshb\\source\\repos\\ENtity_Market_CRUD\\ENtity_Market_CRUD\\ENtity_Market_CRUD.csproj",
+      "projectPath": "D:\\users_C\\OneDrive\\Рабочий стол\\STEP\\Step-IT\\С#\\ENTITY FRAMEWORK\\ENtity_Market_CRUD\\ENtity_Market_CRUD\\ENtity_Market_CRUD.csproj",
       "packagesPath": "C:\\Users\\seshb\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\seshb\\source\\repos\\ENtity_Market_CRUD\\ENtity_Market_CRUD\\obj\\",
+      "outputPath": "D:\\users_C\\OneDrive\\Рабочий стол\\STEP\\Step-IT\\С#\\ENTITY FRAMEWORK\\ENtity_Market_CRUD\\ENtity_Market_CRUD\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\seshb\\AppData\\Roaming\\NuGet\\NuGet.Config",

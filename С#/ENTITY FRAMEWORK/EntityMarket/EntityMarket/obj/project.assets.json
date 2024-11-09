@@ -2753,11 +2753,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\seshb\\source\\repos\\EntityMarket\\EntityMarket\\EntityMarket.csproj",
+      "projectUniqueName": "D:\\users_C\\OneDrive\\Рабочий стол\\STEP\\Step-IT\\С#\\ENTITY FRAMEWORK\\EntityMarket\\EntityMarket\\EntityMarket.csproj",
       "projectName": "EntityMarket",
-      "projectPath": "C:\\Users\\seshb\\source\\repos\\EntityMarket\\EntityMarket\\EntityMarket.csproj",
+      "projectPath": "D:\\users_C\\OneDrive\\Рабочий стол\\STEP\\Step-IT\\С#\\ENTITY FRAMEWORK\\EntityMarket\\EntityMarket\\EntityMarket.csproj",
       "packagesPath": "C:\\Users\\seshb\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\seshb\\source\\repos\\EntityMarket\\EntityMarket\\obj\\",
+      "outputPath": "D:\\users_C\\OneDrive\\Рабочий стол\\STEP\\Step-IT\\С#\\ENTITY FRAMEWORK\\EntityMarket\\EntityMarket\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\seshb\\AppData\\Roaming\\NuGet\\NuGet.Config",

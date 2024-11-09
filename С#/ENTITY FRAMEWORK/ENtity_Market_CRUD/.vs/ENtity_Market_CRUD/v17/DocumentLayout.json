@@ -1,29 +1,29 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\seshb\\source\\repos\\ENtity_Market_CRUD\\",
+  "WorkspaceRootPath": "D:\\users_C\\OneDrive\\\u0420\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\STEP\\Step-IT\\\u0421#\\ENTITY FRAMEWORK\\ENtity_Market_CRUD\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{F774398A-DDC4-480A-8F8E-D66FB9F86F05}|ENtity_Market_CRUD\\ENtity_Market_CRUD.csproj|c:\\users\\seshb\\source\\repos\\entity_market_crud\\entity_market_crud\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{F774398A-DDC4-480A-8F8E-D66FB9F86F05}|ENtity_Market_CRUD\\ENtity_Market_CRUD.csproj|d:\\users_c\\onedrive\\\u0440\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\step\\step-it\\\u0441#\\entity framework\\entity_market_crud\\entity_market_crud\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F774398A-DDC4-480A-8F8E-D66FB9F86F05}|ENtity_Market_CRUD\\ENtity_Market_CRUD.csproj|solutionrelative:entity_market_crud\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F774398A-DDC4-480A-8F8E-D66FB9F86F05}|ENtity_Market_CRUD\\ENtity_Market_CRUD.csproj|c:\\users\\seshb\\source\\repos\\entity_market_crud\\entity_market_crud\\bill.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{F774398A-DDC4-480A-8F8E-D66FB9F86F05}|ENtity_Market_CRUD\\ENtity_Market_CRUD.csproj|d:\\users_c\\onedrive\\\u0440\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\step\\step-it\\\u0441#\\entity framework\\entity_market_crud\\entity_market_crud\\bill.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F774398A-DDC4-480A-8F8E-D66FB9F86F05}|ENtity_Market_CRUD\\ENtity_Market_CRUD.csproj|solutionrelative:entity_market_crud\\bill.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F774398A-DDC4-480A-8F8E-D66FB9F86F05}|ENtity_Market_CRUD\\ENtity_Market_CRUD.csproj|c:\\users\\seshb\\source\\repos\\entity_market_crud\\entity_market_crud\\customer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{F774398A-DDC4-480A-8F8E-D66FB9F86F05}|ENtity_Market_CRUD\\ENtity_Market_CRUD.csproj|d:\\users_c\\onedrive\\\u0440\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\step\\step-it\\\u0441#\\entity framework\\entity_market_crud\\entity_market_crud\\customer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F774398A-DDC4-480A-8F8E-D66FB9F86F05}|ENtity_Market_CRUD\\ENtity_Market_CRUD.csproj|solutionrelative:entity_market_crud\\customer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F774398A-DDC4-480A-8F8E-D66FB9F86F05}|ENtity_Market_CRUD\\ENtity_Market_CRUD.csproj|c:\\users\\seshb\\source\\repos\\entity_market_crud\\entity_market_crud\\product.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{F774398A-DDC4-480A-8F8E-D66FB9F86F05}|ENtity_Market_CRUD\\ENtity_Market_CRUD.csproj|d:\\users_c\\onedrive\\\u0440\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\step\\step-it\\\u0441#\\entity framework\\entity_market_crud\\entity_market_crud\\product.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F774398A-DDC4-480A-8F8E-D66FB9F86F05}|ENtity_Market_CRUD\\ENtity_Market_CRUD.csproj|solutionrelative:entity_market_crud\\product.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F774398A-DDC4-480A-8F8E-D66FB9F86F05}|ENtity_Market_CRUD\\ENtity_Market_CRUD.csproj|c:\\users\\seshb\\source\\repos\\entity_market_crud\\entity_market_crud\\shop.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{F774398A-DDC4-480A-8F8E-D66FB9F86F05}|ENtity_Market_CRUD\\ENtity_Market_CRUD.csproj|d:\\users_c\\onedrive\\\u0440\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\step\\step-it\\\u0441#\\entity framework\\entity_market_crud\\entity_market_crud\\shop.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F774398A-DDC4-480A-8F8E-D66FB9F86F05}|ENtity_Market_CRUD\\ENtity_Market_CRUD.csproj|solutionrelative:entity_market_crud\\shop.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F774398A-DDC4-480A-8F8E-D66FB9F86F05}|ENtity_Market_CRUD\\ENtity_Market_CRUD.csproj|c:\\users\\seshb\\source\\repos\\entity_market_crud\\entity_market_crud\\applicationcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{F774398A-DDC4-480A-8F8E-D66FB9F86F05}|ENtity_Market_CRUD\\ENtity_Market_CRUD.csproj|d:\\users_c\\onedrive\\\u0440\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\step\\step-it\\\u0441#\\entity framework\\entity_market_crud\\entity_market_crud\\applicationcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F774398A-DDC4-480A-8F8E-D66FB9F86F05}|ENtity_Market_CRUD\\ENtity_Market_CRUD.csproj|solutionrelative:entity_market_crud\\applicationcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -44,9 +44,9 @@
               "$type": "Document",
               "DocumentIndex": 5,
               "Title": "ApplicationContext.cs",
-              "DocumentMoniker": "C:\\Users\\seshb\\source\\repos\\ENtity_Market_CRUD\\ENtity_Market_CRUD\\ApplicationContext.cs",
+              "DocumentMoniker": "D:\\users_C\\OneDrive\\\u0420\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\STEP\\Step-IT\\\u0421#\\ENTITY FRAMEWORK\\ENtity_Market_CRUD\\ENtity_Market_CRUD\\ApplicationContext.cs",
               "RelativeDocumentMoniker": "ENtity_Market_CRUD\\ApplicationContext.cs",
-              "ToolTip": "C:\\Users\\seshb\\source\\repos\\ENtity_Market_CRUD\\ENtity_Market_CRUD\\ApplicationContext.cs",
+              "ToolTip": "D:\\users_C\\OneDrive\\\u0420\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\STEP\\Step-IT\\\u0421#\\ENTITY FRAMEWORK\\ENtity_Market_CRUD\\ENtity_Market_CRUD\\ApplicationContext.cs",
               "RelativeToolTip": "ENtity_Market_CRUD\\ApplicationContext.cs",
               "ViewState": "AQIAAAMAAAAAAAAAAAAAABkAAAB9AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -56,63 +56,59 @@
               "$type": "Document",
               "DocumentIndex": 1,
               "Title": "Bill.cs",
-              "DocumentMoniker": "C:\\Users\\seshb\\source\\repos\\ENtity_Market_CRUD\\ENtity_Market_CRUD\\Bill.cs",
+              "DocumentMoniker": "D:\\users_C\\OneDrive\\\u0420\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\STEP\\Step-IT\\\u0421#\\ENTITY FRAMEWORK\\ENtity_Market_CRUD\\ENtity_Market_CRUD\\Bill.cs",
               "RelativeDocumentMoniker": "ENtity_Market_CRUD\\Bill.cs",
-              "ToolTip": "C:\\Users\\seshb\\source\\repos\\ENtity_Market_CRUD\\ENtity_Market_CRUD\\Bill.cs",
+              "ToolTip": "D:\\users_C\\OneDrive\\\u0420\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\STEP\\Step-IT\\\u0421#\\ENTITY FRAMEWORK\\ENtity_Market_CRUD\\ENtity_Market_CRUD\\Bill.cs",
               "RelativeToolTip": "ENtity_Market_CRUD\\Bill.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAABAAAAArAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-09T12:24:15.156Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-09T12:24:15.156Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 4,
               "Title": "Shop.cs",
-              "DocumentMoniker": "C:\\Users\\seshb\\source\\repos\\ENtity_Market_CRUD\\ENtity_Market_CRUD\\Shop.cs",
+              "DocumentMoniker": "D:\\users_C\\OneDrive\\\u0420\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\STEP\\Step-IT\\\u0421#\\ENTITY FRAMEWORK\\ENtity_Market_CRUD\\ENtity_Market_CRUD\\Shop.cs",
               "RelativeDocumentMoniker": "ENtity_Market_CRUD\\Shop.cs",
-              "ToolTip": "C:\\Users\\seshb\\source\\repos\\ENtity_Market_CRUD\\ENtity_Market_CRUD\\Shop.cs",
+              "ToolTip": "D:\\users_C\\OneDrive\\\u0420\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\STEP\\Step-IT\\\u0421#\\ENTITY FRAMEWORK\\ENtity_Market_CRUD\\ENtity_Market_CRUD\\Shop.cs",
               "RelativeToolTip": "ENtity_Market_CRUD\\Shop.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAA0AAAApAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-09T12:23:59.933Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-09T12:23:59.933Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
               "Title": "Customer.cs",
-              "DocumentMoniker": "C:\\Users\\seshb\\source\\repos\\ENtity_Market_CRUD\\ENtity_Market_CRUD\\Customer.cs",
+              "DocumentMoniker": "D:\\users_C\\OneDrive\\\u0420\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\STEP\\Step-IT\\\u0421#\\ENTITY FRAMEWORK\\ENtity_Market_CRUD\\ENtity_Market_CRUD\\Customer.cs",
               "RelativeDocumentMoniker": "ENtity_Market_CRUD\\Customer.cs",
-              "ToolTip": "C:\\Users\\seshb\\source\\repos\\ENtity_Market_CRUD\\ENtity_Market_CRUD\\Customer.cs",
+              "ToolTip": "D:\\users_C\\OneDrive\\\u0420\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\STEP\\Step-IT\\\u0421#\\ENTITY FRAMEWORK\\ENtity_Market_CRUD\\ENtity_Market_CRUD\\Customer.cs",
               "RelativeToolTip": "ENtity_Market_CRUD\\Customer.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAA4AAABBAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-09T12:23:49.826Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-09T12:23:49.826Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
               "Title": "Product.cs",
-              "DocumentMoniker": "C:\\Users\\seshb\\source\\repos\\ENtity_Market_CRUD\\ENtity_Market_CRUD\\Product.cs",
+              "DocumentMoniker": "D:\\users_C\\OneDrive\\\u0420\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\STEP\\Step-IT\\\u0421#\\ENTITY FRAMEWORK\\ENtity_Market_CRUD\\ENtity_Market_CRUD\\Product.cs",
               "RelativeDocumentMoniker": "ENtity_Market_CRUD\\Product.cs",
-              "ToolTip": "C:\\Users\\seshb\\source\\repos\\ENtity_Market_CRUD\\ENtity_Market_CRUD\\Product.cs",
+              "ToolTip": "D:\\users_C\\OneDrive\\\u0420\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\STEP\\Step-IT\\\u0421#\\ENTITY FRAMEWORK\\ENtity_Market_CRUD\\ENtity_Market_CRUD\\Product.cs",
               "RelativeToolTip": "ENtity_Market_CRUD\\Product.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAABAAAABCAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-09T12:23:39.934Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-09T12:23:39.934Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\seshb\\source\\repos\\ENtity_Market_CRUD\\ENtity_Market_CRUD\\Program.cs",
+              "DocumentMoniker": "D:\\users_C\\OneDrive\\\u0420\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\STEP\\Step-IT\\\u0421#\\ENTITY FRAMEWORK\\ENtity_Market_CRUD\\ENtity_Market_CRUD\\Program.cs",
               "RelativeDocumentMoniker": "ENtity_Market_CRUD\\Program.cs",
-              "ToolTip": "C:\\Users\\seshb\\source\\repos\\ENtity_Market_CRUD\\ENtity_Market_CRUD\\Program.cs",
+              "ToolTip": "D:\\users_C\\OneDrive\\\u0420\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\STEP\\Step-IT\\\u0421#\\ENTITY FRAMEWORK\\ENtity_Market_CRUD\\ENtity_Market_CRUD\\Program.cs",
               "RelativeToolTip": "ENtity_Market_CRUD\\Program.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABsAAAAAAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAQAAAAJAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-09-09T12:22:41.749Z",
               "EditorCaption": ""

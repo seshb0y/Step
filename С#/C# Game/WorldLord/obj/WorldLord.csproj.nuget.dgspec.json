@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\seshb\\source\\repos\\WorldLord\\WorldLord\\WorldLord.csproj": {}
+    "D:\\users_C\\OneDrive\\Рабочий стол\\STEP\\Step-IT\\С#\\WorldLord\\WorldLord.csproj": {}
   },
   "projects": {
-    "C:\\Users\\seshb\\source\\repos\\WorldLord\\WorldLord\\WorldLord.csproj": {
+    "D:\\users_C\\OneDrive\\Рабочий стол\\STEP\\Step-IT\\С#\\WorldLord\\WorldLord.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\seshb\\source\\repos\\WorldLord\\WorldLord\\WorldLord.csproj",
+        "projectUniqueName": "D:\\users_C\\OneDrive\\Рабочий стол\\STEP\\Step-IT\\С#\\WorldLord\\WorldLord.csproj",
         "projectName": "WorldLord",
-        "projectPath": "C:\\Users\\seshb\\source\\repos\\WorldLord\\WorldLord\\WorldLord.csproj",
+        "projectPath": "D:\\users_C\\OneDrive\\Рабочий стол\\STEP\\Step-IT\\С#\\WorldLord\\WorldLord.csproj",
         "packagesPath": "C:\\Users\\seshb\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\seshb\\source\\repos\\WorldLord\\WorldLord\\obj\\",
+        "outputPath": "D:\\users_C\\OneDrive\\Рабочий стол\\STEP\\Step-IT\\С#\\WorldLord\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\seshb\\AppData\\Roaming\\NuGet\\NuGet.Config",

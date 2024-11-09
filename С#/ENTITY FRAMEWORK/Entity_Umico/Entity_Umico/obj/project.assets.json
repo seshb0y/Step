@@ -2753,11 +2753,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\seshb\\source\\repos\\Entity_Umico\\Entity_Umico\\Entity_Umico.csproj",
+      "projectUniqueName": "D:\\users_C\\OneDrive\\Рабочий стол\\STEP\\Step-IT\\С#\\ENTITY FRAMEWORK\\Entity_Umico\\Entity_Umico\\Entity_Umico.csproj",
       "projectName": "Entity_Umico",
-      "projectPath": "C:\\Users\\seshb\\source\\repos\\Entity_Umico\\Entity_Umico\\Entity_Umico.csproj",
+      "projectPath": "D:\\users_C\\OneDrive\\Рабочий стол\\STEP\\Step-IT\\С#\\ENTITY FRAMEWORK\\Entity_Umico\\Entity_Umico\\Entity_Umico.csproj",
       "packagesPath": "C:\\Users\\seshb\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\seshb\\source\\repos\\Entity_Umico\\Entity_Umico\\obj\\",
+      "outputPath": "D:\\users_C\\OneDrive\\Рабочий стол\\STEP\\Step-IT\\С#\\ENTITY FRAMEWORK\\Entity_Umico\\Entity_Umico\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\seshb\\AppData\\Roaming\\NuGet\\NuGet.Config",

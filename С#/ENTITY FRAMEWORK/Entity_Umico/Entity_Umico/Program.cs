@@ -383,7 +383,7 @@ using (ApplicationContext db = new ApplicationContext())
                         case "4":
                             break;
                     }
-                    break;
+                    continue;
                 }
                 break;
             case "2":
