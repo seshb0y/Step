@@ -3,12 +3,12 @@
   "WorkspaceRootPath": "D:\\users_C\\OneDrive\\\u0420\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\STEP\\Step-IT\\\u0421#\\EvilGenius\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{84BC461A-AC60-4DF3-8851-83A7437D14F5}|WorldLord\\WorldLord.csproj|d:\\users_c\\onedrive\\\u0440\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\step\\step-it\\\u0441#\\evilgenius\\worldlord\\text.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{84BC461A-AC60-4DF3-8851-83A7437D14F5}|WorldLord\\WorldLord.csproj|solutionrelative:worldlord\\text.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{84BC461A-AC60-4DF3-8851-83A7437D14F5}|WorldLord\\WorldLord.csproj|d:\\users_c\\onedrive\\\u0440\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\step\\step-it\\\u0441#\\evilgenius\\worldlord\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{84BC461A-AC60-4DF3-8851-83A7437D14F5}|WorldLord\\WorldLord.csproj|solutionrelative:worldlord\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{84BC461A-AC60-4DF3-8851-83A7437D14F5}|WorldLord\\WorldLord.csproj|d:\\users_c\\onedrive\\\u0440\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\step\\step-it\\\u0441#\\evilgenius\\worldlord\\text.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{84BC461A-AC60-4DF3-8851-83A7437D14F5}|WorldLord\\WorldLord.csproj|solutionrelative:worldlord\\text.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{84BC461A-AC60-4DF3-8851-83A7437D14F5}|WorldLord\\WorldLord.csproj|d:\\users_c\\onedrive\\\u0440\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\step\\step-it\\\u0441#\\evilgenius\\worldlord\\worldlord.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
@@ -22,7 +22,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Bookmark",
@@ -30,7 +30,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "Text.cs",
               "DocumentMoniker": "D:\\users_C\\OneDrive\\\u0420\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\STEP\\Step-IT\\\u0421#\\EvilGenius\\WorldLord\\Text.cs",
               "RelativeDocumentMoniker": "WorldLord\\Text.cs",
@@ -43,13 +43,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "Program.cs",
               "DocumentMoniker": "D:\\users_C\\OneDrive\\\u0420\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\STEP\\Step-IT\\\u0421#\\EvilGenius\\WorldLord\\Program.cs",
               "RelativeDocumentMoniker": "WorldLord\\Program.cs",
               "ToolTip": "D:\\users_C\\OneDrive\\\u0420\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\STEP\\Step-IT\\\u0421#\\EvilGenius\\WorldLord\\Program.cs",
               "RelativeToolTip": "WorldLord\\Program.cs",
-              "ViewState": "AQIAADYAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "ViewState": "AQIAADMAAAAAAAAAAAAAAEEAAAArAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-11-09T12:45:15.13Z",
               "EditorCaption": ""
@@ -64,8 +64,7 @@
               "RelativeToolTip": "WorldLord\\WorldLord.csproj",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2024-07-08T12:52:50.419Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-07-08T12:52:50.419Z"
             }
           ]
         },
