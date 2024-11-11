@@ -3,12 +3,12 @@
   "WorkspaceRootPath": "D:\\users_C\\OneDrive\\\u0420\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\STEP\\Step-IT\\\u0421#\\NETWORK DEV\\Messenger\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{6F478249-F637-45A1-9DA5-BE4D93D51E34}|Telegram\\Telegram.csproj|d:\\users_c\\onedrive\\\u0440\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\step\\step-it\\\u0441#\\network dev\\messenger\\telegram\\regauthoform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{6F478249-F637-45A1-9DA5-BE4D93D51E34}|Telegram\\Telegram.csproj|solutionrelative:telegram\\regauthoform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{015AA189-E3FC-45AA-9EA5-3A8670E33A9C}|ChatServer\\ChatServer.csproj|d:\\users_c\\onedrive\\\u0440\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\step\\step-it\\\u0441#\\network dev\\messenger\\chatserver\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{015AA189-E3FC-45AA-9EA5-3A8670E33A9C}|ChatServer\\ChatServer.csproj|solutionrelative:chatserver\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6F478249-F637-45A1-9DA5-BE4D93D51E34}|Telegram\\Telegram.csproj|d:\\users_c\\onedrive\\\u0440\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\step\\step-it\\\u0441#\\network dev\\messenger\\telegram\\regauthoform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{6F478249-F637-45A1-9DA5-BE4D93D51E34}|Telegram\\Telegram.csproj|solutionrelative:telegram\\regauthoform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,7 +18,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Bookmark",
@@ -26,7 +26,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "RegAuthoForm.cs [\u041A\u043E\u043D\u0441\u0442\u0440\u0443\u043A\u0442\u043E\u0440]",
               "DocumentMoniker": "D:\\users_C\\OneDrive\\\u0420\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\STEP\\Step-IT\\\u0421#\\NETWORK DEV\\Messenger\\Telegram\\RegAuthoForm.cs",
               "RelativeDocumentMoniker": "Telegram\\RegAuthoForm.cs",
@@ -38,13 +38,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "Program.cs",
               "DocumentMoniker": "D:\\users_C\\OneDrive\\\u0420\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\STEP\\Step-IT\\\u0421#\\NETWORK DEV\\Messenger\\ChatServer\\Program.cs",
               "RelativeDocumentMoniker": "ChatServer\\Program.cs",
               "ToolTip": "D:\\users_C\\OneDrive\\\u0420\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\STEP\\Step-IT\\\u0421#\\NETWORK DEV\\Messenger\\ChatServer\\Program.cs",
               "RelativeToolTip": "ChatServer\\Program.cs",
-              "ViewState": "AQIAABIAAAAAAAAAAAAAACUAAABFAAAA",
+              "ViewState": "AQIAACUAAAAAAAAAAAAgwCUAAABFAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-11-09T12:09:39.093Z",
               "EditorCaption": ""
