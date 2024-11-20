@@ -67,7 +67,7 @@ class ExtendedDate extends Date{
         console.log(`day: ${this.day}\nmonth: ${this.month}\nyear: ${this.year}`);
     }
     isFuture(){
-        const obj = new Date(5, 4, 24);
+        const obj = new Date();
         console.log(this.day, obj.getDate())
         if(this.year < obj.getFullYear()){
             return false
@@ -100,7 +100,7 @@ class ExtendedDate extends Date{
     }
 }
 
-const obj = new ExtendedDate(19, 10, 2025);
+const obj = new ExtendedDate(25, 11, 2024);
 obj.dateToString();
 console.log(obj.isFuture());
 console.log(obj.isLeap());
