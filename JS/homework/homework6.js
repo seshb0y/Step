@@ -56,54 +56,56 @@
 // ■ метод, возвращающий следующую дату.
 // Создайте объект класса ExtendedDate и выведите на экран
 // результаты работы новых методов.
-// class ExtendedDate{
-//     constructor(day, month, year){
-//         this.day = day;
-//         this.month = month - 1;
-//         this.year = year;
-//     }
-//     dateToString(){
-//         console.log(`day: ${this.day}\nmonth: ${this.month}\nyear: ${this.year}`);
-//     }
-//     isFuture(){
-//         const obj = new Date();
-//         if(this.year < obj.getFullYear()){
-//             return false
-//         }
-//         else if(this.year == obj.getFullYear()){
-//             if(this.month < obj.getMonth()){
-//                 return false
-//             }
-//             else if(this.month == obj.getMonth()){
-//                 if(this.day < obj.getDate()){
-//                     return false
-//                 }
-//                 else if(this.day == obj.getDate()){
-//                     return "equal";
-//                 }
-//                 else{return true}
-//             }
-//             else{return true}
-//         }
-//         else{return true}
-//     }
-//     isLeap(){
-//         if(this.year % 4 === 0){
-//             return true;
-//         }
-//         return false;
-//     }
-//     nextDate(){
-//         this.day += 1;
-//     }
-// }
+class ExtendedDate extends Date{
+    constructor(day, month, year){
+        super();
+        this.day = day;
+        this.month = month;
+        this.year = year;
+    }
+    dateToString(){
+        console.log(`day: ${this.day}\nmonth: ${this.month}\nyear: ${this.year}`);
+    }
+    isFuture(){
+        const obj = new Date(5, 4, 24);
+        console.log(this.day, obj.getDate())
+        if(this.year < obj.getFullYear()){
+            return false
+        }
+        else if(this.year == obj.getFullYear()){
+            if(this.month < obj.getMonth()){
+                return false
+            }
+            else if(this.month == obj.getMonth()){
+                if(this.day < obj.getDate()){
+                    return false
+                }
+                else if(this.day == obj.getDate()){
+                    return "equal";
+                }
+                else{return true}
+            }
+            else{return true}
+        }
+        else{return true}
+    }
+    isLeap(){
+        if(this.year % 4 === 0){
+            return true;
+        }
+        return false;
+    }
+    nextDate(){
+        this.day += 1;
+    }
+}
 
-// const obj = new ExtendedDate(19, 10, 2025);
-// obj.dateToString();
-// console.log(obj.isFuture());
-// console.log(obj.isLeap());
-// obj.nextDate();
-// obj.dateToString()
+const obj = new ExtendedDate(19, 10, 2025);
+obj.dateToString();
+console.log(obj.isFuture());
+console.log(obj.isLeap());
+obj.nextDate();
+obj.dateToString()
 
 
 // Задание 3
@@ -114,43 +116,43 @@
 // метода getHtml().
 // Создать объект класса EmpTable и вывести на экран результат
 // работы метода getHtml().
-class Employee{
-    constructor(name, surname, age, salary){
-        this.name = name;
-        this.surname = surname;
-        this.age = age;
-        this.salary = salary;
-    }
-}
-class EmpTable{
-    constructor(employees){
-        this.employees = employees;
-    }
-    getHtml(){
-        let html = "<table border='1' cellspacing='0' cellpadding='5' class='styled-table'>";
-        html += "<thead><tr><th>Name</th><th>Surname</th><th>Age</th><th>Salary</th></tr></thead>";
-        html += "<tbody>";
-        for (const employee of this.employees) {
-            html += `
-                <tr>
-                    <td>${employee.name}</td>
-                    <td>${employee.surname}</td>
-                    <td>${employee.age}</td>
-                    <td>${employee.salary}</td>
-                </tr>`;
-        }
+// class Employee{
+//     constructor(name, surname, age, salary){
+//         this.name = name;
+//         this.surname = surname;
+//         this.age = age;
+//         this.salary = salary;
+//     }
+// }
+// class EmpTable{
+//     constructor(employees){
+//         this.employees = employees;
+//     }
+//     getHtml(){
+//         let html = "<table border='1' cellspacing='0' cellpadding='5' class='styled-table'>";
+//         html += "<thead><tr><th>Name</th><th>Surname</th><th>Age</th><th>Salary</th></tr></thead>";
+//         html += "<tbody>";
+//         for (const employee of this.employees) {
+//             html += `
+//                 <tr>
+//                     <td>${employee.name}</td>
+//                     <td>${employee.surname}</td>
+//                     <td>${employee.age}</td>
+//                     <td>${employee.salary}</td>
+//                 </tr>`;
+//         }
 
-        html += "</tbody></table>";
-        return html;
-    }
-}
+//         html += "</tbody></table>";
+//         return html;
+//     }
+// }
 
-const emp1 = new Employee("John", "Baranovich", 23, 1000);
-const emp2 = new Employee("Donald", "Trump", 27, 1500);
-const emp3 = new Employee("Steve", "Butovsky", 33, 1300);
-const emp4 = new Employee("Trevor", "Trevorov", 28, 1200);
+// const emp1 = new Employee("John", "Baranovich", 23, 1000);
+// const emp2 = new Employee("Donald", "Trump", 27, 1500);
+// const emp3 = new Employee("Steve", "Butovsky", 33, 1300);
+// const emp4 = new Employee("Trevor", "Trevorov", 28, 1200);
 
-const empArr =[emp1, emp2, emp3, emp4];
+// const empArr =[emp1, emp2, emp3, emp4];
 
 
 
@@ -162,40 +164,40 @@ const empArr =[emp1, emp2, emp3, emp4];
 // метод getHtml() из родительского класса.
 // Создать объект класса StyledEmpTable и вывести на экран
 // результат работы метода getHtml().
-class StyledEmpTable extends EmpTable{
-    constructor(employees){
-        super(employees);
-    }
-    getStyles(){
-        return `
-        <style>
-            .styled-table {
-                width: 100%;
-                border-collapse: collapse;
-                font-family: Arial, sans-serif;
-            }
-            .styled-table th {
-                background-color: #4CAF50;
-                color: white;
-                text-align: rigth;
-                padding: 8px;
-            }
-            .styled-table td {
-                border: 2px solid #d9a71e;
-                padding: 8px;
-            }
-            .styled-table tr:nth-child(even) {
-                background-color: #d9a71e;
-            }
-            .styled-table tr:hover {
-                background-color: #d9a71e;
-            }
-        </style>
-        `;
-    }
-    getHtml(){
-        return this.getStyles() + super.getHtml();
-    }
-}
-const styledTable = new StyledEmpTable(empArr);
-document.write(styledTable.getHtml());
+// class StyledEmpTable extends EmpTable{
+//     constructor(employees){
+//         super(employees);
+//     }
+//     getStyles(){
+//         return `
+//         <style>
+//             .styled-table {
+//                 width: 100%;
+//                 border-collapse: collapse;
+//                 font-family: Arial, sans-serif;
+//             }
+//             .styled-table th {
+//                 background-color: #4CAF50;
+//                 color: white;
+//                 text-align: rigth;
+//                 padding: 8px;
+//             }
+//             .styled-table td {
+//                 border: 2px solid #d9a71e;
+//                 padding: 8px;
+//             }
+//             .styled-table tr:nth-child(even) {
+//                 background-color: #d9a71e;
+//             }
+//             .styled-table tr:hover {
+//                 background-color: #d9a71e;
+//             }
+//         </style>
+//         `;
+//     }
+//     getHtml(){
+//         return this.getStyles() + super.getHtml();
+//     }
+// }
+// const styledTable = new StyledEmpTable(empArr);
+// document.write(styledTable.getHtml());
