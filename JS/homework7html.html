@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="https://api.fontshare.com/v2/css?f[]=clash-display@500,700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    .main__infoContainer{
+        width: 1800px;
+        height: 500px;
+        /* border: 1px solid black; */
+    }
+    .main__tittle{
+        margin: 80px 545px 36px 529px;
+        /* width: 366px;
+        height: 34px; */
+        font-size: 35px;
+        font-family: Clash Display;
+        font-weight: 100;
+    }
+    .main__factors-list{
+        width: 1800px;
+        height: 244px;
+        display: flex;
+    }
+    .main__list-element{
+        list-style-type: none;
+        width: 305px;
+        height: 244px;
+        background-color: rgb(249, 249, 249);
+        margin: 0px 22px 82px 80px;
+    }
+    .main__factor-image{
+        height: 24px;
+    }
+    .main_factor-container{
+        margin: 48px 48px 48px 48px;
+        width: 209px;
+        height: 148px;
+    }
+    .main__factor-head{
+        font-size: 20px;
+        font-weight: 100;
+        margin: 12px 12px 12px 0px;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+    .main__factor-string{
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+    .main__goods{
+        /* border: 1px solid black; */
+        width: 1800px;
+        height: 800px;
+    }
+    .main__goods-list{
+        display: flex;
+        width: 1800px;
+        height: 506px;
+        margin: 28px 0px 48px 0px;
+    }
+    .main__goods-card{
+        width: 350px;
+        height: 462px;
+        margin-left: 70px;
+    }
+    .main__goods-image{
+        height: 500px;
+    }
+    .main__goods-name{
+        width: 154px;
+        height: 28px;
+        font-size: 20px;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        margin-top: 12px;
+        margin-bottom: 8px;
+        font-weight:400;
+    }
+    #rustic-vase{
+        height: 500px;
+        width: 400px;
+    }
+    #silky-vase{
+        height: 500px;
+        width: 400px;
+    }
+    .main__collection-btn{
+        margin: 100px 500px 40px 800px;
+        width: 170px;
+        height: 56px;
+        background-color: rgb(249, 249, 249);
+        border: 0px;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+    .main__started-card{
+        width: 825px;
+        height: 650px;
+        background-color: rgb(42, 37, 75);
+        margin-left: 25px;
+    }
+    #started{
+        height: 750px;
+    }
+    #started-image{
+        background-image: url(https://s3-alpha-sig.figma.com/img/d37e/124a/23bc7512aabb96d158dbac6d898734fb?Expires=1733097600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=m8pYGiWFUXt9NdCpYHjF9PULAa-0wOc3em3lvKJnU202t2qe4u3aEBeqGfVSvPKKILyq0cumlEDWezSvwrePsQ6KT1pL1uWSRr9ALdxyvB~4oXpYD0pdm5efc2rbhqsgH9RmNQ1-7YSfnHaxmW~cxG5t2V2eabqjZAPKgPTmXu36xyLPvhFVftdHFqHptqB2OxJQKHPmMkeRCGWQs5dKbFk8E3as9RAS9GrU9468FpI~WmvfapYAfsrw8co1jsgiLX7pHEPEQnMdiCSQ6JkDTFaDC48E9TpWckXbKO~hPyQbS9P27LjT2UUvKZZG1VUb3qwbN4e9rFYdB3vZkh8mmg__);
+        background-size: 825px;
+    }
+    .main__started-head{
+        font-size: 50px;
+        margin: 64px 187px 12px 64px;
+        color: white;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        font-weight:300;
+    }
+    .main__started-text{
+        color: white;
+        font-size: 24px;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        margin: 0px 75px 205px 65px;
+        font-weight: 100;
+    }
+    #started-btn{
+        margin: 100px 432px 70px 64px;
+        background-color: rgba(249, 249, 249, 0.15);
+        color: white;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        font-weight:100;
+    }
+    .main__footer{
+        width: 1800px;
+        height: 600px;
+        /* border: 1px solid black; */
+        background-image: url(https://s3-alpha-sig.figma.com/img/27be/3038/bae4257d89397ead63485f276489b3fa?Expires=1733097600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=bXkOqDm~QjYtORrHkkb2CIv26hj8Joecp23AGfE086zK9tzCmRvcv0D0WRbfJUqBToAP5QVPRgrAJH1sPxn-cCCsF3jN8zlgJE4SV2aDN4A-M97CEnE7Nq7lHN-ZtuHgaDUfWHPKHBeeSk4L8TbhAKiOa6kRzMECI2PP76TO6s~2INONqvb5kNunofUiTFSM3y0qlzPBej6xZLVzcIzD51jpeWVrlX-xrEK87dP9fvwWTW2RJ1ZvR3s91Nmxey-VTdVg6Fq7-uD0WCmOTa3DMF6lBjmCiADvK-9i-OM-I5eZ9tvGLQLUwAKlnvIPnt1mTrpj3hWIzCI5GecfmYx7sQ__);
+        background-position: 0%;
+        background-size: 1800px;
+    }
+    .main__join-head{
+        margin: 97px 0px 12px 500px;
+        color: white;
+        font-size: 50px;
+        font-weight: 100;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+    .main__join_text{
+        margin: 0px 650px 12px 515px;
+        color: white;
+        font-size: 25px;
+        text-align: center;
+        font-weight: 100;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+    .main__benefits-list{
+        list-style-type: none;
+        margin-left: 100px;
+    }
+    .main__benefits-container{
+        display: flex;
+        align-items: center;
+    }
+    .main__benefits-image{
+        height: 16px;
+        margin-right: 8px;
+    }
+    .main__benefits{
+        margin: 50px 500px 40px 400px;
+        display: flex;
+    }
+    .main__benefits-string{
+        font-size: 16px;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        color: white;
+    }
+    .main__join-input{
+        margin: 25px -5px 86px 520px;
+        width: 475px;
+        height: 56px;
+        padding-left: 20px;
+    }
+    .main__join-input::placeholder{
+        color: rgb(220, 219, 231);
+        margin-left: 20px;
+    }
+    .main__join-btn{
+        width: 118px;
+        height: 58px;
+        background-color: rgb(42, 37, 75);
+        color: white;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+    .footer{
+        width: 1800px;
+        height: 550px;
+        /* border: 1px solid black; */
+        background-color: rgb(42, 37, 75);
+    }
+    .footer__info{
+        height: 420px;
+        display: flex;
+    }
+    .footer__info-container{
+        list-style-type: none;
+        font-size: 25px;
+        margin: 58px 0px 147px 109px;
+        color: white;
+    }
+    .footer__list-elements{
+        margin-top: 12px;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        font-weight: 100;
+    }
+    #first-element{
+        font-size: 30px;
+    }
+    #footer__input{
+        margin: 0 -6px 0 0;
+        background-color: rgb(89, 60, 102);
+    }
+    #footer__btn{
+        background-color: rgb(255, 255, 255);
+        color: black;
+        border: 0px;
+    }
+    .footer__line{
+        width: 83%;
+        /* margin: 0 100px 0 100px; */
+        border: 1px solid rgb(78, 77, 147);
+        display: block;
+    }
+    .footer__contacts{
+        display: flex;
+    }
+    .footer__copyright{
+        color: white;
+        font-size: 15px;
+        margin-left: 150px;
+        font-weight: 100;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        
+    }
+    .footer__social{
+        height: 24px;
+        margin-top: 10px;
+        margin-left: 24px;
+    }
+    .footer_social-container{
+        margin: 0 0 0 1050px;
+    }
+</style>
+<body>
+    <script src="./homework/homework7.js"></script>
+    <div class="main__infoContainer">
+        <h3 class="main__tittle">
+            What makes our brand different
+        </h1>
+        <ul class="main__factors-list">
+            <div class="main__list-element">
+                <div class="main_factor-container">
+                    <img class="main__factor-image" src="https://cdn2.iconfinder.com/data/icons/thin-delivery/24/thin-1153_delivery_fast_express_shipping-256.png" alt="">
+                    <h4 class="main__factor-head">Next day as standard</h4>
+                    <p class="main__factor-string">Order before 3pm and get your order the next day as standard</p>
+                </div>
+            </div>
+            <div class="main__list-element">
+                <div class="main_factor-container">
+                    <img class="main__factor-image" src="https://cdn4.iconfinder.com/data/icons/web-essentials-6/24/checkmark-512.png" alt="">
+                    <h4 class="main__factor-head">Made by true artisans</h4>
+                    <p class="main__factor-string">Handmade crafted goods made with real passion and craftsmanship</p>
+                </div>
+            </div>
+            <div class="main__list-element">
+                <div class="main_factor-container">
+                    <img class="main__factor-image" src="https://cdn1.iconfinder.com/data/icons/carbon-design-system-vol-6/32/purchase-256.png" alt="">
+                    <h4 class="main__factor-head">Unbeatable prices</h4>
+                    <p class="main__factor-string">For our materials and quality you won’t find better prices anywhere</p>
+                </div>
+            </div>
+            <div class="main__list-element">
+                <div class="main_factor-container">
+                    <img class="main__factor-image" src="https://cdn1.iconfinder.com/data/icons/jumpicon-agriculture-line/32/-_Plant-Sprout-Eco-Nature-Agriculture-Environment-256.png" alt="">
+                    <h4 class="main__factor-head">Recycled packaging</h4>
+                    <p class="main__factor-string">We use 100% recycled to ensure our footprint is more manageable</p>
+                </div>
+            </div>
+        </ul>
+    </div>
+    <div class="main__goods">
+        <ul class="main__goods-list">
+            <div class="main__goods-card">
+                <img class="main__goods-image" src="https://s3-alpha-sig.figma.com/img/a2ef/009a/842fec031ef0c247df24214e05b47e70?Expires=1733097600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=Dd7f8xeD72TDR3pP75yWJGSVPIlEs~PMgEPbltWhyypT7nuKCTZ1pdltsAE1gW5qNwbxNYvcb8BcT9LblUF6F04FMj5sRnqYoYROtzRGzTV32ywZf9BK2l784bkpy~RKw5Y-X6uSxemQppMpH1ySpCqWz-wA~9UXDio86lNax6-6I~GPR4EPC1xCm5WGoMtEWi5kdw2atCSVc5EJ-hC320ELl~ZuxRTKU3grpnQCm9EYDIp3yrS~yJq6KdCP9CZ8ygKn57sJgL1KFObpLwjqpMzcCrE0FmsSp~I7DbSrO6BM8-AgFYkQaFZT85hgwPJFJUNW7Xjf57M-7t91L7T9hg__" alt="">
+                <h4 class="main__goods-name">The Dandy chair</h4>
+                <p class="main__goods-price">£250</p>
+            </div>
+            <div class="main__goods-card">
+                <img id="rustic-vase" class="main__goods-image" src="https://s3-alpha-sig.figma.com/img/f9f6/09a6/3811628ae03b0a862e160e2eae36dcdd?Expires=1733097600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=BK5SuoKCG3AiWaNkhz0ej7jdEj7RffhPuWu6FHGoEA5P-3lkeKuv40KB4ueisH9UX0GtVy23UMih429nIFOhZrNJ7fMbFj6jh63nvfMFls~f1lZQOSZFOe3wzbPlIKk~vCcI3NjfFB~xhOQ8jpzJ22qvD6z7JjdqKysQjc3PPE0Fa3q8GtoXzmv8BUIqhZXBDY4D5EtYXQ4-udG6jRCYxzNfRQOPduUZpp2qukZVskSwn1UT27xjd1VQoiqz4syLt0DpUMudH0k6i8aYV69Ee0Y1TKaQJzJhAQwRG8z3xgq8NSwzTtu6DgXknEybiiBWPyyJE010nD~yTgLleCo4Pw__" alt="">
+                <h4 class="main__goods-name">Rustic Vase Set</h4>
+                <p class="main__goods-price">£155</p>
+            </div>
+            <div class="main__goods-card">
+                <img class="main__goods-image" id="silky-vase" src="https://s3-alpha-sig.figma.com/img/cd2d/4a69/fe1e8e060432bf77cee26297ca43e0e6?Expires=1733097600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=Sj0Z-tzMmHARB7~6gQRJID2Tx2TRRaW0-92lyDvsypTnYM6wvKrYURNKRrObbbomnVG9OZOfIdsya5T5AZKbhxyPaC83IKXmqJTYXWpLt4cS-6NBN8Pcqm23WuwKT2kcUJT7af~So~xY8mBIUNmqP~5F1A-hQL5lhQenvQvsrxy3XGVQCCu0NUL25wr1f06VaFMKLb3J4Imebe3qXn-KpojXU6FDR6LA9tClX7hmv7DeTqX1Fprl1HF4Yg~QYEGRFTyi7UXCBKPA066WsQlLZOsecZtE7kBFBK4w4Pq0sT~inguV-GkQsKttQsotyvBFAziqnrJ9DJECrqQKT5bOAA__" alt="">
+                <h4 class="main__goods-name">The Silky Vase</h4>
+                <p class="main__goods-price">£125</p>
+            </div>
+            <div class="main__goods-card">
+                <img class="main__goods-image" src="https://s3-alpha-sig.figma.com/img/4747/f0e8/ffbabae5de21ee1b8c8ca6e83dd10f51?Expires=1733097600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=a8fCdUXC9qUnrIeIIE7XB75ThEQ4RF27XwRowt8KnfV6WxfAWBs3vn8BKIURrT0AgcBe1~Fj2yd5ILNXDBZr4TCD4-i8~~DS0XIQIR5g0BA16XeP6TVF7uCiaUjUILxxmYYnweWy4qmA7CKww07WtAeRnn4XPH7DmV7XVHTC00V3omJuyDevkqAHy-1QlYDwmZ4ayVsfijlx-Qe2zlVkC41TYC3Gpfws-HilN8QWfQuNSKOOlRBiquF6k4kk4F2S9OLtWjz3BXnC7LM34gqKTfMiStFyIXkRm~HAEjz6lk9yCuiTFSUWAWwlLQr-6yBn87Vy4P-m5WiAv6PWAnG1og__" alt="">
+                <h4 class="main__goods-name">The Lucy Lamp</h4>
+                <p class="main__goods-price">£399</p>
+            </div>
+        </ul>
+        <button class="main__collection-btn">
+            View collection
+        </button>
+    </div>
+    <div class="main__goods" id="started">
+        <ul class="main__goods-list">
+            <div class="main__started-card">
+                <h4 class="main__started-head">It started with a small idea</h4>
+                <p class="main__started-text">A global brand with local beginnings, our story began in a small studio in South London in early 2014</p>
+                <button class="main__collection-btn" id="started-btn">
+                    View collection
+                </button>
+            </div>
+            <div class="main__started-card" id="started-image">
+            </div>
+        </ul>
+    </div>
+    <div class="main__footer">
+        <h2 class="main__join-head">
+            Join the club and get the benefits
+        </h2>
+        <p class="main__join_text">Sign up for our newsletter and receive exclusive offers on new ranges, sales, pop up stores and more</p>
+        <ul class="main__benefits">
+            <li class="main__benefits-list">
+                <div class="main__benefits-container">
+                    <img class="main__benefits-image" src="https://cdn3.iconfinder.com/data/icons/network-and-communications-8/32/network_check_mark-256.png" alt="">
+                    <p class="main__benefits-string">Exclusive offers</p>
+                </div>
+            </li>
+            <li class="main__benefits-list">
+                <div class="main__benefits-container">
+                    <img class="main__benefits-image" src="https://cdn3.iconfinder.com/data/icons/network-and-communications-8/32/network_check_mark-256.png" alt="">
+                    <p class="main__benefits-string">Exclusive offers</p>
+                </div>
+            </li>
+            <li class="main__benefits-list">
+                <div class="main__benefits-container">
+                    <img class="main__benefits-image" src="https://cdn3.iconfinder.com/data/icons/network-and-communications-8/32/network_check_mark-256.png" alt="">
+                    <p class="main__benefits-string">Exclusive offers</p>
+                </div>
+            </li>
+        </ul>
+        <form action="">
+            <input type="text" placeholder="your@mail.com" class="main__join-input">
+            <button class="main__join-btn">Sign up</button>
+        </form>
+    </div>
+    <div class="footer">
+        <ul class="footer__info">
+            <div class="footer__info-container" >
+                <li class="footer__list-elements" id="first-element">Menu</li>
+                <li class="footer__list-elements">New arrivals</li>
+                <li class="footer__list-elements">Best sellers</li>
+                <li class="footer__list-elements">Recently viewed</li>
+                <li class="footer__list-elements">Popular this week</li>
+                <li class="footer__list-elements">All products</li>
+            </div>
+            <div class="footer__info-container" >
+                <li class="footer__list-elements" id="first-element">Categories</li>
+                <li class="footer__list-elements">Crockery</li>
+                <li class="footer__list-elements">Furniture</li>
+                <li class="footer__list-elements">Homeware</li>
+                <li class="footer__list-elements">Plant pots</li>
+                <li class="footer__list-elements">Chairs</li>
+                <li class="footer__list-elements">Crockery</li>
+            </div>
+            <div class="footer__info-container">
+                <li class="footer__list-elements" id="first-element">Our company</li>
+                <li class="footer__list-elements">About us</li>
+                <li class="footer__list-elements">Vacancies</li>
+                <li class="footer__list-elements">Contact us</li>
+                <li class="footer__list-elements">Privacy</li>
+                <li class="footer__list-elements">Returns policy</li>
+            </div>
+            <div class="footer__info-container">
+                <li class="footer__list-elements" id="first-element">Join our mailing list</li>
+                <li class="footer__list-elements">
+                    <form action=""><input class="main__join-input" id="footer__input" type="text" placeholder="your@email.com">
+                    <button class="main__join-btn" id="footer__btn">
+                        Sign up
+                    </button>
+                    </form>
+
+                </li>
+            </div>
+        </ul>
+        <hr class="footer__line">
+        <div class="footer__contacts">
+            <p class="footer__copyright">Copyright 2022 Avion LTD</p>
+            <div class="footer_social-container" ></div>
+            <img class="footer__social" src="https://cdn2.iconfinder.com/data/icons/social-media-2285/512/1_Linkedin_unofficial_colored_svg-256.png" alt="">
+            <img class="footer__social" src="https://cdn1.iconfinder.com/data/icons/logotypes/32/square-facebook-256.png" alt="">
+            <img class="footer__social" src="https://cdn2.iconfinder.com/data/icons/social-icons-33/128/Instagram-256.png" alt="">
+            <img class="footer__social" src="https://cdn0.iconfinder.com/data/icons/social-flat-rounded-rects/512/skype-256.png" alt="">
+            <img class="footer__social" src="https://cdn2.iconfinder.com/data/icons/social-media-2285/512/1_Twitter3_colored_svg-256.png" alt="">
+            <img class="footer__social" src="https://cdn2.iconfinder.com/data/icons/social-icons-33/128/Pinterest-256.png" alt="">
+        </div>
+    </div>
+</body>
+</html>
