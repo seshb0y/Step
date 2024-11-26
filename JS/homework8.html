@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    .modal{
+        display: none;  
+        width: 500px;
+        height: 300px;
+        background-color: green;
+    }
+    .modal__close-btn{
+        margin: 250px 0px 0px 200px;
+    }
+    .field{
+        width: 625px;
+        height: 435px;
+        background-image: url(https://img.freepik.com/premium-photo/top-view-soccer-field-football-field_125869-777.jpg);
+    }
+    .field__ball{
+        height: 40px;
+        position:absolute;
+    }
+    .traffic-light{
+        display: flex;
+    }
+    .traffic-light__container{
+        display: flex;
+        border: 1px solid black;
+        border-radius: 10px;
+        padding: 5px 5px 5px 5px;
+    }
+    .traffic-light__btn{
+        margin-left: 20px;
+    }
+    .traffic-light__red{
+        border-radius: 50%;
+        background-color: grey;
+        width: 40px;
+        height: 40px;
+    }
+    .traffic-light__yellow{
+        border-radius: 50%;
+        background-color: grey;
+        width: 40px;
+        height: 40px;
+        margin-left: 10px;
+    }
+    .traffic-light__green{
+        border-radius: 50%;
+        background-color: grey;
+        width: 40px;
+        height: 40px;
+        margin-left: 10px;
+    }
+
+    .tooltip-button {
+    position: relative;
+    margin: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    }
+
+    .tooltip {
+        visibility: hidden;
+        background-color: black;
+        color: white;
+        text-align: center;
+        border-radius: 5px;
+        padding: 5px;
+        position: absolute;
+        z-index: 1;
+        bottom: 125%;
+        left: 50%;
+        transform: translateX(-50%);
+        opacity: 0;
+        transition: opacity 0.3s;
+        white-space: nowrap;
+    }
+
+    .tooltip-button:hover .tooltip {
+        visibility: visible;
+        opacity: 1;
+    }
+
+    .tooltip.bottom {
+        bottom: auto;
+        top: 150%; 
+    }
+    #second-btn{
+        margin-top: 20px;
+    }
+    .button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    border: 1px solid black;
+    }
+</style>
+<body>
+    <div class="button-container">
+
+        <button class="tooltip-button" data-tooltip="Tooltip Text 1">Button 1</button>
+        <button class="tooltip-button" id="second-btn" data-tooltip="Tooltip Text 2">Button 2</button>
+        <h4>Задание 6</h4>
+        <h4>
+            Создать html-страницу с несколькими кнопками.
+            При наведении на кнопку, должна появляться подсказка с текстом. По умолчанию – подсказка появляется сверху от кнопки. Но
+            если она не помещается сверху от кнопки, тогда отображается снизу
+        </h4>
+    </div>
+
+    
+    <h4>Задание 1 </h4>
+    <h4>Создать html-страницу для ввода имени пользователя. Необходимо проверять каждый символ, который вводит пользователь. Если он ввел цифру, то не отображать ее в input.</h4>
+
+
+    <p>Enter your name (name can't contain digit)</p>
+    <input type="text" class="input">
+
+
+    <h4>Задание 2 </h4>
+        <h4>Создать html-страницу с кнопкой Открыть и модальнымокном. На модальном окне должен быть текст и кнопка Закрыть.Изначально модальное окно не отображается. При клике накнопку Открыть появляется модальное окно, на кнопку Закрыть –исчезает.
+        </h4>
+    <div class="modal">
+        <div class="modal-content">
+            <button class="modal__close-btn">Close</button>
+        </div>
+    </div>
+    <button class="open-modalBtn">Open</button>
+
+    <h4>Задание 3</h4>
+    <h4>
+        Создать html-страницу с футбольным полем, которое занимает всю ширину и высоту экрана, и мячом размером 100 на 100
+        пикселей.
+        Сделать так, чтобы при клике мышкой по полю, мяч плавно
+        перемещался на место клика. Учтите: необходимо, чтобы центр
+        мяча останавливался именно там, где был совершен клик мышкой.
+        Также предусмотрите, чтобы мяч не выходил за границы поля.
+    </h4>
+    <div class="field">
+        <img class="field__ball" src="https://cdn4.iconfinder.com/data/icons/olympic-games-20/512/soccer-ball-sports-game-football-256.png" alt="">
+    </div>
+
+    <h4>
+        Задание 4
+    </h4>
+    <h4>
+        Задание 4
+        Создать html-страницу со светофором и кнопкой, которая
+        переключает светофор на следующий цвет.
+    </h4>
+    <div class="traffic-light">
+        <div class="traffic-light__container">
+            <div class="traffic-light__red"></div>
+            <div class="traffic-light__yellow"></div>
+            <div class="traffic-light__green"></div>
+        </div>
+        <button class="traffic-light__btn">NEXT</button>
+    </div>
+
+    <h4>Задание 5</h4>
+    <h4>
+        Создать html-страницу со списком книг.
+        При щелчке на книгу, цвет фона должен меняться на оранжевый.
+        Учтите, что при повторном щелчке на другую книгу, предыдущей –
+        необходимо возвращать прежний цвет
+    </h4>
+
+    <olclass="list-elements" class="list-elements">
+        <li >"JavaScript for Kids: A Playful Introduction to Programming" by Nick Morgan</li>
+        <li >"Eloquent JavaScript: A Modern Introduction to Programming" by Marijn Haverbeke</li>
+        <li >"JavaScript: The Good Parts" by Douglas Crockford</li>
+        <li >"Programming JavaScript Applications: Robust Web Architecture with Node, HTML5, and Moderns JS Libraries" by Eric Elliott</li>
+        <li >"Effective JavaScript: 68 Specific Ways to Harness the Power of JavaScript" by David Herman</li>
+        <li >"JavaScript: The Definitive Guide" by David Flanagan</li>
+        <li >"You Don’t Know JS" by Kyle Simpson</li>
+    </ol>
+
+
+
+    
+    <script src="./homework/homework8.js"></script>
+</body>
+</html>
