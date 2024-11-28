@@ -5,6 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+<style>
+    .text-container{
+        word-wrap: break-word;
+    }
+    .textarea{
+        display: none;
+        width: 100%;
+        height: 200px;
+    }
+    .container{
+        width: 600px;
+        background-color: wheat;
+        /* padding: 10px 10px 10px 10px; */
+        border: 1px solid black;
+        word-wrap: break-word;
+    }
+    
+</style>
 <body>
     <h4>
         Задание 1
@@ -32,7 +50,7 @@
         разворачиваться. При наведении на элемент, шрифт должен становится жирным (с помощью CSS).
     </h4>
     <ul >
-        <li class="this-pc" style=" width: 200px; height: 15px;">This PC
+        <li class="this-pc" style=" width: 200px;">This PC
             <ul class="this-pc__folder">
                 <li class="this-pc__folderC">Local Disc(C:)
                     <ul>
@@ -55,8 +73,109 @@
                 </li>
             </ul>
         </li>
-        
     </ul>
+
+    <h4>
+        Задание 3
+    </h4>
+    <h4>
+        Создать html-страницу со списком книг.
+        При щелчке на элемент, цвет текста должен меняться на оранжевый. При повторном щелчке на другую книгу, предыдущей
+        необходимо возвращать прежний цвет.
+        Если при клике мышкой была зажата клавиша Ctrl, то элемент
+        добавляется/удаляется из выделенных. Если при клике мышкой
+        была зажата клавиша Shift, то к выделению добавляются все
+        элементы в промежутке от предыдущего кликнутого до текущего.
+    </h4>
+    <ol class="list-elements" class="list-elements">
+        <li >"JavaScript for Kids: A Playful Introduction to Programming" by Nick Morgan</li>
+        <li >"Eloquent JavaScript: A Modern Introduction to Programming" by Marijn Haverbeke</li>
+        <li >"JavaScript: The Good Parts" by Douglas Crockford</li>
+        <li >"Programming JavaScript Applications: Robust Web Architecture with Node, HTML5, and Moderns JS Libraries" by Eric Elliott</li>
+        <li >"Effective JavaScript: 68 Specific Ways to Harness the Power of JavaScript" by David Herman</li>
+        <li >"JavaScript: The Definitive Guide" by David Flanagan</li>
+        <li >"You Don’t Know JS" by Kyle Simpson</li>
+    </ol>
+    <h4>
+        Задание 4
+    </h4>
+    <h4>
+        Создать html-страницу для отображения/редактирования текста.
+        При открытии страницы текст отображается с помощью тега
+        div. При нажатии Ctrl+E, вместо div появляется textarea с тем
+        же текстом, который теперь можно редактировать. При нажатии
+        Ctrl+S, вместо textarea появляет div с уже измененным текстом.
+        Не забудьте выключить поведение по умолчанию для этих сочетаний клавиш.
+    </h4>
+    <div style="width: 400px; background-color: wheat; padding: 10px 20px 20px 10px;">
+        <p>Press Ctrl+E for edit text</p>
+        <p>Press Ctrl + S for save text</p>
+        <hr>
+        <div class="text-container">
+            <p class="text">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Odio quisquam similique eos ut, nemo voluptates molestiae sapiente rem, eligendi aliquam ipsum fugiat illo provident cupiditate hic expedita vel mollitia? Inventore. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Placeat iste facere ducimus odio ipsum eius. Libero consectetur placeat ipsam, facere odit modi voluptates, recusandae, ut a iure cumque doloremque consequuntur.</p>
+            <textarea class="textarea">
+
+            </textarea>
+        </div>
+    </div>
+    <h4>
+        Задание 5
+    </h4>
+    <h4>
+        Создать html-страницу с большой таблицей.
+        При клике по заголовку колонки, необходимо отсортировать
+        данные по этой колонке. Например: на скриншоте люди отсортированы по возрасту. Учтите, что числовые значения должны
+        сортироваться как числа, а не как строки.
+    </h4>
+    <table class="table" border="1" cellspacing="0" cellpadding="5">
+        <thead>
+            <tr>
+                <th onclick="sortTable(0)">Firstname</th>
+                <th onclick="sortTable(1)">Lastname</th>
+                <th onclick="sortTable(2, true)">Age</th>
+                <th onclick="sortTable(3)">Company</th>
+            </tr>
+        </thead>
+        <tbody class="table__body">
+            <tr>
+                <td>Mark</td>
+                <td>Zuckerberg</td>
+                <td>34</td>
+                <td>Facebook</td>
+            </tr>
+            <tr>
+                <td>Larry</td>
+                <td>Page</td>
+                <td>45</td>
+                <td>Google</td>
+            </tr>
+            <tr>
+                <td>Timothy</td>
+                <td>Cook</td>
+                <td>57</td>
+                <td>Apple</td>
+            </tr>
+            <tr>
+                <td>Bill</td>
+                <td>Gates</td>
+                <td>62</td>
+                <td>Microsoft</td>
+            </tr>
+        </tbody>
+    </table>
+    <h4>
+        Задание 6
+    </h4>
+    <h4>
+        Создать html-страницу с блоком текста в рамочке.
+        Реализовать возможность изменять размер блока, если зажать
+        мышку в правом нижнем углу и тянуть ее дальше
+    </h4>
+    <div class="container">
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed soluta quos repellendus, sit eius modi, voluptate ad voluptatum alias cupiditate illum aut veritatis praesentium at quae, eos et consequatur? Culpa?</p>
+        <button class="container__button"></button>
+    </div>
+    <div style="height: 800px;"></div>
     <script src="./homework/homework9.js"></script>
 </body>
 </html>
