@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite App</title>
+  </head>
+  <body>
+    <div id="app">
+      <h2 class="app__head">TODO LIST</h2>
+      <div class="app__form-container">
+        <input class="app__input" type="text" placeholder="search note">
+        <button class="app__search-btn"></button>
+        <div class="app__dropdown-container">
+          <button class="app__filter-btn">ALL ⯆</button>
+          <div class="app__menu-container">
+            <button class="app__checked"></button>
+            <button class="app__unchecked"></button>
+            <div>
+              <button style="display: flex; height: 30px; width: 90px; align-items:center; background-color: transparent;" class="app__all">
+                <img style="height: 40px;" src="https://cdn2.iconfinder.com/data/icons/boxicons-regular-vol-1/24/bx-checkbox-checked-64.png" alt="">
+                <img style="height: 40px; margin-left: -15px;" src="https://cdn2.iconfinder.com/data/icons/boxicons-regular-vol-1/24/bx-checkbox-64.png" alt="">
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <button class="app__theme-btn"></button>
+      </div>
+      <ul class="app__todo-list">
+
+      </ul>
+      <button class="app__add-btn"></button>
+
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
