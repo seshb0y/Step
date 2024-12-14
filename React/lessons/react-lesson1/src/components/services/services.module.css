@@ -1,0 +1,24 @@
+.services{
+    display: flex;
+    margin-left: 250px;
+}
+.form{
+    margin-left: 300px;
+    margin-top: 10px;
+}
+
+.input{
+    border-radius: 50px;
+}
+
+.button {
+    border-radius: 50px;
+    margin-left: 100px;
+}
+
+.img{
+    margin-top: 10px;
+    margin-left: 20px;
+    height: 50px;
+    border-radius: 50px;
+}

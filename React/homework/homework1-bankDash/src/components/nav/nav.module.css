@@ -1,0 +1,48 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+
+.container{
+    display: flex;
+    position: absolute;
+}
+.bankDash{
+    display: flex;
+    color: blue;
+}
+
+.list {
+    text-align: left;
+    display: flex;
+    gap: 30px;
+}
+
+.list:hover{
+    color: blue;
+    .button.button:hover{
+        color: blue;
+    }
+}
+
+.button{
+    background-color: transparent;
+    border: 0px;
+    display: flex;
+    gap: 50px;
+    color: gray;
+    padding-top: 20px;
+    padding-left: 20px;
+    font-family: "Inter", sans-serif;
+}
+
+.sideBar{
+    background-color: blue;
+    width: 0px;
+    transition: width 0.3s ease;
+}
+.sideBar:hover{
+    width: 10px;
+}
+
+.ul{
+    align-items: center;
+}
+

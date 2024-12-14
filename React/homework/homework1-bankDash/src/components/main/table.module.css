@@ -1,0 +1,35 @@
+.downloadButton{
+    border-radius: 30px;
+    color: blue;
+    background-color: transparent;
+    border: 1px solid blue;
+    height: 35px;
+    width: 100px;
+}
+.redAmount{
+    color: rgb(254, 92, 115);
+}
+.pointer{
+    color: rgb(113, 142, 191);
+    font-size: 25px;
+}
+
+.greenAmount{
+    color: rgb(22, 219, 170);
+}
+
+.tableContainer{
+    margin-top: 20px;
+    background-color: white;
+    border-radius: 30px;
+    padding-top: 20px;
+}
+
+.thread{
+    color: rgb(113, 142, 191);
+}
+
+.tr td{
+    padding: 30px;
+    text-align: left;
+}

@@ -1,0 +1,16 @@
+.container {
+    padding: 16px 24px;
+}
+
+.title{
+    font-size:  36px;
+    font-weight: 700px;
+    color: tomato;
+}
+
+.productsList{
+    display: flex;
+    list-style: none;
+    gap: 24px;
+    background-color: blue;
+}

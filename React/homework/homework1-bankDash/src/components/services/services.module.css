@@ -1,0 +1,44 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+
+.services{
+    display: flex;
+    margin-left: 275px;
+    font-family: "Inter", sans-serif;
+}
+.text{
+    margin-left: -50px;
+}
+.loupe{
+    /* position: absolute; */
+    margin-left: -2000px;
+}
+.form{
+    margin-left: 300px;
+    margin-top: 10px;
+    /* width: 500px; */
+    display: flex;
+}
+
+.input{
+    border-radius: 50px;
+    height: 30px;
+    width: 250px;
+    padding-left: 20px;
+}
+
+.button {
+    border-radius: 50px;
+    margin-left: 50px;
+    height: 30px;
+    width: 30px;
+    border: 0px;
+    background-color: whitesmoke;
+}
+
+.img{
+    margin-top: 10px;
+    margin-left: 20px;
+    height: 40px;
+    width: 40px;
+    border-radius: 50px;
+}
