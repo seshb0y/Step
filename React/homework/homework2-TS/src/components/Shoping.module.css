@@ -1,0 +1,10 @@
+.container{
+    margin-left: 950px;
+    background-color: rgb(74, 44, 104);
+    padding: 30px;
+    display: flex;
+    gap: 50px;
+    border-radius: 50px;
+    border: 1px solid rgb(117, 117, 56);
+    margin-top: 30px;
+}
