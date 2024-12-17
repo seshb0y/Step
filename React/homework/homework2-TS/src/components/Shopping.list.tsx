@@ -9,31 +9,18 @@ const ShoppingList = () => {
         setProduct((prev) => prev.filter((_, i) => i != index))
     }
 
-    // const rendProduct = () => {
-    //     return(
-    //         <div>
-    //             {product.map((element, index) => {
-    //                 return(
-    //                     <div key = {index} className={style.container}>
-    //                         <h3>{element}</h3>
-    //                         <ShoppingItem deleteProduct={() => deleteProduct(index)}/>
-    //                     </div>
-    //                 )
-    //             })}
-    //         </div>
-    //     )
-    // }
+    const rendProduct = () => {
+        return product.map((element, index) => (
+                    <div key = {index} className={style.container}>
+                        <h3>{element}</h3>
+                        <button onClick={() => deleteProduct(index)}>Delete</button>
+                    </div>
+                ))
+    }
 
     return (
         <div>
-            {product.map((element, index) => {
-                return(
-                    <div key = {index} className={style.container}>
-                        <h3>{element}</h3>
-                        <ShoppingItem deleteProduct={() => deleteProduct(index)}/>
-                    </div>
-                )
-            })}
+            < ShoppingItem rendProduct={rendProduct}/>
         </div>
     )
 }

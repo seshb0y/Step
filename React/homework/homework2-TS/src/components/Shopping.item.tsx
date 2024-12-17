@@ -1,14 +1,15 @@
 import React from 'react'
 
 interface Props{
-    deleteProduct: () => void;
-    // rendProduct: () => void;
+    // deleteProduct: () => void;
+    rendProduct: () => React.ReactNode;
 }
 
-const ShoppingItem: React.FC<Props> = (props) => {
+const ShoppingItem: React.FC<Props> = ({rendProduct}) => {
   return (
-    // props.rendProduct()
-    <button onClick={props.deleteProduct}>Delete</button>
+    <div>
+      {rendProduct()}
+    </div>
   )
 }
 
