@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import ShoppingItem from './Shopping.item';
-import style from "./Shoping.module.css"
+import style from "./Shopping.module.css"
 
 const ShoppingList = () => {
     const [product, setProduct] = useState(["Product 1", "Product 2", "Product 3", "Product 4"]);
