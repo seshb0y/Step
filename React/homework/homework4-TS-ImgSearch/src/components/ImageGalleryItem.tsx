@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import style from "./Components.module.css"
 type Props = {
-    images: {
+    image: {
         id: number;
         webformatURL: string;
-    }[]
+    }
     onShowButton: (shouldShow: boolean) => void
+    isOpen: () => void
 }
 
 export class ImageGalleryItem extends Component<Props> {
@@ -15,17 +16,11 @@ export class ImageGalleryItem extends Component<Props> {
     }
 
   render(): React.ReactNode {
-        const {images} = this.props
-
+        const {image} = this.props
+        
         return(
             <li className={style.ImageGalleryItem}>
-                {images.map((image) => (
-                    <img 
-                    className={style.ImageGalleryItem}
-                    key={image.id}
-                    src={image.webformatURL}
-                    />
-                ))}
+                <img className={style.ImageGalleryItemImage} src={image.webformatURL} alt="" onClick={this.props.isOpen}/>
             </li>
         )
   }

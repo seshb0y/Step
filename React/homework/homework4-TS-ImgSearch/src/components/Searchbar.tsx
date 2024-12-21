@@ -1,49 +1,31 @@
 import React, { Component } from 'react'
 
 import style from "./Components.module.css"
-import axios from 'axios'
+// import axios from 'axios'
 // import { ImageGallery } from './ImageGallery';
 // import { ImageGalleryItem } from './ImageGalleryItem';
 
 type SearchbarProps = {
-    onImagesUpdate: (images: { id: number; webformatURL: string }[]) => void;
+    onImageSearch: (search: string | null) => void
+    loadMore: () => void
 };
 
 export type State = {
-    API_KEY: string;
-    BASE_URL: string;
     search: string | null;
-    images: [];
 }
 
 
 export class Searchbar extends Component<SearchbarProps, State> {
     state:State = {
-        API_KEY: "47419937-9f04f29adf351466240a80859",
-        BASE_URL: "https://pixabay.com/api/",
         search: null,
-        images: [],
     }
 
-
-
-    getImage = (event: React.FormEvent<HTMLFormElement>) => {
+    handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        const {API_KEY, BASE_URL, search} = this.state;
-        axios.get(BASE_URL, {
-            baseURL: BASE_URL,
-            params: {
-                key: API_KEY,
-                q: search,
-            }
-        }).then(response => {
-            this.setState({images: response.data.hits});
-            this.props.onImagesUpdate(response.data.hits);
-        }).catch(error => {
-            console.log(error)
-        })
+        this.props.onImageSearch(this.state.search);
+        this.props.loadMore();
+      };
 
-    }
     handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         this.setState({search: event.target.value})
     }
@@ -52,7 +34,7 @@ export class Searchbar extends Component<SearchbarProps, State> {
       return(
             <div>
                 <header className={style.Searchbar}>
-                <form className={style.SearchForm} onSubmit={this.getImage}>
+                <form className={style.SearchForm} onSubmit={this.handleFormSubmit}>
                     <button type="submit" className={style.SearchFormButton}>
                         <span className={style.SearchFormButtonLabel}>Search</span>
                     </button>

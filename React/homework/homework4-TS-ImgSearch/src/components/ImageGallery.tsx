@@ -7,14 +7,19 @@ type Props = {
         webformatURL: string;
     }[]
     onShowButton: (shouldShow: boolean) => void;
+    isOpen: () => void
 }
 
 export class ImageGallery extends Component<Props> {
   
   render(): React.ReactNode {
+    const {images} = this.props
       return(
+        
         <ul className={style.ImageGallery}>
-            <ImageGalleryItem images={this.props.images} onShowButton={this.props.onShowButton}/>
+            {images.map((image) => (
+              <ImageGalleryItem key={image.id} image={image} onShowButton={this.props.onShowButton} isOpen={this.props.isOpen}/>
+            ))}
         </ul>
       )
   }
