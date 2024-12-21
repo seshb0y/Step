@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Swal from 'sweetalert2';
 
   
-  export default class Modal extends Component<ModalTimeLeft, State> {
+  export default class Modal extends Component {
     
     closeModal = () => {
         this.props.setIsModal(false)
