@@ -56,7 +56,8 @@ class App extends Component<AppState> {
       },
     }).then((response) => {
       if(!this.state.loadMore){
-        this.setState({ images: response.data.hits, 
+        this.setState({ 
+          images: response.data.hits, 
           currentSearch: {
             search: search,
              page: 1
@@ -65,11 +66,7 @@ class App extends Component<AppState> {
       }
       else{
         this.setState((prev:AppState) => ({ 
-          images: [...prev.images, ...response.data.hits],
-          currentSearch: {
-            ...prev.currentSearch,
-            page: 1
-          }
+          images: [...prev.images, ...response.data.hits]
         }));
       }
     }).catch((error) => {
@@ -86,6 +83,7 @@ class App extends Component<AppState> {
   noLoadMore = () => {
     this.setState(() => ({loadMore: false}))
   }
+  
   loadMore = () => {
     this.setState((prev: AppState) => ({
       loadMore: true,
