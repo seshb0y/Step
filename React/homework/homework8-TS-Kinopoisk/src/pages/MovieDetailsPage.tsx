@@ -1,8 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect} from 'react'
 import { Outlet, useNavigate, useParams } from 'react-router-dom'
-import axios from 'axios';
+// import axios from 'axios';
 import styles from '../css/MovieDetails.module.css'
-import { Movie } from '../types/Movie';
+// import { Movie } from '../types/Movie';
 import { QueryContext } from '../context/queryContext';
 import { MovieCast } from '../components/MovieCast';
 
@@ -28,6 +28,9 @@ const MovieDetailsPage = () => {
 
   const context = useContext(QueryContext);
 
+  if(!context){
+    throw new Error("QueryContext is required")
+  }
   const {movie, getMovieById} = context
 
   const navigate = useNavigate();
@@ -38,8 +41,9 @@ const MovieDetailsPage = () => {
 
   useEffect(() => {
     if (movieId) {
-      getMovieById(movieId);
+      getMovieById(Number(movieId));
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [movieId]);
 
   return (
