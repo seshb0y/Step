@@ -1,5 +1,5 @@
+import UsersList from '../components/ListUsers';
 import UsersFilter from '../components/UsersFilter';
-import UsersList from '../components/Userslist';
 
 const Users = () => {
   return (
