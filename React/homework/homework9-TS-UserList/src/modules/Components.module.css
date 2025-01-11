@@ -1,0 +1,10 @@
+.userElement{
+    list-style: none;
+    margin-top: 20px;
+    border: 1px solid tomato;
+    border-radius: 5px;
+    padding: 20px;
+}
+.userInfoContainer{
+    text-align: left;
+}
