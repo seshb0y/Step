@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppState, StatusFilterType, Task } from "../redux/store";
-import { addTask } from "../redux/action";
+import { addTask, changeStatus, deleteTask, findTask } from "../redux/action";
 
 const getVisibleTasks = (tasks: Task[], statusFilter: StatusFilterType) => {
   switch (statusFilter) {
@@ -17,38 +17,111 @@ const getVisibleTasks = (tasks: Task[], statusFilter: StatusFilterType) => {
 };
 
 const TaskList = () => {
+  const [id, setId] = useState(5);
 
-    const [input, setInput] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const taskPerPage = 5;
 
-    const tasks = useSelector((state: AppState) => state.tasks);
+  const [addTaskInput, setAddTaskInput] = useState("");
 
-    const filterStatus = useSelector((state: AppState) => state.filters.status);
+  const [findTaskInput, setFindTaskInput] = useState("");
 
-    const visibleTask = getVisibleTasks(tasks, filterStatus);
+  const tasks = useSelector((state: AppState) => state);
+
+  const filterStatus = useSelector((state: AppState) => state.filters.status);
+
+  const startIndex = (currentPage - 1) * taskPerPage
+  const endIndex = startIndex + taskPerPage;
 
 
-    const dispatch = useDispatch();
+  const visibleTask = getVisibleTasks(
+    findTaskInput === "" ? tasks.tasks : tasks.foundTask,
+    filterStatus
+  ).slice(startIndex, endIndex);
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInput(e.target.value);
-    }
+  const totalTask = getVisibleTasks(
+    findTaskInput === "" ? tasks.tasks : tasks.foundTask,
+    filterStatus
+  ).length;
 
-    const handleAddTask = (e:React.FormEvent) => {
+  const totalPage = Math.ceil(totalTask / taskPerPage)
+
+  const handleChangePage = (page: number) => {
+    setCurrentPage(page)
+  }
+
+  const dispatch = useDispatch();
+
+  const handleChangeAddTaskInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setAddTaskInput(e.target.value);
+  };
+
+  const handleChangeFindTaskInput = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setFindTaskInput(e.target.value);
+  };
+
+  const handleAddTask = (e: React.FormEvent) => {
     e.preventDefault();
-    dispatch(addTask({id: 5, text: input, completed: false}))
-    setInput("")
-    }
+    dispatch(addTask({ id: id, text: addTaskInput, completed: false }));
+    setId((prev) => prev + 1);
+    setAddTaskInput("");
+  };
+
+  const handleDeleteTask = (id: number) => {
+    dispatch(deleteTask({ id }));
+  };
+
+  const handleChangeStatus = (id: number, completed: boolean) => {
+    dispatch(changeStatus({ id, completed: !completed }));
+  };
+
+  const handleFindTask = (e: React.FormEvent) => {
+    e.preventDefault();
+    dispatch(findTask({ text: findTaskInput }));
+  };
+
   return (
     <>
-        <ul>
+      <form action="" onSubmit={handleFindTask}>
+        <input
+          type="text"
+          value={findTaskInput}
+          onChange={handleChangeFindTaskInput}
+        />
+        <button>search</button>
+      </form>
+      <ul>
         {visibleTask.map((task) => (
-            <li key={task.id}>{task.text}</li>
+          <li key={task.id}>
+            {task.text}
+            <button onClick={() => handleDeleteTask(task.id)}>delete</button>
+            <input
+              type="checkBox"
+              checked={task.completed}
+              onChange={() => handleChangeStatus(task.id, task.completed)}
+            />
+          </li>
         ))}
-        </ul>
-        <form action="" onSubmit={handleAddTask}>
-            <input type="text" value={input} onChange={handleChange}/>
-            <button>Add task</button>
-        </form>
+      </ul>
+      <form action="" onSubmit={handleAddTask}>
+        <input
+          type="text"
+          value={addTaskInput}
+          onChange={handleChangeAddTaskInput}
+        />
+        <button>Add task</button>
+      </form>
+      <div>
+        {
+          Array.from({length: totalPage}, (_, index) => (
+            <button key={index} onClick={() => handleChangePage(index + 1)}>
+              {index + 1}
+            </button>
+          ))
+        }
+      </div>
     </>
   );
 };
