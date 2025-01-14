@@ -27,7 +27,6 @@ const BasketList = () => {
         setInput(e.target.value);
     }
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     const calculate = () => {
         dispatch(calculateTotal());
     }
