@@ -1,0 +1,17 @@
+const SHOPPING_ADD_PRODUCT = 'shopping/addProduct';
+
+const SHOPPING_ADD_TO_BASKET = 'shopping/addToBasket';
+
+const SHOPPING_CHANGE_AMOUNT = 'shopping/changeAmount';
+
+const SHOPPING_USE_DISCOUNT = 'shopping/useDiscount';
+
+const SHOPPING_DELETE_PRODUCT = 'shopping/deleteProduct'
+
+const SHOPPING_CALCULATE_TOTAL = 'shopping/calculateTotal'
+
+const SHOPPING_DELETE_FROM_BASKET = 'shopping/deleteFromBasket'
+
+const SHOPPING_UPDATE_BASKET = 'shopping/updateBasket'
+
+export {SHOPPING_ADD_PRODUCT, SHOPPING_CHANGE_AMOUNT, SHOPPING_ADD_TO_BASKET, SHOPPING_USE_DISCOUNT, SHOPPING_DELETE_PRODUCT, SHOPPING_CALCULATE_TOTAL, SHOPPING_DELETE_FROM_BASKET, SHOPPING_UPDATE_BASKET}
