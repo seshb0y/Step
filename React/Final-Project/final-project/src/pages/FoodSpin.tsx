@@ -2,12 +2,29 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../redux/store";
 // import { fetchGetFood } from "../redux/operations";
-import { motion } from "framer-motion";
 import { fetchGetFood } from "../redux/operations";
 import style from '../styles/Styles.module.css'
+import { NavLink } from "react-router-dom";
+
+interface Food{
+    food: Array<{
+        id: number;
+        name: string;
+        price: number;
+        description: string;
+        theme: string;
+        image: string;
+      }>;
+}
 
 const FoodSpin: React.FC = () => {
   const [currentProduct, setCurrentProduct] = useState(0);
+//   const [product, setProduct] = useState({});
+  const [background, setBackground] = useState("");
+  const [centerImage, setCenterImage] = useState<{
+    image: string;
+    name: string;
+  } | null>(null);
 
   const dispatch = useDispatch<AppDispatch>();
   const { food, isLoading} = useSelector(
@@ -35,52 +52,96 @@ const FoodSpin: React.FC = () => {
     });
   };
 
-  const product = food[currentProduct];
+  console.log(food)
+  const radius = 250;
+  
+  if(!isLoading && centerImage != food[currentProduct]){
+        // setProduct(food[currentProduct])
+        setBackground(food[currentProduct].theme)
+        setCenterImage(food[currentProduct])
+  }
+  const product = food[currentProduct]
   return (
     isLoading ? (
         <h1>Loading...</h1>
     ) : (
-        <div>
-            <h2>Food Menu</h2>
-            <motion.div
-            key={product.id}
-            initial={{ opacity: 0, x: -100 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 100 }}
-            transition={{ duration: 0.5 }}
-            >
-            <h3>{product.description}</h3>
-            <img
-                className={style.imgCircle}
-                src={food[(currentProduct - 2 + food.length) % food.length].image}
-                alt={product.name}
-            />
-            <img
-                className={style.imgCircle}
-                src={food[(currentProduct - 1 + food.length) % food.length].image}
-                alt={product.name}
-            />
-            <img
-                className={style.imgMainCircle}
-                src={product.image}
-                alt={product.name}
-            />
-            <img
-                className={style.imgCircle}
-                src={food[(currentProduct + 1) % food.length].image}
-                alt={product.name}
-            />
-            <img
-                className={style.imgCircle}
-                src={food[(currentProduct + 2) % food.length].image}
-                alt={product.name}
-            />
-            <p>{product.description}</p>
-            <p>${product.price}</p>
-            </motion.div>
-            <button onClick={handlePreviousProduct}>previous</button>
-            <button onClick={handleNextProduct}>next</button>
-        </div>
+        <>
+            <div className={style.foodSpinContainer}>
+                <nav className={style.nav}>
+                    <div className={style.logo}>FoodSpin</div>
+                        <ul>
+                            <li>
+                                <NavLink
+                                to="/breakfast"
+                                className={({ isActive }) => (isActive ? style['active-link'] : style['inactive-link'])}
+                                >
+                                Breakfast
+                                </NavLink>
+                            </li>
+                            <li>
+                                <NavLink
+                                to="/lunch"
+                                className={({ isActive }) => (isActive ? style['active-link'] : style['inactive-link'])}
+                                >
+                                Lunch
+                                </NavLink>
+                            </li>
+                            <li>
+                                <NavLink
+                                to="/dinner"
+                                className={({ isActive }) => (isActive ? style['active-link'] : style['inactive-link'])}
+                                >
+                                Dinner
+                                </NavLink>
+                            </li>
+                            <div className={style['lock-icon']}>🔒</div>
+                        </ul>
+
+                </nav>
+
+                <div className={style.foodCircle} style={{background: background}}>
+                        {food.map((item, index) => {
+                        const angle = (220 / food.length) * index;
+                        const x = radius * Math.cos((angle * Math.PI) / 180);
+                        const y = radius * Math.sin((angle * Math.PI) / 180);
+                
+                        return (
+                <div
+                            key={item.id}
+                            className={style.foodItem}
+                            style={{
+                                transform: `translate(${x}px, ${-y + -100}px)`,
+                                zIndex: index === currentProduct ? 10 : 1,
+                            }}
+                >
+                <img
+                                src={item.image}
+                                alt={item.name}
+                                className={
+                                index === currentProduct ? style.foodItemActive : style.foodItemImage
+                                }
+                            />
+                </div>
+                        );
+                        })}
+                <div className={style.centerImage}>
+                {centerImage && (
+                <img src={centerImage.image} alt={centerImage.name} />
+                )}
+                </div>
+                <div className={style.buttons}>
+                    <button style={{backgroundColor: background}} className={style.buttonLeft} onClick={handlePreviousProduct}>Back</button>
+                    <button style={{backgroundColor: background}} className={style.buttonRight} onClick={handleNextProduct}>Next</button>
+                </div>
+                </div>
+                <div className={style.info}>
+                    <h1 style={{color: background}}>${product.price}</h1>
+                    <h1 style={{color: "black"}}>{product.name}</h1>
+                    <h3>{product.description}</h3>
+                    <button style={{ background: background }}>ORDER NOW</button>
+                </div>
+            </div>
+        </>
     )
 
   );

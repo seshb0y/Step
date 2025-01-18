@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { fetchGetFood } from "./operations";
 
-interface FoodState {
+export interface FoodState {
   food: Array<{
     id: number;
     name: string;

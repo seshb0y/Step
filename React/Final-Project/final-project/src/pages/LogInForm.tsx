@@ -21,6 +21,7 @@ const LoginForm: React.FC = () => {
   const checkUser = async (email:string, password: string) => {
     try{
       const response = await axios.get(`https://678a47e1dd587da7ac2977c2.mockapi.io/users/users?email=${email}`)
+      console.log(response.data)
       const users = await response.data;
       const user = users.find((u: {email: string, password: string}) => u.password === password)
       return !!user
@@ -48,7 +49,6 @@ const LoginForm: React.FC = () => {
     try{
       const isValid = await checkUser(email, password);
       if(isValid){
-        alert('Login successful')
         navigate('/foodSpin')
       }
       else{

@@ -46,8 +46,9 @@ const RegistrationForm: React.FC = () => {
     try{
       console.log('Submitting values:', values);
       const response = await axios.post('https://678a47e1dd587da7ac2977c2.mockapi.io/users/users', values)
+      console.log(values)
       console.log('User registered successfully:', response.data);
-      formikHelpers.resetForm();
+      navigate(-1)
     }catch (error) {
       console.error('Error:', error);
       alert('Failed to register user. Please try again.');
