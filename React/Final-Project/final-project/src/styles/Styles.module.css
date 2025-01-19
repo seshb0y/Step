@@ -39,6 +39,7 @@ div {
     background-color: white;
     padding: 20px;
     border-radius: 8px;
+    margin-top: 20px;
 
     height: 300px;
     width: 300px; 
@@ -214,7 +215,9 @@ div {
     font-size: 20px;
     font-weight: bold;
     color: #ff6b6b;
-    margin-right: auto;
+    margin-right: 250px;
+    margin-top: -20px;
+    /* padding-left: 200px; */
   }
   
   .balance {

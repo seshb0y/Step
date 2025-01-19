@@ -4,18 +4,19 @@ import { AppDispatch, RootState } from "../redux/store";
 // import { fetchGetFood } from "../redux/operations";
 import { fetchGetFood } from "../redux/operations";
 import style from '../styles/Styles.module.css'
-import { NavLink } from "react-router-dom";
+// import { NavLink } from "react-router-dom";
+import NavBar from "../components/NavBar";
 
-interface Food{
-    food: Array<{
-        id: number;
-        name: string;
-        price: number;
-        description: string;
-        theme: string;
-        image: string;
-      }>;
-}
+// interface Food{
+//     food: Array<{
+//         id: number;
+//         name: string;
+//         price: number;
+//         description: string;
+//         theme: string;
+//         image: string;
+//       }>;
+// }
 
 const FoodSpin: React.FC = () => {
   const [currentProduct, setCurrentProduct] = useState(0);
@@ -67,37 +68,7 @@ const FoodSpin: React.FC = () => {
     ) : (
         <>
             <div className={style.foodSpinContainer}>
-                <nav className={style.nav}>
-                    <div className={style.logo}>FoodSpin</div>
-                        <ul>
-                            <li>
-                                <NavLink
-                                to="/breakfast"
-                                className={({ isActive }) => (isActive ? style['active-link'] : style['inactive-link'])}
-                                >
-                                Breakfast
-                                </NavLink>
-                            </li>
-                            <li>
-                                <NavLink
-                                to="/lunch"
-                                className={({ isActive }) => (isActive ? style['active-link'] : style['inactive-link'])}
-                                >
-                                Lunch
-                                </NavLink>
-                            </li>
-                            <li>
-                                <NavLink
-                                to="/dinner"
-                                className={({ isActive }) => (isActive ? style['active-link'] : style['inactive-link'])}
-                                >
-                                Dinner
-                                </NavLink>
-                            </li>
-                            <div className={style['lock-icon']}>🔒</div>
-                        </ul>
-
-                </nav>
+                <NavBar/>
 
                 <div className={style.foodCircle} style={{background: background}}>
                         {food.map((item, index) => {
