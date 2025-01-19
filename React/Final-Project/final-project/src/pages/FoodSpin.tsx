@@ -34,7 +34,9 @@ const FoodSpin: React.FC = () => {
   
 
   useEffect(() => {
-    dispatch(fetchGetFood())
+    if(food.length === 0){
+        dispatch(fetchGetFood())
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
