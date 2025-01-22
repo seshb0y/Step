@@ -6,6 +6,8 @@ import { fetchGetFood } from "../redux/operations";
 import style from '../styles/Styles.module.css'
 // import { NavLink } from "react-router-dom";
 import NavBar from "../components/NavBar";
+import circle from '../image/Group 1 (4).png'
+
 
 // interface Food{
 //     food: Array<{
@@ -27,6 +29,8 @@ const FoodSpin: React.FC = () => {
     name: string;
   } | null>(null);
 
+  const [rotation, setRotation] = useState(0);
+
   const dispatch = useDispatch<AppDispatch>();
   const { food, isLoading} = useSelector(
     (state: RootState) => state.food
@@ -43,10 +47,12 @@ const FoodSpin: React.FC = () => {
 
 
   const handleNextProduct = () => {
+    rotateCircle('right')
     setCurrentProduct((prev) => (prev + 1) % food.length);
   };
 
   const handlePreviousProduct = () => {
+    rotateCircle('left')
     setCurrentProduct((prev) => {
       if (prev === 0) {
         return food.length - 1;
@@ -55,8 +61,13 @@ const FoodSpin: React.FC = () => {
     });
   };
 
+  const rotateCircle = (direction: "left" | "right") => {
+    const newRotation = rotation + (direction === "left" ? -36 : 36);
+    setRotation(newRotation); 
+  };
+
   console.log(food)
-  const radius = 250;
+  // const radius = 250;
   
   if(!isLoading && centerImage != food[currentProduct]){
         // setProduct(food[currentProduct])
@@ -73,39 +84,20 @@ const FoodSpin: React.FC = () => {
                 <NavBar/>
 
                 <div className={style.foodCircle} style={{background: background}}>
-                        {food.map((item, index) => {
-                        const angle = (220 / food.length) * index;
-                        const x = radius * Math.cos((angle * Math.PI) / 180);
-                        const y = radius * Math.sin((angle * Math.PI) / 180);
-                
-                        return (
-                <div
-                            key={item.id}
-                            className={style.foodItem}
-                            style={{
-                                transform: `translate(${x}px, ${-y + -100}px)`,
-                                zIndex: index === currentProduct ? 10 : 1,
-                            }}
-                >
-                <img
-                                src={item.image}
-                                alt={item.name}
-                                className={
-                                index === currentProduct ? style.foodItemActive : style.foodItemImage
-                                }
-                            />
+                  <img className={style.figmaImage} src={circle} alt="" style={{ transform: `rotate(${rotation}deg)` }} />
                 </div>
-                        );
-                        })}
+                  <div className={style.buttons}>
+                      <button style={{backgroundColor: background}} className={style.buttonLeft} onClick={handlePreviousProduct}>
+                        <img className={style.changeButtonImage}  src="https://cdn0.iconfinder.com/data/icons/mobile-basic-vol-1/32/Arrow_Bottom-256.png" alt="" />
+                      </button>
+                      <button style={{backgroundColor: background}} className={style.buttonRight} onClick={handleNextProduct}>
+                        <img className={style.changeButtonImage} src="https://cdn0.iconfinder.com/data/icons/mobile-basic-vol-1/32/Arrow_Bottom-256.png" alt="" />
+                      </button>
+                  </div>
                 <div className={style.centerImage}>
                 {centerImage && (
                 <img src={centerImage.image} alt={centerImage.name} />
                 )}
-                </div>
-                <div className={style.buttons}>
-                    <button style={{backgroundColor: background}} className={style.buttonLeft} onClick={handlePreviousProduct}>Back</button>
-                    <button style={{backgroundColor: background}} className={style.buttonRight} onClick={handleNextProduct}>Next</button>
-                </div>
                 </div>
                 <div className={style.info}>
                     <h1 style={{color: background}}>${product.price}</h1>
