@@ -19,7 +19,7 @@ const Breakfast = () => {
     }
   return (
     isLoading ? (<h1>Loading</h1>) : (
-      <div className={styles.container}>
+    <div className={styles.container}>
       <NavBar />
       <h1 className={styles.title} style={{color: food[currentProductIndex].theme}}>{food[currentProductIndex].name}</h1>
       <div className={styles.infoContainer}>
