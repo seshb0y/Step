@@ -1,0 +1,51 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\users_C\\OneDrive\\\u0420\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\desctop\\NewStepRepository09.01.2024\\Step\\ASP\\Lessons\\Lesson1-ControllerFirst\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{2B633983-D579-4A77-A2B5-913C3B929185}|Lesson1-ControllerFirst\\Lesson1-ControllerFirst.csproj|d:\\users_c\\onedrive\\\u0440\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\desctop\\newsteprepository09.01.2024\\step\\asp\\lessons\\lesson1-controllerfirst\\lesson1-controllerfirst\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2B633983-D579-4A77-A2B5-913C3B929185}|Lesson1-ControllerFirst\\Lesson1-ControllerFirst.csproj|solutionrelative:lesson1-controllerfirst\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\users_C\\OneDrive\\\u0420\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\desctop\\NewStepRepository09.01.2024\\Step\\ASP\\Lessons\\Lesson1-ControllerFirst\\Lesson1-ControllerFirst\\Program.cs",
+              "RelativeDocumentMoniker": "Lesson1-ControllerFirst\\Program.cs",
+              "ToolTip": "D:\\users_C\\OneDrive\\\u0420\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\desctop\\NewStepRepository09.01.2024\\Step\\ASP\\Lessons\\Lesson1-ControllerFirst\\Lesson1-ControllerFirst\\Program.cs",
+              "RelativeToolTip": "Lesson1-ControllerFirst\\Program.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAwAAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-29T13:10:18.058Z",
+              "EditorCaption": ""
+            }
+          ]
+        },
+        {
+          "DockedWidth": 95,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
