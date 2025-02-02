@@ -1,15 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Lesson1_ControllerFirst.Controllers;
+namespace ControllerFirst.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
 public class AuthController : ControllerBase
 {
-    [HttpPost("login")]
+    [HttpPost("Login")]
     public IActionResult Login()
     {
-        return Ok("Login Success");
+        return Ok("Login");
     }
 
     [HttpPost("Register")]
@@ -17,7 +17,8 @@ public class AuthController : ControllerBase
     {
         return Ok("Register");
     }
-    [HttpPost("logout")]
+    
+    [HttpPost("Logout")]
     public IActionResult Logout()
     {
         return Ok("Logout");
