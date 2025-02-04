@@ -16,6 +16,10 @@ public class AuthorService(LibContext context, IMapper mapper) : IAuthorService
     {
         var author = _mapper.Map<Authors>(request);
         
+        // var book = await _context.Books.FirstOrDefaultAsync(x => x.Author.FullName == author.FullName);
+        //
+        // book.Author = author;
+        //
         await _context.Authors.AddAsync(author);
         await _context.SaveChangesAsync();
     }
@@ -23,7 +27,7 @@ public class AuthorService(LibContext context, IMapper mapper) : IAuthorService
     public async Task DeleteAuthorAsync(AuthorChangeDeleteRequest request)
     {
         
-        var match = _context.Authors.FirstOrDefault(x => x.FullName == request.FindByName);
+        var match = await _context.Authors.FirstOrDefaultAsync(x => x.FullName == request.FindByName);
         
         _context.Authors.Remove(match);
         await _context.SaveChangesAsync();

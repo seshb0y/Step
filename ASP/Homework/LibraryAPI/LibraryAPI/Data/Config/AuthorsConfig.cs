@@ -19,20 +19,21 @@ public class AuthorsConfig : IEntityTypeConfiguration<Authors>
             .WithOne(x => x.Author)
             .HasForeignKey(x => x.AuthorId)
             .OnDelete(DeleteBehavior.Restrict);
-
-        builder.HasMany(x => x.Genres)
-            .WithMany(x => x.Authors)
-            .UsingEntity<GenreAuthor>(
-                x => x.HasOne(x => x.Genre)
-                    .WithMany(x => x.GenreAuthor)
-                    .HasForeignKey(x => x.GenreId),
-                x => x.HasOne(x => x.Author)
-                    .WithMany(x => x.GenreAuthor)
-                    .HasForeignKey(x => x.AuthorId),
-                x =>
-                {
-                    x.ToTable("GenreAuthor");
-                    x.HasKey(x => new { x.AuthorId, x.GenreId });
-                });
+        
+        //
+        // builder.HasMany(x => x.Genres)
+        //     .WithMany(x => x.Authors)
+        //     .UsingEntity<GenreAuthor>(
+        //         x => x.HasOne(x => x.Genre)
+        //             .WithMany(x => x.GenreAuthor)
+        //             .HasForeignKey(x => x.GenreId),
+        //         x => x.HasOne(x => x.Author)
+        //             .WithMany(x => x.GenreAuthor)
+        //             .HasForeignKey(x => x.AuthorId),
+        //         x =>
+        //         {
+        //             x.ToTable("GenreAuthor");
+        //             x.HasKey(x => new { x.AuthorId, x.GenreId });
+        //         });
     }
 }

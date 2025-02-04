@@ -17,10 +17,9 @@ public class AuthorProfile : Profile
                     {
                         Name = book.Title,
                         Publisher = book.Publisher,
-                        PublicationDate = book.PublicationDate,
-                        AuthorId = default,
+                        PublicationDate = book.PublicationDate
                     })))
-            .ForMember(dest => dest.Genres, opt =>
+            .ForMember(dest => dest.GenreAuthor, opt =>
                 opt.MapFrom(src => src.Genres.Select(genre => new Genres
                 {
                     Name = genre.Name,

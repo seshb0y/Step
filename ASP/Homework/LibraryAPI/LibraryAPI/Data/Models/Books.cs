@@ -13,7 +13,7 @@ public class Books
     public Guid AuthorId { get; set; }
     public Authors? Author { get; set; }
     
-    public ICollection<Genres> Genres  { get; set; } = new List<Genres>();
-    public ICollection<AuthorBook> AuthorBooks { get; set; } = new List<AuthorBook>();
+    // public ICollection<Genres> Genres  { get; set; } = new List<Genres>();
+    // public ICollection<AuthorBook> AuthorBooks { get; set; } = new List<AuthorBook>();
     public ICollection<BookGenre> BookGenres { get; set; } = new List<BookGenre>();
 }
