@@ -25,5 +25,9 @@ public class UserConfig : IEntityTypeConfiguration<User>
         builder.HasIndex(x => x.Email)
             .HasDatabaseName("IX_Users_Email")
             .IsUnique();
+        
+        builder.HasIndex(x => x.Username)
+            .HasDatabaseName("IX_Users_Username")
+            .IsUnique();
     }
 }

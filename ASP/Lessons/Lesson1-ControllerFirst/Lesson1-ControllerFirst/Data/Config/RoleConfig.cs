@@ -8,7 +8,7 @@ public class RoleConfig : IEntityTypeConfiguration<Role>
 {
     public void Configure(EntityTypeBuilder<Role> builder)
     {
-        builder.ToTable("Roles");
+        builder.ToTable("Roles");   
         builder.HasKey(x => x.RoleId);
         
         builder.Property(x => x.RoleName)

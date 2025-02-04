@@ -143,3 +143,7 @@ D:\users_C\OneDrive\Рабочий стол\desctop\NewStepRepository09.01.2024\
 D:\users_C\OneDrive\Рабочий стол\desctop\NewStepRepository09.01.2024\Step\ASP\Lessons\Lesson1-ControllerFirst\Lesson1-ControllerFirst\obj\Debug\net8.0\Lesson1-ControllerFirst.pdb
 D:\users_C\OneDrive\Рабочий стол\desctop\NewStepRepository09.01.2024\Step\ASP\Lessons\Lesson1-ControllerFirst\Lesson1-ControllerFirst\obj\Debug\net8.0\Lesson1-ControllerFirst.genruntimeconfig.cache
 D:\users_C\OneDrive\Рабочий стол\desctop\NewStepRepository09.01.2024\Step\ASP\Lessons\Lesson1-ControllerFirst\Lesson1-ControllerFirst\obj\Debug\net8.0\ref\Lesson1-ControllerFirst.dll
+D:\users_C\OneDrive\Рабочий стол\desctop\NewStepRepository09.01.2024\Step\ASP\Lessons\Lesson1-ControllerFirst\Lesson1-ControllerFirst\bin\Debug\net8.0\FluentValidation.dll
+D:\users_C\OneDrive\Рабочий стол\desctop\NewStepRepository09.01.2024\Step\ASP\Lessons\Lesson1-ControllerFirst\Lesson1-ControllerFirst\bin\Debug\net8.0\AutoMapper.dll
+D:\users_C\OneDrive\Рабочий стол\desctop\NewStepRepository09.01.2024\Step\ASP\Lessons\Lesson1-ControllerFirst\Lesson1-ControllerFirst\bin\Debug\net8.0\BCrypt.Net-Next.dll
+D:\users_C\OneDrive\Рабочий стол\desctop\NewStepRepository09.01.2024\Step\ASP\Lessons\Lesson1-ControllerFirst\Lesson1-ControllerFirst\bin\Debug\net8.0\FluentValidation.DependencyInjectionExtensions.dll

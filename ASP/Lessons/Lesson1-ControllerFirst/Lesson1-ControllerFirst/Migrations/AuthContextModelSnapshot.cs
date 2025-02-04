@@ -70,6 +70,10 @@ namespace Lesson1_ControllerFirst.Migrations
                         .IsUnique()
                         .HasDatabaseName("IX_Users_Email");
 
+                    b.HasIndex("Username")
+                        .IsUnique()
+                        .HasDatabaseName("IX_Users_Username");
+
                     b.ToTable("Users", (string)null);
                 });
 
