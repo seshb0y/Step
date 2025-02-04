@@ -12,17 +12,23 @@ public class AuthorProfile : Profile
             .ForMember(dest => dest.FullName, opt =>
                 opt.MapFrom(src => src.FullName))
             .ForMember(dest => dest.Books, opt =>
-                opt.MapFrom(src => src.Books.Select(
-                    book => new Books
-                    {
-                        Name = book.Title,
-                        Publisher = book.Publisher,
-                        PublicationDate = book.PublicationDate
-                    })))
+                opt.MapFrom(src => src.Books))
             .ForMember(dest => dest.GenreAuthor, opt =>
-                opt.MapFrom(src => src.Genres.Select(genre => new Genres
+                opt.MapFrom(src => src.Genres.Select(genre => new GenreAuthor
                 {
-                    Name = genre.Name,
-                })));
+                    Genre = new Genres{Name = genre.Name}
+                })))
+            .AfterMap((src, dest) =>
+            {
+                foreach (var book in dest.Books)
+                {
+                    book.Author = dest; 
+                }
+                
+                foreach (var genreAuthor in dest.GenreAuthor)
+                {
+                    genreAuthor.Author = dest; 
+                }
+            });
     }
 }

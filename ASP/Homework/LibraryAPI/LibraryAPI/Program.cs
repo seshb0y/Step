@@ -15,6 +15,8 @@ builder.Services.AddAutoMapper(ops =>
     ops.AddProfile<AuthorProfile>());
 builder.Services.AddAutoMapper(ops => 
     ops.AddProfile<BookProfile>());
+builder.Services.AddAutoMapper(ops => 
+    ops.AddProfile<GenreProfile>());
 
 builder.Services.AddScoped<IAuthorService, AuthorService>();
 
