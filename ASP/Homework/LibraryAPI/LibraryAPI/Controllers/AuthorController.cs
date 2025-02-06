@@ -47,9 +47,9 @@ public class AuthorController : ControllerBase
     
 
     [HttpPost("update-author")]
-    public async Task<IActionResult> UpdateAuthor([FromBody] AuthorFindDeleteRequest request)
+    public async Task<IActionResult> UpdateAuthor([FromBody] AuthorUpdateRequest request,[FromQuery] AuthorFindDeleteRequest FindRequest)
     {
-        if (_authorService.CheckAuthorExists(request))
+        if (_authorService.CheckAuthorExists(FindRequest))
         {
             await _authorService.UpdateAuthorAsync(request);
             return Ok("Author updated");
