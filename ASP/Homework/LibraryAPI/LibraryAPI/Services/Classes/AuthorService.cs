@@ -23,10 +23,9 @@ public class AuthorService(LibContext context, IMapper mapper) : IAuthorService
         await _context.Authors.AddAsync(author);
         await _context.SaveChangesAsync();
     }
-
+    
     public async Task DeleteAuthorAsync(AuthorChangeDeleteRequest request)
     {
-        
         var match = await _context.Authors.FirstOrDefaultAsync(x => x.FullName == request.FindByName);
         
         _context.Authors.Remove(match);
