@@ -19,6 +19,8 @@ builder.Services.AddAutoMapper(ops =>
     ops.AddProfile<GenreProfile>());
 
 builder.Services.AddScoped<IAuthorService, AuthorService>();
+builder.Services.AddScoped<IBookService, BookService>();
+builder.Services.AddScoped<IGenreService, GenreService>();
 
 builder.Services.AddDbContext<LibContext>(options => 
     options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));

@@ -43,17 +43,20 @@ public class AuthorService(LibContext context, IMapper mapper) : IAuthorService
 
     public async Task AddGenreToAuthorAsync(AuthorAddRequest request)
     {
-        var genre = _mapper.Map<Genres>(request);
-        var author = await _context.Authors.FirstOrDefaultAsync(x => x.FullName == request.FullName);
-        author.Genres.Add(genre);
-        var genreInDb = await _context.Genre.FirstOrDefaultAsync(x => x.Name == genre.Name);
+        var author = await _context.Authors
+            .Include(x => x.Genres)
+            .FirstOrDefaultAsync(x => x.FullName == request.FullName);
+        var genreInDb = await _context.Genre.FirstOrDefaultAsync(x => x.Name == request.GenreName);
         if (genreInDb == null)
         {
-            await _context.Genre.AddAsync(genre);
+            genreInDb = new Genres { Name = request.GenreName };
+            await _context.Genre.AddAsync(genreInDb);
             await _context.SaveChangesAsync();
-            genreInDb = await _context.Genre.FirstOrDefaultAsync(x => x.Name == genre.Name);
         }
-        genreInDb.Authors.Add(author);
+        if (!author.Genres.Any(g => g.GenreId == genreInDb.GenreId))
+        {
+            author.Genres.Add(genreInDb);
+        }
         
         await _context.SaveChangesAsync();
     }

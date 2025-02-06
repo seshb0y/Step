@@ -12,12 +12,18 @@ public class BookController : ControllerBase
 {
     private readonly IBookService _bookService;
 
-
+    public BookController(IBookService bookService)
+    {
+        _bookService = bookService;
+    }
     
     [HttpPost("add-book")]
-    public async Task<IActionResult> AddBook([FromBody] BookRequest request)
+    public async Task<IActionResult> AddBook([FromBody] AddBookRequest request)
     {
         await _bookService.AddBookAsync(request);
+        await _bookService.AddBookToAuthorAsync(request);
+        await _bookService.AddGenreToBookAsync(request);
+        await _bookService.AddGenreToAuthorAsync(request);
         
         return Ok("Book added");
     }
@@ -26,7 +32,7 @@ public class BookController : ControllerBase
     
 
     [HttpPost("delete-book")]
-    public async Task<IActionResult> DeleteBook([FromBody] BookRequest request)
+    public async Task<IActionResult> DeleteBook([FromBody] FindDeleteBookRequest request)
     {
         if (_bookService.CheckBookExists(request))
         {
@@ -39,9 +45,9 @@ public class BookController : ControllerBase
     
     
     [HttpPost("update-book")]
-    public async Task<IActionResult> UpdateBook([FromBody] BookRequest request)
+    public async Task<IActionResult> UpdateBook([FromBody] UpdateBookRequest request, [FromQuery] FindDeleteBookRequest FindRequest)
     {
-        if (_bookService.CheckBookExists(request))
+        if (_bookService.CheckBookExists(FindRequest))
         {
             await _bookService.UpdateBookAsync(request);
             return Ok("Book updated");
@@ -53,7 +59,7 @@ public class BookController : ControllerBase
     
 
     [HttpGet("find-book")]
-    public async Task<IActionResult> FindBook ([FromQuery] BookRequest request)
+    public async Task<IActionResult> FindBook ([FromQuery] FindDeleteBookRequest request)
     {
         if (_bookService.CheckBookExists(request))
         {
