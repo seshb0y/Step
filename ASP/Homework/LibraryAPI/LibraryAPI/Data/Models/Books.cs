@@ -10,12 +10,12 @@ public class Books
     
     public string Publisher { get; set; }
     
-    public Guid AuthorId { get; set; }
-    public Authors? Author { get; set; }
+    // public Guid AuthorId { get; set; }
+    // public Authors? Author { get; set; }
     // many to many
     
-    // public ICollection<Authors> Author { get; set; } = new List<Authors>();
-    // public ICollection<Genres> Genres  { get; set; } = new List<Genres>();
+    public ICollection<Authors> Author { get; set; } = new List<Authors>();
+    public ICollection<Genres> Genres  { get; set; } = new List<Genres>();
     // public ICollection<AuthorBook> AuthorBooks { get; set; } = new List<AuthorBook>();
-    public ICollection<BookGenre> BookGenres { get; set; } = new List<BookGenre>();
+    // public ICollection<BookGenre> BookGenres { get; set; } = new List<BookGenre>();
 }

@@ -10,25 +10,18 @@ public class AuthorProfile : Profile
     {
         CreateMap<AuthorAddRequest, Authors>()
             .ForMember(dest => dest.FullName, opt =>
-                opt.MapFrom(src => src.FullName))
-            .ForMember(dest => dest.Books, opt =>
-                opt.MapFrom(src => src.Books))
-            .ForMember(dest => dest.GenreAuthor, opt =>
-                opt.MapFrom(src => src.Genres.Select(genre => new GenreAuthor
-                {
-                    Genre = new Genres{Name = genre.Name}
-                })))
-            .AfterMap((src, dest) =>
-            {
-                foreach (var book in dest.Books)
-                {
-                    book.Author = dest; 
-                }
-                
-                foreach (var genreAuthor in dest.GenreAuthor)
-                {
-                    genreAuthor.Author = dest; 
-                }
-            });
+                opt.MapFrom(src => src.FullName));
+        
+        CreateMap<AuthorAddRequest, Books>()
+            .ForMember(dest => dest.Name, opt =>
+                opt.MapFrom(src => src.Title))
+            .ForMember(dest => dest.PublicationDate, opt =>
+            opt.MapFrom(src => src.PublicationDate))
+            .ForMember(dest => dest.Publisher, opt =>
+            opt.MapFrom(src => src.Publisher));
+
+        CreateMap<AuthorAddRequest, Genres>()
+            .ForMember(dest => dest.Name, opt =>
+                opt.MapFrom(src => src.GenreName));
     }
 }

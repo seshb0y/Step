@@ -23,7 +23,9 @@ public class AuthorController : ControllerBase
     public async Task<IActionResult> AddAuthor([FromBody] AuthorAddRequest request)
     {
         await _authorService.AddAuthorAsync(request);
-        
+        await _authorService.AddBookToAuthorAsync(request);
+        await _authorService.AddGenreToAuthorAsync(request);
+        await _authorService.AddGenreToBookAsync(request);
         return Ok("Author added");
     }
     
@@ -31,7 +33,7 @@ public class AuthorController : ControllerBase
     
 
     [HttpPost("delete-author")]
-    public async Task<IActionResult> DeleteAuthor([FromBody] AuthorChangeDeleteRequest request)
+    public async Task<IActionResult> DeleteAuthor([FromBody] AuthorFindDeleteRequest request)
     {
         if (_authorService.CheckAuthorExists(request))
         {
@@ -45,7 +47,7 @@ public class AuthorController : ControllerBase
     
 
     [HttpPost("update-author")]
-    public async Task<IActionResult> UpdateAuthor([FromBody] AuthorChangeDeleteRequest request)
+    public async Task<IActionResult> UpdateAuthor([FromBody] AuthorFindDeleteRequest request)
     {
         if (_authorService.CheckAuthorExists(request))
         {
@@ -58,7 +60,7 @@ public class AuthorController : ControllerBase
     
 
     [HttpGet("find-author")]
-    public async Task<IActionResult> FindAuthor ([FromQuery] AuthorChangeDeleteRequest request)
+    public async Task<IActionResult> FindAuthor ([FromQuery] AuthorFindDeleteRequest request)
     {
         if (_authorService.CheckAuthorExists(request))
         {

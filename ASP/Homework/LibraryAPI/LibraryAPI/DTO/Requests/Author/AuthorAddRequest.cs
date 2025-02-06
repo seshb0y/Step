@@ -3,4 +3,4 @@
 namespace LibraryAPI.DTO.Requests;
 
 public record AuthorAddRequest
-(string FullName, GenreRequest[] Genres, BookRequest[] Books);
+(string FullName, string GenreName, string Title, string PublicationDate, string Publisher);

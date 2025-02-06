@@ -14,11 +14,7 @@ public class AuthorsConfig : IEntityTypeConfiguration<Authors>
         builder.Property(x => x.FullName)
             .HasMaxLength(50)
             .IsRequired();
-        
-        builder.HasMany(x => x.Books)
-            .WithOne(x => x.Author)
-            .HasForeignKey(x => x.AuthorId)
-            .OnDelete(DeleteBehavior.Restrict);
+            
         
         //
         // builder.HasMany(x => x.Genres)

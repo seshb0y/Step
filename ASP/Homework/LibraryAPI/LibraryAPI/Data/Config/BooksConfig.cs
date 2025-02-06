@@ -18,10 +18,5 @@ public class BooksConfig : IEntityTypeConfiguration<Books>
         builder.Property(x => x.PublicationDate)
             .HasMaxLength(10)
             .IsRequired();
-        
-        builder.HasOne(x => x.Author)
-            .WithMany(x => x.Books)
-            .HasForeignKey(x => x.AuthorId)
-            .OnDelete(DeleteBehavior.Restrict);
     }
 }

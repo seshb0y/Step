@@ -6,12 +6,15 @@ namespace LibraryAPI.Services.Interface;
 public interface IAuthorService
 {
     public Task AddAuthorAsync(AuthorAddRequest request);
+    public Task AddBookToAuthorAsync(AuthorAddRequest request);
+    public Task AddGenreToAuthorAsync(AuthorAddRequest request);
+    public Task AddGenreToBookAsync(AuthorAddRequest request);
     
-    public Task DeleteAuthorAsync(AuthorChangeDeleteRequest request);
+    public Task DeleteAuthorAsync(AuthorFindDeleteRequest request);
 
-    public bool CheckAuthorExists(AuthorChangeDeleteRequest request);
+    public bool CheckAuthorExists(AuthorFindDeleteRequest request);
     
-    public Task UpdateAuthorAsync(AuthorChangeDeleteRequest request);
+    public Task UpdateAuthorAsync(AuthorUpdateRequest request);
     
-    public Task<Authors> FindAuthorAsync(AuthorChangeDeleteRequest request);
+    public Task<Authors> FindAuthorAsync(AuthorFindDeleteRequest request);
 }

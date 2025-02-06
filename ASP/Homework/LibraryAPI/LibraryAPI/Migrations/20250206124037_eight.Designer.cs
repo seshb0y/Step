@@ -4,6 +4,7 @@ using LibraryAPI.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LibraryAPI.Migrations
 {
     [DbContext(typeof(LibContext))]
-    partial class LibContextModelSnapshot : ModelSnapshot
+    [Migration("20250206124037_eight")]
+    partial class eight
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,49 +25,19 @@ namespace LibraryAPI.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("AuthorsBooks", b =>
+            modelBuilder.Entity("LibraryAPI.Data.Models.AuthorBook", b =>
                 {
                     b.Property<Guid>("AuthorId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("BooksBookId")
+                    b.Property<Guid>("BookId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("AuthorId", "BooksBookId");
+                    b.HasKey("AuthorId", "BookId");
 
-                    b.HasIndex("BooksBookId");
+                    b.HasIndex("BookId");
 
-                    b.ToTable("AuthorsBooks");
-                });
-
-            modelBuilder.Entity("AuthorsGenres", b =>
-                {
-                    b.Property<Guid>("AuthorsAuthorId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("GenresGenreId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("AuthorsAuthorId", "GenresGenreId");
-
-                    b.HasIndex("GenresGenreId");
-
-                    b.ToTable("AuthorsGenres");
-                });
-
-            modelBuilder.Entity("BooksGenres", b =>
-                {
-                    b.Property<Guid>("BooksBookId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("GenresGenreId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("BooksBookId", "GenresGenreId");
-
-                    b.HasIndex("GenresGenreId");
-
-                    b.ToTable("BooksGenres");
+                    b.ToTable("AuthorBooks", (string)null);
                 });
 
             modelBuilder.Entity("LibraryAPI.Data.Models.Authors", b =>
@@ -81,6 +54,21 @@ namespace LibraryAPI.Migrations
                     b.HasKey("AuthorId");
 
                     b.ToTable("Authors", (string)null);
+                });
+
+            modelBuilder.Entity("LibraryAPI.Data.Models.BookGenre", b =>
+                {
+                    b.Property<Guid>("BookId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("GenreId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("BookId", "GenreId");
+
+                    b.HasIndex("GenreId");
+
+                    b.ToTable("BookGenre", (string)null);
                 });
 
             modelBuilder.Entity("LibraryAPI.Data.Models.Books", b =>
@@ -108,6 +96,21 @@ namespace LibraryAPI.Migrations
                     b.ToTable("Books", (string)null);
                 });
 
+            modelBuilder.Entity("LibraryAPI.Data.Models.GenreAuthor", b =>
+                {
+                    b.Property<Guid>("GenreId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AuthorId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("GenreId", "AuthorId");
+
+                    b.HasIndex("AuthorId");
+
+                    b.ToTable("GenreAuthor", (string)null);
+                });
+
             modelBuilder.Entity("LibraryAPI.Data.Models.Genres", b =>
                 {
                     b.Property<Guid>("GenreId")
@@ -124,49 +127,82 @@ namespace LibraryAPI.Migrations
                     b.ToTable("Genres", (string)null);
                 });
 
-            modelBuilder.Entity("AuthorsBooks", b =>
+            modelBuilder.Entity("LibraryAPI.Data.Models.AuthorBook", b =>
                 {
-                    b.HasOne("LibraryAPI.Data.Models.Authors", null)
-                        .WithMany()
+                    b.HasOne("LibraryAPI.Data.Models.Authors", "Author")
+                        .WithMany("AuthorBooks")
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LibraryAPI.Data.Models.Books", null)
-                        .WithMany()
-                        .HasForeignKey("BooksBookId")
+                    b.HasOne("LibraryAPI.Data.Models.Books", "Book")
+                        .WithMany("AuthorBooks")
+                        .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Author");
+
+                    b.Navigation("Book");
                 });
 
-            modelBuilder.Entity("AuthorsGenres", b =>
+            modelBuilder.Entity("LibraryAPI.Data.Models.BookGenre", b =>
                 {
-                    b.HasOne("LibraryAPI.Data.Models.Authors", null)
-                        .WithMany()
-                        .HasForeignKey("AuthorsAuthorId")
+                    b.HasOne("LibraryAPI.Data.Models.Books", "Book")
+                        .WithMany("BookGenres")
+                        .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LibraryAPI.Data.Models.Genres", null)
-                        .WithMany()
-                        .HasForeignKey("GenresGenreId")
+                    b.HasOne("LibraryAPI.Data.Models.Genres", "Genre")
+                        .WithMany("BookGenres")
+                        .HasForeignKey("GenreId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Book");
+
+                    b.Navigation("Genre");
                 });
 
-            modelBuilder.Entity("BooksGenres", b =>
+            modelBuilder.Entity("LibraryAPI.Data.Models.GenreAuthor", b =>
                 {
-                    b.HasOne("LibraryAPI.Data.Models.Books", null)
-                        .WithMany()
-                        .HasForeignKey("BooksBookId")
+                    b.HasOne("LibraryAPI.Data.Models.Authors", "Author")
+                        .WithMany("GenreAuthor")
+                        .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LibraryAPI.Data.Models.Genres", null)
-                        .WithMany()
-                        .HasForeignKey("GenresGenreId")
+                    b.HasOne("LibraryAPI.Data.Models.Genres", "Genre")
+                        .WithMany("GenreAuthor")
+                        .HasForeignKey("GenreId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Author");
+
+                    b.Navigation("Genre");
+                });
+
+            modelBuilder.Entity("LibraryAPI.Data.Models.Authors", b =>
+                {
+                    b.Navigation("AuthorBooks");
+
+                    b.Navigation("GenreAuthor");
+                });
+
+            modelBuilder.Entity("LibraryAPI.Data.Models.Books", b =>
+                {
+                    b.Navigation("AuthorBooks");
+
+                    b.Navigation("BookGenres");
+                });
+
+            modelBuilder.Entity("LibraryAPI.Data.Models.Genres", b =>
+                {
+                    b.Navigation("BookGenres");
+
+                    b.Navigation("GenreAuthor");
                 });
 #pragma warning restore 612, 618
         }
