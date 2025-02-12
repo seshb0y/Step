@@ -1,14 +1,18 @@
-namespace ControllerFirst.Models;
+﻿using System;
+using System.Collections.Generic;
 
-public class UserRole
+namespace ControllerFirst.Data.Models;
+
+
+public  class UserRole
 {
-    public Guid Id { get; set; } = Guid.NewGuid();
-    
-    public Guid UserId { get; set; }
-    public User User { get; set; }
-    
-    public Guid RoleId { get; set; }
-    public Role Role { get; set; }
+    public int UserRoleId { get; set; }
+
+    public string UserNameRef { get; set; } 
+
+    public string RoleNameRef { get; set; } 
+
+    public  Role RoleNameRefNavigation { get; set; } 
+
+    public  User UserNameRefNavigation { get; set; } 
 }
-
-

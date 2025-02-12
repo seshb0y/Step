@@ -1,10 +1,11 @@
+﻿using System;
+using System.Collections.Generic;
 
-namespace ControllerFirst.Models;
+namespace ControllerFirst.Data.Models;
 
-public class Role
+
+public  class Role
 {
-    public Guid RoleId { get; set; } = Guid.NewGuid();
-    public string RoleName { get; set; }
-
-    public ICollection<UserRole> UserRoles { get; set; }
+    public string RoleName { get; set; } 
+    public ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
 }

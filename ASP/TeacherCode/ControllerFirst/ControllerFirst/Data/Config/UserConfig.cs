@@ -1,4 +1,5 @@
-using ControllerFirst.Models;
+using ControllerFirst.Data.Models;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -6,28 +7,21 @@ namespace ControllerFirst.Data.Config;
 
 public class UserConfig : IEntityTypeConfiguration<User>
 {
-    public void Configure(EntityTypeBuilder<User> builder)
+    public void Configure(EntityTypeBuilder<User> entity)
     {
-        builder.ToTable("Users");
-        builder.HasKey(x => x.Id); // primary key
+        entity.HasKey(e => e.UserName).HasName("PK__Users__66DCF95D7E0943AE");
 
-        builder.Property(x => x.Username)
+        entity.HasIndex(e => e.Email, "UQ__Users__AB6E61646FB653B8").IsUnique();
+
+        entity.Property(e => e.UserName)
             .HasMaxLength(50)
-            .IsRequired();
-
-        builder.Property(x => x.Password)
-            .IsRequired();
-
-        builder.Property(x => x.Email)
-            .IsRequired();
-
-
-        builder.HasIndex(x => x.Email)
-            .HasDatabaseName("IX_Users_Email")
-            .IsUnique();
-
-        builder.HasIndex(x => x.Username)
-            .HasDatabaseName("IX_Users_Username")
-            .IsUnique();
+            .HasColumnName("userName");
+        entity.Property(e => e.Email)
+            .HasMaxLength(50)
+            .HasColumnName("email");
+        entity.Property(e => e.IsEmailConfirmed)
+            .HasDefaultValue(false)
+            .HasColumnName("isEmailConfirmed");
+        entity.Property(e => e.Password).HasColumnName("password");
     }
 }

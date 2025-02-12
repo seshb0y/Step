@@ -2,7 +2,8 @@ using AutoMapper;
 using BCrypt.Net;
 using ControllerFirst.Contexts;
 using ControllerFirst.DTO.Requests;
-using ControllerFirst.Models;
+using ControllerFirst.Data.Models;
+
 using ControllerFirst.Services.Interfaces;
 using static BCrypt.Net.BCrypt;
 

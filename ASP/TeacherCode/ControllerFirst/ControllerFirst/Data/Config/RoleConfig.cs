@@ -1,4 +1,4 @@
-using ControllerFirst.Models;
+using ControllerFirst.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -6,17 +6,13 @@ namespace ControllerFirst.Data.Config;
 
 public class RoleConfig : IEntityTypeConfiguration<Role>
 {
-    public void Configure(EntityTypeBuilder<Role> builder)
+    public void Configure(EntityTypeBuilder<Role> entity)
     {
-        builder.ToTable("Roles");
-        builder.HasKey(x => x.RoleId); // primary key
+      
+            entity.HasKey(e => e.RoleName).HasName("PK__Roles__B19478603A776CCC");
 
-        builder.Property(x => x.RoleName)
-            .HasMaxLength(50)
-            .IsRequired();
-
-        builder.HasIndex(x => x.RoleName)
-            .HasDatabaseName("IX_Roles_RoleName")
-            .IsUnique();
+            entity.Property(e => e.RoleName)
+                .HasMaxLength(50)
+                .HasColumnName("roleName");
     }
 }

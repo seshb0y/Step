@@ -1,4 +1,5 @@
-using ControllerFirst.Models;
+using ControllerFirst.Data.Models;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace ControllerFirst.Contexts;

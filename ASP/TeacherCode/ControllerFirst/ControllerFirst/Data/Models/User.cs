@@ -1,14 +1,17 @@
+﻿using System;
+using System.Collections.Generic;
 
-namespace ControllerFirst.Models;
+namespace ControllerFirst.Data.Models;
 
 public class User
 {
-    public Guid Id { get; set; } = Guid.NewGuid();
-    public string Username { get; set; } 
-    public string Password { get; set; }
-    
-    public string Email { get; set; }
-    public bool IsVerified { get; set; } 
+    public string UserName { get; set; } 
 
-    public ICollection<UserRole> UserRoles { get; set; }
+    public string Password { get; set; } 
+
+    public string Email { get; set; } 
+
+    public bool IsEmailConfirmed { get; set; }
+
+    public ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
 }

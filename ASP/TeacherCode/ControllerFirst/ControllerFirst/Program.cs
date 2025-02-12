@@ -3,19 +3,22 @@ using ControllerFirst.Contexts;
 using ControllerFirst.Data.Mapping;
 using ControllerFirst.Data.Validators;
 using ControllerFirst.DTO.Requests;
-using ControllerFirst.Models;
+
 using ControllerFirst.Services.Classes;
 using ControllerFirst.Services.Interfaces;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
+
 using Microsoft.IdentityModel.Tokens;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
+
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddOpenApi();
+
 
 builder.Services.AddTransient<AuthContext>();
 
@@ -47,15 +50,7 @@ builder.Services.AddTransient<ITokenService, TokenService>();
 builder.Services.AddTransient<IValidator<RegisterRequest>,RegisterValidator>();
 
 
-
-
 var app = builder.Build();
-
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
 
 app.UseAuthentication();
 // app.UseAuthorization(); // Для будушего использования
@@ -63,6 +58,9 @@ app.UseAuthentication();
 app.UseHttpsRedirection();
 
 app.MapControllers();
+app.MapOpenApi();
+app.MapScalarApiReference();
+
 
 app.Run();
 

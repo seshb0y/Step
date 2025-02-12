@@ -1,6 +1,7 @@
 using AutoMapper;
 using ControllerFirst.DTO.Requests;
-using ControllerFirst.Models;
+using ControllerFirst.Data.Models;
+
 
 namespace ControllerFirst.Data.Mapping;
 
@@ -9,7 +10,7 @@ public class UserProfile : Profile
     public UserProfile()
     {
         CreateMap<RegisterRequest, User>()
-            .ForMember(dest => dest.Username, opt =>
+            .ForMember(dest => dest.UserName, opt =>
                 opt.MapFrom(src => src.Username))
             .ForMember(dest => dest.Email,
                 opt =>

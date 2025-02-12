@@ -1,5 +1,6 @@
 using ControllerFirst.DTO.Requests;
-using ControllerFirst.Models;
+using ControllerFirst.Data.Models;
+
 using ControllerFirst.Shared;
 using FluentValidation;
 

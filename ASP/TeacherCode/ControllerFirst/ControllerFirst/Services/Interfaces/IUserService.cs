@@ -1,5 +1,5 @@
 using ControllerFirst.DTO.Requests;
-using ControllerFirst.Models;
+using ControllerFirst.Data.Models;
 
 namespace ControllerFirst.Services.Interfaces;
 
