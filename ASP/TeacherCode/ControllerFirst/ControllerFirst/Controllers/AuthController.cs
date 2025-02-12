@@ -1,4 +1,9 @@
+using ControllerFirst.Data.Validators;
+using ControllerFirst.DTO.Requests;
+using ControllerFirst.Services.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Client;
 
 namespace ControllerFirst.Controllers;
 
@@ -6,20 +11,40 @@ namespace ControllerFirst.Controllers;
 [Route("api/[controller]")]
 public class AuthController : ControllerBase
 {
-    [HttpPost("Login")]
-    public IActionResult Login()
+    private readonly IUserService _userService;
+
+    public AuthController(IUserService userService)
     {
-        return Ok("Login");
+        _userService = userService;
+    }
+
+    [HttpPost("Login")]
+    public async  Task<IActionResult> Login([FromBody] LoginRequest request)
+    {
+        var token = await _userService.LoginAsync(request);
+        
+        return Ok(token);
     }
 
     [HttpPost("Register")]
-    public IActionResult Register()
-    {
+    public async Task<IActionResult> Register([FromBody] RegisterRequest request)
+    {   
+        var validator = new RegisterValidator();
+        var result = validator.Validate(request);
+        
+        if (!result.IsValid)
+        {
+            return BadRequest(result.Errors);
+        }
+
+        await _userService.RegisterAsync(request);
+        
         return Ok("Register");
     }
     
+    
     [HttpPost("Logout")]
-    public IActionResult Logout()
+    public async Task<IActionResult> Logout()
     {
         return Ok("Logout");
     }
