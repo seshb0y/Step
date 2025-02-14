@@ -1,6 +1,7 @@
 using ControllerFirst.Data.Models;
 using ControllerFirst.Data.Validators;
 using ControllerFirst.DTO.Requests;
+using ControllerFirst.DTO.Responses;
 using ControllerFirst.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -10,46 +11,31 @@ using Microsoft.Identity.Client;
 namespace ControllerFirst.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/v1/[controller]")]
 public class AuthController : ControllerBase
 {
-    private readonly IUserService _userService;
+    private readonly IAuthService _authService;
 
-    public AuthController(IUserService userService)
+    public AuthController(IAuthService authService)
     {
-        _userService = userService;
+        _authService = authService;
     }
 
     [HttpPost("Login")]
     public async  Task<IActionResult> Login([FromBody] LoginRequest request)
     {
-        var token = await _userService.LoginAsync(request);
+        var response = await _authService.LoginAsync(request);
         
-        return Ok(token);
+        return Ok(new Result<LoginResponse>(true, response, "Successfully logged in"));
     }
 
-    [HttpPost("Register")]
-    public async Task<IActionResult> Register([FromBody] RegisterRequest request)
-    {   
-        var validator = new RegisterValidator();
-        var result = validator.Validate(request);
-        
-        if (!result.IsValid)
-        {
-            return BadRequest(result.Errors);
-        }
-
-        await _userService.RegisterAsync(request);
-        
-        return Ok("Register");
-    }
-    
-    [HttpPost]
-    [Route("Test")]
-    [Authorize(Policy = "AdminPolicy")]
-    public async Task<IActionResult> Test()
+    [HttpPost("Refresh")]
+    public async Task<IActionResult> Refresh([FromBody] RefreshTokenRequest request)
     {
-        return Ok("Test");
+        var newToken = await _authService.RefreshTokenAsync(request);
+        
+        return Ok(new Result<RefreshTokenResponse>(true, newToken, "Successfully refreshed token"));
+        
     }
     
     [HttpPost("Logout")]

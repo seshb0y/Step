@@ -23,19 +23,19 @@ public class TokenService : ITokenService
         _context = context;
     }
 
-    public async Task<string> CreateTokenAsync(LoginRequest request)
+    public async Task<string> CreateTokenAsync(string username)
     {
         // Создаю токен в payload которого будет username
         
         // Claim - это пара ключ-значение, которая содержит информацию о пользователе
 
-        var userRoles = _context.UserRoles.Where(u => u.UserNameRef == request.username)
+        var userRoles = _context.UserRoles.Where(u => u.UserNameRef == username)
             .Select(u => new { Role = u.RoleNameRef })
             .AsNoTracking();
         
         var claims = new List<Claim>
         {
-            new Claim(ClaimTypes.Name, request.username),
+            new Claim(ClaimTypes.Name, username),
         };
 
         foreach (var role in userRoles)

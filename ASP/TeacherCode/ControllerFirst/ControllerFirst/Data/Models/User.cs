@@ -13,5 +13,9 @@ public class User
 
     public bool IsEmailConfirmed { get; set; }
 
+    public Guid RefreshToken { get; set; }
+
+    public DateTime RefreshTokenExpiration { get; set; } = DateTime.Now.AddDays(7);
+
     public ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
 }

@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using System.Text;
 using ControllerFirst.Contexts;
 using ControllerFirst.Data.Mapping;
@@ -8,7 +9,7 @@ using ControllerFirst.Services.Classes;
 using ControllerFirst.Services.Interfaces;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
 
@@ -43,10 +44,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("AdminPolicy", policy =>
-        policy.RequireRole("AppAdmin"));
+    {
+        policy.RequireRole("AppAdmin");
 
-    options.AddPolicy("UserPolicy", policy =>
-        policy.RequireRole("AppUser", "AppAdmin"));
+        options.AddPolicy("UserPolicy", policy =>
+            policy.RequireRole("AppUser", "AppAdmin"));
+    });
 });
 
 builder.Services.AddAutoMapper(ops =>
@@ -54,9 +57,15 @@ builder.Services.AddAutoMapper(ops =>
     ops.AddProfile<UserProfile>();
 });
 
-builder.Services.AddScoped<IUserService, UserService>(); // IUserService a = new UserService();
-builder.Services.AddScoped<ITokenService, TokenService>(); 
+builder.Services.AddDbContext<AuthContext>(ops =>
+{
+    ops.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
+});
+
 builder.Services.AddScoped<IValidator<RegisterRequest>,RegisterValidator>();
+builder.Services.AddScoped<IAuthService, AuthService>(); // IAuthService a = new AuthService();
+builder.Services.AddScoped<ITokenService, TokenService>(); 
+builder.Services.AddScoped<IAccountService, AccountService>(); 
 
 var app = builder.Build();
 
@@ -66,9 +75,8 @@ app.UseAuthorization(); // Подключаю авторизацию
 app.UseHttpsRedirection();
 
 app.MapControllers();
-app.MapScalarApiReference();
 app.MapOpenApi();
-
+app.MapScalarApiReference();
 
 app.Run();
 

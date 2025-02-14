@@ -22,6 +22,19 @@ public class UserConfig : IEntityTypeConfiguration<User>
         entity.Property(e => e.IsEmailConfirmed)
             .HasDefaultValue(false)
             .HasColumnName("isEmailConfirmed");
+        
+        entity.Property(e => e.RefreshToken)
+            .HasColumnName("refreshToken");
         entity.Property(e => e.Password).HasColumnName("password");
+
+        entity.Property(e => e.RefreshTokenExpiration)
+            .HasColumnName("refreshTokenExpiration")
+            .IsRequired(true);
+
+        entity.HasIndex(e => e.RefreshToken)
+            .IsUnique()
+            .HasDatabaseName("UQ_RefreshToken")
+            
+            ;
     }
 }
