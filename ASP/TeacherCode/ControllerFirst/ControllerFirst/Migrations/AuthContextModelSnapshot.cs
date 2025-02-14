@@ -17,112 +17,111 @@ namespace ControllerFirst.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.12")
+                .HasAnnotation("ProductVersion", "9.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("ControllerFirst.Models.Role", b =>
+            modelBuilder.Entity("ControllerFirst.Data.Models.Role", b =>
                 {
-                    b.Property<Guid>("RoleId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("RoleName")
-                        .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("roleName");
 
-                    b.HasKey("RoleId");
+                    b.HasKey("RoleName")
+                        .HasName("PK__Roles__B19478603A776CCC");
 
-                    b.HasIndex("RoleName")
-                        .IsUnique()
-                        .HasDatabaseName("IX_Roles_RoleName");
-
-                    b.ToTable("Roles", (string)null);
+                    b.ToTable("Roles");
                 });
 
-            modelBuilder.Entity("ControllerFirst.Models.User", b =>
+            modelBuilder.Entity("ControllerFirst.Data.Models.User", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("UserName")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("userName");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("email");
 
-                    b.Property<bool>("IsVerified")
-                        .HasColumnType("bit");
+                    b.Property<bool>("IsEmailConfirmed")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false)
+                        .HasColumnName("isEmailConfirmed");
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("password");
 
-                    b.Property<string>("Username")
+                    b.HasKey("UserName")
+                        .HasName("PK__Users__66DCF95D7E0943AE");
+
+                    b.HasIndex(new[] { "Email" }, "UQ__Users__AB6E61646FB653B8")
+                        .IsUnique();
+
+                    b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("ControllerFirst.Data.Models.UserRole", b =>
+                {
+                    b.Property<Guid>("UserRoleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("userRoleId");
+
+                    b.Property<string>("RoleNameRef")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("roleNameRef");
 
-                    b.HasKey("Id");
+                    b.Property<string>("UserNameRef")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("userNameRef");
 
-                    b.HasIndex("Email")
-                        .IsUnique()
-                        .HasDatabaseName("IX_Users_Email");
+                    b.HasKey("UserRoleId")
+                        .HasName("PK__UserRole__CD3149CCDE4D7241");
 
-                    b.HasIndex("Username")
-                        .IsUnique()
-                        .HasDatabaseName("IX_Users_Username");
+                    b.HasIndex("RoleNameRef");
 
-                    b.ToTable("Users", (string)null);
+                    b.HasIndex("UserNameRef");
+
+                    b.ToTable("UserRoles");
                 });
 
-            modelBuilder.Entity("ControllerFirst.Models.UserRole", b =>
+            modelBuilder.Entity("ControllerFirst.Data.Models.UserRole", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.HasOne("ControllerFirst.Data.Models.Role", "RoleNameRefNavigation")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("RoleNameRef")
+                        .IsRequired()
+                        .HasConstraintName("FK__UserRoles__roleN__2B3F6F97");
 
-                    b.Property<Guid>("RoleId")
-                        .HasColumnType("uniqueidentifier");
+                    b.HasOne("ControllerFirst.Data.Models.User", "UserNameRefNavigation")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("UserNameRef")
+                        .IsRequired()
+                        .HasConstraintName("FK__UserRoles__userN__2A4B4B5E");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Navigation("RoleNameRefNavigation");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("RoleId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserRoles", (string)null);
+                    b.Navigation("UserNameRefNavigation");
                 });
 
-            modelBuilder.Entity("ControllerFirst.Models.UserRole", b =>
-                {
-                    b.HasOne("ControllerFirst.Models.Role", "Role")
-                        .WithMany("UserRoles")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ControllerFirst.Models.User", "User")
-                        .WithMany("UserRoles")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Role");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("ControllerFirst.Models.Role", b =>
+            modelBuilder.Entity("ControllerFirst.Data.Models.Role", b =>
                 {
                     b.Navigation("UserRoles");
                 });
 
-            modelBuilder.Entity("ControllerFirst.Models.User", b =>
+            modelBuilder.Entity("ControllerFirst.Data.Models.User", b =>
                 {
                     b.Navigation("UserRoles");
                 });

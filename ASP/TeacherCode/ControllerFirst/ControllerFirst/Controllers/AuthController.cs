@@ -1,6 +1,8 @@
+using ControllerFirst.Data.Models;
 using ControllerFirst.Data.Validators;
 using ControllerFirst.DTO.Requests;
 using ControllerFirst.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Client;
@@ -42,6 +44,13 @@ public class AuthController : ControllerBase
         return Ok("Register");
     }
     
+    [HttpPost]
+    [Route("Test")]
+    [Authorize(Policy = "AdminPolicy")]
+    public async Task<IActionResult> Test()
+    {
+        return Ok("Test");
+    }
     
     [HttpPost("Logout")]
     public async Task<IActionResult> Logout()

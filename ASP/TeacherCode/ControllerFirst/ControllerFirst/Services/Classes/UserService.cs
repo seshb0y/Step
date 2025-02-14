@@ -5,6 +5,7 @@ using ControllerFirst.DTO.Requests;
 using ControllerFirst.Data.Models;
 
 using ControllerFirst.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using static BCrypt.Net.BCrypt;
 
 namespace ControllerFirst.Services.Classes;
@@ -31,6 +32,14 @@ public class UserService : IUserService
         await _context.Users.AddAsync(user);
         
         await _context.SaveChangesAsync();
+        
+        await _context.UserRoles.AddAsync(new UserRole
+        {
+            UserNameRef = user.UserName,
+            RoleNameRef = "AppUser"
+        });
+        
+        await _context.SaveChangesAsync();
     }
     
     public async Task<string> LoginAsync(LoginRequest request)
@@ -39,6 +48,6 @@ public class UserService : IUserService
 
         return token;
     }
-    
-    
+
+
 }

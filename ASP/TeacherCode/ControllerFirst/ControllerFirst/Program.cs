@@ -40,20 +40,28 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminPolicy", policy =>
+        policy.RequireRole("AppAdmin"));
+
+    options.AddPolicy("UserPolicy", policy =>
+        policy.RequireRole("AppUser", "AppAdmin"));
+});
+
 builder.Services.AddAutoMapper(ops =>
 {
     ops.AddProfile<UserProfile>();
 });
 
-builder.Services.AddTransient<IUserService, UserService>(); // IUserService a = new UserService();
-builder.Services.AddTransient<ITokenService, TokenService>(); 
-builder.Services.AddTransient<IValidator<RegisterRequest>,RegisterValidator>();
-
+builder.Services.AddScoped<IUserService, UserService>(); // IUserService a = new UserService();
+builder.Services.AddScoped<ITokenService, TokenService>(); 
+builder.Services.AddScoped<IValidator<RegisterRequest>,RegisterValidator>();
 
 var app = builder.Build();
 
 app.UseAuthentication();
-// app.UseAuthorization(); // Для будушего использования
+app.UseAuthorization(); // Подключаю авторизацию
 
 app.UseHttpsRedirection();
 

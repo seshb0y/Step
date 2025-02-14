@@ -6,7 +6,7 @@ namespace ControllerFirst.Data.Models;
 
 public  class UserRole
 {
-    public int UserRoleId { get; set; }
+    public Guid UserRoleId { get; set; } = new Guid();
 
     public string UserNameRef { get; set; } 
 
