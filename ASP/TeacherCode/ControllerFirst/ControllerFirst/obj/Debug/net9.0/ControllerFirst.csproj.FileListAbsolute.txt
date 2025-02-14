@@ -169,3 +169,4 @@ C:\Users\Batyr_lg06\Desktop\repository\Step\ASP\TeacherCode\ControllerFirst\Cont
 C:\Users\Batyr_lg06\Desktop\repository\Step\ASP\TeacherCode\ControllerFirst\ControllerFirst\obj\Debug\net9.0\ControllerFirst.pdb
 C:\Users\Batyr_lg06\Desktop\repository\Step\ASP\TeacherCode\ControllerFirst\ControllerFirst\obj\Debug\net9.0\ControllerFirst.genruntimeconfig.cache
 C:\Users\Batyr_lg06\Desktop\repository\Step\ASP\TeacherCode\ControllerFirst\ControllerFirst\obj\Debug\net9.0\ref\ControllerFirst.dll
+C:\Users\Batyr_lg06\Desktop\repository\Step\ASP\TeacherCode\ControllerFirst\ControllerFirst\bin\Debug\net9.0\appsettings.json

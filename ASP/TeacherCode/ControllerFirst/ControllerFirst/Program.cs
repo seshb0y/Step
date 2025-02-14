@@ -66,8 +66,8 @@ app.UseAuthorization(); // Подключаю авторизацию
 app.UseHttpsRedirection();
 
 app.MapControllers();
-app.MapOpenApi();
 app.MapScalarApiReference();
+app.MapOpenApi();
 
 
 app.Run();
