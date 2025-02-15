@@ -1,6 +1,7 @@
 ﻿using LibraryAPI.Data.Models;
 using LibraryAPI.DTO.Requests;
 using LibraryAPI.Services.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryAPI.Controllers;
@@ -20,6 +21,7 @@ public class AuthorController : ControllerBase
     
     
     [HttpPost("add-author")]
+    [Authorize(Policy = "AdminPolicy")]
     public async Task<IActionResult> AddAuthor([FromBody] AuthorAddRequest request)
     {
         await _authorService.AddAuthorAsync(request);
@@ -31,8 +33,9 @@ public class AuthorController : ControllerBase
     
     
     
-
+    
     [HttpPost("delete-author")]
+    [Authorize(Policy = "AdminPolicy")]
     public async Task<IActionResult> DeleteAuthor([FromBody] AuthorFindDeleteRequest request)
     {
         if (_authorService.CheckAuthorExists(request))
@@ -47,6 +50,7 @@ public class AuthorController : ControllerBase
     
 
     [HttpPost("update-author")]
+    [Authorize(Policy = "AdminPolicy")]
     public async Task<IActionResult> UpdateAuthor([FromBody] AuthorUpdateRequest request,[FromQuery] AuthorFindDeleteRequest FindRequest)
     {
         if (_authorService.CheckAuthorExists(FindRequest))
@@ -60,6 +64,7 @@ public class AuthorController : ControllerBase
     
 
     [HttpGet("find-author")]
+    [Authorize(Policy = "UserPolicy")]
     public async Task<IActionResult> FindAuthor ([FromQuery] AuthorFindDeleteRequest request)
     {
         if (_authorService.CheckAuthorExists(request))

@@ -1,24 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Batyr_lg06\\Desktop\\repository\\Step\\ASP\\Homework\\LibraryAPI\\LibraryAPI\\LibraryAPI.csproj": {}
+    "D:\\users_C\\OneDrive\\Рабочий стол\\desctop\\NewStepRepository09.01.2024\\Step\\ASP\\Homework\\LibraryAPI\\LibraryAPI\\LibraryAPI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Batyr_lg06\\Desktop\\repository\\Step\\ASP\\Homework\\LibraryAPI\\LibraryAPI\\LibraryAPI.csproj": {
+    "D:\\users_C\\OneDrive\\Рабочий стол\\desctop\\NewStepRepository09.01.2024\\Step\\ASP\\Homework\\LibraryAPI\\LibraryAPI\\LibraryAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Batyr_lg06\\Desktop\\repository\\Step\\ASP\\Homework\\LibraryAPI\\LibraryAPI\\LibraryAPI.csproj",
+        "projectUniqueName": "D:\\users_C\\OneDrive\\Рабочий стол\\desctop\\NewStepRepository09.01.2024\\Step\\ASP\\Homework\\LibraryAPI\\LibraryAPI\\LibraryAPI.csproj",
         "projectName": "LibraryAPI",
-        "projectPath": "C:\\Users\\Batyr_lg06\\Desktop\\repository\\Step\\ASP\\Homework\\LibraryAPI\\LibraryAPI\\LibraryAPI.csproj",
-        "packagesPath": "C:\\Users\\Batyr_lg06\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Batyr_lg06\\Desktop\\repository\\Step\\ASP\\Homework\\LibraryAPI\\LibraryAPI\\obj\\",
+        "projectPath": "D:\\users_C\\OneDrive\\Рабочий стол\\desctop\\NewStepRepository09.01.2024\\Step\\ASP\\Homework\\LibraryAPI\\LibraryAPI\\LibraryAPI.csproj",
+        "packagesPath": "C:\\Users\\seshb\\.nuget\\packages\\",
+        "outputPath": "D:\\users_C\\OneDrive\\Рабочий стол\\desctop\\NewStepRepository09.01.2024\\Step\\ASP\\Homework\\LibraryAPI\\LibraryAPI\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Batyr_lg06\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\seshb\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -66,6 +62,10 @@
               "target": "Package",
               "version": "[12.0.0-preview1, )"
             },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[8.0.12, )"
+            },
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[8.0.12, )"
@@ -90,6 +90,10 @@
               "target": "Package",
               "version": "[8.0.12, )"
             },
+            "Microsoft.IdentityModel.JsonWebTokens": {
+              "target": "Package",
+              "version": "[8.4.0, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.6.2, )"
@@ -97,6 +101,10 @@
             "Swashbuckle.AspNetCore.Swagger": {
               "target": "Package",
               "version": "[6.6.2, )"
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[8.4.0, )"
             }
           },
           "imports": [
@@ -118,7 +126,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.405/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

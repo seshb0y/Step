@@ -147,3 +147,5 @@ D:\users_C\OneDrive\Рабочий стол\desctop\NewStepRepository09.01.2024\
 D:\users_C\OneDrive\Рабочий стол\desctop\NewStepRepository09.01.2024\Step\ASP\Homework\LibraryAPI\LibraryAPI\obj\Debug\net8.0\LibraryAPI.pdb
 D:\users_C\OneDrive\Рабочий стол\desctop\NewStepRepository09.01.2024\Step\ASP\Homework\LibraryAPI\LibraryAPI\obj\Debug\net8.0\LibraryAPI.genruntimeconfig.cache
 D:\users_C\OneDrive\Рабочий стол\desctop\NewStepRepository09.01.2024\Step\ASP\Homework\LibraryAPI\LibraryAPI\obj\Debug\net8.0\ref\LibraryAPI.dll
+D:\users_C\OneDrive\Рабочий стол\desctop\NewStepRepository09.01.2024\Step\ASP\Homework\LibraryAPI\LibraryAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\users_C\OneDrive\Рабочий стол\desctop\NewStepRepository09.01.2024\Step\ASP\Homework\LibraryAPI\LibraryAPI\bin\Debug\net8.0\Microsoft.Bcl.Memory.dll

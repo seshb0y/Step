@@ -1,4 +1,133 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PropertiesComponent">{}</component>
+  <component name="ChangeListManager">
+    <list default="true" id="854a1918-51ef-419e-aeea-c528d8de6885" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../../Lessons/Lesson1-ControllerFirst/.idea/.idea.Lesson1-ControllerFirst/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lessons/Lesson1-ControllerFirst/.idea/.idea.Lesson1-ControllerFirst/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lessons/Lesson1-ControllerFirst/.idea/.idea.Lesson1-ControllerFirst/.idea/indexLayout.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lessons/Lesson1-ControllerFirst/.idea/.idea.Lesson1-ControllerFirst/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lessons/Lesson1-ControllerFirst/.vs/Lesson1-ControllerFirst/FileContentIndex/16d8a47e-8f55-4a9c-bd99-b26ad964d7fd.vsidx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lessons/Lesson1-ControllerFirst/.vs/Lesson1-ControllerFirst/FileContentIndex/496f981e-132f-4c47-9962-fb233b4ab250.vsidx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lessons/Lesson1-ControllerFirst/.vs/Lesson1-ControllerFirst/FileContentIndex/f29cc91b-0227-4824-b4cd-6bff98a8da22.vsidx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lessons/Lesson1-ControllerFirst/.vs/Lesson1-ControllerFirst/v17/.futdcache.v2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lessons/Lesson1-ControllerFirst/.vs/Lesson1-ControllerFirst/v17/.suo" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lessons/Lesson1-ControllerFirst/.vs/Lesson1-ControllerFirst/v17/.wsuo" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lessons/Lesson1-ControllerFirst/.vs/Lesson1-ControllerFirst/v17/DocumentLayout.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lessons/Lesson1-ControllerFirst/.vs/ProjectEvaluation/lesson1-controllerfirst.metadata.v8.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lessons/Lesson1-ControllerFirst/.vs/ProjectEvaluation/lesson1-controllerfirst.projects.v8.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lessons/Lesson1-ControllerFirst/.vs/ProjectEvaluation/lesson1-controllerfirst.strings.v8.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lessons/Lesson1-ControllerFirst/.vs/ProjectSettings.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lessons/Lesson1-ControllerFirst/.vs/VSWorkspaceState.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lessons/Lesson1-ControllerFirst/.vs/slnx.sqlite" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lessons/Lesson1-ControllerFirst/Lesson1-ControllerFirst.sln" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lessons/Lesson1-ControllerFirst/Lesson1-ControllerFirst/Controllers/AuthController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lessons/Lesson1-ControllerFirst/Lesson1-ControllerFirst/Data/Contexts/AuthContext.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lessons/Lesson1-ControllerFirst/Lesson1-ControllerFirst/Data/Models/Users.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lessons/Lesson1-ControllerFirst/Lesson1-ControllerFirst/Lesson1-ControllerFirst.csproj" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lessons/Lesson1-ControllerFirst/Lesson1-ControllerFirst/Lesson1-ControllerFirst.csproj.user" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lessons/Lesson1-ControllerFirst/Lesson1-ControllerFirst/Lesson1-ControllerFirst.http" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lessons/Lesson1-ControllerFirst/Lesson1-ControllerFirst/Program.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lessons/Lesson1-ControllerFirst/Lesson1-ControllerFirst/Properties/launchSettings.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lessons/Lesson1-ControllerFirst/Lesson1-ControllerFirst/appsettings.Development.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lessons/Lesson1-ControllerFirst/Lesson1-ControllerFirst/appsettings.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lessons/Lesson1-ControllerFirst/Lesson1-ControllerFirst/obj/Debug/net8.0/.NETCoreApp,Version=v8.0.AssemblyAttributes.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lessons/Lesson1-ControllerFirst/Lesson1-ControllerFirst/obj/Debug/net8.0/Lesson1-ControllerFirst.AssemblyInfo.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lessons/Lesson1-ControllerFirst/Lesson1-ControllerFirst/obj/Debug/net8.0/Lesson1-ControllerFirst.AssemblyInfoInputs.cache" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lessons/Lesson1-ControllerFirst/Lesson1-ControllerFirst/obj/Debug/net8.0/Lesson1-ControllerFirst.GeneratedMSBuildEditorConfig.editorconfig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lessons/Lesson1-ControllerFirst/Lesson1-ControllerFirst/obj/Debug/net8.0/Lesson1-ControllerFirst.GlobalUsings.g.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lessons/Lesson1-ControllerFirst/Lesson1-ControllerFirst/obj/Debug/net8.0/Lesson1-ControllerFirst.assets.cache" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lessons/Lesson1-ControllerFirst/Lesson1-ControllerFirst/obj/Debug/net8.0/Lesson1-ControllerFirst.csproj.AssemblyReference.cache" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lessons/Lesson1-ControllerFirst/Lesson1-ControllerFirst/obj/Lesson1-ControllerFirst.csproj.nuget.dgspec.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lessons/Lesson1-ControllerFirst/Lesson1-ControllerFirst/obj/Lesson1-ControllerFirst.csproj.nuget.g.props" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lessons/Lesson1-ControllerFirst/Lesson1-ControllerFirst/obj/Lesson1-ControllerFirst.csproj.nuget.g.targets" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lessons/Lesson1-ControllerFirst/Lesson1-ControllerFirst/obj/Release/net8.0/.NETCoreApp,Version=v8.0.AssemblyAttributes.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lessons/Lesson1-ControllerFirst/Lesson1-ControllerFirst/obj/Release/net8.0/Lesson1-ControllerFirst.AssemblyInfo.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lessons/Lesson1-ControllerFirst/Lesson1-ControllerFirst/obj/Release/net8.0/Lesson1-ControllerFirst.AssemblyInfoInputs.cache" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lessons/Lesson1-ControllerFirst/Lesson1-ControllerFirst/obj/Release/net8.0/Lesson1-ControllerFirst.GeneratedMSBuildEditorConfig.editorconfig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lessons/Lesson1-ControllerFirst/Lesson1-ControllerFirst/obj/Release/net8.0/Lesson1-ControllerFirst.GlobalUsings.g.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lessons/Lesson1-ControllerFirst/Lesson1-ControllerFirst/obj/Release/net8.0/Lesson1-ControllerFirst.assets.cache" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lessons/Lesson1-ControllerFirst/Lesson1-ControllerFirst/obj/project.assets.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lessons/Lesson1-ControllerFirst/Lesson1-ControllerFirst/obj/project.nuget.cache" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lessons/Lesson1-ControllerFirst/Lesson1-ControllerFirst/obj/project.packagespec.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lessons/Lesson1-ControllerFirst/Lesson1-ControllerFirst/obj/rider.project.model.nuget.info" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lessons/Lesson1-ControllerFirst/Lesson1-ControllerFirst/obj/rider.project.restore.info" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Lessons/Lesson1-ControllerFirst/global.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ApiFirst/ApiFirst.csproj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ApiFirst/ApiFirst.http" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ApiFirst/ApiFirst.sln" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ApiFirst/Program.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ApiFirst/Properties/launchSettings.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ApiFirst/appsettings.Development.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ApiFirst/appsettings.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ApiFirst/global.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../MVCWebServer/WebServer.sln" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../MVCWebServer/WebServer/ClassDiagram1.cd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../MVCWebServer/WebServer/Controllers/Controller.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../MVCWebServer/WebServer/Controllers/HomeController.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../MVCWebServer/WebServer/Controllers/InfoController.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../MVCWebServer/WebServer/Middlewares/Classes/LoggerMiddleware.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../MVCWebServer/WebServer/Middlewares/Classes/MVCMiddleware.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../MVCWebServer/WebServer/Middlewares/Classes/MiddlewareBuilder.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../MVCWebServer/WebServer/Middlewares/Classes/StaticFilesMiddleware.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../MVCWebServer/WebServer/Middlewares/Delegates/HttpHandler.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../MVCWebServer/WebServer/Middlewares/Interfaces/IMiddleware.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../MVCWebServer/WebServer/Program.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../MVCWebServer/WebServer/Services/Classes/JsonResult.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../MVCWebServer/WebServer/Services/Classes/LoggerService.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../MVCWebServer/WebServer/Services/Classes/MyHttpResult.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../MVCWebServer/WebServer/Services/Classes/Startup.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../MVCWebServer/WebServer/Services/Classes/ViewResult.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../MVCWebServer/WebServer/Services/Classes/WebHost.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../MVCWebServer/WebServer/Services/Interfaces/IActionResult.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../MVCWebServer/WebServer/Services/Interfaces/IStartup.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../MVCWebServer/WebServer/Views/Index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../MVCWebServer/WebServer/Views/info.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../MVCWebServer/WebServer/WebServer.csproj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../MVCWebServer/WebServer/wwwroot/favicon.ico" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Конспекты/Intro.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Конспекты/Lesson2/Lesson2.md" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": 3
+}]]></component>
+  <component name="ProjectId" id="2t2zCA79otjN0rMyCwqspmS9Mmk" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "ASP",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="854a1918-51ef-419e-aeea-c528d8de6885" name="Changes" comment="" />
+      <created>1739564826706</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1739564826706</updated>
+      <workItem from="1739564828212" duration="10000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
 </project>
