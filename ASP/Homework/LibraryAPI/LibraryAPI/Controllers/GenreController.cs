@@ -1,5 +1,6 @@
 ﻿using LibraryAPI.DTO.Requests;
 using LibraryAPI.Services.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryAPI.Controllers;
@@ -16,6 +17,7 @@ public class GenreController : ControllerBase
     }
     
     [HttpPost("add-genre")]
+    [Authorize(Policy = "AdminPolicy")]
     public async Task<IActionResult> AddGenre([FromBody] AddGenreRequest request)
     {
         await _genreService.AddGenreAsync(request);
@@ -30,6 +32,7 @@ public class GenreController : ControllerBase
     
 
     [HttpPost("delete-genre")]
+    [Authorize(Policy = "AdminPolicy")]
     public async Task<IActionResult> DeleteGenre([FromBody] FindDeleteGenreRequest request)
     {
         if (_genreService.CheckGenreExists(request))
@@ -43,6 +46,7 @@ public class GenreController : ControllerBase
     
     
     [HttpPost("update-genre")]
+    [Authorize(Policy = "AdminPolicy")]
     public async Task<IActionResult> UpdateGenre([FromBody] UpdateGenreRequest request, [FromQuery] FindDeleteGenreRequest FindRequest)
     {
         if (_genreService.CheckGenreExists(FindRequest))
@@ -57,6 +61,7 @@ public class GenreController : ControllerBase
     
 
     [HttpGet("find-genre")]
+    [Authorize(Policy = "UserPolicy")]
     public async Task<IActionResult> FindGenre ([FromQuery] FindDeleteGenreRequest request)
     {
         if (_genreService.CheckGenreExists(request))

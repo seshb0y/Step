@@ -1,6 +1,7 @@
 ﻿using LibraryAPI.Data.Models;
 using LibraryAPI.DTO.Requests;
 using LibraryAPI.Services.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryAPI.Controllers;
@@ -18,6 +19,7 @@ public class BookController : ControllerBase
     }
     
     [HttpPost("add-book")]
+    [Authorize(Policy = "AdminPolicy")]
     public async Task<IActionResult> AddBook([FromBody] AddBookRequest request)
     {
         await _bookService.AddBookAsync(request);
@@ -32,6 +34,7 @@ public class BookController : ControllerBase
     
 
     [HttpPost("delete-book")]
+    [Authorize(Policy = "AdminPolicy")]
     public async Task<IActionResult> DeleteBook([FromBody] FindDeleteBookRequest request)
     {
         if (_bookService.CheckBookExists(request))
@@ -45,6 +48,7 @@ public class BookController : ControllerBase
     
     
     [HttpPost("update-book")]
+    [Authorize(Policy = "AdminPolicy")]
     public async Task<IActionResult> UpdateBook([FromBody] UpdateBookRequest request, [FromQuery] FindDeleteBookRequest FindRequest)
     {
         if (_bookService.CheckBookExists(FindRequest))
@@ -59,6 +63,7 @@ public class BookController : ControllerBase
     
 
     [HttpGet("find-book")]
+    [Authorize(Policy = "UserPolicy")]
     public async Task<IActionResult> FindBook ([FromQuery] FindDeleteBookRequest request)
     {
         if (_bookService.CheckBookExists(request))
