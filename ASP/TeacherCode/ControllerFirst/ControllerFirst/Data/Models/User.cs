@@ -12,8 +12,6 @@ public class User
     public string Email { get; set; } 
 
     public bool IsEmailConfirmed { get; set; }
-    
-    // public Guid AccessToken { get; set; }
 
     public Guid RefreshToken { get; set; }
 

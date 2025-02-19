@@ -3,6 +3,7 @@ using ControllerFirst.DTO.Requests;
 using ControllerFirst.DTO.Responses;
 using ControllerFirst.Services.Classes;
 using ControllerFirst.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ControllerFirst.Controllers;
@@ -21,32 +22,37 @@ public class AccountController : ControllerBase
 
     [HttpPost("Register")]
     public async Task<IActionResult> Register([FromBody] RegisterRequest request)
-    {   
+    {
         var validator = new RegisterValidator();
         var result = validator.Validate(request);
-        
+
         if (!result.IsValid)
         {
             return BadRequest(result.Errors);
         }
 
         await _accountService.RegisterAsync(request);
-        
+
         return Ok(new Result<string>(true, request.Username, "Successfully registered"));
     }
-    
-    [HttpPost("VerifyEmail")]
-    public async Task<IActionResult> VerifyEmailAsync()
+
+    [Authorize(Policy = "AdminPolicy")]
+    [HttpGet("VerifyEmail")]
+    public async Task<IActionResult> VerifyEmailAsync([FromQuery] string token)
     {
-        throw new NotImplementedException();
+        await _accountService.VerifyEmailAsync(token);
+        
+        return Ok(new Result<string>(true, "Email confirmed", "Email confirmed"));
     }
-    
-    [HttpPost("ConfirmEmailAsync")]
-    public async Task<IActionResult> ConfirmEmailAsync()
+    [Authorize(Policy = "AdminPolicy")]
+    [HttpPost("ConfirmEmail")]
+    public async Task<IActionResult> ConfirmEmailAsync([FromBody] ConfirmRequest request)
     {
-        throw new NotImplementedException();
+        await _accountService.ConfirmEmailAsync(request, HttpContext);
+
+        return Ok(new Result<string>(true, request.username, "Email sent"));
     }
-    
+
     [HttpPost("ResetPassword")]
     public async Task<IActionResult> ResetPasswordAsync()
     {

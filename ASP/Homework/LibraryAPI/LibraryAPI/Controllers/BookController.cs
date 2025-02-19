@@ -9,7 +9,8 @@ namespace LibraryAPI.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class BookController : ControllerBase
+public class 
+    BookController : ControllerBase
 {
     private readonly IBookService _bookService;
 

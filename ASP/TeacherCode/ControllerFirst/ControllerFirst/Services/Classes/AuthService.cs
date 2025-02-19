@@ -44,6 +44,7 @@ public class AuthService : IAuthService
     public async Task<RefreshTokenResponse> RefreshTokenAsync(RefreshTokenRequest request)
     {
         var user = await _context.Users.FirstOrDefaultAsync(x => x.UserName == request.username);
+        
         if (user == null)
         {
             throw new Exception("User not found");

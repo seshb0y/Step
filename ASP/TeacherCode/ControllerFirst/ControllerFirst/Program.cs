@@ -1,14 +1,15 @@
 using System.Security.Claims;
 using System.Text;
+using System.Text.Json;
 using ControllerFirst.Contexts;
 using ControllerFirst.Data.Mapping;
 using ControllerFirst.Data.Validators;
 using ControllerFirst.DTO.Requests;
-
 using ControllerFirst.Services.Classes;
 using ControllerFirst.Services.Interfaces;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
@@ -21,12 +22,35 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApi();
 
 
+builder.Services.Configure<CookiePolicyOptions>(options =>
+{
+    options.MinimumSameSitePolicy = SameSiteMode.Strict;
+    options.HttpOnly = HttpOnlyPolicy.Always;
+    options.Secure = CookieSecurePolicy.None;
+});
+
+
+builder.Services.AddCors(policy =>
+{
+    policy.AddPolicy("Default", builder =>
+    {
+        builder
+            .WithOrigins("http://localhost:5173")
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
+    });
+});
+
 builder.Services.AddTransient<AuthContext>();
 
 // JWT configuration
 
 // Ставлю по умолчанию валидацию токена по JWT
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+builder.Services.AddAuthentication(options => {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
     .AddJwtBearer(options =>
     {
         options.TokenValidationParameters = new TokenValidationParameters
@@ -38,6 +62,38 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidIssuer = builder.Configuration["JWT:Issuer"],
             ValidAudience = builder.Configuration["JWT:Audience"],
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"]))
+        };
+
+        options.Events = new JwtBearerEvents()
+        {
+            OnMessageReceived = context =>
+            {
+                var accessToken = context.HttpContext.Request.Cookies["accessToken"];
+                if (!string.IsNullOrEmpty(accessToken))
+                {
+                    context.Token = accessToken;
+                }
+
+                return Task.CompletedTask;
+            },
+            OnForbidden = async context =>
+            {
+                var authService = context.HttpContext.RequestServices.GetRequiredService<IAuthService>();
+                var tokenService = context.HttpContext.RequestServices.GetRequiredService<ITokenService>();
+                
+                
+                var accessToken = context.Request.Cookies["accessToken"];
+                var refreshToken = context.Request.Cookies["refreshToken"];
+                
+                var username = await tokenService.GetNameFromToken(accessToken);
+
+                var result = await authService.RefreshTokenAsync(new RefreshTokenRequest(username, refreshToken));
+
+                context.Response.Cookies.Append("accessToken", result.accessToken);
+                context.Response.Cookies.Append("refreshToken", result.refreshToken);
+
+                context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+            }
         };
     });
 
@@ -52,22 +108,22 @@ builder.Services.AddAuthorization(options =>
     });
 });
 
-builder.Services.AddAutoMapper(ops =>
-{
-    ops.AddProfile<UserProfile>();
-});
+builder.Services.AddAutoMapper(ops => { ops.AddProfile<UserProfile>(); });
 
 builder.Services.AddDbContext<AuthContext>(ops =>
 {
     ops.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
 });
 
-builder.Services.AddScoped<IValidator<RegisterRequest>,RegisterValidator>();
-builder.Services.AddScoped<IAuthService, AuthService>(); // IAuthService a = new AuthService();
-builder.Services.AddScoped<ITokenService, TokenService>(); 
-builder.Services.AddScoped<IAccountService, AccountService>(); 
+builder.Services.AddScoped<IValidator<RegisterRequest>, RegisterValidator>();
+builder.Services.AddScoped<IAuthService, AuthService>(); 
+builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IAccountService, AccountService>();
 
 var app = builder.Build();
+
+app.UseCors("Default");
+
 
 app.UseAuthentication();
 app.UseAuthorization(); // Подключаю авторизацию
@@ -79,4 +135,3 @@ app.MapOpenApi();
 app.MapScalarApiReference();
 
 app.Run();
-

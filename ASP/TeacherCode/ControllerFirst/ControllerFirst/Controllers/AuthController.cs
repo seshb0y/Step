@@ -15,9 +15,11 @@ namespace ControllerFirst.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly IAuthService _authService;
+    private readonly ITokenService _tokenService;
 
-    public AuthController(IAuthService authService)
+    public AuthController(IAuthService authService, ITokenService tokenService)
     {
+        _tokenService = tokenService;
         _authService = authService;
     }
 
@@ -26,16 +28,35 @@ public class AuthController : ControllerBase
     {
         var response = await _authService.LoginAsync(request);
         
+        Response.Cookies.Append("accessToken", response.accessToken);
+        Response.Cookies.Append("refreshToken", response.refreshToken);
+        
+        
         return Ok(new Result<LoginResponse>(true, response, "Successfully logged in"));
     }
 
     [HttpPost("Refresh")]
-    public async Task<IActionResult> Refresh([FromBody] RefreshTokenRequest request)
+    public async Task<IActionResult> Refresh()
     {
-        var newToken = await _authService.RefreshTokenAsync(request);
+        var refreshToken = Request.Cookies["refreshToken"];
+        var accessToken = Request.Cookies["accessToken"];
         
-        return Ok(new Result<RefreshTokenResponse>(true, newToken, "Successfully refreshed token"));
+        var request = new RefreshTokenRequest(await _tokenService.GetNameFromToken(accessToken), refreshToken);
         
+        var newTokens = await _authService.RefreshTokenAsync(request);
+        
+        Response.Cookies.Append("accessToken", newTokens.accessToken);
+        Response.Cookies.Append("refreshToken", newTokens.refreshToken);
+        
+        return Ok(new Result<RefreshTokenResponse>(true, newTokens, "Successfully refreshed token"));
+        
+    }
+
+    [HttpPost("Test")]
+    [Authorize(Policy = "AdminPolicy")]
+    public async Task<IActionResult> Test()
+    {
+        return Ok("Test");
     }
     
     [HttpPost("Logout")]
