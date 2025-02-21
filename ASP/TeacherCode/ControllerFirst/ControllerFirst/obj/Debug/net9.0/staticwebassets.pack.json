@@ -1,0 +1,33 @@
+{
+  "Files": [
+    {
+      "Id": "D:\\users_C\\OneDrive\\Рабочий стол\\desctop\\NewStepRepository09.01.2024\\Step\\ASP\\TeacherCode\\ControllerFirst\\ControllerFirst\\wwwroot\\email.html",
+      "PackagePath": "staticwebassets\\email.html"
+    },
+    {
+      "Id": "D:\\users_C\\OneDrive\\Рабочий стол\\desctop\\NewStepRepository09.01.2024\\Step\\ASP\\TeacherCode\\ControllerFirst\\ControllerFirst\\wwwroot\\resetPassword.html",
+      "PackagePath": "staticwebassets\\resetPassword.html"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.ControllerFirst.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.ControllerFirst.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.build.ControllerFirst.props",
+      "PackagePath": "build\\ControllerFirst.props"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.buildMultiTargeting.ControllerFirst.props",
+      "PackagePath": "buildMultiTargeting\\ControllerFirst.props"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.buildTransitive.ControllerFirst.props",
+      "PackagePath": "buildTransitive\\ControllerFirst.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

@@ -1,5 +1,602 @@
 {
   "Version": 1,
   "ManifestType": "Build",
-  "Endpoints": []
+  "Endpoints": [
+    {
+      "Route": "email.html",
+      "AssetFile": "email.html.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.001349527665"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "740"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"ZhBi1Z4QuiANGufdamI2oAbqrKIMDhq3qyVHxOCJGaU=\""
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"gfSV95qSW9RH1S+MTKftzLlRwtcIJhtMuIfsFaU8j20=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 20 Feb 2025 13:57:17 GMT"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-gfSV95qSW9RH1S+MTKftzLlRwtcIJhtMuIfsFaU8j20="
+        }
+      ]
+    },
+    {
+      "Route": "email.html",
+      "AssetFile": "email.html",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1599"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"gfSV95qSW9RH1S+MTKftzLlRwtcIJhtMuIfsFaU8j20=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 20 Feb 2025 13:57:17 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-gfSV95qSW9RH1S+MTKftzLlRwtcIJhtMuIfsFaU8j20="
+        }
+      ]
+    },
+    {
+      "Route": "email.html.gz",
+      "AssetFile": "email.html.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "740"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"ZhBi1Z4QuiANGufdamI2oAbqrKIMDhq3qyVHxOCJGaU=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 20 Feb 2025 13:57:17 GMT"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-ZhBi1Z4QuiANGufdamI2oAbqrKIMDhq3qyVHxOCJGaU="
+        }
+      ]
+    },
+    {
+      "Route": "email.xsj9o4w6ix.html",
+      "AssetFile": "email.html.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.001349527665"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "740"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"ZhBi1Z4QuiANGufdamI2oAbqrKIMDhq3qyVHxOCJGaU=\""
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"gfSV95qSW9RH1S+MTKftzLlRwtcIJhtMuIfsFaU8j20=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 20 Feb 2025 13:57:17 GMT"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "xsj9o4w6ix"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-gfSV95qSW9RH1S+MTKftzLlRwtcIJhtMuIfsFaU8j20="
+        },
+        {
+          "Name": "label",
+          "Value": "email.html"
+        }
+      ]
+    },
+    {
+      "Route": "email.xsj9o4w6ix.html",
+      "AssetFile": "email.html",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1599"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"gfSV95qSW9RH1S+MTKftzLlRwtcIJhtMuIfsFaU8j20=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 20 Feb 2025 13:57:17 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "xsj9o4w6ix"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-gfSV95qSW9RH1S+MTKftzLlRwtcIJhtMuIfsFaU8j20="
+        },
+        {
+          "Name": "label",
+          "Value": "email.html"
+        }
+      ]
+    },
+    {
+      "Route": "email.xsj9o4w6ix.html.gz",
+      "AssetFile": "email.html.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "740"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"ZhBi1Z4QuiANGufdamI2oAbqrKIMDhq3qyVHxOCJGaU=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 20 Feb 2025 13:57:17 GMT"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "xsj9o4w6ix"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-ZhBi1Z4QuiANGufdamI2oAbqrKIMDhq3qyVHxOCJGaU="
+        },
+        {
+          "Name": "label",
+          "Value": "email.html.gz"
+        }
+      ]
+    },
+    {
+      "Route": "resetPassword.html",
+      "AssetFile": "resetPassword.html.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.001186239620"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "842"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"k2zJ5d33oO16y+x9vs18SsLr4Q+85bhXyPHTBb7cc4g=\""
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"acqTy7ySvfDogdO6xEN72Ljczgsasc6hnuqhCckytGs=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 21 Feb 2025 01:17:59 GMT"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-acqTy7ySvfDogdO6xEN72Ljczgsasc6hnuqhCckytGs="
+        }
+      ]
+    },
+    {
+      "Route": "resetPassword.html",
+      "AssetFile": "resetPassword.html",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2004"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"acqTy7ySvfDogdO6xEN72Ljczgsasc6hnuqhCckytGs=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 21 Feb 2025 01:17:59 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-acqTy7ySvfDogdO6xEN72Ljczgsasc6hnuqhCckytGs="
+        }
+      ]
+    },
+    {
+      "Route": "resetPassword.html.gz",
+      "AssetFile": "resetPassword.html.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "842"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"k2zJ5d33oO16y+x9vs18SsLr4Q+85bhXyPHTBb7cc4g=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 21 Feb 2025 01:17:59 GMT"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-k2zJ5d33oO16y+x9vs18SsLr4Q+85bhXyPHTBb7cc4g="
+        }
+      ]
+    },
+    {
+      "Route": "resetPassword.n8msq3tndp.html",
+      "AssetFile": "resetPassword.html.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.001186239620"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "842"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"k2zJ5d33oO16y+x9vs18SsLr4Q+85bhXyPHTBb7cc4g=\""
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"acqTy7ySvfDogdO6xEN72Ljczgsasc6hnuqhCckytGs=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 21 Feb 2025 01:17:59 GMT"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "n8msq3tndp"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-acqTy7ySvfDogdO6xEN72Ljczgsasc6hnuqhCckytGs="
+        },
+        {
+          "Name": "label",
+          "Value": "resetPassword.html"
+        }
+      ]
+    },
+    {
+      "Route": "resetPassword.n8msq3tndp.html",
+      "AssetFile": "resetPassword.html",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2004"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"acqTy7ySvfDogdO6xEN72Ljczgsasc6hnuqhCckytGs=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 21 Feb 2025 01:17:59 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "n8msq3tndp"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-acqTy7ySvfDogdO6xEN72Ljczgsasc6hnuqhCckytGs="
+        },
+        {
+          "Name": "label",
+          "Value": "resetPassword.html"
+        }
+      ]
+    },
+    {
+      "Route": "resetPassword.n8msq3tndp.html.gz",
+      "AssetFile": "resetPassword.html.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "842"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"k2zJ5d33oO16y+x9vs18SsLr4Q+85bhXyPHTBb7cc4g=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 21 Feb 2025 01:17:59 GMT"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "n8msq3tndp"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-k2zJ5d33oO16y+x9vs18SsLr4Q+85bhXyPHTBb7cc4g="
+        },
+        {
+          "Name": "label",
+          "Value": "resetPassword.html.gz"
+        }
+      ]
+    }
+  ]
 }

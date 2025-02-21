@@ -6,8 +6,11 @@ using ControllerFirst.Contexts;
 using ControllerFirst.Data.Models;
 using ControllerFirst.DTO.Requests;
 using ControllerFirst.Services.Interfaces;
+using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.EntityFrameworkCore;
 using static BCrypt.Net.BCrypt;
+using RegisterRequest = ControllerFirst.DTO.Requests.RegisterRequest;
+using ResetPasswordRequest = ControllerFirst.DTO.Requests.ResetPasswordRequest;
 
 namespace ControllerFirst.Services.Classes;
 
@@ -65,7 +68,7 @@ public class AccountService : IAccountService
             $"{context.Request.Scheme}://{context.Request.Host}/api/v1/Account/VerifyEmail?token={await _tokenService.CreateEmailTokenAsync(request.username)}";
 
         sb.Replace("{username}", request.username);
-        sb.Replace("{link}", link);
+        // sb.Replace("{link}", link);
 
         MailMessage message = new()
         {
@@ -95,5 +98,56 @@ public class AccountService : IAccountService
 
             await _context.SaveChangesAsync();
         }
+    }
+
+    public async Task ResetPasswordAsync(ResetPasswordRequest request, HttpContext context)
+    {
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == request.username);
+
+        SmtpClient client = new SmtpClient()
+        {
+            Port = 587,
+            EnableSsl = true,
+            Host = _config["Smtp:Host"],
+            Credentials = new NetworkCredential(_config["Smtp:Username"], _config["Smtp:Password"])
+        };
+
+        using FileStream fs = new("../ControllerFirst/wwwroot/resetPassword.html", FileMode.Open);
+        using StreamReader sr = new(fs);
+        StringBuilder sb = new(await sr.ReadToEndAsync());
+
+        var link =
+            $"http://localhost:5174/change-password?token={await _tokenService.CreateResetPasswordTokenAsync(request.username)}";
+
+        sb.Replace("{username}", request.username);
+        sb.Replace("{link}", link);
+
+        MailMessage message = new()
+        {
+            From = new MailAddress(_config["Smtp:Username"]),
+            Subject = "Email confirmation",
+            Body = sb.ToString(),
+            IsBodyHtml = true
+        };
+
+
+        message.To.Add(user.Email);
+
+        client.Send(message);
+    }
+
+    public async Task ChangePasswordAsync(ChangePasswordRequest request)
+    {
+        bool isValid = await _tokenService.ValidateChangePasswordTokenAsync(request.token);
+    
+        if (!isValid)
+        {
+            throw new Exception("Invalid or expired token");
+        }
+        
+        var username = await _tokenService.GetNameFromToken(request.token);
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == username);
+        user.Password = HashPassword(user.Password);
+        await _context.SaveChangesAsync();
     }
 }

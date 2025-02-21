@@ -1,12 +1,702 @@
 {
   "Version": 1,
-  "Hash": "ILQVbH6kSuMRijeixuEjERgDTHTrc+FrMvGWficUmaM=",
+  "Hash": "oYSaUN2PZ0O07Wu3G96uJDNQgvuY9puqEMhhranFArE=",
   "Source": "ControllerFirst",
   "BasePath": "_content/ControllerFirst",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
-  "Assets": [],
-  "Endpoints": []
+  "DiscoveryPatterns": [
+    {
+      "Name": "ControllerFirst\\wwwroot",
+      "Source": "ControllerFirst",
+      "ContentRoot": "D:\\users_C\\OneDrive\\Рабочий стол\\desctop\\NewStepRepository09.01.2024\\Step\\ASP\\TeacherCode\\ControllerFirst\\ControllerFirst\\wwwroot\\",
+      "BasePath": "_content/ControllerFirst",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "D:\\users_C\\OneDrive\\Рабочий стол\\desctop\\NewStepRepository09.01.2024\\Step\\ASP\\TeacherCode\\ControllerFirst\\ControllerFirst\\obj\\Debug\\net9.0\\compressed\\4rmizi5q92-n8msq3tndp.gz",
+      "SourceId": "ControllerFirst",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\users_C\\OneDrive\\Рабочий стол\\desctop\\NewStepRepository09.01.2024\\Step\\ASP\\TeacherCode\\ControllerFirst\\ControllerFirst\\obj\\Debug\\net9.0\\compressed\\",
+      "BasePath": "_content/ControllerFirst",
+      "RelativePath": "resetPassword#[.{fingerprint=n8msq3tndp}]?.html.gz",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "D:\\users_C\\OneDrive\\Рабочий стол\\desctop\\NewStepRepository09.01.2024\\Step\\ASP\\TeacherCode\\ControllerFirst\\ControllerFirst\\wwwroot\\resetPassword.html",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "Fingerprint": "vpvg06hqzu",
+      "Integrity": "k2zJ5d33oO16y+x9vs18SsLr4Q+85bhXyPHTBb7cc4g=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "D:\\users_C\\OneDrive\\Рабочий стол\\desctop\\NewStepRepository09.01.2024\\Step\\ASP\\TeacherCode\\ControllerFirst\\ControllerFirst\\wwwroot\\resetPassword.html"
+    },
+    {
+      "Identity": "D:\\users_C\\OneDrive\\Рабочий стол\\desctop\\NewStepRepository09.01.2024\\Step\\ASP\\TeacherCode\\ControllerFirst\\ControllerFirst\\obj\\Debug\\net9.0\\compressed\\7l4ldsz1sf-xsj9o4w6ix.gz",
+      "SourceId": "ControllerFirst",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\users_C\\OneDrive\\Рабочий стол\\desctop\\NewStepRepository09.01.2024\\Step\\ASP\\TeacherCode\\ControllerFirst\\ControllerFirst\\obj\\Debug\\net9.0\\compressed\\",
+      "BasePath": "_content/ControllerFirst",
+      "RelativePath": "email#[.{fingerprint=xsj9o4w6ix}]?.html.gz",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "D:\\users_C\\OneDrive\\Рабочий стол\\desctop\\NewStepRepository09.01.2024\\Step\\ASP\\TeacherCode\\ControllerFirst\\ControllerFirst\\wwwroot\\email.html",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "Fingerprint": "il25gh02b2",
+      "Integrity": "ZhBi1Z4QuiANGufdamI2oAbqrKIMDhq3qyVHxOCJGaU=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "D:\\users_C\\OneDrive\\Рабочий стол\\desctop\\NewStepRepository09.01.2024\\Step\\ASP\\TeacherCode\\ControllerFirst\\ControllerFirst\\wwwroot\\email.html"
+    },
+    {
+      "Identity": "D:\\users_C\\OneDrive\\Рабочий стол\\desctop\\NewStepRepository09.01.2024\\Step\\ASP\\TeacherCode\\ControllerFirst\\ControllerFirst\\wwwroot\\email.html",
+      "SourceId": "ControllerFirst",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\users_C\\OneDrive\\Рабочий стол\\desctop\\NewStepRepository09.01.2024\\Step\\ASP\\TeacherCode\\ControllerFirst\\ControllerFirst\\wwwroot\\",
+      "BasePath": "_content/ControllerFirst",
+      "RelativePath": "email#[.{fingerprint}]?.html",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "xsj9o4w6ix",
+      "Integrity": "gfSV95qSW9RH1S+MTKftzLlRwtcIJhtMuIfsFaU8j20=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\email.html"
+    },
+    {
+      "Identity": "D:\\users_C\\OneDrive\\Рабочий стол\\desctop\\NewStepRepository09.01.2024\\Step\\ASP\\TeacherCode\\ControllerFirst\\ControllerFirst\\wwwroot\\resetPassword.html",
+      "SourceId": "ControllerFirst",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\users_C\\OneDrive\\Рабочий стол\\desctop\\NewStepRepository09.01.2024\\Step\\ASP\\TeacherCode\\ControllerFirst\\ControllerFirst\\wwwroot\\",
+      "BasePath": "_content/ControllerFirst",
+      "RelativePath": "resetPassword#[.{fingerprint}]?.html",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "n8msq3tndp",
+      "Integrity": "acqTy7ySvfDogdO6xEN72Ljczgsasc6hnuqhCckytGs=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\resetPassword.html"
+    }
+  ],
+  "Endpoints": [
+    {
+      "Route": "email.html",
+      "AssetFile": "D:\\users_C\\OneDrive\\Рабочий стол\\desctop\\NewStepRepository09.01.2024\\Step\\ASP\\TeacherCode\\ControllerFirst\\ControllerFirst\\obj\\Debug\\net9.0\\compressed\\7l4ldsz1sf-xsj9o4w6ix.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.001349527665"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "740"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"ZhBi1Z4QuiANGufdamI2oAbqrKIMDhq3qyVHxOCJGaU=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 20 Feb 2025 13:57:17 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"gfSV95qSW9RH1S+MTKftzLlRwtcIJhtMuIfsFaU8j20=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-gfSV95qSW9RH1S+MTKftzLlRwtcIJhtMuIfsFaU8j20="
+        }
+      ]
+    },
+    {
+      "Route": "email.html",
+      "AssetFile": "D:\\users_C\\OneDrive\\Рабочий стол\\desctop\\NewStepRepository09.01.2024\\Step\\ASP\\TeacherCode\\ControllerFirst\\ControllerFirst\\wwwroot\\email.html",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1599"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"gfSV95qSW9RH1S+MTKftzLlRwtcIJhtMuIfsFaU8j20=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 20 Feb 2025 13:57:17 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-gfSV95qSW9RH1S+MTKftzLlRwtcIJhtMuIfsFaU8j20="
+        }
+      ]
+    },
+    {
+      "Route": "email.html.gz",
+      "AssetFile": "D:\\users_C\\OneDrive\\Рабочий стол\\desctop\\NewStepRepository09.01.2024\\Step\\ASP\\TeacherCode\\ControllerFirst\\ControllerFirst\\obj\\Debug\\net9.0\\compressed\\7l4ldsz1sf-xsj9o4w6ix.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "740"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"ZhBi1Z4QuiANGufdamI2oAbqrKIMDhq3qyVHxOCJGaU=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 20 Feb 2025 13:57:17 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-ZhBi1Z4QuiANGufdamI2oAbqrKIMDhq3qyVHxOCJGaU="
+        }
+      ]
+    },
+    {
+      "Route": "email.xsj9o4w6ix.html",
+      "AssetFile": "D:\\users_C\\OneDrive\\Рабочий стол\\desctop\\NewStepRepository09.01.2024\\Step\\ASP\\TeacherCode\\ControllerFirst\\ControllerFirst\\obj\\Debug\\net9.0\\compressed\\7l4ldsz1sf-xsj9o4w6ix.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.001349527665"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "740"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"ZhBi1Z4QuiANGufdamI2oAbqrKIMDhq3qyVHxOCJGaU=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 20 Feb 2025 13:57:17 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"gfSV95qSW9RH1S+MTKftzLlRwtcIJhtMuIfsFaU8j20=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "xsj9o4w6ix"
+        },
+        {
+          "Name": "label",
+          "Value": "email.html"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-gfSV95qSW9RH1S+MTKftzLlRwtcIJhtMuIfsFaU8j20="
+        }
+      ]
+    },
+    {
+      "Route": "email.xsj9o4w6ix.html",
+      "AssetFile": "D:\\users_C\\OneDrive\\Рабочий стол\\desctop\\NewStepRepository09.01.2024\\Step\\ASP\\TeacherCode\\ControllerFirst\\ControllerFirst\\wwwroot\\email.html",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1599"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"gfSV95qSW9RH1S+MTKftzLlRwtcIJhtMuIfsFaU8j20=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 20 Feb 2025 13:57:17 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "xsj9o4w6ix"
+        },
+        {
+          "Name": "label",
+          "Value": "email.html"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-gfSV95qSW9RH1S+MTKftzLlRwtcIJhtMuIfsFaU8j20="
+        }
+      ]
+    },
+    {
+      "Route": "email.xsj9o4w6ix.html.gz",
+      "AssetFile": "D:\\users_C\\OneDrive\\Рабочий стол\\desctop\\NewStepRepository09.01.2024\\Step\\ASP\\TeacherCode\\ControllerFirst\\ControllerFirst\\obj\\Debug\\net9.0\\compressed\\7l4ldsz1sf-xsj9o4w6ix.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "740"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"ZhBi1Z4QuiANGufdamI2oAbqrKIMDhq3qyVHxOCJGaU=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 20 Feb 2025 13:57:17 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "xsj9o4w6ix"
+        },
+        {
+          "Name": "label",
+          "Value": "email.html.gz"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-ZhBi1Z4QuiANGufdamI2oAbqrKIMDhq3qyVHxOCJGaU="
+        }
+      ]
+    },
+    {
+      "Route": "resetPassword.html",
+      "AssetFile": "D:\\users_C\\OneDrive\\Рабочий стол\\desctop\\NewStepRepository09.01.2024\\Step\\ASP\\TeacherCode\\ControllerFirst\\ControllerFirst\\obj\\Debug\\net9.0\\compressed\\4rmizi5q92-n8msq3tndp.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.001186239620"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "842"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"k2zJ5d33oO16y+x9vs18SsLr4Q+85bhXyPHTBb7cc4g=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 21 Feb 2025 01:17:59 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"acqTy7ySvfDogdO6xEN72Ljczgsasc6hnuqhCckytGs=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-acqTy7ySvfDogdO6xEN72Ljczgsasc6hnuqhCckytGs="
+        }
+      ]
+    },
+    {
+      "Route": "resetPassword.html",
+      "AssetFile": "D:\\users_C\\OneDrive\\Рабочий стол\\desctop\\NewStepRepository09.01.2024\\Step\\ASP\\TeacherCode\\ControllerFirst\\ControllerFirst\\wwwroot\\resetPassword.html",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2004"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"acqTy7ySvfDogdO6xEN72Ljczgsasc6hnuqhCckytGs=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 21 Feb 2025 01:17:59 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-acqTy7ySvfDogdO6xEN72Ljczgsasc6hnuqhCckytGs="
+        }
+      ]
+    },
+    {
+      "Route": "resetPassword.html.gz",
+      "AssetFile": "D:\\users_C\\OneDrive\\Рабочий стол\\desctop\\NewStepRepository09.01.2024\\Step\\ASP\\TeacherCode\\ControllerFirst\\ControllerFirst\\obj\\Debug\\net9.0\\compressed\\4rmizi5q92-n8msq3tndp.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "842"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"k2zJ5d33oO16y+x9vs18SsLr4Q+85bhXyPHTBb7cc4g=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 21 Feb 2025 01:17:59 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-k2zJ5d33oO16y+x9vs18SsLr4Q+85bhXyPHTBb7cc4g="
+        }
+      ]
+    },
+    {
+      "Route": "resetPassword.n8msq3tndp.html",
+      "AssetFile": "D:\\users_C\\OneDrive\\Рабочий стол\\desctop\\NewStepRepository09.01.2024\\Step\\ASP\\TeacherCode\\ControllerFirst\\ControllerFirst\\obj\\Debug\\net9.0\\compressed\\4rmizi5q92-n8msq3tndp.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.001186239620"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "842"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"k2zJ5d33oO16y+x9vs18SsLr4Q+85bhXyPHTBb7cc4g=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 21 Feb 2025 01:17:59 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"acqTy7ySvfDogdO6xEN72Ljczgsasc6hnuqhCckytGs=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "n8msq3tndp"
+        },
+        {
+          "Name": "label",
+          "Value": "resetPassword.html"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-acqTy7ySvfDogdO6xEN72Ljczgsasc6hnuqhCckytGs="
+        }
+      ]
+    },
+    {
+      "Route": "resetPassword.n8msq3tndp.html",
+      "AssetFile": "D:\\users_C\\OneDrive\\Рабочий стол\\desctop\\NewStepRepository09.01.2024\\Step\\ASP\\TeacherCode\\ControllerFirst\\ControllerFirst\\wwwroot\\resetPassword.html",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2004"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"acqTy7ySvfDogdO6xEN72Ljczgsasc6hnuqhCckytGs=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 21 Feb 2025 01:17:59 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "n8msq3tndp"
+        },
+        {
+          "Name": "label",
+          "Value": "resetPassword.html"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-acqTy7ySvfDogdO6xEN72Ljczgsasc6hnuqhCckytGs="
+        }
+      ]
+    },
+    {
+      "Route": "resetPassword.n8msq3tndp.html.gz",
+      "AssetFile": "D:\\users_C\\OneDrive\\Рабочий стол\\desctop\\NewStepRepository09.01.2024\\Step\\ASP\\TeacherCode\\ControllerFirst\\ControllerFirst\\obj\\Debug\\net9.0\\compressed\\4rmizi5q92-n8msq3tndp.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "842"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"k2zJ5d33oO16y+x9vs18SsLr4Q+85bhXyPHTBb7cc4g=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 21 Feb 2025 01:17:59 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "n8msq3tndp"
+        },
+        {
+          "Name": "label",
+          "Value": "resetPassword.html.gz"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-k2zJ5d33oO16y+x9vs18SsLr4Q+85bhXyPHTBb7cc4g="
+        }
+      ]
+    }
+  ]
 }

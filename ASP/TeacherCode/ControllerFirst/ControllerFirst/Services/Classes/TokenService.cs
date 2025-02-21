@@ -115,4 +115,58 @@ public class TokenService : ITokenService
         var principal = await tokenHandler.ValidateTokenAsync(token, validationParameters);
         return principal.IsValid;
     }
+
+    public async Task<string> CreateResetPasswordTokenAsync(string username)
+    {
+        var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.Name, username),
+            new Claim(JwtRegisteredClaimNames.Exp, DateTime.UtcNow.AddMinutes(5).ToString())
+        };
+
+        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["JWT:EmailKey"]));
+        var signingCred = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
+
+        var securityToken = new JwtSecurityToken(
+            claims: claims,
+            expires: DateTime.UtcNow.AddMinutes(60),
+            issuer: config["JWT:Issuer"],
+            audience: config["JWT:Audience"],
+            signingCredentials: signingCred);
+
+        return new JwtSecurityTokenHandler().WriteToken(securityToken);
+    }
+    
+    public async Task<bool> ValidateChangePasswordTokenAsync(string token)
+    {
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["JWT:EmailKey"]));
+
+        var validationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = config["JWT:Issuer"],
+            ValidAudience = config["JWT:Audience"],
+            IssuerSigningKey = securityKey,
+            ClockSkew = TimeSpan.Zero, 
+
+            LifetimeValidator = (notBefore, expires, securityToken, parameters) =>
+            {
+                return expires.HasValue && expires.Value > DateTime.UtcNow;
+            }
+        };
+
+        try
+        {
+            var principal = tokenHandler.ValidateToken(token, validationParameters, out _);
+            return true;
+        }
+        catch (SecurityTokenException)
+        {
+            return false;
+        }
+    }
 }

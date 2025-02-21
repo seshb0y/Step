@@ -54,8 +54,19 @@ public class AccountController : ControllerBase
     }
 
     [HttpPost("ResetPassword")]
-    public async Task<IActionResult> ResetPasswordAsync()
+    public async Task<IActionResult> ResetPasswordAsync([FromBody] ResetPasswordRequest request)
     {
-        throw new NotImplementedException();
+        await _accountService.ResetPasswordAsync(request, HttpContext);
+
+        return Ok(new Result<string>(true, request.username, "Reset password mail sent"));
     }
+
+    [HttpPost("ChangePassword")]
+    public async Task<IActionResult> ChangePasswordAsync([FromBody] ChangePasswordRequest request)
+    {
+        await _accountService.ChangePasswordAsync(request);
+
+        return Ok(new Result<string>(true, "Password changed", "Password changed"));
+    }
+    
 }

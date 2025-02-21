@@ -331,3 +331,6 @@ D:\users_C\OneDrive\Рабочий стол\desctop\NewStepRepository09.01.2024\
 D:\users_C\OneDrive\Рабочий стол\desctop\NewStepRepository09.01.2024\Step\ASP\TeacherCode\ControllerFirst\ControllerFirst\obj\Debug\net9.0\ControllerFirst.pdb
 D:\users_C\OneDrive\Рабочий стол\desctop\NewStepRepository09.01.2024\Step\ASP\TeacherCode\ControllerFirst\ControllerFirst\obj\Debug\net9.0\ControllerFirst.genruntimeconfig.cache
 D:\users_C\OneDrive\Рабочий стол\desctop\NewStepRepository09.01.2024\Step\ASP\TeacherCode\ControllerFirst\ControllerFirst\obj\Debug\net9.0\ref\ControllerFirst.dll
+D:\users_C\OneDrive\Рабочий стол\desctop\NewStepRepository09.01.2024\Step\ASP\TeacherCode\ControllerFirst\ControllerFirst\bin\Debug\net9.0\ControllerFirst.staticwebassets.runtime.json
+D:\users_C\OneDrive\Рабочий стол\desctop\NewStepRepository09.01.2024\Step\ASP\TeacherCode\ControllerFirst\ControllerFirst\obj\Debug\net9.0\compressed\7l4ldsz1sf-xsj9o4w6ix.gz
+D:\users_C\OneDrive\Рабочий стол\desctop\NewStepRepository09.01.2024\Step\ASP\TeacherCode\ControllerFirst\ControllerFirst\obj\Debug\net9.0\compressed\4rmizi5q92-n8msq3tndp.gz
