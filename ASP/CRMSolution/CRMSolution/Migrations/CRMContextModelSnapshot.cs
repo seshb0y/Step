@@ -106,6 +106,9 @@ namespace CRMSolution.Migrations
                     b.Property<DateTime>("DueDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
@@ -119,6 +122,8 @@ namespace CRMSolution.Migrations
                     b.HasIndex("AssignedToId");
 
                     b.HasIndex("ClientId");
+
+                    b.HasIndex("OrderId");
 
                     b.ToTable("Tasks", (string)null);
                 });
@@ -185,14 +190,27 @@ namespace CRMSolution.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("CRMSolution.Data.Models.Order", "Order")
+                        .WithMany("Tasks")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.Navigation("AssignedTo");
 
                     b.Navigation("Client");
+
+                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("CRMSolution.Data.Models.Client", b =>
                 {
                     b.Navigation("Orders");
+                });
+
+            modelBuilder.Entity("CRMSolution.Data.Models.Order", b =>
+                {
+                    b.Navigation("Tasks");
                 });
 
             modelBuilder.Entity("CRMSolution.Data.Models.User", b =>

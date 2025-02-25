@@ -1,4 +1,5 @@
-﻿using CRMSolution.Data.Models;
+﻿using AutoMapper;
+using CRMSolution.Data.Models;
 using CRMSolution.Data.Repository.Interface;
 using CRMSolution.DTO.Requests.Client;
 using CRMSolution.Services.Interfaces;
@@ -8,15 +9,16 @@ namespace CRMSolution.Services.Classes;
 public class ClientService : IClient
 {
     IRepository<Client> _clientRepository;
-
-    public ClientService(IRepository<Client> clientRepository)
+    IMapper _mapper;
+    public ClientService(IRepository<Client> clientRepository, IMapper mapper)
     {
         _clientRepository = clientRepository;
+        _mapper = mapper;
     }
     
     public Task CreateClient(CreateClientRequest request)
     {
-        Client client = new Client{Name = request.name, Address = request.address, Email = request.email, Phone = request.phone};
+        Client client = _mapper.Map<Client>(request);
         return _clientRepository.AddAsync(client);
     }
 
@@ -24,12 +26,7 @@ public class ClientService : IClient
     {
         Guid guidId = Guid.Parse(request.id);
         Client client = await _clientRepository.GetById(guidId);
-        
-        client.Name = request.name;
-        client.Address = request.address;
-        client.Email = request.email;
-        client.Phone = request.phone;
-        
+        client = _mapper.Map<Client>(request);
         _clientRepository.Update(client);
         await _clientRepository.SaveChangesAsync();
     }

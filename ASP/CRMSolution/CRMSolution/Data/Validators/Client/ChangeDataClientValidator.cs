@@ -1,4 +1,5 @@
 ﻿using CRMSolution.Data.Models;
+using CRMSolution.Data.Repository.Interface;
 using CRMSolution.DTO.Requests.Client;
 using FluentValidation;
 
@@ -6,8 +7,12 @@ namespace CRMSolution.Data.Validators;
 
 public class ChangeDataClientValidator : AbstractValidator<ChangeDataClientRequest>
 {
-    public ChangeDataClientValidator()
+    IRepository<Client> _clientRepository;
+    
+    public ChangeDataClientValidator(IRepository<Client> clientRepository)
     {
+        _clientRepository = clientRepository;
+        
         RuleFor(x => x.name)
             .NotEmpty().WithMessage("Name is required")
             .MinimumLength(2).WithMessage("Name must be at least 2 characters");
@@ -28,6 +33,14 @@ public class ChangeDataClientValidator : AbstractValidator<ChangeDataClientReque
             .NotEmpty()
             .WithMessage("Id is required")
             .Must(id => Guid.TryParse(id, out _))
-            .WithMessage("Invalid id format");
+            .WithMessage("Invalid id format")
+            .MustAsync(IsClientExist)
+            .WithMessage("The client ID does not exist.");
+    }
+
+    private async Task<bool> IsClientExist(string id, CancellationToken cancellationToken)
+    {
+        var client = await _clientRepository.GetById(Guid.Parse(id));
+        return client != null;
     }
 }

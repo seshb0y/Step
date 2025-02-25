@@ -26,5 +26,11 @@ public class TaskConfig : IEntityTypeConfiguration<Tasks>
             .WithMany(u => u.Tasks)
             .HasForeignKey(t => t.AssignedToId)
             .OnDelete(DeleteBehavior.Restrict);
+        
+        builder.HasOne(t => t.Order)
+            .WithMany(t => t.Tasks)
+            .HasForeignKey(t => t.OrderId)
+            .OnDelete(DeleteBehavior.Restrict);
+            
     }
 }

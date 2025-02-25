@@ -11,6 +11,8 @@ public class Tasks
     public Guid ClientId { get; set; }
     public Client Client { get; set; }
 
+    public Guid OrderId { get; set; }
+    public Order Order { get; set; }
     public Guid AssignedToId { get; set; }
     public User AssignedTo { get; set; }
 }

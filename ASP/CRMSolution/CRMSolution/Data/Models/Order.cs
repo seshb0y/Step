@@ -9,6 +9,8 @@ public class Order
 
     public Guid ClientId { get; set; }
     public Client Client { get; set; }
+    
+    public ICollection<Tasks> Tasks { get; set; } = new List<Tasks>();
 }
 
 public enum OrderStatus

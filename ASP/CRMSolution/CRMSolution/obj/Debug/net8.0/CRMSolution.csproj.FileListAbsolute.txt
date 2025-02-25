@@ -149,3 +149,4 @@ D:\users_C\OneDrive\Рабочий стол\desctop\NewStepRepository09.01.2024\
 D:\users_C\OneDrive\Рабочий стол\desctop\NewStepRepository09.01.2024\Step\ASP\CRMSolution\CRMSolution\obj\Debug\net8.0\CRMSolution.pdb
 D:\users_C\OneDrive\Рабочий стол\desctop\NewStepRepository09.01.2024\Step\ASP\CRMSolution\CRMSolution\obj\Debug\net8.0\CRMSolution.genruntimeconfig.cache
 D:\users_C\OneDrive\Рабочий стол\desctop\NewStepRepository09.01.2024\Step\ASP\CRMSolution\CRMSolution\obj\Debug\net8.0\ref\CRMSolution.dll
+D:\users_C\OneDrive\Рабочий стол\desctop\NewStepRepository09.01.2024\Step\ASP\CRMSolution\CRMSolution\bin\Debug\net8.0\FluentValidation.AspNetCore.dll

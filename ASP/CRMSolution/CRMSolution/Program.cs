@@ -1,5 +1,6 @@
 using System.Reflection;
 using CRMSolution.Contexts;
+using CRMSolution.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using FluentValidation.AspNetCore;
 
@@ -12,6 +13,16 @@ builder.Services.AddControllers()
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminPolicy", policy =>
+    {
+        policy.RequireRole(UserRole.Admin.ToString());
+
+        options.AddPolicy("ManagerPolicy", policy =>
+            policy.RequireRole(UserRole.Manager.ToString(), UserRole.Admin.ToString()));
+    });
+});
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<CRMContext>(options =>
