@@ -30,16 +30,18 @@
       <change afterPath="$PROJECT_DIR$/CRMSolution/Data/Models/User.cs" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/CRMSolution/Data/Repository/MainRepository/IRepository.cs" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/CRMSolution/Data/Repository/MainRepository/Repository.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CRMSolution/Data/Repository/OrderResp/IOrderRep.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CRMSolution/Data/Repository/OrderResp/OrderRep.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRMSolution/Data/Repository/OrderRep/IOrderRep.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRMSolution/Data/Repository/OrderRep/OrderRep.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRMSolution/Data/Repository/UserRep/IUserRep.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRMSolution/Data/Repository/UserRep/UserRep.cs" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/CRMSolution/Data/Validators/Client/ChangeDataClientValidator.cs" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/CRMSolution/Data/Validators/Client/CreateClientValidator.cs" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/CRMSolution/Data/Validators/Client/DeleteClientValidator.cs" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/CRMSolution/Data/Validators/Client/FindClientValidator.cs" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/CRMSolution/Services/Classes/ClientService.cs" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/CRMSolution/Services/Classes/OrderService.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CRMSolution/Services/Interfaces/IClient.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CRMSolution/Services/Interfaces/IOrder.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRMSolution/Services/Interfaces/IClientService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CRMSolution/Services/Interfaces/IOrderService.cs" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../Lessons/Lesson1-ControllerFirst/.idea/.idea.Lesson1-ControllerFirst/.idea/.gitignore" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../Lessons/Lesson1-ControllerFirst/.idea/.idea.Lesson1-ControllerFirst/.idea/encodings.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../Lessons/Lesson1-ControllerFirst/.idea/.idea.Lesson1-ControllerFirst/.idea/indexLayout.xml" afterDir="false" />
@@ -138,10 +140,10 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/2f1e8153e25ec5e19739b45da84861aa743db6bb9dea25d7e7fda11cfaf6a5/Assembly.CoreCLR.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CRMSolution/Data/Validators/Order/ChangeOrderDataValidator.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 6
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 6
+}</component>
   <component name="ProjectId" id="2tTeMje2kq93yfrnB27dqPgCdGc" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="1" id="Add" />
@@ -150,20 +152,20 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "ASP",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.lookFeel",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;ASP&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected=".NET Launch Settings Profile.CRMSolution: IIS Express">
     <configuration name="CRMSolution: IIS Express" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
       <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/CRMSolution/CRMSolution.csproj" />
@@ -220,6 +222,7 @@
       <option name="presentableId" value="Default" />
       <updated>1740380448810</updated>
       <workItem from="1740380451795" duration="21380000" />
+      <workItem from="1740482341743" duration="2897000" />
     </task>
     <servers />
   </component>

@@ -7,15 +7,15 @@ using TaskStatus = CRMSolution.Data.Models.TaskStatus;
 
 namespace CRMSolution.Services.Classes;
 
-public class TasksServiceService : ITasksService
+public class TasksService : ITasksService
 {
-    IRepository<Tasks> _tasksRepository;
-    IRepository<Client> _clientsRepository;
-    IRepository<User> _usersRepository;
-    IRepository<Order> _orderRepository;
-    IMapper _mapper;
+    private readonly IRepository<Tasks> _tasksRepository;
+    private readonly IRepository<Client> _clientsRepository;
+    private readonly IRepository<User> _usersRepository;
+    private readonly IRepository<Order> _orderRepository;
+    private readonly IMapper _mapper;
 
-    public TasksServiceService(IRepository<Tasks> tasksRepository, IRepository<Client> clientsRepository,
+    public TasksService(IRepository<Tasks> tasksRepository, IRepository<Client> clientsRepository,
         IRepository<User> usersRepository, IRepository<Order> orderRepository, IMapper mapper)
     {
         _tasksRepository = tasksRepository;

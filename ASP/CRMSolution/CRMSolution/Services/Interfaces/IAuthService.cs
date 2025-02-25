@@ -1,4 +1,7 @@
-﻿namespace CRMSolution.Services.Interfaces;
+﻿using ControllerFirst.DTO.Requests;
+using ControllerFirst.DTO.Responses;
+
+namespace CRMSolution.Services.Interfaces;
 
 public interface IAuthService
 {

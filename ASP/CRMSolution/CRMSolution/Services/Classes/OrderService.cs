@@ -7,14 +7,14 @@ using CRMSolution.Services.Interfaces;
 
 namespace CRMSolution.Services.Classes;
 
-public class OrderServiceService : IOrderService
+public class OrderService : IOrderService
 {
-    IRepository<Order> _orderRepository;
-    IRepository<Client> _clientRepository;
-    IOrderRep _specialOrderRepository;
-    IMapper _mapper;
+    private readonly IRepository<Order> _orderRepository;
+    private readonly IRepository<Client> _clientRepository;
+    private readonly IOrderRep _specialOrderRepository;
+    private readonly IMapper _mapper;
 
-    public OrderServiceService(IRepository<Order> orderRepository, IRepository<Client> clientRepository, IOrderRep specialOrderRepository, IMapper mapper)
+    public OrderService(IRepository<Order> orderRepository, IRepository<Client> clientRepository, IOrderRep specialOrderRepository, IMapper mapper)
     {
         _orderRepository = orderRepository;
         _clientRepository = clientRepository;

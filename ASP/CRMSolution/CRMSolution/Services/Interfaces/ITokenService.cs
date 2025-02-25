@@ -7,4 +7,7 @@ public interface ITokenService
     public Task<string> CreateEmailTokenAsync(string username);
     
     public Task<bool> ValidateEmailTokenAsync(string token);
+    
+    public Task<string> CreateResetPasswordTokenAsync(string username);
+    public Task<bool> ValidateChangePasswordTokenAsync(string token);
 }

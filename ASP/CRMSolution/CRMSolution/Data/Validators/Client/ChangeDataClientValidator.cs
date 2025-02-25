@@ -1,4 +1,5 @@
-﻿using CRMSolution.Data.Models;
+﻿using ControllerFirst.DTO.Requests;
+using CRMSolution.Data.Models;
 using CRMSolution.Data.Repository.Interface;
 using CRMSolution.DTO.Requests.Client;
 using FluentValidation;

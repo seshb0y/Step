@@ -2,6 +2,8 @@ using System.Reflection;
 using System.Text;
 using CRMSolution.Contexts;
 using CRMSolution.Data.Models;
+using CRMSolution.Services.Classes;
+using CRMSolution.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -45,6 +47,13 @@ builder.Services.AddAuthorization(options =>
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<CRMContext>(options =>
     options.UseSqlServer(connectionString));
+
+builder.Services.AddScoped<IClientService, ClientService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<ITasksService, TasksService>();
+builder.Services.AddScoped<IAuthService, AuthService>(); 
+builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IAccountService, AccountService>();
 
 var app = builder.Build();
 if (app.Environment.IsDevelopment())
