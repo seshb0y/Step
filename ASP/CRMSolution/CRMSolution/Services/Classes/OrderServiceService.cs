@@ -1,4 +1,5 @@
-﻿using CRMSolution.Data.Models;
+﻿using AutoMapper;
+using CRMSolution.Data.Models;
 using CRMSolution.Data.Repository.Interface;
 using CRMSolution.Data.Repository.OrderResp;
 using CRMSolution.DTO.Requests;
@@ -6,23 +7,25 @@ using CRMSolution.Services.Interfaces;
 
 namespace CRMSolution.Services.Classes;
 
-public class OrderService : IOrder
+public class OrderServiceService : IOrderService
 {
     IRepository<Order> _orderRepository;
     IRepository<Client> _clientRepository;
     IOrderRep _specialOrderRepository;
+    IMapper _mapper;
 
-    public OrderService(IRepository<Order> orderRepository, IRepository<Client> clientRepository, IOrderRep specialOrderRepository)
+    public OrderServiceService(IRepository<Order> orderRepository, IRepository<Client> clientRepository, IOrderRep specialOrderRepository, IMapper mapper)
     {
         _orderRepository = orderRepository;
         _clientRepository = clientRepository;
         _specialOrderRepository = specialOrderRepository;
+        _mapper = mapper;
     }
     
     public async Task CreateOrder(CreateOrderRequest request)
     {
         Client client = await _clientRepository.GetById(Guid.Parse(request.clientId));
-        Order order = new Order{TotalAmount = request.totalAmount, Client = client};
+        Order order = _mapper.Map<Order>(request);
         await _orderRepository.AddAsync(order);
         await _specialOrderRepository.AddOrderToClient(client, order);
         await _orderRepository.SaveChangesAsync();
@@ -31,7 +34,7 @@ public class OrderService : IOrder
     public async Task ChangeDataOrder(ChangeOrderDataRequest request)
     {
         Order order = await _orderRepository.GetById(Guid.Parse(request.orderId));
-        order.TotalAmount = request.totalAmount;
+        order = _mapper.Map<Order>(request);
         _orderRepository.Update(order);
         await _orderRepository.SaveChangesAsync();
     }

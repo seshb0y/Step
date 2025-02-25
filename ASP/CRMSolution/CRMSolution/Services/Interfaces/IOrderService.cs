@@ -3,7 +3,7 @@ using CRMSolution.DTO.Requests;
 
 namespace CRMSolution.Services.Interfaces;
 
-public interface IOrder
+public interface IOrderService
 {
     public Task CreateOrder(CreateOrderRequest request);
     public Task ChangeDataOrder(ChangeOrderDataRequest request);

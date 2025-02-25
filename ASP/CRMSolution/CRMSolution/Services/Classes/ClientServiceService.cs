@@ -6,11 +6,11 @@ using CRMSolution.Services.Interfaces;
 
 namespace CRMSolution.Services.Classes;
 
-public class ClientService : IClient
+public class ClientServiceService : IClientService
 {
     IRepository<Client> _clientRepository;
     IMapper _mapper;
-    public ClientService(IRepository<Client> clientRepository, IMapper mapper)
+    public ClientServiceService(IRepository<Client> clientRepository, IMapper mapper)
     {
         _clientRepository = clientRepository;
         _mapper = mapper;

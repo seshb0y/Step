@@ -3,7 +3,7 @@ using CRMSolution.DTO.Requests.Client;
 
 namespace CRMSolution.Services.Interfaces;
 
-public interface IClient
+public interface IClientService
 {
     public Task CreateClient(CreateClientRequest request);
     public Task ChangeDataClient(ChangeDataClientRequest request);

@@ -3,7 +3,7 @@ using CRMSolution.DTO.Requests.Task;
 
 namespace CRMSolution.Services.Interfaces;
 
-public interface ITasks
+public interface ITasksService
 {
     public Task CreateTaskAsync(CreateTaskRequest request);
     public Task UpdateTaskAsync(UpdateTaskRequest request);
