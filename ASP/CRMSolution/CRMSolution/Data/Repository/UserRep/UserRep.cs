@@ -13,12 +13,12 @@ public class UserRep : Repository<User>, IUserRep
         
     }
     
-    public async Task<User> FindByNameAsync(string name)
+    public async Task<User?> FindByNameAsync(string name)
     {
         return await _dbSet.FirstOrDefaultAsync(u => u.UserName == name);
     }
     
-    public async Task<User> FindByEmailAsync(string email)
+    public async Task<User?> FindByEmailAsync(string email)
     {
         return await _dbSet.FirstOrDefaultAsync(u => u.Email == email);
     }

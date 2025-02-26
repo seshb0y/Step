@@ -2,11 +2,13 @@ using System.Reflection;
 using System.Text;
 using CRMSolution.Contexts;
 using CRMSolution.Data.Models;
+using CRMSolution.Data.Repository;
 using CRMSolution.Services.Classes;
 using CRMSolution.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -48,6 +50,7 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<CRMContext>(options =>
     options.UseSqlServer(connectionString));
 
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IClientService, ClientService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<ITasksService, TasksService>();
@@ -62,5 +65,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseMiddleware<ExceptionHandlerMiddleware>();
 app.UseHttpsRedirection();
 app.Run();

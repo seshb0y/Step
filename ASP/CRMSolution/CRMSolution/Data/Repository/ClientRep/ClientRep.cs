@@ -12,7 +12,7 @@ public class ClientRep : Repository<Client>, IClientRep
         
     }
 
-    public async Task<IEnumerable<Client>> GetClientsByManagerIdAsync(Guid managerId)
+    public async Task<IEnumerable<Client?>> GetClientsByManagerIdAsync(Guid managerId)
     {
         return await _dbSet.Where(c => c.ManagerId == managerId).ToListAsync();
     }

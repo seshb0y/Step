@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using System;
 using System.Threading.Tasks;
 using ControllerFirst.DTO.Requests;
+using CRMSolution.Data.Repository;
 using CRMSolution.Data.Repository.UserRep;
 
 namespace CRMSolution.Services.Classes;
@@ -17,22 +18,22 @@ namespace CRMSolution.Services.Classes;
 public class AccountService : IAccountService
 {
     private readonly IMapper _mapper;
-    private readonly IUserRep _userRepository;
+    private readonly IUnitOfWork _unitOfWork;
     private readonly IConfiguration _config;
     private readonly ITokenService _tokenService;
 
-    public AccountService(IMapper mapper, IUserRep userRepository, IConfiguration config, ITokenService tokenService)
+    public AccountService(IMapper mapper, IUnitOfWork unitOfWork, IConfiguration config, ITokenService tokenService)
     {
         _mapper = mapper;
-        _userRepository = userRepository;
+        _unitOfWork = unitOfWork;
         _config = config;
         _tokenService = tokenService;
     }
 
     public async Task RegisterAsync(RegisterRequest request)
     {
-        if (await _userRepository.FindByNameAsync(request.Username) != null || 
-            await _userRepository.FindByEmailAsync(request.Email) != null)
+        if (await _unitOfWork.UserRep.FindByNameAsync(request.Username) != null || 
+            await _unitOfWork.UserRep.FindByEmailAsync(request.Email) != null)
         {
             throw new Exception("User with this email or username already exists");
         }
@@ -44,13 +45,13 @@ public class AccountService : IAccountService
         user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password);
         user.Role = UserRole.Manager; 
 
-        await _userRepository.AddAsync(user);
-        await _userRepository.SaveChangesAsync();
+        await _unitOfWork.UserRep.AddAsync(user);
+        await _unitOfWork.SaveChangesAsync();
     }
 
     public async Task ConfirmEmailAsync(ConfirmRequest request, HttpContext context)
     {
-        var user = await _userRepository.FindByNameAsync(request.username);
+        var user = await _unitOfWork.UserRep.FindByNameAsync(request.username);
         if (user == null)
             throw new Exception("User not found");
 
@@ -89,18 +90,18 @@ public class AccountService : IAccountService
         if (!isValid)
             throw new Exception("Token is invalid or expired");
 
-        var user = await _userRepository.FindByNameAsync(username);
+        var user = await _unitOfWork.UserRep.FindByNameAsync(username);
         if (user == null)
             throw new Exception("User not found");
 
         user.IsEmailConfirmed = true;
-        await _userRepository.SaveChangesAsync();
+        await _unitOfWork.SaveChangesAsync();
     }
     
 
     public async Task ResetPasswordAsync(ResetPasswordRequest request, HttpContext context)
     {
-        var user = await _userRepository.FindByNameAsync(request.username);
+        var user = await _unitOfWork.UserRep.FindByNameAsync(request.username);
         if (user == null)
             throw new Exception("User not found");
 
@@ -136,11 +137,11 @@ public class AccountService : IAccountService
             throw new Exception("Invalid or expired token");
 
         var username = await _tokenService.GetNameFromToken(request.token);
-        var user = await _userRepository.FindByEmailAsync(username);
+        var user = await _unitOfWork.UserRep.FindByEmailAsync(username);
         if (user == null)
             throw new Exception("User not found");
 
         user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.newPassword);
-        await _userRepository.SaveChangesAsync();
+        await _unitOfWork.SaveChangesAsync();
     }
 }

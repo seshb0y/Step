@@ -139,6 +139,8 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/2f1e8153e25ec5e19739b45da84861aa743db6bb9dea25d7e7fda11cfaf6a5/Assembly.CoreCLR.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CRMSolution/Data/Validators/Order/ChangeOrderDataValidator.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/CRMSolution/Services/Classes/TokenService.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/CRMSolution/Services/Interfaces/ITokenService.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
@@ -222,7 +224,7 @@
       <option name="presentableId" value="Default" />
       <updated>1740380448810</updated>
       <workItem from="1740380451795" duration="21380000" />
-      <workItem from="1740482341743" duration="2897000" />
+      <workItem from="1740482341743" duration="6911000" />
     </task>
     <servers />
   </component>

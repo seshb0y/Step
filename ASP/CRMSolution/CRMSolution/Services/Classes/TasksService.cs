@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CRMSolution.Data.Models;
+using CRMSolution.Data.Repository;
 using CRMSolution.Data.Repository.Interface;
 using CRMSolution.DTO.Requests.Task;
 using CRMSolution.Services.Interfaces;
@@ -9,50 +10,45 @@ namespace CRMSolution.Services.Classes;
 
 public class TasksService : ITasksService
 {
-    private readonly IRepository<Tasks> _tasksRepository;
-    private readonly IRepository<Client> _clientsRepository;
-    private readonly IRepository<User> _usersRepository;
-    private readonly IRepository<Order> _orderRepository;
+    private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
-    public TasksService(IRepository<Tasks> tasksRepository, IRepository<Client> clientsRepository,
-        IRepository<User> usersRepository, IRepository<Order> orderRepository, IMapper mapper)
+    public TasksService(IUnitOfWork unitOfWork, IMapper mapper)
     {
-        _tasksRepository = tasksRepository;
-        _clientsRepository = clientsRepository;
-        _usersRepository = usersRepository;
-        _orderRepository = orderRepository;
+        _unitOfWork = unitOfWork;
         _mapper = mapper;
     }
     
     public async Task CreateTaskAsync(CreateTaskRequest request)
     {
-        Client client = await _clientsRepository.GetById(Guid.Parse(request.clientId));
-        Order order = await _orderRepository.GetById(Guid.Parse(request.orderId));
-        User user = await _usersRepository.GetById(Guid.Parse(request.userId));
-        Tasks task = _mapper.Map<Tasks>(request);
-        await _tasksRepository.AddAsync(task);
-        await _tasksRepository.SaveChangesAsync();
+        Client client = await _unitOfWork.ClientRep.GetById(Guid.Parse(request.clientId));
         
+        Order order = await _unitOfWork.OrderRep.GetById(Guid.Parse(request.orderId));
+        
+        User user = await _unitOfWork.UserRep.GetById(Guid.Parse(request.userId));
+        
+        Tasks task = _mapper.Map<Tasks>(request);
+        await _unitOfWork.TasksRep.AddDependency(client, order, user, task);
+        await _unitOfWork.SaveChangesAsync();
     }
 
     public async Task UpdateTaskAsync(UpdateTaskRequest request)
     {
-        Tasks task = await _tasksRepository.GetById(Guid.Parse(request.taskId));
+        Tasks task = await _unitOfWork.TasksRep.GetById(Guid.Parse(request.taskId));
         task = _mapper.Map<Tasks>(request);
-        await _tasksRepository.SaveChangesAsync();
+        await _unitOfWork.SaveChangesAsync();
     }
 
     public async Task DeleteTaskAsync(DeleteTaskRequest request)
     {
-        Tasks task = await _tasksRepository.GetById(Guid.Parse(request.taskId));
-        _tasksRepository.Delete(task);
-        await _tasksRepository.SaveChangesAsync();
+        Tasks task = await _unitOfWork.TasksRep.GetById(Guid.Parse(request.taskId));
+        _unitOfWork.TasksRep.Delete(task);
+        await _unitOfWork.SaveChangesAsync();
     }
 
     public async Task<Tasks> FindTaskByIdAsync(FindTaskRequest request)
     {
-        Tasks task = await _tasksRepository.GetById(Guid.Parse(request.taskId));
+        Tasks task = await _unitOfWork.TasksRep.GetById(Guid.Parse(request.taskId));
         return task;
     }
 }
