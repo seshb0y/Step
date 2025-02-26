@@ -34,6 +34,10 @@
     <setting file="file://$PROJECT_DIR$/CRMSolution/Services/Classes/TokenService.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CRMSolution/Services/Interfaces/ITokenService.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
+  <component name="KubernetesApiPersistence"><![CDATA[{}]]></component>
+  <component name="KubernetesApiProvider"><![CDATA[{
+  "isMigrated": true
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
   &quot;associatedIndex&quot;: 6
@@ -118,7 +122,7 @@
       <updated>1740380448810</updated>
       <workItem from="1740380451795" duration="21380000" />
       <workItem from="1740482341743" duration="6911000" />
-      <workItem from="1740564763192" duration="2333000" />
+      <workItem from="1740564763192" duration="3430000" />
     </task>
     <servers />
   </component>

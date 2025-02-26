@@ -3,6 +3,11 @@ using System.Text;
 using CRMSolution.Contexts;
 using CRMSolution.Data.Models;
 using CRMSolution.Data.Repository;
+using CRMSolution.Data.Repository.Interface;
+using CRMSolution.Data.Repository.OrderResp;
+using CRMSolution.Data.Repository.SpecialRepClass.ClientRep;
+using CRMSolution.Data.Repository.TasksRep;
+using CRMSolution.Data.Repository.UserRep;
 using CRMSolution.Services.Classes;
 using CRMSolution.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -60,7 +65,16 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<CRMContext>(options =>
     options.UseSqlServer(connectionString));
 
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+builder.Services.AddScoped<IClientRep, ClientRep>();
+builder.Services.AddScoped<IUserRep, UserRep>();
+builder.Services.AddScoped<IOrderRep, OrderRep>();
+builder.Services.AddScoped<ITasksRep, TasksRep>();
+
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
 builder.Services.AddScoped<IClientService, ClientService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<ITasksService, TasksService>();
@@ -75,6 +89,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseMiddleware<ExceptionHandlerMiddleware>();
+app.UseMiddleware<CRMSolution.Middlewares.ExceptionHandlerMiddleware>();
 app.UseHttpsRedirection();
 app.Run();
