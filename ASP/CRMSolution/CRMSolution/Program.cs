@@ -13,6 +13,16 @@ using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var loggerFactory = LoggerFactory.Create(builder =>
+{
+    builder.AddConsole();
+    builder.AddDebug();
+});
+var logger = loggerFactory.CreateLogger<Program>();
+logger.LogInformation("Starting CRM Solution");
+
+builder.Services.AddSingleton(loggerFactory);
+
 builder.Services.AddControllers()
     .AddFluentValidation(fv => 
         fv.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly()));

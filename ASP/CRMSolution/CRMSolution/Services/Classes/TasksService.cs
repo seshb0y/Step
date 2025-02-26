@@ -12,15 +12,18 @@ public class TasksService : ITasksService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
+    private readonly ILogger<TasksService> _logger;
 
-    public TasksService(IUnitOfWork unitOfWork, IMapper mapper)
+    public TasksService(IUnitOfWork unitOfWork, IMapper mapper, ILogger<TasksService> logger)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
+        _logger = logger;
     }
     
     public async Task CreateTaskAsync(CreateTaskRequest request)
     {
+        _logger.LogInformation("Создаем новую задачу: {@Request}", request);
         Client client = await _unitOfWork.ClientRep.GetById(Guid.Parse(request.clientId));
         
         Order order = await _unitOfWork.OrderRep.GetById(Guid.Parse(request.orderId));
@@ -34,6 +37,7 @@ public class TasksService : ITasksService
 
     public async Task UpdateTaskAsync(UpdateTaskRequest request)
     {
+        _logger.LogInformation("Обновляем задачу: {@Request}", request);
         Tasks task = await _unitOfWork.TasksRep.GetById(Guid.Parse(request.taskId));
         task = _mapper.Map<Tasks>(request);
         await _unitOfWork.SaveChangesAsync();
@@ -41,6 +45,7 @@ public class TasksService : ITasksService
 
     public async Task DeleteTaskAsync(DeleteTaskRequest request)
     {
+        _logger.LogInformation("Удаляем задачу: {@Request}", request);
         Tasks task = await _unitOfWork.TasksRep.GetById(Guid.Parse(request.taskId));
         _unitOfWork.TasksRep.Delete(task);
         await _unitOfWork.SaveChangesAsync();
@@ -48,6 +53,7 @@ public class TasksService : ITasksService
 
     public async Task<Tasks> FindTaskByIdAsync(FindTaskRequest request)
     {
+        _logger.LogInformation("Находим задачу: {@Request}", request);
         Tasks task = await _unitOfWork.TasksRep.GetById(Guid.Parse(request.taskId));
         return task;
     }

@@ -4,6 +4,7 @@ using System.Text;
 using CRMSolution.Contexts;
 using CRMSolution.Data.Models;
 using CRMSolution.Data.Repository.Interface;
+using CRMSolution.Data.Repository.OrderResp;
 using CRMSolution.Data.Repository.UserRep;
 using CRMSolution.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +16,7 @@ public class TokenService : ITokenService
 {
     private readonly IConfiguration _config;
     private readonly IUserRep _userRepository;
+    private readonly ILogger<TokenService> _logger;
 
     public TokenService(IConfiguration config, IUserRep userRepository)
     {
@@ -24,6 +26,7 @@ public class TokenService : ITokenService
 
     public async Task<string> GetNameFromToken(string token)
     {
+        _logger.LogInformation("Берем информацию из токена: {@Token}", token);
         var tokenHandler = new JwtSecurityTokenHandler();
 
         var securityToken = tokenHandler.ReadToken(token) as JwtSecurityToken;
@@ -37,6 +40,7 @@ public class TokenService : ITokenService
     }
     public async Task<string> CreateTokenAsync(string username)
     {
+        _logger.LogInformation("Создаем новоый токен: {@Username}", username);
         var user = await _userRepository.FindByEmailAsync(username);
 
         if (user == null)
@@ -64,6 +68,7 @@ public class TokenService : ITokenService
     
     public async Task<string> CreateEmailTokenAsync(string username)
     {
+        _logger.LogInformation("Создаем токен для подтверждения мыла: {@Username}", username);
         var claims = new List<Claim>
         {
             new Claim(ClaimTypes.Name, username),
@@ -86,6 +91,7 @@ public class TokenService : ITokenService
 
     public async Task<bool> ValidateEmailTokenAsync(string token)
     {
+        _logger.LogInformation("Проверка токена для подтверждения мыла: {@Token}", token);
         var tokenHandler = new JwtSecurityTokenHandler();
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetSection("JWT:EmailKey").Value));
 
@@ -108,6 +114,7 @@ public class TokenService : ITokenService
 
     public async Task<string> CreateResetPasswordTokenAsync(string username)
     {
+        _logger.LogInformation("Создаем токен для сброса пароля: {@Username}", username);
         var claims = new List<Claim>
         {
             new Claim(ClaimTypes.Name, username),
@@ -129,6 +136,7 @@ public class TokenService : ITokenService
     
     public async Task<bool> ValidateChangePasswordTokenAsync(string token)
     {
+        _logger.LogInformation("Проверка токена для сброса пароля: {@Token}", token);
         var tokenHandler = new JwtSecurityTokenHandler();
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JWT:EmailKey"]));
 

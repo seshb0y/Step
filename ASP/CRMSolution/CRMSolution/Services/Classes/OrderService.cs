@@ -12,15 +12,18 @@ public class OrderService : IOrderService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
-
-    public OrderService(IUnitOfWork unitOfWork, IMapper mapper)
+    private readonly ILogger<OrderService> _logger;
+    
+    public OrderService(IUnitOfWork unitOfWork, IMapper mapper, ILogger<OrderService> logger)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
+        _logger = logger;
     }
     
     public async Task CreateOrder(CreateOrderRequest request)
     {
+        _logger.LogInformation("Создаем новый заказ: {@Request}", request);
         Client client = await _unitOfWork.ClientRep.GetById(Guid.Parse(request.clientId));
         
         Order order = _mapper.Map<Order>(request);
@@ -33,6 +36,7 @@ public class OrderService : IOrderService
 
     public async Task ChangeDataOrder(ChangeOrderDataRequest request)
     {
+        _logger.LogInformation("Изменяем заказ: {@Request}", request);
         Order order = await _unitOfWork.OrderRep.GetById(Guid.Parse(request.orderId));
         
         order = _mapper.Map<Order>(request);
@@ -42,6 +46,7 @@ public class OrderService : IOrderService
 
     public async Task DeleteOrder(DeleteOrderRequest request)
     {
+        _logger.LogInformation("Удаляем заказ: {@Request}", request);
         Order order = await _unitOfWork.OrderRep.GetById(Guid.Parse(request.orderId));
         
         _unitOfWork.OrderRep.Delete(order);
@@ -50,6 +55,7 @@ public class OrderService : IOrderService
 
     public async Task<Order> FindOrder(FindOrderRequest request)
     {
+        _logger.LogInformation("Поиск клиента: {@Request}", request);
         Order order = await _unitOfWork.OrderRep.GetById(Guid.Parse(request.orderId));
         return order;
     }

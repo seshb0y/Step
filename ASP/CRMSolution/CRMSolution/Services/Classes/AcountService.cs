@@ -21,17 +21,20 @@ public class AccountService : IAccountService
     private readonly IUnitOfWork _unitOfWork;
     private readonly IConfiguration _config;
     private readonly ITokenService _tokenService;
+    private readonly ILogger<AccountService> _logger;
 
-    public AccountService(IMapper mapper, IUnitOfWork unitOfWork, IConfiguration config, ITokenService tokenService)
+    public AccountService(IMapper mapper, IUnitOfWork unitOfWork, IConfiguration config, ITokenService tokenService, ILogger<AccountService> logger)
     {
         _mapper = mapper;
         _unitOfWork = unitOfWork;
         _config = config;
         _tokenService = tokenService;
+        _logger = logger;
     }
 
     public async Task RegisterAsync(RegisterRequest request)
     {
+        _logger.LogInformation("Регистрация юзера: {@Request}", request);
         if (await _unitOfWork.UserRep.FindByNameAsync(request.Username) != null || 
             await _unitOfWork.UserRep.FindByEmailAsync(request.Email) != null)
         {
@@ -51,6 +54,7 @@ public class AccountService : IAccountService
 
     public async Task ConfirmEmailAsync(ConfirmRequest request, HttpContext context)
     {
+        _logger.LogInformation("Отправка письма для подтверждения мыла: {@Request}", request);
         var user = await _unitOfWork.UserRep.FindByNameAsync(request.username);
         if (user == null)
             throw new Exception("User not found");
@@ -82,6 +86,7 @@ public class AccountService : IAccountService
 
     public async Task VerifyEmailAsync(string token)
     {
+        _logger.LogInformation("Подтверждение мыла по токены: {@Token}", token);
         string username = await _tokenService.GetNameFromToken(token);
         if (string.IsNullOrEmpty(username))
             throw new Exception("Invalid token");
@@ -101,6 +106,7 @@ public class AccountService : IAccountService
 
     public async Task ResetPasswordAsync(ResetPasswordRequest request, HttpContext context)
     {
+        _logger.LogInformation("Отправка письма для сброса пароля: {@Request}", request);
         var user = await _unitOfWork.UserRep.FindByNameAsync(request.username);
         if (user == null)
             throw new Exception("User not found");
@@ -132,6 +138,7 @@ public class AccountService : IAccountService
 
     public async Task ChangePasswordAsync(ChangePasswordRequest request)
     {
+        _logger.LogInformation("Изменение пароля: {@Request}", request);
         bool isValid = await _tokenService.ValidateChangePasswordTokenAsync(request.token);
         if (!isValid)
             throw new Exception("Invalid or expired token");

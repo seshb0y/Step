@@ -18,16 +18,19 @@ public class AuthService : IAuthService
     private readonly IUnitOfWork _unitOfWork;
     private readonly ITokenService _tokenService;
     private readonly IMapper _mapper;
+    private readonly ILogger<AuthService> _logger;
 
-    public AuthService(IUnitOfWork unitOfWork, IMapper mapper, ITokenService tokenService)
+    public AuthService(IUnitOfWork unitOfWork, IMapper mapper, ITokenService tokenService, ILogger<AuthService> logger)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
         _tokenService = tokenService;
+        _logger = logger;
     }
 
     public async Task<LoginResponse> LoginAsync(LoginRequest request)
     {
+        _logger.LogInformation("Вход в аккаунт: {@Request}", request);
         var user = await _unitOfWork.UserRep.FindByNameAsync(request.username);
         if (user == null || !BCrypt.Net.BCrypt.Verify(request.password, user.PasswordHash))
             throw new Exception("Invalid credentials");
@@ -42,6 +45,7 @@ public class AuthService : IAuthService
 
     public async Task<RefreshTokenResponse> RefreshTokenAsync(RefreshTokenRequest request)
     {
+        _logger.LogInformation("Создание рефреш токена: {@Request}", request);
         var user = await _unitOfWork.UserRep.FindByNameAsync(request.username);
         if (user == null || user.RefreshToken.ToString() != request.refreshToken || user.RefreshTokenExpiration < DateTime.UtcNow)
             throw new Exception("Invalid refresh token");
