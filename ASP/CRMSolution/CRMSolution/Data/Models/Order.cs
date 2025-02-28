@@ -11,6 +11,8 @@ public class Order
     public Client Client { get; set; }
     
     public ICollection<Tasks> Tasks { get; set; } = new List<Tasks>();
+    
+    public ICollection<UserOrders> UserOrders { get; set; } = new List<UserOrders>();
 }
 
 public enum OrderStatus

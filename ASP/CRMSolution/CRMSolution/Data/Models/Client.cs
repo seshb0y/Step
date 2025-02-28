@@ -9,8 +9,7 @@ public class Client
     public string Address { get; set; } = string.Empty;
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-    public Guid ManagerId { get; set; }
-    public User Manager { get; set; }
+    public ICollection<ClientUser> ClientUsers { get; set; } = new List<ClientUser>();
 
     public ICollection<Order> Orders { get; set; } = new List<Order>();
 }

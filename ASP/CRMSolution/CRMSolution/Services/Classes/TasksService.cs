@@ -24,14 +24,13 @@ public class TasksService : ITasksService
     public async Task CreateTaskAsync(CreateTaskRequest request)
     {
         _logger.LogInformation("Создаем новую задачу: {@Request}", request);
-        Client client = await _unitOfWork.ClientRep.GetById(Guid.Parse(request.clientId));
         
         Order order = await _unitOfWork.OrderRep.GetById(Guid.Parse(request.orderId));
         
         User user = await _unitOfWork.UserRep.GetById(Guid.Parse(request.userId));
         
         Tasks task = _mapper.Map<Tasks>(request);
-        await _unitOfWork.TasksRep.AddDependency(client, order, user, task);
+        await _unitOfWork.TasksRep.AddDependency(order, user, task);
         await _unitOfWork.SaveChangesAsync();
     }
 

@@ -14,10 +14,5 @@ public class UserConfig : IEntityTypeConfiguration<User>
         builder.Property(u => u.Email).IsRequired().HasMaxLength(100);
         builder.Property(u => u.PasswordHash).IsRequired();
         builder.Property(u => u.Role).IsRequired();
-
-        builder.HasMany(u => u.Clients)
-            .WithOne(c => c.Manager)
-            .HasForeignKey(c => c.ManagerId)
-            .OnDelete(DeleteBehavior.Restrict);
     }
 }

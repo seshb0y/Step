@@ -14,10 +14,5 @@ public class OrderConfig : IEntityTypeConfiguration<Order>
         builder.Property(o => o.TotalAmount).HasColumnType("decimal(18,2)");
         builder.Property(o => o.Status).IsRequired();
         builder.Property(o => o.CreatedAt).IsRequired();
-
-        builder.HasOne(o => o.Client)
-            .WithMany(c => c.Orders)
-            .HasForeignKey(o => o.ClientId)
-            .OnDelete(DeleteBehavior.Cascade);
     }
 }

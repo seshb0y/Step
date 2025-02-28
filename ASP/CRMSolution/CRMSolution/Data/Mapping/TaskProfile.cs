@@ -15,10 +15,6 @@ public class TaskProfile : Profile
                 .MapFrom(src => src.description))
             .ForMember(dest => dest.DueDate, opt => opt
                 .MapFrom(src => src.endDate))
-            .ForMember(dest => dest.ClientId, opt => opt
-                .MapFrom(src => src.clientId))
-            .ForMember(dest => dest.AssignedToId, opt => opt
-                .MapFrom(src => src.userId))
             .ForMember(dest => dest.OrderId, opt => opt
                 .MapFrom(src => src.orderId));
 

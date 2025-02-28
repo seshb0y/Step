@@ -12,8 +12,13 @@ public class User
     public Guid RefreshToken { get; set; }
     public DateTime RefreshTokenExpiration { get; set; } = DateTime.Now.AddDays(7);
 
-    public ICollection<Client> Clients { get; set; } = new List<Client>();
-    public ICollection<Tasks> Tasks { get; set; } = new List<Tasks>();
+    public ICollection<ClientUser> ClientUsers { get; set; } = new List<ClientUser>();
+    
+    public ICollection<UserTask> UserTasks { get; set; } = new List<UserTask>();
+    
+    public ICollection<UserOrders> UserOrders { get; set; } = new List<UserOrders>();
+    
+    
 }
 
 public enum UserRole

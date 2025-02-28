@@ -11,11 +11,17 @@ public class TasksRep : Repository<Tasks>, ITasksRep
         
     }
 
-    public async Task AddDependency(Client client, Order order, User user, Tasks task)
+    public async Task AddDependency(Order order, User user, Tasks task)
     {
-        task.Client = client;
         task.Order = order;
-        task.AssignedTo = user;
+        task.UserTasks.Add(
+            new UserTask
+            {
+                UserId = user.Id,
+                TaskId = task.Id,
+                User = user,
+                Task = task
+            });
         await AddAsync(task);
     }
 }

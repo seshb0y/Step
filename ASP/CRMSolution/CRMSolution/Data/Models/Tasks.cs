@@ -8,13 +8,13 @@ public class Tasks
     public TaskStatus Status { get; set; } = TaskStatus.New;
     public DateTime DueDate { get; set; }
 
-    public Guid ClientId { get; set; }
-    public Client Client { get; set; }
+    // public Guid ClientId { get; set; }
+    // public Client Client { get; set; }
 
     public Guid OrderId { get; set; }
     public Order Order { get; set; }
-    public Guid AssignedToId { get; set; }
-    public User AssignedTo { get; set; }
+    
+    public ICollection<UserTask> UserTasks { get; set; } = new List<UserTask>();
 }
 
 public enum TaskStatus

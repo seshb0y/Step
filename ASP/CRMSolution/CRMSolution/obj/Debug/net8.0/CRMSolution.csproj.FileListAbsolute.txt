@@ -303,3 +303,4 @@ C:\Users\Batyr_lg06\Desktop\Step\ASP\CRMSolution\CRMSolution\obj\Debug\net8.0\CR
 C:\Users\Batyr_lg06\Desktop\Step\ASP\CRMSolution\CRMSolution\obj\Debug\net8.0\CRMSolution.genruntimeconfig.cache
 C:\Users\Batyr_lg06\Desktop\Step\ASP\CRMSolution\CRMSolution\obj\Debug\net8.0\ref\CRMSolution.dll
 C:\Users\Batyr_lg06\Desktop\Step\ASP\CRMSolution\CRMSolution\bin\Debug\net8.0\appsettings.json
+D:\users_C\OneDrive\Рабочий стол\desctop\NewStepRepository09.01.2024\Step\ASP\CRMSolution\CRMSolution\bin\Debug\net8.0\Newtonsoft.Json.dll

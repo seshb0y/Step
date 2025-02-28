@@ -16,21 +16,5 @@ public class TaskConfig : IEntityTypeConfiguration<Tasks>
         builder.Property(t => t.Description).HasMaxLength(1000);
         builder.Property(t => t.Status).IsRequired();
         builder.Property(t => t.DueDate).IsRequired();
-
-        builder.HasOne(t => t.Client)
-            .WithMany()
-            .HasForeignKey(t => t.ClientId)
-            .OnDelete(DeleteBehavior.Cascade);
-
-        builder.HasOne(t => t.AssignedTo)
-            .WithMany(u => u.Tasks)
-            .HasForeignKey(t => t.AssignedToId)
-            .OnDelete(DeleteBehavior.Restrict);
-        
-        builder.HasOne(t => t.Order)
-            .WithMany(t => t.Tasks)
-            .HasForeignKey(t => t.OrderId)
-            .OnDelete(DeleteBehavior.Restrict);
-            
     }
 }

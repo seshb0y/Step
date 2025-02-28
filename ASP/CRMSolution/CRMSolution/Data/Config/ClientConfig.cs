@@ -16,10 +16,5 @@ public class ClientConfig : IEntityTypeConfiguration<Client>
         builder.Property(c => c.Email).HasMaxLength(100);
         builder.Property(c => c.Phone).HasMaxLength(50);
         builder.Property(c => c.Address).HasMaxLength(255);
-
-        builder.HasOne(c => c.Manager)
-            .WithMany(u => u.Clients)
-            .HasForeignKey(c => c.ManagerId)
-            .OnDelete(DeleteBehavior.Restrict);
     }
 }
