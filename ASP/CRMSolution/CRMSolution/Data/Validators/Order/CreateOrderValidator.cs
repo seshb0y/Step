@@ -1,5 +1,6 @@
 ﻿using CRMSolution.Data.Models;
 using CRMSolution.Data.Repository.Interface;
+using CRMSolution.Data.Repository.SpecialRepClass.ClientRep;
 using CRMSolution.DTO.Requests;
 using FluentValidation;
 
@@ -7,9 +8,9 @@ namespace CRMSolution.Data.Validators.Order;
 
 public class CreateOrderValidator : AbstractValidator<CreateOrderRequest>
 {
-    IRepository<Client> _clientRepository;
+    IClientRep _clientRepository;
     
-    public CreateOrderValidator(IRepository<Client> repository)
+    public CreateOrderValidator(IClientRep repository)
     {
         _clientRepository = repository;
         RuleFor(r => r.totalAmount)
@@ -18,16 +19,16 @@ public class CreateOrderValidator : AbstractValidator<CreateOrderRequest>
             .NotNull()
             .WithMessage("Invalid total amount.");
         
-        RuleFor(r => r.clientId)
+        RuleFor(r => r.clientEmail)
             .NotEmpty()
-            .WithMessage("Invalid client ID.")
+            .WithMessage("Invalid client email.")
             .MustAsync(IsClientExist)
-            .WithMessage("The client ID does not exist.");
+            .WithMessage("The client email does not exist.");
     }
 
-    private async Task<bool> IsClientExist(string clientId, CancellationToken cancellationToken)
+    private async Task<bool> IsClientExist(string email, CancellationToken cancellationToken)
     {
-        var client = await _clientRepository.GetById(Guid.Parse(clientId));
+        var client = await _clientRepository.GetClientByEmail(email);
         return client != null;
     }
 }

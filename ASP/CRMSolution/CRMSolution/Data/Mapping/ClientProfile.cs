@@ -24,18 +24,8 @@ public class ClientProfile : Profile
             .ForMember(dest => dest.Address, opt =>
                 opt.MapFrom(src => src.address))
             .ForMember(dest => dest.Email, opt =>
-                opt.MapFrom(src => src.email))
+                opt.MapFrom(src => src.newEmail))
             .ForMember(dest => dest.Phone, opt =>
-                opt.MapFrom(src => src.phone))
-            .ForMember(dest => dest.Id, opt =>
-                opt.MapFrom(src => src.id));
-        
-        CreateMap<DeleteClientRequest, Client>()
-            .ForMember(dest => dest.Id, opt =>
-                opt.MapFrom(src => src.id));
-        
-        CreateMap<FindClientRequest, Client>()
-            .ForMember(dest => dest.Id, opt =>
-                opt.MapFrom(src => src.id));
+                opt.MapFrom(src => src.phone));
     }
 }

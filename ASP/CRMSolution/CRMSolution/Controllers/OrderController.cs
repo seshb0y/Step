@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CRMSolution.Controllers;
 
 [ApiController]
-[Route("[controller]/[action]")]
+[Route("[controller]/")]
 public class OrderController : ControllerBase
 {
     private readonly IOrderService _orderService;
@@ -20,10 +20,11 @@ public class OrderController : ControllerBase
 
 
     [HttpPost("AddOrder")]
-    [Authorize(Policy = "ManagerPolicy")]
+    // [Authorize(Policy = "ManagerPolicy")]
     public async Task<IActionResult> AddOrder([FromBody] CreateOrderRequest request)
     {
-        throw new Exception();
+        await _orderService.CreateOrder(request);
+        return Ok("Order created");
     }
     
     [HttpPost("ChangeOrder")]

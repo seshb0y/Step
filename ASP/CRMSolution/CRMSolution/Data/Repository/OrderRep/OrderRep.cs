@@ -13,8 +13,14 @@ public class OrderRep : Repository<Order>, IOrderRep
 
     public async Task AddOrderToClient(Client client, Order order)
     {
-        order.Client = client;
-        client.Orders.Add(order);
+        order.ClientOrders.Add(
+            new ClientOrder
+            {
+                OrderId = order.Id,
+                ClientId = client.Id,
+                Order = order,
+                Client = client,
+            });
         await _context.SaveChangesAsync();
     }
 }

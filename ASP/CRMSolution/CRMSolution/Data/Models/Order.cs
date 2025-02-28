@@ -7,8 +7,7 @@ public class Order
     public OrderStatus Status { get; set; } = OrderStatus.New;
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-    public Guid ClientId { get; set; }
-    public Client Client { get; set; }
+    public ICollection<ClientOrder> ClientOrders { get; set; } = new List<ClientOrder>();
     
     public ICollection<Tasks> Tasks { get; set; } = new List<Tasks>();
     

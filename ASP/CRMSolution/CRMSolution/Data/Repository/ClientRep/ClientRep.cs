@@ -18,4 +18,9 @@ public class ClientRep : Repository<Client>, IClientRep
             .Where(c => c.ClientUsers.Any(cu => cu.UserId == managerId))
             .ToListAsync();
     }
+
+    public async Task<Client?> GetClientByEmail(String email)
+    {
+        return await _dbSet.FirstOrDefaultAsync(c => c.Email == email);
+    }
 }

@@ -24,11 +24,11 @@ public class OrderService : IOrderService
     public async Task CreateOrder(CreateOrderRequest request)
     {
         _logger.LogInformation("Создаем новый заказ: {@Request}", request);
-        Client client = await _unitOfWork.ClientRep.GetById(Guid.Parse(request.clientId));
+        Client client = await _unitOfWork.ClientRep.GetClientByEmail(request.clientEmail);
         
         Order order = _mapper.Map<Order>(request);
         await _unitOfWork.OrderRep.AddAsync(order); 
-        await _unitOfWork.OrderRep.SaveChangesAsync();
+        await _unitOfWork.SaveChangesAsync();
         
         await _unitOfWork.OrderRep.AddOrderToClient(client, order);
         await _unitOfWork.SaveChangesAsync();

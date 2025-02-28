@@ -10,6 +10,6 @@ public class Client
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     public ICollection<ClientUser> ClientUsers { get; set; } = new List<ClientUser>();
-
-    public ICollection<Order> Orders { get; set; } = new List<Order>();
+    
+    public ICollection<ClientOrder> ClientOrders { get; set; } = new List<ClientOrder>();
 }

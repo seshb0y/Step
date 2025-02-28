@@ -10,6 +10,7 @@ using CRMSolution.Data.Repository.TasksRep;
 using CRMSolution.Data.Repository.UserRep;
 using CRMSolution.Services.Classes;
 using CRMSolution.Services.Interfaces;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -24,13 +25,11 @@ var loggerFactory = LoggerFactory.Create(builder =>
     builder.AddDebug();
 });
 var logger = loggerFactory.CreateLogger<Program>();
-logger.LogInformation("Starting CRM Solution");
-
 builder.Services.AddSingleton(loggerFactory);
 
-builder.Services.AddControllers()
-    .AddFluentValidation(fv => 
-        fv.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly()));
+
+builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+// builder.Services.AddFluentValidationAutoValidation();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -53,12 +52,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("AdminPolicy", policy =>
-    {
-        policy.RequireRole(UserRole.Admin.ToString());
+        policy.RequireRole(UserRole.Admin.ToString()));
 
-        options.AddPolicy("ManagerPolicy", policy =>
-            policy.RequireRole(UserRole.Manager.ToString(), UserRole.Admin.ToString()));
-    });
+    options.AddPolicy("ManagerPolicy", policy =>
+        policy.RequireRole(UserRole.Manager.ToString(), UserRole.Admin.ToString()));
 });
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -82,7 +79,10 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 
+builder.Services.AddControllers();
+
 var app = builder.Build();
+app.MapControllers();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

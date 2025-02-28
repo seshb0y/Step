@@ -10,9 +10,7 @@ public class OrderProfile : Profile
     {
         CreateMap<CreateOrderRequest, Order>()
             .ForMember(dest => dest.TotalAmount, opt =>
-                opt.MapFrom(src => src.totalAmount))
-            .ForMember(dest => dest.ClientId, opt => opt
-                .MapFrom(src => src.clientId));
+                opt.MapFrom(src => src.totalAmount));
         
         CreateMap<ChangeOrderDataRequest, Order>()
             .ForMember(dest => dest.TotalAmount, opt =>
