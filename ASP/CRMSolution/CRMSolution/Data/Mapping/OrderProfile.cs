@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ControllerFirst.DTO.Responses;
 using CRMSolution.Data.Models;
 using CRMSolution.DTO.Requests;
 
@@ -25,5 +26,9 @@ public class OrderProfile : Profile
         CreateMap<FindOrderRequest, Order>()
             .ForMember(dest => dest.Id, opt => opt
                 .MapFrom(src => src.orderId));
+        
+        CreateMap<Order, OrderResponse>()
+            .ForMember(dest => dest.ClientOrders, opt => opt
+                .MapFrom(src => src.ClientOrders));
     }
 }

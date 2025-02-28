@@ -28,23 +28,25 @@ public class OrderController : ControllerBase
     }
     
     [HttpPost("ChangeOrder")]
-    [Authorize(Policy = "ManagerPolicy")]
+    // [Authorize(Policy = "ManagerPolicy")]
     public async Task<IActionResult> ChangeOrder([FromBody] ChangeOrderDataRequest request)
     {
-        throw new Exception();
+        await _orderService.ChangeDataOrder(request);
+        return Ok("Order changed");
     }
     
     [HttpPost("DeleteOrder")]
-    [Authorize(Policy = "ManagerPolicy")]
+    // [Authorize(Policy = "ManagerPolicy")]
     public async Task<IActionResult> DeleteOrder([FromBody] DeleteOrderRequest request)
     {
-        throw new Exception();
+        await _orderService.DeleteOrder(request);
+        return Ok("Order deleted");
     }
     
     [HttpGet("FindOrder")]
-    [Authorize(Policy = "ManagerPolicy")]
+    // [Authorize(Policy = "ManagerPolicy")]
     public async Task<IActionResult> FindOrder([FromQuery] FindOrderRequest request)
     {
-        throw new Exception();
+        return Ok(await _orderService.FindOrder(request));
     }
 }

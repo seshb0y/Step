@@ -23,4 +23,11 @@ public class OrderRep : Repository<Order>, IOrderRep
             });
         await _context.SaveChangesAsync();
     }
+
+    public async Task<Order> GetOrderInclude(Guid orderId)
+    {
+        return await _dbSet
+            .Include(o => o.ClientOrders)
+            .FirstOrDefaultAsync(o => o.Id == orderId);
+    }
 }

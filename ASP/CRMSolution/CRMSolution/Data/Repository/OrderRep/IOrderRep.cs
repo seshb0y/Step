@@ -6,4 +6,5 @@ namespace CRMSolution.Data.Repository.OrderResp;
 public interface IOrderRep : IRepository<Order>
 {
     public Task AddOrderToClient(Client client, Order order);
+    public Task<Order> GetOrderInclude(Guid orderId);
 }

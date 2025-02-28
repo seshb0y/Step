@@ -28,9 +28,9 @@ public class ChangeOrderDataValidator : AbstractValidator<ChangeOrderDataRequest
             .WithMessage("Invalid total amount.");
     }
 
-    private async Task<bool> IsOrderExist(string id, CancellationToken cancellationToken)
+    private async Task<bool> IsOrderExist(Guid id, CancellationToken cancellationToken)
     {
-        var order = await _orderRepository.GetById(Guid.Parse(id));
+        var order = await _orderRepository.GetById(id);
         return order != null;
     }
 }

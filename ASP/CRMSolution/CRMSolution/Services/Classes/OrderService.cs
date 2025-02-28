@@ -37,9 +37,9 @@ public class OrderService : IOrderService
     public async Task ChangeDataOrder(ChangeOrderDataRequest request)
     {
         _logger.LogInformation("Изменяем заказ: {@Request}", request);
-        Order order = await _unitOfWork.OrderRep.GetById(Guid.Parse(request.orderId));
+        Order order = await _unitOfWork.OrderRep.GetById(request.orderId);
         
-        order = _mapper.Map<Order>(request);
+        order = _mapper.Map(request, order);
         _unitOfWork.OrderRep.Update(order);
         await _unitOfWork.SaveChangesAsync();
     }
@@ -47,7 +47,12 @@ public class OrderService : IOrderService
     public async Task DeleteOrder(DeleteOrderRequest request)
     {
         _logger.LogInformation("Удаляем заказ: {@Request}", request);
-        Order order = await _unitOfWork.OrderRep.GetById(Guid.Parse(request.orderId));
+        Order order = await _unitOfWork.OrderRep.GetById(request.orderId);
+        
+        if (order == null)
+        {
+            throw new KeyNotFoundException($"Client with id {request.orderId} not found");
+        }
         
         _unitOfWork.OrderRep.Delete(order);
         await _unitOfWork.SaveChangesAsync();
@@ -56,7 +61,7 @@ public class OrderService : IOrderService
     public async Task<Order> FindOrder(FindOrderRequest request)
     {
         _logger.LogInformation("Поиск клиента: {@Request}", request);
-        Order order = await _unitOfWork.OrderRep.GetById(Guid.Parse(request.orderId));
+        Order order = await _unitOfWork.OrderRep.GetOrderInclude(request.orderId);
         return order;
     }
 }

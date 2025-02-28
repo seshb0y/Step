@@ -1,3 +1,3 @@
 ﻿namespace CRMSolution.DTO.Requests;
 
-public record FindOrderRequest(string orderId);
+public record FindOrderRequest(Guid orderId);
