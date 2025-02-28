@@ -30,5 +30,19 @@ public class OrderProfile : Profile
         CreateMap<Order, OrderResponse>()
             .ForMember(dest => dest.ClientOrders, opt => opt
                 .MapFrom(src => src.ClientOrders));
+
+        CreateMap<ClientOrder, ClientOrderDto>()
+            .ForMember(dest => dest.ClientId, opt => opt
+                .MapFrom(src => src.ClientId))
+            .ForMember(dest => dest.ClientName, opt => opt
+                .MapFrom(src => src.Client.Name))
+            .ForMember(dest => dest.ClientEmail, opt => opt
+                .MapFrom(src => src.Client.Email))
+            .ForMember(dest => dest.ClientPhone, opt => opt
+                .MapFrom(src => src.Client.Phone))
+            .ForMember(dest => dest.CreatedAt, opt => opt
+                .MapFrom(src => src.Client.CreatedAt.ToString()))
+            .ForMember(dest => dest.ClientAddress, opt => opt
+                .MapFrom(src => src.Client.Address));
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ControllerFirst.DTO.Responses;
 using CRMSolution.Data.Models;
 using CRMSolution.Data.Repository;
 using CRMSolution.Data.Repository.Interface;
@@ -58,10 +59,10 @@ public class OrderService : IOrderService
         await _unitOfWork.SaveChangesAsync();
     }
 
-    public async Task<Order> FindOrder(FindOrderRequest request)
+    public async Task<OrderResponse> FindOrder(FindOrderRequest request)
     {
         _logger.LogInformation("Поиск клиента: {@Request}", request);
         Order order = await _unitOfWork.OrderRep.GetOrderInclude(request.orderId);
-        return order;
+        return _mapper.Map<OrderResponse>(order);
     }
 }
