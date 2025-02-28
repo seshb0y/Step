@@ -28,6 +28,7 @@ public class OrderRep : Repository<Order>, IOrderRep
     {
         return await _dbSet
             .Include(o => o.ClientOrders)
+            .ThenInclude(o => o.Client)
             .FirstOrDefaultAsync(o => o.Id == orderId);
     }
 }
