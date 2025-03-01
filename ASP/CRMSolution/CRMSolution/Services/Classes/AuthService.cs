@@ -40,7 +40,7 @@ public class AuthService : IAuthService
 
         await _unitOfWork.SaveChangesAsync();
 
-        return new LoginResponse(await _tokenService.CreateTokenAsync(user.UserName), user.RefreshToken.ToString());
+        return new LoginResponse(await _tokenService.CreateTokenAsync(user.Email), user.RefreshToken.ToString());
     }
 
     public async Task<RefreshTokenResponse> RefreshTokenAsync(RefreshTokenRequest request)
@@ -55,6 +55,6 @@ public class AuthService : IAuthService
 
         await _unitOfWork.SaveChangesAsync();
 
-        return new RefreshTokenResponse(await _tokenService.CreateTokenAsync(user.UserName), user.RefreshToken.ToString());
+        return new RefreshTokenResponse(await _tokenService.CreateTokenAsync(user.Email), user.RefreshToken.ToString());
     }
 }

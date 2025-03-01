@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CRMSolution.Controllers;
 
 [ApiController]
-[Route("[controller]/[action]")]
+[Route("[controller]/")]
 public class TaskController : ControllerBase
 {
     private readonly ITasksService _tasksService;
@@ -19,30 +19,33 @@ public class TaskController : ControllerBase
 
 
     [HttpPost("AddTask")]
-    [Authorize(Policy = "ManagerPolicy")]
+    // [Authorize(Policy = "ManagerPolicy")]
     public async Task<IActionResult> AddTask([FromBody] CreateTaskRequest request)
     {
-        throw new Exception();
+        await _tasksService.CreateTaskAsync(request);
+        return Ok("Task created");
     }
     
     [HttpPost("ChangeTask")]
-    [Authorize(Policy = "ManagerPolicy")]
+    // [Authorize(Policy = "ManagerPolicy")]
     public async Task<IActionResult> ChangeTask([FromBody] UpdateTaskRequest request)
     {
-        throw new Exception();
+        await _tasksService.UpdateTaskAsync(request);
+        return Ok("Task updated");
     }
     
     [HttpPost("DeleteTask")]
-    [Authorize(Policy = "ManagerPolicy")]
+    // [Authorize(Policy = "ManagerPolicy")]
     public async Task<IActionResult> DeleteTask([FromBody] DeleteTaskRequest request)
     {
-        throw new Exception();
+        await _tasksService.DeleteTaskAsync(request);
+        return Ok("Task deleted");
     }
     
     [HttpGet("FindTask")]
-    [Authorize(Policy = "ManagerPolicy")]
+    // [Authorize(Policy = "ManagerPolicy")]
     public async Task<IActionResult> FindTask([FromQuery] FindTaskRequest request)
     {
-        throw new Exception();
+        return Ok(await _tasksService.FindTaskByIdAsync(request));
     }
 }

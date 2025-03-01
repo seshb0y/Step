@@ -1,4 +1,5 @@
 ﻿using CRMSolution.Data.Models;
+using CRMSolution.Data.Repository;
 using CRMSolution.Data.Repository.Interface;
 using CRMSolution.DTO.Requests.Task;
 using FluentValidation;
@@ -7,15 +8,11 @@ namespace CRMSolution.Data.Validators.Tasks;
 
 public class CreateTaskValidator : AbstractValidator<CreateTaskRequest>
 {
-    IRepository<Models.Order> _orderRepository;
-    IRepository<Client> _clientRepository;
-    IRepository<User> _userRepository;
+    IUnitOfWork _unitOfWork;
 
-    public CreateTaskValidator(IRepository<Models.Order> orderRepository, IRepository<Client> clientRepository, IRepository<User> userRepository)
+    public CreateTaskValidator(IUnitOfWork unitOfWork)
     {
-        _orderRepository = orderRepository;
-        _clientRepository = clientRepository;
-        _userRepository = userRepository;
+        _unitOfWork = unitOfWork;
 
         RuleFor(r => r.title)
             .NotNull()
@@ -35,17 +32,11 @@ public class CreateTaskValidator : AbstractValidator<CreateTaskRequest>
             .NotEmpty()
             .WithMessage("End date is required.");
         
-        RuleFor(r => r.clientId)
+        RuleFor(r => r.userEmail)
             .NotNull()
-            .WithMessage("ClientId is required.")
-            .MustAsync(IsClientExist)
-            .WithMessage("The client ID does not exist.");
-        
-        RuleFor(r => r.userId)
-            .NotNull()
-            .WithMessage("UserId is required.")
+            .WithMessage("User email is required.")
             .MustAsync(IsUserExist)
-            .WithMessage("The user ID does not exist.");
+            .WithMessage("The user email does not exist.");
         
         RuleFor(r => r.orderId)
             .NotNull()
@@ -54,19 +45,14 @@ public class CreateTaskValidator : AbstractValidator<CreateTaskRequest>
             .WithMessage("The order ID does not exist.");
     }
 
-    private async Task<bool> IsOrderExist(string id, CancellationToken cancellationToken)
+    private async Task<bool> IsOrderExist(Guid id, CancellationToken cancellationToken)
     {
-        var task = await _orderRepository.GetById(Guid.Parse(id));
+        var task = await _unitOfWork.OrderRep.GetById(id);
         return task != null;
     }
-    private async Task<bool> IsUserExist(string id, CancellationToken cancellationToken)
+    private async Task<bool> IsUserExist(string email, CancellationToken cancellationToken)
     {
-        var task = await _userRepository.GetById(Guid.Parse(id));
-        return task != null;
-    }
-    private async Task<bool> IsClientExist(string id, CancellationToken cancellationToken)
-    {
-        var task = await _clientRepository.GetById(Guid.Parse(id));
+        var task = await _unitOfWork.UserRep.FindByEmailAsync(email);
         return task != null;
     }
 }

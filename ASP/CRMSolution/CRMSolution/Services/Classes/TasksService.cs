@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ControllerFirst.DTO.Responses;
 using CRMSolution.Data.Models;
 using CRMSolution.Data.Repository;
 using CRMSolution.Data.Repository.Interface;
@@ -25,9 +26,9 @@ public class TasksService : ITasksService
     {
         _logger.LogInformation("Создаем новую задачу: {@Request}", request);
         
-        Order order = await _unitOfWork.OrderRep.GetById(Guid.Parse(request.orderId));
+        Order order = await _unitOfWork.OrderRep.GetById(request.orderId);
         
-        User user = await _unitOfWork.UserRep.GetById(Guid.Parse(request.userId));
+        User user = await _unitOfWork.UserRep.FindByEmailAsync(request.userEmail);
         
         Tasks task = _mapper.Map<Tasks>(request);
         await _unitOfWork.TasksRep.AddDependency(order, user, task);
@@ -37,23 +38,23 @@ public class TasksService : ITasksService
     public async Task UpdateTaskAsync(UpdateTaskRequest request)
     {
         _logger.LogInformation("Обновляем задачу: {@Request}", request);
-        Tasks task = await _unitOfWork.TasksRep.GetById(Guid.Parse(request.taskId));
-        task = _mapper.Map<Tasks>(request);
+        Tasks task = await _unitOfWork.TasksRep.GetById(request.taskId);
+        task = _mapper.Map(request, task);
         await _unitOfWork.SaveChangesAsync();
     }
 
     public async Task DeleteTaskAsync(DeleteTaskRequest request)
     {
         _logger.LogInformation("Удаляем задачу: {@Request}", request);
-        Tasks task = await _unitOfWork.TasksRep.GetById(Guid.Parse(request.taskId));
+        Tasks task = await _unitOfWork.TasksRep.GetById(request.taskId);
         _unitOfWork.TasksRep.Delete(task);
         await _unitOfWork.SaveChangesAsync();
     }
 
-    public async Task<Tasks> FindTaskByIdAsync(FindTaskRequest request)
+    public async Task<TaskResponse> FindTaskByIdAsync(FindTaskRequest request)
     {
         _logger.LogInformation("Находим задачу: {@Request}", request);
-        Tasks task = await _unitOfWork.TasksRep.GetById(Guid.Parse(request.taskId));
-        return task;
+        Tasks task = await _unitOfWork.TasksRep.GetById(request.taskId);
+        return _mapper.Map<TaskResponse>(task);
     }
 }

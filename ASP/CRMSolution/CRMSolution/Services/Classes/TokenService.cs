@@ -18,10 +18,11 @@ public class TokenService : ITokenService
     private readonly IUserRep _userRepository;
     private readonly ILogger<TokenService> _logger;
 
-    public TokenService(IConfiguration config, IUserRep userRepository)
+    public TokenService(IConfiguration config, IUserRep userRepository, ILogger<TokenService> logger)
     {
         _config = config;
         _userRepository = userRepository;
+        _logger = logger;
     }
 
     public async Task<string> GetNameFromToken(string token)

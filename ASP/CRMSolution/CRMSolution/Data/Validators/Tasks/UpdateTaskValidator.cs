@@ -30,9 +30,9 @@ public class UpdateTaskValidator : AbstractValidator<UpdateTaskRequest>
 
     }
 
-    private async Task<bool> IsTaskExist(string id, CancellationToken cancellationToken)
+    private async Task<bool> IsTaskExist(Guid id, CancellationToken cancellationToken)
     {
-        var task = await _taskRepository.GetById(Guid.Parse(id));
+        var task = await _taskRepository.GetById(id);
         return task != null;
     }
 }

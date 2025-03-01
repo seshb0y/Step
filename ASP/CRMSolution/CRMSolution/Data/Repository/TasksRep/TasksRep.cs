@@ -1,6 +1,7 @@
 ﻿using CRMSolution.Contexts;
 using CRMSolution.Data.Models;
 using CRMSolution.Data.Repository.Interface;
+using Microsoft.EntityFrameworkCore;
 
 namespace CRMSolution.Data.Repository.TasksRep;
 
@@ -23,5 +24,14 @@ public class TasksRep : Repository<Tasks>, ITasksRep
                 Task = task
             });
         await AddAsync(task);
+    }
+
+    public async Task<Tasks> GetById(Guid taskId)
+    {
+        return await _context.Tasks
+            .Include(t => t.Order)
+            .Include(t => t.UserTasks)
+            .ThenInclude(ut => ut.User)
+            .FirstOrDefaultAsync(t => t.Id == taskId);
     }
 }
