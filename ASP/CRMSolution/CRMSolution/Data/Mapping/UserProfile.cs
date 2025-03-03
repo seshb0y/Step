@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ControllerFirst.DTO.Requests;
+using ControllerFirst.DTO.Responses;
 using CRMSolution.Data.Models;
 
 namespace CRMSolution.Data.Mapping;
@@ -15,5 +16,13 @@ public class UserProfile : Profile
                 opt.MapFrom(src => src.Email))
             .ForMember(dest => dest.PasswordHash, opt =>
                 opt.MapFrom(src => src.Password));
+
+        CreateMap<User, GetCurrentUserResponse>()
+            .ForMember(dest => dest.Id, opt => opt
+                .MapFrom(src => src.Id))
+            .ForMember(dest => dest.Username, opt => opt
+                .MapFrom(src => src.UserName))
+            .ForMember(dest => dest.Role, opt => opt
+                .MapFrom(src => src.Role));
     }
 }

@@ -28,12 +28,27 @@ var logger = loggerFactory.CreateLogger<Program>();
 builder.Services.AddSingleton(loggerFactory);
 builder.Services.AddLogging();
 
+builder.Services.AddCors(policy =>
+{
+    policy.AddPolicy("Default", builder =>
+    {
+        builder
+            .WithOrigins("http://localhost:5173")
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
+    });
+});
 
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 // builder.Services.AddFluentValidationAutoValidation();
 
 builder.Services.AddEndpointsApiExplorer();
+
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddHttpContextAccessor();
+
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -97,7 +112,14 @@ builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddControllers();
 
 var app = builder.Build();
+app.UseCors("Default");
+
+app.UseAuthorization();
+
+app.UseAuthentication();
+    
 app.MapControllers();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

@@ -50,7 +50,7 @@ public class TokenService : ITokenService
     }
     public async Task<string> CreateTokenAsync(string username)
     {
-        _logger.LogInformation("Создаем новоый токен: {@Username}", username);
+        _logger.LogInformation("Создаем новый токен: {@Username}", username);
         var user = await _userRepository.FindByEmailAsync(username);
 
         if (user == null)
@@ -69,7 +69,7 @@ public class TokenService : ITokenService
             issuer: _config["JWT:Issuer"],
             audience: _config["JWT:Audience"],
             claims: claims,
-            expires: DateTime.UtcNow.AddMinutes(15),
+            expires: DateTime.UtcNow.AddMinutes(30),
             signingCredentials: signingCredentials
         );
 

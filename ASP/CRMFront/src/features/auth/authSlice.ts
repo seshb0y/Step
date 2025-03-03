@@ -1,34 +1,49 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "../../api/axiosInstance";
 
+interface AuthState {
+  user: User | null;
+  isAuthenticated: boolean;
+  loading: boolean;
+}
+
+interface User {
+  id: string,
+  name: string,
+  role: string,
+};
 
 export const checkAuth = createAsyncThunk("auth/checkAuth", async () => {
-  const response = await axiosInstance.get("/auth/me");
-  return response.data.user;
+  const response = await axiosInstance.get("/Account/me");
+  console.log(response.data)
+  return response.data;
 });
 
 
-export const loginUser = createAsyncThunk<string,{ username: string; password: string }>(
+export const loginUser = createAsyncThunk<User,{ username: string; password: string }>(
   "auth/login",
   async ({ username, password }) => {
-    const response = await axiosInstance.post("/auth/Login", { username, password });
+    const response = await axiosInstance.post("/Auth/Login", { username, password });
+    console.log(response.data)
     return response.data;
   }
 );
 
 
-export const logoutUser = createAsyncThunk("auth/Logout", async () => {
-  await axiosInstance.post("/auth/logout");
+export const logoutUser = createAsyncThunk("Auth/Logout", async () => {
+  await axiosInstance.post("/Auth/Logout");
 });
 
 
+const initialState: AuthState = {
+  user: null,
+  isAuthenticated: false,
+  loading: false,
+};
+
 const authSlice = createSlice({
   name: "auth",
-  initialState: {
-    user: "",
-    isAuthenticated: false,
-    loading: false,
-  },
+  initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder

@@ -8,10 +8,13 @@ using CRMSolution.DTO.Requests;
 using CRMSolution.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using System;
+using System.Runtime.InteropServices.JavaScript;
 using System.Threading.Tasks;
 using ControllerFirst.DTO.Requests;
+using ControllerFirst.DTO.Responses;
 using CRMSolution.Data.Repository;
 using CRMSolution.Data.Repository.UserRep;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CRMSolution.Services.Classes;
 
@@ -22,14 +25,17 @@ public class AccountService : IAccountService
     private readonly IConfiguration _config;
     private readonly ITokenService _tokenService;
     private readonly ILogger<AccountService> _logger;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public AccountService(IMapper mapper, IUnitOfWork unitOfWork, IConfiguration config, ITokenService tokenService, ILogger<AccountService> logger)
+    public AccountService(IMapper mapper, IUnitOfWork unitOfWork, IConfiguration config, ITokenService tokenService,
+        ILogger<AccountService> logger,  IHttpContextAccessor httpContextAccessor)
     {
         _mapper = mapper;
         _unitOfWork = unitOfWork;
         _config = config;
         _tokenService = tokenService;
         _logger = logger;
+        _httpContextAccessor = httpContextAccessor;
     }
 
     public async Task RegisterAsync(RegisterRequest request)
@@ -150,5 +156,31 @@ public class AccountService : IAccountService
 
         user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.newPassword);
         await _unitOfWork.SaveChangesAsync();
+    }
+    
+    public async Task<GetCurrentUserResponse> GetCurrentUserAsync()
+    {
+        var httpContext = _httpContextAccessor.HttpContext;
+        if (httpContext == null)
+        {
+            throw new Exception("HttpContext is not available");
+        }
+
+        var token = httpContext.Request.Cookies["AuthToken"];
+        if (string.IsNullOrEmpty(token))
+        {
+            throw new Exception("No AuthToken found");
+        }
+
+        string username = await _tokenService.GetNameFromToken(token);
+        if (string.IsNullOrEmpty(username))
+        {
+            throw new Exception("Invalid token");
+        }
+
+        var user = await _unitOfWork.UserRep.FindByNameAsync(username);
+        
+        
+        return _mapper.Map<GetCurrentUserResponse>(user);
     }
 }

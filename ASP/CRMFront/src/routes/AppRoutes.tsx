@@ -4,15 +4,18 @@ import Login from "../pages/Login";
 import Clients from "../pages/Clients";
 import Tasks from "../pages/Tasks";
 import Orders from "../pages/Orders";
+import PrivateRoute from "./PrivateRoute";
 
 const AppRoutes = () => {
   return (
     <Routes>
-      <Route path="/" element={<Dashboard />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/clients" element={<Clients />} />
-      <Route path="/tasks" element={<Tasks />} />
-      <Route path="/orders" element={<Orders />} />
+      <Route element={<PrivateRoute/>}>
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/clients" element={<Clients />} />
+        <Route path="/tasks" element={<Tasks />} />
+        <Route path="/orders" element={<Orders />} />
+      </Route>
     </Routes>
   );
 };

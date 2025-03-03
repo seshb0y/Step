@@ -68,4 +68,10 @@ public class AccountController : ControllerBase
 
         return Ok(new Result<string>(true, "Password changed", "Password changed"));
     }
+
+    [HttpGet("me")]
+    public async Task<IActionResult> GetMeAsync()
+    {
+        return Ok(await _accountService.GetCurrentUserAsync());
+    }
 }
