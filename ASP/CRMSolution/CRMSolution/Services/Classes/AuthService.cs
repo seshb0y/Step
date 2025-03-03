@@ -28,33 +28,80 @@ public class AuthService : IAuthService
         _logger = logger;
     }
 
-    public async Task<LoginResponse> LoginAsync(LoginRequest request)
+    public async Task<LoginResponse> LoginAsync(LoginRequest request, HttpContext context)
     {
         _logger.LogInformation("Вход в аккаунт: {@Request}", request);
         var user = await _unitOfWork.UserRep.FindByNameAsync(request.username);
-        if (user == null || !BCrypt.Net.BCrypt.Verify(request.password, user.PasswordHash))
-            throw new Exception("Invalid credentials");
+        var accessToken = await _tokenService.CreateTokenAsync(user.Email);
+        var refreshToken = user.RefreshToken.ToString();
+        
+        context.Response.Cookies.Append("accessToken", accessToken, new CookieOptions
+        {
+            HttpOnly = true,
+            Secure = true,
+            SameSite = SameSiteMode.Strict,
+            Expires = DateTime.UtcNow.AddMinutes(15)
+        });
 
-        user.RefreshToken = Guid.NewGuid();
-        user.RefreshTokenExpiration = DateTime.UtcNow.AddDays(7);
+        context.Response.Cookies.Append("refreshToken", refreshToken, new CookieOptions
+        {
+            HttpOnly = true,
+            Secure = true,
+            SameSite = SameSiteMode.Strict,
+            Expires = DateTime.UtcNow.AddDays(7)
+        });
 
-        await _unitOfWork.SaveChangesAsync();
+        return new LoginResponse(accessToken, refreshToken);
 
-        return new LoginResponse(await _tokenService.CreateTokenAsync(user.Email), user.RefreshToken.ToString());
     }
 
-    public async Task<RefreshTokenResponse> RefreshTokenAsync(RefreshTokenRequest request)
+    public async Task<RefreshTokenResponse> RefreshTokenAsync(HttpContext context)
     {
-        _logger.LogInformation("Создание рефреш токена: {@Request}", request);
-        var user = await _unitOfWork.UserRep.FindByNameAsync(request.username);
-        if (user == null || user.RefreshToken.ToString() != request.refreshToken || user.RefreshTokenExpiration < DateTime.UtcNow)
-            throw new Exception("Invalid refresh token");
+        _logger.LogInformation("Обновление токена через cookies");
 
+        var refreshToken = context.Request.Cookies["refreshToken"];
+        var accessToken = context.Request.Cookies["accessToken"];
+
+        if (string.IsNullOrEmpty(refreshToken) || string.IsNullOrEmpty(accessToken))
+            throw new Exception("Tokens are missing");
+
+        var username = await _tokenService.GetNameFromToken(accessToken);
+        var user = await _unitOfWork.UserRep.FindByNameAsync(username);
+
+        if (user == null || user.RefreshToken.ToString() != refreshToken || user.RefreshTokenExpiration < DateTime.UtcNow)
+            throw new Exception("Invalid refresh token");
+        
         user.RefreshToken = Guid.NewGuid();
         user.RefreshTokenExpiration = DateTime.UtcNow.AddDays(7);
-
         await _unitOfWork.SaveChangesAsync();
 
-        return new RefreshTokenResponse(await _tokenService.CreateTokenAsync(user.Email), user.RefreshToken.ToString());
+        var newAccessToken = await _tokenService.CreateTokenAsync(user.Email);
+        var newRefreshToken = user.RefreshToken.ToString();
+        
+        context.Response.Cookies.Append("accessToken", newAccessToken, new CookieOptions
+        {
+            HttpOnly = true,
+            Secure = true,
+            SameSite = SameSiteMode.Strict,
+            Expires = DateTime.UtcNow.AddMinutes(15)
+        });
+
+        context.Response.Cookies.Append("refreshToken", newRefreshToken, new CookieOptions
+        {
+            HttpOnly = true,
+            Secure = true,
+            SameSite = SameSiteMode.Strict,
+            Expires = DateTime.UtcNow.AddDays(7)
+        });
+
+        return new RefreshTokenResponse(newAccessToken, newRefreshToken);
+    }
+
+    
+    public Task LogoutAsync(HttpContext context)
+    {
+        context.Response.Cookies.Delete("accessToken");
+        context.Response.Cookies.Delete("refreshToken");
+        return Task.CompletedTask;
     }
 }

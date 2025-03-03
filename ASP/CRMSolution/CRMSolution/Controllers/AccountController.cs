@@ -9,7 +9,7 @@ namespace CRMSolution.Controllers;
 
 
 [ApiController]
-[Route("api/v1/[controller]")]
+[Route("[controller]/")]
 public class AccountController : ControllerBase
 {
     private readonly IAccountService _accountService;

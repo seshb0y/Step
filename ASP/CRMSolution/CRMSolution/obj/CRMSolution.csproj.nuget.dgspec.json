@@ -1,28 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "D:\\users_C\\OneDrive\\Рабочий стол\\desctop\\NewStepRepository09.01.2024\\Step\\ASP\\CRMSolution\\CRMSolution\\CRMSolution.csproj": {}
+    "C:\\Users\\seshb\\OneDrive\\Рабочий стол\\Rep\\Step\\ASP\\CRMSolution\\CRMSolution\\CRMSolution.csproj": {}
   },
   "projects": {
-    "D:\\users_C\\OneDrive\\Рабочий стол\\desctop\\NewStepRepository09.01.2024\\Step\\ASP\\CRMSolution\\CRMSolution\\CRMSolution.csproj": {
+    "C:\\Users\\seshb\\OneDrive\\Рабочий стол\\Rep\\Step\\ASP\\CRMSolution\\CRMSolution\\CRMSolution.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\users_C\\OneDrive\\Рабочий стол\\desctop\\NewStepRepository09.01.2024\\Step\\ASP\\CRMSolution\\CRMSolution\\CRMSolution.csproj",
+        "projectUniqueName": "C:\\Users\\seshb\\OneDrive\\Рабочий стол\\Rep\\Step\\ASP\\CRMSolution\\CRMSolution\\CRMSolution.csproj",
         "projectName": "CRMSolution",
-        "projectPath": "D:\\users_C\\OneDrive\\Рабочий стол\\desctop\\NewStepRepository09.01.2024\\Step\\ASP\\CRMSolution\\CRMSolution\\CRMSolution.csproj",
+        "projectPath": "C:\\Users\\seshb\\OneDrive\\Рабочий стол\\Rep\\Step\\ASP\\CRMSolution\\CRMSolution\\CRMSolution.csproj",
         "packagesPath": "C:\\Users\\seshb\\.nuget\\packages\\",
-        "outputPath": "D:\\users_C\\OneDrive\\Рабочий стол\\desctop\\NewStepRepository09.01.2024\\Step\\ASP\\CRMSolution\\CRMSolution\\obj\\",
+        "outputPath": "C:\\Users\\seshb\\OneDrive\\Рабочий стол\\Rep\\Step\\ASP\\CRMSolution\\CRMSolution\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\seshb\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\seshb\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -126,7 +123,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.405/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Users\\seshb\\.dotnet\\sdk\\8.0.406/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

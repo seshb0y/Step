@@ -39,6 +39,15 @@ public class TokenService : ITokenService
 
         return username.Value;
     }
+    
+    public async Task<string> GetNameFromCookies(HttpContext context)
+    {
+        var accessToken = context.Request.Cookies["accessToken"];
+        if (string.IsNullOrEmpty(accessToken))
+            throw new SecurityTokenException("Access token is missing");
+
+        return await GetNameFromToken(accessToken);
+    }
     public async Task<string> CreateTokenAsync(string username)
     {
         _logger.LogInformation("Создаем новоый токен: {@Username}", username);

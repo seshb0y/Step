@@ -3,6 +3,7 @@
 public interface ITokenService
 {
     public Task<string> GetNameFromToken(string token);
+    public Task<string> GetNameFromCookies(HttpContext context);
     public Task<string> CreateTokenAsync(string username);
     public Task<string> CreateEmailTokenAsync(string username);
     

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CRMSolution.Controllers;
 
 [ApiController]
-[Route("api/v1/[controller]")]
+[Route("[controller]/")]
 public class AuthController : ControllerBase
 {
     private readonly IAuthService _authService;
@@ -22,7 +22,7 @@ public class AuthController : ControllerBase
     [HttpPost("Login")]
     public async  Task<IActionResult> Login([FromBody] LoginRequest request)
     {
-        var response = await _authService.LoginAsync(request);
+        var response = await _authService.LoginAsync(request, HttpContext);
         
         Response.Cookies.Append("accessToken", response.accessToken);
         Response.Cookies.Append("refreshToken", response.refreshToken);
@@ -34,23 +34,16 @@ public class AuthController : ControllerBase
     [HttpPost("Refresh")]
     public async Task<IActionResult> Refresh()
     {
-        var refreshToken = Request.Cookies["refreshToken"];
-        var accessToken = Request.Cookies["accessToken"];
-        
-        var request = new RefreshTokenRequest(await _tokenService.GetNameFromToken(accessToken), refreshToken);
-        
-        var newTokens = await _authService.RefreshTokenAsync(request);
-        
-        Response.Cookies.Append("accessToken", newTokens.accessToken);
-        Response.Cookies.Append("refreshToken", newTokens.refreshToken);
-        
-        return Ok(new Result<RefreshTokenResponse>(true, newTokens, "Successfully refreshed token"));
-        
+        var response = await _authService.RefreshTokenAsync(HttpContext);
+        return Ok(new Result<RefreshTokenResponse>(true, response, "Successfully refreshed token"));
     }
+
     
     [HttpPost("Logout")]
     public async Task<IActionResult> Logout()
     {
-        return Ok("Logout");
+        await _authService.LogoutAsync(HttpContext);
+        return Ok(new { message = "Logged out successfully" });
     }
+
 }
