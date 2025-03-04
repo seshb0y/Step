@@ -8,6 +8,7 @@ using CRMSolution.Data.Repository.OrderResp;
 using CRMSolution.Data.Repository.SpecialRepClass.ClientRep;
 using CRMSolution.Data.Repository.TasksRep;
 using CRMSolution.Data.Repository.UserRep;
+using CRMSolution.Services;
 using CRMSolution.Services.Classes;
 using CRMSolution.Services.Interfaces;
 using FluentValidation;
@@ -92,6 +93,8 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<CRMContext>(options =>
     options.UseSqlServer(connectionString));
 
+builder.Services.AddTransient<DataSeeder>();
+
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
@@ -101,6 +104,7 @@ builder.Services.AddScoped<IOrderRep, OrderRep>();
 builder.Services.AddScoped<ITasksRep, TasksRep>();
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IDashboardService, DashboardService>();
 
 builder.Services.AddScoped<IClientService, ClientService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
@@ -112,11 +116,19 @@ builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddControllers();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var seeder = services.GetRequiredService<DataSeeder>();
+    seeder.Seed();
+}
+
 app.UseCors("Default");
 
+app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseAuthentication();
     
 app.MapControllers();
 

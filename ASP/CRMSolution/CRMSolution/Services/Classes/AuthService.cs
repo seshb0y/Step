@@ -59,9 +59,11 @@ public class AuthService : IAuthService
     {
         _logger.LogInformation("Обновление токена через cookies");
 
-        var refreshToken = context.Request.Cookies["refreshToken"];
         var accessToken = context.Request.Cookies["accessToken"];
+        var refreshToken = context.Request.Cookies["refreshToken"];
 
+
+        Console.WriteLine(refreshToken);
         if (string.IsNullOrEmpty(refreshToken) || string.IsNullOrEmpty(accessToken))
             throw new Exception("Tokens are missing");
 

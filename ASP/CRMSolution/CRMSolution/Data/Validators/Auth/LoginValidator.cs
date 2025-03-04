@@ -2,14 +2,15 @@
 using ControllerFirst.Shared;
 using CRMSolution.Data.Models;
 using CRMSolution.Data.Repository.Interface;
+using CRMSolution.Data.Repository.SpecialRepClass.ClientRep;
 using FluentValidation;
 
 namespace CRMSolution.Data.Validators.Auth;
 
 public class LoginValidator : AbstractValidator<LoginRequest>
 {
-    IRepository<Client> _clientRepository;
-    public LoginValidator(IRepository<Client> clientRepository)
+    IClientRep _clientRepository;
+    public LoginValidator(IClientRep clientRepository)
     {
         _clientRepository = clientRepository;
         
@@ -33,9 +34,9 @@ public class LoginValidator : AbstractValidator<LoginRequest>
         
     }
     
-    private async Task<bool> IsClientExist(string id, CancellationToken cancellationToken)
+    private async Task<bool> IsClientExist(string name, CancellationToken cancellationToken)
     {
-        var client = await _clientRepository.GetById(Guid.Parse(id));
+        var client = await _clientRepository.GetClientByName(name);
         return client != null;
     }
 }

@@ -27,17 +27,27 @@ public class TokenService : ITokenService
 
     public async Task<string> GetNameFromToken(string token)
     {
-        _logger.LogInformation("Берем информацию из токена: {@Token}", token);
-        var tokenHandler = new JwtSecurityTokenHandler();
+        try
+        {
+            _logger.LogInformation("Берем информацию из токена: {@Token}", token);
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var securityToken = tokenHandler.ReadToken(token) as JwtSecurityToken;
 
-        var securityToken = tokenHandler.ReadToken(token) as JwtSecurityToken;
+            if (securityToken == null)
+                throw new SecurityTokenException("Invalid token");
 
-        if (securityToken == null)
-            throw new SecurityTokenException("Invalid token");
+            var username = securityToken.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
 
-        var username = securityToken.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name);
+            if (string.IsNullOrEmpty(username))
+                throw new SecurityTokenException("Username not found in token");
 
-        return username.Value;
+            return username;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError("Ошибка парсинга токена: {Error}", ex.Message);
+            throw;
+        }
     }
     
     public async Task<string> GetNameFromCookies(HttpContext context)

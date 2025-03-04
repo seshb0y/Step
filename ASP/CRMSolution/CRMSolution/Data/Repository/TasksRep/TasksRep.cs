@@ -26,7 +26,7 @@ public class TasksRep : Repository<Tasks>, ITasksRep
         await AddAsync(task);
     }
 
-    public async Task<Tasks> GetById(Guid taskId)
+    public async Task<Tasks> GetById(int taskId)
     {
         return await _context.Tasks
             .Include(t => t.Order)

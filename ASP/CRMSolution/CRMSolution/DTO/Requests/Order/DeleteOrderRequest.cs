@@ -1,3 +1,3 @@
 ﻿namespace CRMSolution.DTO.Requests;
 
-public record DeleteOrderRequest(Guid orderId);
+public record DeleteOrderRequest(int orderId);

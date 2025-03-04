@@ -45,7 +45,7 @@ public class CreateTaskValidator : AbstractValidator<CreateTaskRequest>
             .WithMessage("The order ID does not exist.");
     }
 
-    private async Task<bool> IsOrderExist(Guid id, CancellationToken cancellationToken)
+    private async Task<bool> IsOrderExist(int id, CancellationToken cancellationToken)
     {
         var task = await _unitOfWork.OrderRep.GetById(id);
         return task != null;

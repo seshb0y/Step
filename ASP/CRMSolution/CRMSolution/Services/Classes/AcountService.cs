@@ -166,10 +166,10 @@ public class AccountService : IAccountService
             throw new Exception("HttpContext is not available");
         }
 
-        var token = httpContext.Request.Cookies["AuthToken"];
+        var token = httpContext.Request.Cookies["accessToken"];
         if (string.IsNullOrEmpty(token))
         {
-            throw new Exception("No AuthToken found");
+            throw new Exception("No accessToken found");
         }
 
         string username = await _tokenService.GetNameFromToken(token);

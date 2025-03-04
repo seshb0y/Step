@@ -5,7 +5,6 @@ using CRMSolution.Data.Repository;
 using CRMSolution.Data.Repository.Interface;
 using CRMSolution.DTO.Requests.Task;
 using CRMSolution.Services.Interfaces;
-using TaskStatus = CRMSolution.Data.Models.TaskStatus;
 
 namespace CRMSolution.Services.Classes;
 

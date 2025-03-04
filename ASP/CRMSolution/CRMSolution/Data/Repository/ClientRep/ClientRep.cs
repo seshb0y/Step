@@ -12,7 +12,7 @@ public class ClientRep : Repository<Client>, IClientRep
         
     }
 
-    public async Task<IEnumerable<Client>> GetClientsByManagerIdAsync(Guid managerId)
+    public async Task<IEnumerable<Client>> GetClientsByManagerIdAsync(int managerId)
     {
         return await _dbSet
             .Where(c => c.ClientUsers.Any(cu => cu.UserId == managerId))
@@ -23,4 +23,10 @@ public class ClientRep : Repository<Client>, IClientRep
     {
         return await _dbSet.FirstOrDefaultAsync(c => c.Email == email);
     }
+
+    public async Task<Client?> GetClientByName(string name)
+    {
+        return await _dbSet.FirstOrDefaultAsync(c => c.Name == name);
+    }
+    
 }

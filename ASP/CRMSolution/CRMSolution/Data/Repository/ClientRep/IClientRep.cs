@@ -5,6 +5,8 @@ namespace CRMSolution.Data.Repository.SpecialRepClass.ClientRep;
 
 public interface IClientRep : IRepository<Client>
 {
-    Task <IEnumerable<Client?>> GetClientsByManagerIdAsync(Guid managerId);
+    Task <IEnumerable<Client?>> GetClientsByManagerIdAsync(int managerId);
     Task<Client?> GetClientByEmail(String email);
+    
+    Task<Client?> GetClientByName(string name);
 }

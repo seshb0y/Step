@@ -9,125 +9,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="78d5c6cb-1c07-48ae-b5e3-20f99f0db482" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/CRMSolution/DTO/Requests/Client/ChangeDataClientRequest.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CRMSolution/DTO/Requests/Client/CreateClientRequest.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CRMSolution/DTO/Requests/Client/DeleteClientRequest.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CRMSolution/DTO/Requests/Client/FindClientRequest.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CRMSolution/DTO/Requests/Order/ChangeOrderDataRequest.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CRMSolution/DTO/Requests/Order/CreateOrderRequest.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CRMSolution/DTO/Requests/Order/DeleteOrderRequest.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CRMSolution/DTO/Requests/Order/FindOrderRequest.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CRMSolution/Data/Config/ClientConfig.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CRMSolution/Data/Config/OrderConfig.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CRMSolution/Data/Config/TasksConfig.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CRMSolution/Data/Config/UserConfig.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CRMSolution/Data/Context/CRMContext.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CRMSolution/Data/Context/CRMContextFactory.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CRMSolution/Data/Models/Client.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CRMSolution/Data/Models/Order.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CRMSolution/Data/Models/Tasks.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CRMSolution/Data/Models/User.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CRMSolution/Data/Repository/MainRepository/IRepository.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CRMSolution/Data/Repository/MainRepository/Repository.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CRMSolution/Data/Repository/OrderRep/IOrderRep.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CRMSolution/Data/Repository/OrderRep/OrderRep.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CRMSolution/Data/Repository/UserRep/IUserRep.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CRMSolution/Data/Repository/UserRep/UserRep.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CRMSolution/Data/Validators/Client/ChangeDataClientValidator.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CRMSolution/Data/Validators/Client/CreateClientValidator.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CRMSolution/Data/Validators/Client/DeleteClientValidator.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CRMSolution/Data/Validators/Client/FindClientValidator.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CRMSolution/Services/Classes/ClientService.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CRMSolution/Services/Classes/OrderService.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CRMSolution/Services/Interfaces/IClientService.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CRMSolution/Services/Interfaces/IOrderService.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lessons/Lesson1-ControllerFirst/.idea/.idea.Lesson1-ControllerFirst/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lessons/Lesson1-ControllerFirst/.idea/.idea.Lesson1-ControllerFirst/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lessons/Lesson1-ControllerFirst/.idea/.idea.Lesson1-ControllerFirst/.idea/indexLayout.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lessons/Lesson1-ControllerFirst/.idea/.idea.Lesson1-ControllerFirst/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lessons/Lesson1-ControllerFirst/.vs/Lesson1-ControllerFirst/FileContentIndex/16d8a47e-8f55-4a9c-bd99-b26ad964d7fd.vsidx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lessons/Lesson1-ControllerFirst/.vs/Lesson1-ControllerFirst/FileContentIndex/496f981e-132f-4c47-9962-fb233b4ab250.vsidx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lessons/Lesson1-ControllerFirst/.vs/Lesson1-ControllerFirst/FileContentIndex/f29cc91b-0227-4824-b4cd-6bff98a8da22.vsidx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lessons/Lesson1-ControllerFirst/.vs/Lesson1-ControllerFirst/v17/.futdcache.v2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lessons/Lesson1-ControllerFirst/.vs/Lesson1-ControllerFirst/v17/.suo" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lessons/Lesson1-ControllerFirst/.vs/Lesson1-ControllerFirst/v17/.wsuo" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lessons/Lesson1-ControllerFirst/.vs/Lesson1-ControllerFirst/v17/DocumentLayout.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lessons/Lesson1-ControllerFirst/.vs/ProjectEvaluation/lesson1-controllerfirst.metadata.v8.bin" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lessons/Lesson1-ControllerFirst/.vs/ProjectEvaluation/lesson1-controllerfirst.projects.v8.bin" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lessons/Lesson1-ControllerFirst/.vs/ProjectEvaluation/lesson1-controllerfirst.strings.v8.bin" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lessons/Lesson1-ControllerFirst/.vs/ProjectSettings.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lessons/Lesson1-ControllerFirst/.vs/VSWorkspaceState.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lessons/Lesson1-ControllerFirst/.vs/slnx.sqlite" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lessons/Lesson1-ControllerFirst/Lesson1-ControllerFirst.sln" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lessons/Lesson1-ControllerFirst/Lesson1-ControllerFirst/Controllers/AuthController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lessons/Lesson1-ControllerFirst/Lesson1-ControllerFirst/Data/Contexts/AuthContext.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lessons/Lesson1-ControllerFirst/Lesson1-ControllerFirst/Data/Models/Users.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lessons/Lesson1-ControllerFirst/Lesson1-ControllerFirst/Lesson1-ControllerFirst.csproj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lessons/Lesson1-ControllerFirst/Lesson1-ControllerFirst/Lesson1-ControllerFirst.csproj.user" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lessons/Lesson1-ControllerFirst/Lesson1-ControllerFirst/Lesson1-ControllerFirst.http" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lessons/Lesson1-ControllerFirst/Lesson1-ControllerFirst/Program.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lessons/Lesson1-ControllerFirst/Lesson1-ControllerFirst/Properties/launchSettings.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lessons/Lesson1-ControllerFirst/Lesson1-ControllerFirst/appsettings.Development.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lessons/Lesson1-ControllerFirst/Lesson1-ControllerFirst/appsettings.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lessons/Lesson1-ControllerFirst/Lesson1-ControllerFirst/obj/Debug/net8.0/.NETCoreApp,Version=v8.0.AssemblyAttributes.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lessons/Lesson1-ControllerFirst/Lesson1-ControllerFirst/obj/Debug/net8.0/Lesson1-ControllerFirst.AssemblyInfo.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lessons/Lesson1-ControllerFirst/Lesson1-ControllerFirst/obj/Debug/net8.0/Lesson1-ControllerFirst.AssemblyInfoInputs.cache" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lessons/Lesson1-ControllerFirst/Lesson1-ControllerFirst/obj/Debug/net8.0/Lesson1-ControllerFirst.GeneratedMSBuildEditorConfig.editorconfig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lessons/Lesson1-ControllerFirst/Lesson1-ControllerFirst/obj/Debug/net8.0/Lesson1-ControllerFirst.GlobalUsings.g.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lessons/Lesson1-ControllerFirst/Lesson1-ControllerFirst/obj/Debug/net8.0/Lesson1-ControllerFirst.assets.cache" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lessons/Lesson1-ControllerFirst/Lesson1-ControllerFirst/obj/Debug/net8.0/Lesson1-ControllerFirst.csproj.AssemblyReference.cache" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lessons/Lesson1-ControllerFirst/Lesson1-ControllerFirst/obj/Lesson1-ControllerFirst.csproj.nuget.dgspec.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lessons/Lesson1-ControllerFirst/Lesson1-ControllerFirst/obj/Lesson1-ControllerFirst.csproj.nuget.g.props" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lessons/Lesson1-ControllerFirst/Lesson1-ControllerFirst/obj/Lesson1-ControllerFirst.csproj.nuget.g.targets" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lessons/Lesson1-ControllerFirst/Lesson1-ControllerFirst/obj/Release/net8.0/.NETCoreApp,Version=v8.0.AssemblyAttributes.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lessons/Lesson1-ControllerFirst/Lesson1-ControllerFirst/obj/Release/net8.0/Lesson1-ControllerFirst.AssemblyInfo.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lessons/Lesson1-ControllerFirst/Lesson1-ControllerFirst/obj/Release/net8.0/Lesson1-ControllerFirst.AssemblyInfoInputs.cache" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lessons/Lesson1-ControllerFirst/Lesson1-ControllerFirst/obj/Release/net8.0/Lesson1-ControllerFirst.GeneratedMSBuildEditorConfig.editorconfig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lessons/Lesson1-ControllerFirst/Lesson1-ControllerFirst/obj/Release/net8.0/Lesson1-ControllerFirst.GlobalUsings.g.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lessons/Lesson1-ControllerFirst/Lesson1-ControllerFirst/obj/Release/net8.0/Lesson1-ControllerFirst.assets.cache" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lessons/Lesson1-ControllerFirst/Lesson1-ControllerFirst/obj/project.assets.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lessons/Lesson1-ControllerFirst/Lesson1-ControllerFirst/obj/project.nuget.cache" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lessons/Lesson1-ControllerFirst/Lesson1-ControllerFirst/obj/project.packagespec.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lessons/Lesson1-ControllerFirst/Lesson1-ControllerFirst/obj/rider.project.model.nuget.info" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lessons/Lesson1-ControllerFirst/Lesson1-ControllerFirst/obj/rider.project.restore.info" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lessons/Lesson1-ControllerFirst/global.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ApiFirst/ApiFirst.csproj" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ApiFirst/ApiFirst.http" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ApiFirst/ApiFirst.sln" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ApiFirst/Program.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ApiFirst/Properties/launchSettings.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ApiFirst/appsettings.Development.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ApiFirst/appsettings.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ApiFirst/global.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MVCWebServer/WebServer.sln" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MVCWebServer/WebServer/ClassDiagram1.cd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MVCWebServer/WebServer/Controllers/Controller.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MVCWebServer/WebServer/Controllers/HomeController.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MVCWebServer/WebServer/Controllers/InfoController.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MVCWebServer/WebServer/Middlewares/Classes/LoggerMiddleware.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MVCWebServer/WebServer/Middlewares/Classes/MVCMiddleware.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MVCWebServer/WebServer/Middlewares/Classes/MiddlewareBuilder.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MVCWebServer/WebServer/Middlewares/Classes/StaticFilesMiddleware.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MVCWebServer/WebServer/Middlewares/Delegates/HttpHandler.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MVCWebServer/WebServer/Middlewares/Interfaces/IMiddleware.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MVCWebServer/WebServer/Program.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MVCWebServer/WebServer/Services/Classes/JsonResult.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MVCWebServer/WebServer/Services/Classes/LoggerService.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MVCWebServer/WebServer/Services/Classes/MyHttpResult.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MVCWebServer/WebServer/Services/Classes/Startup.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MVCWebServer/WebServer/Services/Classes/ViewResult.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MVCWebServer/WebServer/Services/Classes/WebHost.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MVCWebServer/WebServer/Services/Interfaces/IActionResult.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MVCWebServer/WebServer/Services/Interfaces/IStartup.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MVCWebServer/WebServer/Views/Index.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MVCWebServer/WebServer/Views/info.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MVCWebServer/WebServer/WebServer.csproj" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MVCWebServer/WebServer/wwwroot/favicon.ico" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Конспекты/Intro.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Конспекты/Lesson2/Lesson2.md" beforeDir="false" />
-    </list>
+    <list default="true" id="78d5c6cb-1c07-48ae-b5e3-20f99f0db482" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -144,19 +26,12 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/2f1e8153e25ec5e19739b45da84861aa743db6bb9dea25d7e7fda11cfaf6a5/Assembly.CoreCLR.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/394cf11a64687141fd58fb926ff8b3d5a299eba3bbadaf2de9b93928d523d4/Type.CoreCLR.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/3bd4df5aff92cabbc4d630be64227073db1b8539b3a1e47786b4b189d7cdb7/DbContext.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/4f5de739434fb92262aeb174a61e4e146bc0e070b3c0393eccf72395b1d14/SimpleConsoleFormatter.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/89a347e957e00922d11acf8e2b470619ff7e3f4f9882a75fff759429894b2f1/ConsoleLogger.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/b05fc3ef644b7632d4481b3defa11634da02637d896cb5eca3eca7cf2f3ee3/String.Manipulation.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/c1c946eaa6d8ddaaea1b63e936ca8ed2791d9316c5b025a41d445891e8a59ecd/DefaultInterpolatedStringHandler.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/cd7138f0b8aea3cc064186172d7d5e82409c7c3aa2e1bc8ee0a73894c9df0/Logger.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/eaf74182ad7c943aaf043fd9e7bbb1d564713c6bd276e62966aaa618e9/LoggerExtensions.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/ebfd60d582c50e7123fd83fb530894b816559627ebdf43445a58a5c8160e/InternalDbSet.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/41a98413a3e1f6de2572b0cef5abb62a9221bd5c237d5190194c40ea4bb/Queryable.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/621526284d3e4868b98948aff942206525763e57e194a27623b66c384466/ServiceProviderServiceExtensions.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/b7208b3f72528d22781d25fde9a55271bdf2b5aade4f03b1324579a25493cd8/List.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CRMSolution/Data/Validators/Order/ChangeOrderDataValidator.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CRMSolution/Services/Classes/TokenService.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CRMSolution/Services/Interfaces/ITokenService.cs" root0="FORCE_HIGHLIGHTING" />
@@ -180,9 +55,10 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;.NET Launch Settings Profile.CRMSolution: IIS Express.executor&quot;: &quot;Run&quot;,
+    &quot;.NET Launch Settings Profile.CRMSolution: http.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;ASP&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -192,7 +68,7 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
-  <component name="RunManager" selected=".NET Launch Settings Profile.CRMSolution: IIS Express">
+  <component name="RunManager" selected=".NET Launch Settings Profile.CRMSolution: http">
     <configuration name="CRMSolution: IIS Express" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
       <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/CRMSolution/CRMSolution.csproj" />
       <option name="LAUNCH_PROFILE_TFM" value="net8.0" />
@@ -251,6 +127,10 @@
       <workItem from="1740482341743" duration="6911000" />
       <workItem from="1740564763192" duration="6823000" />
       <workItem from="1740744612299" duration="11505000" />
+      <workItem from="1741068870065" duration="2280000" />
+      <workItem from="1741072629694" duration="269000" />
+      <workItem from="1741072947229" duration="3349000" />
+      <workItem from="1741076354810" duration="13510000" />
     </task>
     <servers />
   </component>

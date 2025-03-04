@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CRMSolution.Migrations
 {
     [DbContext(typeof(CRMContext))]
-    [Migration("20250225115453_third")]
-    partial class third
+    [Migration("20250304081455_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,9 +27,11 @@ namespace CRMSolution.Migrations
 
             modelBuilder.Entity("CRMSolution.Data.Models.Client", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -44,9 +46,6 @@ namespace CRMSolution.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<Guid>("ManagerId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(200)
@@ -59,19 +58,46 @@ namespace CRMSolution.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ManagerId");
-
                     b.ToTable("Clients", (string)null);
+                });
+
+            modelBuilder.Entity("CRMSolution.Data.Models.ClientOrder", b =>
+                {
+                    b.Property<int>("ClientId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ClientId", "OrderId");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("ClientOrder", (string)null);
+                });
+
+            modelBuilder.Entity("CRMSolution.Data.Models.ClientUser", b =>
+                {
+                    b.Property<int>("ClientId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ClientId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ClientUsers", (string)null);
                 });
 
             modelBuilder.Entity("CRMSolution.Data.Models.Order", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
 
-                    b.Property<Guid>("ClientId")
-                        .HasColumnType("uniqueidentifier");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -84,22 +110,16 @@ namespace CRMSolution.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ClientId");
-
                     b.ToTable("Orders", (string)null);
                 });
 
             modelBuilder.Entity("CRMSolution.Data.Models.Tasks", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
 
-                    b.Property<Guid>("AssignedToId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ClientId")
-                        .HasColumnType("uniqueidentifier");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -109,8 +129,8 @@ namespace CRMSolution.Migrations
                     b.Property<DateTime>("DueDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("OrderId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -122,10 +142,6 @@ namespace CRMSolution.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AssignedToId");
-
-                    b.HasIndex("ClientId");
-
                     b.HasIndex("OrderId");
 
                     b.ToTable("Tasks", (string)null);
@@ -133,9 +149,11 @@ namespace CRMSolution.Migrations
 
             modelBuilder.Entity("CRMSolution.Data.Models.User", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -170,70 +188,151 @@ namespace CRMSolution.Migrations
                     b.ToTable("Users", (string)null);
                 });
 
-            modelBuilder.Entity("CRMSolution.Data.Models.Client", b =>
+            modelBuilder.Entity("CRMSolution.Data.Models.UserOrders", b =>
                 {
-                    b.HasOne("CRMSolution.Data.Models.User", "Manager")
-                        .WithMany("Clients")
-                        .HasForeignKey("ManagerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
-                    b.Navigation("Manager");
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId", "OrderId");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("UserOrders", (string)null);
                 });
 
-            modelBuilder.Entity("CRMSolution.Data.Models.Order", b =>
+            modelBuilder.Entity("CRMSolution.Data.Models.UserTask", b =>
                 {
-                    b.HasOne("CRMSolution.Data.Models.Client", "Client")
-                        .WithMany("Orders")
-                        .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
-                    b.Navigation("Client");
+                    b.Property<int>("TaskId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId", "TaskId");
+
+                    b.HasIndex("TaskId");
+
+                    b.ToTable("UserTasks", (string)null);
                 });
 
-            modelBuilder.Entity("CRMSolution.Data.Models.Tasks", b =>
+            modelBuilder.Entity("CRMSolution.Data.Models.ClientOrder", b =>
                 {
-                    b.HasOne("CRMSolution.Data.Models.User", "AssignedTo")
-                        .WithMany("Tasks")
-                        .HasForeignKey("AssignedToId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("CRMSolution.Data.Models.Client", "Client")
-                        .WithMany()
+                        .WithMany("ClientOrders")
                         .HasForeignKey("ClientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("CRMSolution.Data.Models.Order", "Order")
-                        .WithMany("Tasks")
+                        .WithMany("ClientOrders")
                         .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("AssignedTo");
 
                     b.Navigation("Client");
 
                     b.Navigation("Order");
                 });
 
+            modelBuilder.Entity("CRMSolution.Data.Models.ClientUser", b =>
+                {
+                    b.HasOne("CRMSolution.Data.Models.Client", "Client")
+                        .WithMany("ClientUsers")
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CRMSolution.Data.Models.User", "User")
+                        .WithMany("ClientUsers")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Client");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("CRMSolution.Data.Models.Tasks", b =>
+                {
+                    b.HasOne("CRMSolution.Data.Models.Order", "Order")
+                        .WithMany("Tasks")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+                });
+
+            modelBuilder.Entity("CRMSolution.Data.Models.UserOrders", b =>
+                {
+                    b.HasOne("CRMSolution.Data.Models.Order", "Order")
+                        .WithMany("UserOrders")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CRMSolution.Data.Models.User", "User")
+                        .WithMany("UserOrders")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("CRMSolution.Data.Models.UserTask", b =>
+                {
+                    b.HasOne("CRMSolution.Data.Models.Tasks", "Task")
+                        .WithMany("UserTasks")
+                        .HasForeignKey("TaskId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CRMSolution.Data.Models.User", "User")
+                        .WithMany("UserTasks")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Task");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("CRMSolution.Data.Models.Client", b =>
                 {
-                    b.Navigation("Orders");
+                    b.Navigation("ClientOrders");
+
+                    b.Navigation("ClientUsers");
                 });
 
             modelBuilder.Entity("CRMSolution.Data.Models.Order", b =>
                 {
+                    b.Navigation("ClientOrders");
+
                     b.Navigation("Tasks");
+
+                    b.Navigation("UserOrders");
+                });
+
+            modelBuilder.Entity("CRMSolution.Data.Models.Tasks", b =>
+                {
+                    b.Navigation("UserTasks");
                 });
 
             modelBuilder.Entity("CRMSolution.Data.Models.User", b =>
                 {
-                    b.Navigation("Clients");
+                    b.Navigation("ClientUsers");
 
-                    b.Navigation("Tasks");
+                    b.Navigation("UserOrders");
+
+                    b.Navigation("UserTasks");
                 });
 #pragma warning restore 612, 618
         }

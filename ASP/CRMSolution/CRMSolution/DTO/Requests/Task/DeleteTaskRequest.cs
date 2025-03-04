@@ -1,3 +1,3 @@
 ﻿namespace CRMSolution.DTO.Requests.Task;
 
-public record DeleteTaskRequest(Guid taskId);
+public record DeleteTaskRequest(int taskId);

@@ -3,7 +3,7 @@
 
 public class TaskResponse
 {
-    public Guid Id { get; set; }
+    public int Id { get; set; }
     public string Title { get; set; }
     public string Description { get; set; }
     public OrderResponse Order { get; set; }
@@ -13,7 +13,7 @@ public class TaskResponse
 
 public class UserTaskResponse
 {
-    public Guid Id { get; set; } = Guid.NewGuid();
+    public int Id { get; set; }
     public string UserName { get; set; } 
     public string Email { get; set; } = string.Empty;
     public bool IsEmailConfirmed { get; set; }

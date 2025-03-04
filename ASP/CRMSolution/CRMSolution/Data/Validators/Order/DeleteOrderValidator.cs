@@ -19,7 +19,7 @@ public class DeleteOrderValidator : AbstractValidator<DeleteOrderRequest>
             .WithMessage("The order ID does not exist.");
     }
 
-    private async Task<bool> IsOrderExist(Guid id, CancellationToken cancellationToken)
+    private async Task<bool> IsOrderExist(int id, CancellationToken cancellationToken)
     {
         var order = await _orderRepository.GetById(id);
         return order != null;

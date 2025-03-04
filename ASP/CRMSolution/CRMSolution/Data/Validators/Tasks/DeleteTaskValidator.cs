@@ -19,7 +19,7 @@ public class DeleteTaskValidator : AbstractValidator<DeleteTaskRequest>
             .WithMessage("Task not found");
     }
 
-    private async Task<bool> IsTaskExist(Guid id, CancellationToken cancellationToken)
+    private async Task<bool> IsTaskExist(int id, CancellationToken cancellationToken)
     {
         var task = await _taskRepository.GetById(id);
         return task != null;

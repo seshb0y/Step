@@ -456,3 +456,4 @@ C:\Users\seshb\OneDrive\Рабочий стол\Rep\Step\ASP\CRMSolution\CRMSolu
 C:\Users\seshb\OneDrive\Рабочий стол\Rep\Step\ASP\CRMSolution\CRMSolution\obj\Debug\net8.0\CRMSolution.pdb
 C:\Users\seshb\OneDrive\Рабочий стол\Rep\Step\ASP\CRMSolution\CRMSolution\obj\Debug\net8.0\CRMSolution.genruntimeconfig.cache
 C:\Users\seshb\OneDrive\Рабочий стол\Rep\Step\ASP\CRMSolution\CRMSolution\obj\Debug\net8.0\ref\CRMSolution.dll
+C:\Users\seshb\OneDrive\Рабочий стол\Rep\Step\ASP\CRMSolution\CRMSolution\bin\Debug\net8.0\Bogus.dll

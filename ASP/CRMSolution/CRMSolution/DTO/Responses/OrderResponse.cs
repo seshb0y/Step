@@ -12,7 +12,7 @@ public class ClientOrderDto
 
 public class OrderResponse
 {
-    public Guid Id { get; set; }
+    public int Id { get; set; }
     public decimal TotalAmount { get; set; }
     public string Status { get; set; }
     public DateTime CreatedAt { get; set; }

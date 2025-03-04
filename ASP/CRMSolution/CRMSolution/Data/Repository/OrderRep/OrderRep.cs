@@ -24,7 +24,7 @@ public class OrderRep : Repository<Order>, IOrderRep
         await _context.SaveChangesAsync();
     }
 
-    public async Task<Order> GetOrderInclude(Guid orderId)
+    public async Task<Order> GetOrderInclude(int orderId)
     {
         return await _dbSet
             .Include(o => o.ClientOrders)

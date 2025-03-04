@@ -3,6 +3,7 @@ import { loginUser, checkAuth } from "../features/auth/authSlice"
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../hooks/useAppDispatch";
 import { motion } from "framer-motion";
+import Button from "../components/Button";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -122,7 +123,7 @@ const Login = () => {
 
         {/* Кнопка входа */}
         <button
-          onClick={() => console.log("Login...")}
+          onClick={() => handleLogin()}
           className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 rounded-md transition-all"
         >
           Login

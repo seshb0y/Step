@@ -2,4 +2,4 @@
 
 namespace CRMSolution.DTO.Requests.Task;
 
-public record CreateTaskRequest(string title, string description, DateTime endDate, string userEmail, Guid orderId);
+public record CreateTaskRequest(string title, string description, DateTime endDate, string userEmail, int orderId);
