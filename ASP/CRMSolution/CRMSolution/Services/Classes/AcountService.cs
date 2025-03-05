@@ -66,7 +66,7 @@ public class AccountService : IAccountService
             throw new Exception("User not found");
 
         string token = await _tokenService.CreateEmailTokenAsync(request.username);
-        string link = $"{context.Request.Scheme}://{context.Request.Host}/api/auth/verify-email?token={token}";
+        string link = $"{context.Request.Scheme}://{context.Request.Host}/Account/VerifyEmail?token={token}";
 
         using var client = new SmtpClient
         {

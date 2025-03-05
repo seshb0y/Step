@@ -36,7 +36,7 @@ public class AccountController : ControllerBase
         return Ok(new Result<string>(true, request.Username, "Successfully registered"));
     }
 
-    [Authorize(Policy = "AdminPolicy")]
+    // [Authorize(Policy = "AdminPolicy")]
     [HttpGet("VerifyEmail")]
     public async Task<IActionResult> VerifyEmailAsync([FromQuery] string token)
     {
@@ -44,7 +44,7 @@ public class AccountController : ControllerBase
         
         return Ok(new Result<string>(true, "Email confirmed", "Email confirmed"));
     }
-    [Authorize(Policy = "AdminPolicy")]
+    // [Authorize(Policy = "AdminPolicy")]
     [HttpPost("ConfirmEmail")]
     public async Task<IActionResult> ConfirmEmailAsync([FromBody] ConfirmRequest request)
     {

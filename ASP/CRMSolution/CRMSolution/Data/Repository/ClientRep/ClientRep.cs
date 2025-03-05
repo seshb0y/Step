@@ -28,5 +28,16 @@ public class ClientRep : Repository<Client>, IClientRep
     {
         return await _dbSet.FirstOrDefaultAsync(c => c.Name == name);
     }
-    
+
+    public async Task<List<Client>> GetLowInfoClientsList()
+    {
+        return await _dbSet.Select(c => new Client
+        {
+            Name = c.Name,
+            Email = c.Email,
+            Phone = c.Phone,
+            Address = c.Address,
+            CreatedAt = c.CreatedAt,
+        }).ToListAsync();
+    }
 }

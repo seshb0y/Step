@@ -16,18 +16,27 @@ const menuItems = [
   { text: "Настройки", icon: <SettingsIcon />, path: "/settings" },
 ];
 
-const Sidebar = () => {
+interface SidebarProps {
+  isExpanded: boolean;
+  setIsExpanded: (expanded: boolean) => void;
+}
+
+const Sidebar = ({ isExpanded, setIsExpanded }: SidebarProps) => {
   return (
     <Drawer
       variant="permanent"
+      onMouseEnter={() => setIsExpanded(true)}
+      onMouseLeave={() => setIsExpanded(false)}
       sx={{
-        width: 240,
+        width: isExpanded ? 240 : 60,
         flexShrink: 0,
+        transition: "width 0.3s ease",
         "& .MuiDrawer-paper": {
-          width: 240,
+          width: isExpanded ? 240 : 60,
           boxSizing: "border-box",
           backgroundColor: "#1a1a2e",
           color: "#fff",
+          transition: "width 0.3s ease",
         },
       }}
     >
@@ -42,11 +51,12 @@ const Sidebar = () => {
               color: "#fff",
               "&.active": {
                 backgroundColor: "#16213e",
+                marginTop: "15px"
               },
             }}
           >
-            <ListItemIcon sx={{ color: "#fff" }}>{icon}</ListItemIcon>
-            <ListItemText primary={text} />
+            <ListItemIcon sx={{ color: "#fff", minWidth: "40px" }}>{icon}</ListItemIcon>
+            {isExpanded && <ListItemText primary={text} />}
           </ListItemButton>
         ))}
       </List>

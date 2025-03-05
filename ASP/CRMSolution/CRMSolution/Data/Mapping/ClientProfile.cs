@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ControllerFirst.DTO.Responses;
 using CRMSolution.Data.Models;
 using CRMSolution.DTO.Requests.Client;
 
@@ -27,5 +28,9 @@ public class ClientProfile : Profile
                 opt.MapFrom(src => src.newEmail))
             .ForMember(dest => dest.Phone, opt =>
                 opt.MapFrom(src => src.phone));
+
+        CreateMap<List<Client>, GetAllClientsResponse>()
+            .ForMember(dest => dest.Clients, opt => opt
+                .MapFrom(src => src));
     }
 }

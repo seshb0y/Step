@@ -1,4 +1,5 @@
-﻿using CRMSolution.Data.Models;
+﻿using ControllerFirst.DTO.Responses;
+using CRMSolution.Data.Models;
 using CRMSolution.DTO.Requests.Client;
 using CRMSolution.Services.Interfaces;
 using FluentValidation;
@@ -55,5 +56,12 @@ public class ClientController : ControllerBase
     public async Task<IActionResult> FindClient([FromQuery] FindClientRequest request)
     {
         return Ok(await _clientService.FindClient(request));
+    }
+
+    [HttpGet("GetAllClients")]
+    public async Task<IActionResult> GetAllClients()
+    {
+        var clients = await _clientService.GetAllClients(); // Получаем клиентов из сервиса
+        return Ok(clients); 
     }
 }

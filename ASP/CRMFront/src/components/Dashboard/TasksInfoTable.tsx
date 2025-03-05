@@ -22,15 +22,15 @@ export const TasksStatusTable = () => {
 
   return (
     <div className="bg-dark-card p-6 rounded-lg shadow-md border border-dark-border">
-      <h2 className="text-lg font-semibold text-text-light mb-4">Tasks Info Table</h2>
+      <h2 className="text-lg font-semibold text-primary-purple mb-4">Tasks Info Table</h2>
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Metric</TableHead>
-            <TableHead>Value</TableHead>
+            <TableHead className="text-primary-purple bg-dark-bg">Metric</TableHead>
+            <TableHead className="text-primary-purple bg-dark-bg">Value</TableHead>
           </TableRow>
         </TableHeader>
-        <TableBody>
+        <TableBody className="text-primary-purple">
           {tasksData.map((item, index) => (
             <TableRow key={index}>
               <TableCell>{item.metric}</TableCell>

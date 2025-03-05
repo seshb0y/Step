@@ -16,7 +16,7 @@ const Login = () => {
     try {
       await dispatch(loginUser({ username, password })).unwrap();
       await dispatch(checkAuth());
-    //   navigate("/");
+      navigate("/");
     } catch (error) {
       alert("Error data!");
     }
@@ -24,7 +24,6 @@ const Login = () => {
 
   return (
     <div className="h-screen w-screen flex flex-col items-center justify-center bg-gradient-to-b from-gray-900 to-purple-900 text-white">
-      {/* Йети */}
       <div className="relative mb-6">
           <motion.svg
             className="w-40 h-40"
@@ -38,10 +37,7 @@ const Login = () => {
                     <stop offset="100%" stopColor="#581c87" /> 
                 </linearGradient>
             </defs>
-            {/* Тело */}
             <circle cx="100" cy="100" r="80" fill="url(#yetiGradient)" stroke="black" strokeWidth="4" />
-
-            {/* Глаза */}
             <motion.circle
               cx="70"
               cy="85"
@@ -59,13 +55,12 @@ const Login = () => {
               transition={{ duration: 0.2 }}
             />
 
-            {/* Руки закрывают глаза */}
             <motion.ellipse
                 cx="70" cy="70" 
                 rx="15" ry="10"
                 fill="black"
                 stroke="black" strokeWidth="4"
-                animate={{ cy: isTypingPassword ? 85 : 70 }} // Двигаем вниз
+                animate={{ cy: isTypingPassword ? 85 : 70 }} 
                 transition={{ duration: 0.2 }}
             />
             <motion.rect
@@ -85,16 +80,13 @@ const Login = () => {
                 transition={{ duration: 0.2 }}
             />
 
-            {/* Рот */}
             <path d="M80 120 Q100 140 120 120" stroke="black" strokeWidth="4" fill="none" />
           </motion.svg>
         </div>
 
-      {/* Форма входа */}
       <div className="bg-gray-800 p-8 rounded-xl shadow-lg w-96">
         <h2 className="text-3xl font-bold mb-6 text-center">Sign In</h2>
 
-        {/* Поле логина */}
         <div className="mb-4">
           <label className="block text-gray-400 mb-2">Email</label>
           <input
@@ -106,7 +98,6 @@ const Login = () => {
           />
         </div>
 
-        {/* Поле пароля */}
         <div className="mb-6">
           <label className="block text-gray-400 mb-2">Password</label>
           <input
@@ -121,7 +112,6 @@ const Login = () => {
           />
         </div>
 
-        {/* Кнопка входа */}
         <button
           onClick={() => handleLogin()}
           className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 rounded-md transition-all"

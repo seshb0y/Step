@@ -9,4 +9,5 @@ public interface IClientRep : IRepository<Client>
     Task<Client?> GetClientByEmail(String email);
     
     Task<Client?> GetClientByName(string name);
+    Task<List<Client>> GetLowInfoClientsList();
 }

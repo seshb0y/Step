@@ -1,5 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "../../api/axiosInstance";
+import { use } from "react";
+import { User } from "../../types/User";
 
 interface AuthState {
   user: User | null;
@@ -7,11 +9,11 @@ interface AuthState {
   loading: boolean;
 }
 
-interface User {
-  id: string,
-  name: string,
-  role: string,
-};
+// interface User {
+//   id: string,
+//   name: string,
+//   role: string,
+// };
 
 export const checkAuth = createAsyncThunk("auth/checkAuth", async () => {
   const response = await axiosInstance.get("/Account/me");
@@ -35,11 +37,16 @@ export const logoutUser = createAsyncThunk("Auth/Logout", async () => {
 });
 
 
+localStorage.setItem("isLogin", JSON.stringify("false"));
 const initialState: AuthState = {
   user: null,
-  isAuthenticated: false,
+  isAuthenticated: !!localStorage.getItem("isLogin"),
   loading: false,
 };
+
+
+
+
 
 const authSlice = createSlice({
   name: "auth",
@@ -53,6 +60,9 @@ const authSlice = createSlice({
       .addCase(checkAuth.fulfilled, (state, action) => {
         state.isAuthenticated = true;
         state.user = action.payload;
+        localStorage.setItem("user", JSON.stringify(action.payload));
+        localStorage.setItem("isLogin", JSON.stringify("true") );
+        console.log("User saved:", action.payload);
         state.loading = false;
       })
       .addCase(checkAuth.rejected, (state) => {
@@ -63,11 +73,17 @@ const authSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         state.isAuthenticated = true;
         state.user = action.payload;
+        
+        
       })
+      
       .addCase(logoutUser.fulfilled, (state) => {
         state.isAuthenticated = false;
         state.user = null;
-      });
+        localStorage.removeItem("user");
+        localStorage.removeItem("isLogin");
+    });
+    
   },
 });
 

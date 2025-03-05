@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ControllerFirst.DTO.Responses;
 using CRMSolution.Data.Models;
 using CRMSolution.Data.Repository;
 using CRMSolution.Data.Repository.Interface;
@@ -66,4 +67,12 @@ public class ClientService : IClientService
         return client;
     }
 
+    public async Task<GetAllClientsResponse> GetAllClients()
+    {
+        var clients = await _clientRepository.ClientRep.GetLowInfoClientsList();
+        return new GetAllClientsResponse
+        {
+            Clients = _mapper.Map<List<Client>>(clients)
+        };
+    }
 }
