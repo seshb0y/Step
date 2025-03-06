@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "../../api/axiosInstance";
-import { use } from "react";
 import { User } from "../../types/User";
 
 interface AuthState {

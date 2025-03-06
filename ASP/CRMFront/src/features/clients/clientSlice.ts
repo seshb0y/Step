@@ -22,10 +22,23 @@ const initialState: ClientsState = {
   error: null,
 };
 
-export const fetchClients = createAsyncThunk("clients/fetchClients", async (sortBy: string) => {
-  const response = await axiosInstance.get<Client[]>(`/Clients?sortBy=${sortBy}`);
-  return response.data;
-});
+export const fetchClients = createAsyncThunk(
+    "clients/fetchClients",
+    async ({ sortBy, descending }: { sortBy?: string; descending?: boolean }) => {
+      const params = new URLSearchParams();
+      if (sortBy) params.append("sortBy", sortBy);
+      if (descending !== undefined) params.append("Descending", descending.toString());
+  
+      const response = await axiosInstance.get(`/Client/GetAllClients?${params.toString()}`);
+      
+      console.log("API Response:", response.data);
+      console.log("Is array?", Array.isArray(response.data)); // Проверяем, массив ли это
+  
+      return response.data;
+    }
+  );
+  
+  
 
 const clientsSlice = createSlice({
   name: "clients",
@@ -38,7 +51,9 @@ const clientsSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchClients.fulfilled, (state, action) => {
-        state.clients = action.payload;
+        console.log("Data received in Redux:", action.payload);
+      
+        state.clients = Array.isArray(action.payload.clients) ? action.payload.clients : []; // Берём массив внутри объекта
         state.loading = false;
       })
       .addCase(fetchClients.rejected, (state) => {

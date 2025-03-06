@@ -10,5 +10,5 @@ public interface IClientService
     public Task ChangeDataClient(ChangeDataClientRequest request);
     public Task DeleteClient(DeleteClientRequest request);
     public Task<Client> FindClient(FindClientRequest request);
-    public Task<GetAllClientsResponse> GetAllClients();
+    public Task<GetAllClientsResponse> GetAllClients(SortClientsRequest sortClientsRequest);
 }

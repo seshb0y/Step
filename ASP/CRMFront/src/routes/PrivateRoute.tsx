@@ -4,7 +4,7 @@ import { useAppSelector } from "../hooks/useAppSelector";
 const PrivateRoute = () => {
   const isAuthenticated = useAppSelector(state => state.auth.isAuthenticated);
   
-  return isAuthenticated ? <Outlet /> : <Navigate to="/login" replace />;
+  return isAuthenticated ? <Outlet /> : <Navigate to="/" replace />;
 };
 
 export default PrivateRoute;

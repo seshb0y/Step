@@ -59,9 +59,10 @@ public class ClientController : ControllerBase
     }
 
     [HttpGet("GetAllClients")]
-    public async Task<IActionResult> GetAllClients()
+    public async Task<IActionResult> GetAllClients([FromQuery] SortClientsRequest sortClientsRequest)
     {
-        var clients = await _clientService.GetAllClients(); // Получаем клиентов из сервиса
-        return Ok(clients); 
+        var clients = await _clientService.GetAllClients(sortClientsRequest);
+        return Ok(clients);
     }
+
 }

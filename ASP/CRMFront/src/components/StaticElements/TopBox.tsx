@@ -1,6 +1,6 @@
 import { Avatar, Box, IconButton, Menu, MenuItem, Typography } from "@mui/material";
 import { Logout } from "@mui/icons-material";
-import { use, useState } from "react";
+import { useState } from "react";
 import UserProfileModal from "../Modals/UserProfileModal";
 import { User } from "../../types/User";
 import { useNavigate } from "react-router-dom";
@@ -57,7 +57,7 @@ const TopBox = () => {
       </Typography>
 
       <Box sx={{ display: "flex", alignItems: "center" }}>
-        <Typography sx={{ marginRight: "10px", color: "#fff" }}>{user?.username || "Пользователь"}</Typography>
+        <Typography sx={{ marginRight: "10px", color: "#fff" }}>{user?.username || "User"}</Typography>
         <IconButton onClick={handleMenuOpen}>
           <Avatar sx={{ bgcolor: "primary.main" }}>{user?.username?.charAt(0).toUpperCase()}</Avatar>
         </IconButton>

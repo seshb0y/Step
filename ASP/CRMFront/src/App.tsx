@@ -1,7 +1,6 @@
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./store/store";
-import Dashboard from "./pages/Dashboard";
 import AppRoutes from "./routes/AppRoutes";
 
 const App = () => {

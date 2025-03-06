@@ -67,12 +67,13 @@ public class ClientService : IClientService
         return client;
     }
 
-    public async Task<GetAllClientsResponse> GetAllClients()
+    public async Task<GetAllClientsResponse> GetAllClients(SortClientsRequest sortClientsRequest)
     {
-        var clients = await _clientRepository.ClientRep.GetLowInfoClientsList();
+        var clients = await _clientRepository.ClientRep.GetLowInfoClientsList(sortClientsRequest);
         return new GetAllClientsResponse
         {
             Clients = _mapper.Map<List<Client>>(clients)
         };
     }
+
 }

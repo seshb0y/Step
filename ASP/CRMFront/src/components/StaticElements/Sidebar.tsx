@@ -8,7 +8,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import GroupIcon from "@mui/icons-material/Group";
 
 const menuItems = [
-  { text: "Дэшборд", icon: <DashboardIcon />, path: "/" },
+  { text: "Дэшборд", icon: <DashboardIcon />, path: "/dashboard" },
   { text: "Клиенты", icon: <PeopleIcon />, path: "/clients" },
   { text: "Заказы", icon: <ShoppingCartIcon />, path: "/orders" },
   { text: "Задачи", icon: <AssignmentIcon />, path: "/tasks" },

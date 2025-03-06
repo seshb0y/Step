@@ -3,7 +3,6 @@ import { loginUser, checkAuth } from "../features/auth/authSlice"
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../hooks/useAppDispatch";
 import { motion } from "framer-motion";
-import Button from "../components/Button";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -16,9 +15,10 @@ const Login = () => {
     try {
       await dispatch(loginUser({ username, password })).unwrap();
       await dispatch(checkAuth());
-      navigate("/");
+      navigate("/dashboard");
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      alert("Error data!");
+      alert("Error data!",);
     }
   };
 
