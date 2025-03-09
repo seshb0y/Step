@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import { useNavigate } from "react-router-dom";
 
 interface StatsCardProps {
   title: string;
@@ -10,6 +11,18 @@ interface StatsCardProps {
 
 export const StatsCard: React.FC<StatsCardProps> = ({ title, value, change, unit }) => {
   const isNegative = change < 0;
+  const navigate = useNavigate();
+
+  const getRoute = (title: string) => {
+    switch (title.toLowerCase()) {
+      case "clients":
+        return "/clients";
+      case "orders":
+        return "/orders";
+      default:
+        return "/dashboard";
+    }
+  };
 
   return (
     <motion.div
@@ -17,7 +30,8 @@ export const StatsCard: React.FC<StatsCardProps> = ({ title, value, change, unit
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
     >
-      <Card className="bg-dark-card border border-dark-border shadow-lg rounded-lg p-6 transition hover:shadow-primary-purple/50">
+      <Card className="bg-dark-card border border-dark-border shadow-lg rounded-lg p-6 transition hover:shadow-primary-purple/50"
+      onClick={() => navigate(getRoute(title))}>
         <CardHeader>
           <CardTitle className="text-lg font-semibold text-text-light">{title}</CardTitle>
         </CardHeader>

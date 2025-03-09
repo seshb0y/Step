@@ -31,4 +31,13 @@ public class OrderRep : Repository<Order>, IOrderRep
             .ThenInclude(o => o.Client)
             .FirstOrDefaultAsync(o => o.Id == orderId);
     }
+    
+    public async Task<Order> GetOrderWithClientAndTasks(int orderId)
+    {
+        return await _context.Orders
+            .Include(o => o.ClientOrders)
+            .ThenInclude(co => co.Client)
+            .Include(o => o.Tasks)
+            .FirstOrDefaultAsync(o => o.Id == orderId);
+    }
 }

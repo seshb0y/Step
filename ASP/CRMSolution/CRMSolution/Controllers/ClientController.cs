@@ -20,15 +20,15 @@ public class ClientController : ControllerBase
     }
 
 
-    [HttpPost("AddClient")]
+    [HttpPost("Add/Client")]
     // [Authorize(Policy = "ManagerPolicy")]
     public async Task<IActionResult> AddClient([FromBody] CreateClientRequest request)
     {
-        await _clientService.CreateClient(request);
-        return Ok("Client created");
+        
+        return Ok(await _clientService.CreateClient(request));
     }
     
-    [HttpPost("ChangeClient")]
+    [HttpPut("Change")]
     // [Authorize(Policy = "ManagerPolicy")]
     public async Task<IActionResult> ChangeClient([FromBody] ChangeDataClientRequest request, 
         [FromServices] IValidator<ChangeDataClientRequest> validator)
@@ -39,11 +39,11 @@ public class ClientController : ControllerBase
             return BadRequest(validationResult.Errors);
         }
 
-        await _clientService.ChangeDataClient(request);
-        return Ok("Client data updated");
+        
+        return Ok(await _clientService.ChangeDataClient(request));
     }
     
-    [HttpPost("DeleteClient")]
+    [HttpDelete("Delete")]
     // [Authorize(Policy = "ManagerPolicy")]
     public async Task<IActionResult> DeleteClient([FromBody] DeleteClientRequest request)
     {
@@ -51,9 +51,9 @@ public class ClientController : ControllerBase
         return Ok("Client deleted");
     }
     
-    [HttpGet("FindClient")]
+    [HttpGet("Load/Client/Data")]
     // [Authorize(Policy = "ManagerPolicy")]
-    public async Task<IActionResult> FindClient([FromQuery] FindClientRequest request)
+    public async Task<IActionResult> LoadClientData([FromQuery] FindClientRequest request)
     {
         return Ok(await _clientService.FindClient(request));
     }
@@ -64,5 +64,14 @@ public class ClientController : ControllerBase
         var clients = await _clientService.GetAllClients(sortClientsRequest);
         return Ok(clients);
     }
+    
+    [HttpGet("Get/Clients/With/Orders/And/Tasks")]
+    public async Task<IActionResult> GetClientsWithOrdersAndTasks()
+    {
+        var clients = await _clientService.GetClientsWithOrdersAndTasks();
+        return Ok(clients);
+    }
+
+
 
 }

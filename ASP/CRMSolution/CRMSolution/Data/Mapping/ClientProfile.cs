@@ -1,36 +1,69 @@
 ﻿using AutoMapper;
-using ControllerFirst.DTO.Responses;
 using CRMSolution.Data.Models;
+using ControllerFirst.DTO.Responses;
 using CRMSolution.DTO.Requests.Client;
+using System.Linq;
 
-namespace CRMSolution.Data.Mapping;
-
-public class ClientProfile : Profile
+namespace CRMSolution.Data.Mapping
 {
-    public ClientProfile()
+    public class ClientProfile : Profile
     {
-        CreateMap<CreateClientRequest, Client>()
-            .ForMember(dest => dest.Name, opt =>
-                opt.MapFrom(src => src.name))
-            .ForMember(dest => dest.Address, opt =>
-                opt.MapFrom(src => src.address))
-            .ForMember(dest => dest.Email, opt =>
-                opt.MapFrom(src => src.email))
-            .ForMember(dest => dest.Phone, opt =>
-                opt.MapFrom(src => src.phone));
+        public ClientProfile()
+        {
+            CreateMap<CreateClientRequest, Client>()
+                .ForMember(dest => dest.Name, opt => opt
+                    .MapFrom(src => src.name))
+                .ForMember(dest => dest.Address, opt => opt
+                    .MapFrom(src => src.address))
+                .ForMember(dest => dest.Email, opt => opt
+                    .MapFrom(src => src.email))
+                .ForMember(dest => dest.Phone, opt => opt
+                    .MapFrom(src => src.phone));
+            
+            CreateMap<ChangeDataClientRequest, Client>()
+                .ForMember(dest => dest.Name, opt => opt
+                    .MapFrom(src => src.name))
+                .ForMember(dest => dest.Address, opt => opt
+                    .MapFrom(src => src.address))
+                .ForMember(dest => dest.Email, opt => opt
+                    .MapFrom(src => src.newEmail))
+                .ForMember(dest => dest.Phone, opt => opt
+                    .MapFrom(src => src.phone));
+            
+            CreateMap<Client, ClientWithOrdersAndTasksResponse>()
+                .ForMember(dest => dest.Orders, opt => opt
+                    .MapFrom(src => src.ClientOrders.Select(co => co.Order).ToList()));
 
-        CreateMap<ChangeDataClientRequest, Client>()
-            .ForMember(dest => dest.Name, opt =>
-                opt.MapFrom(src => src.name))
-            .ForMember(dest => dest.Address, opt =>
-                opt.MapFrom(src => src.address))
-            .ForMember(dest => dest.Email, opt =>
-                opt.MapFrom(src => src.newEmail))
-            .ForMember(dest => dest.Phone, opt =>
-                opt.MapFrom(src => src.phone));
+            
+            CreateMap<Order, KanbanOrderResponse>()
+                .ForMember(dest => dest.OrderId, opt => opt
+                    .MapFrom(src => src.Id))
+                .ForMember(dest => dest.Status, opt => opt
+                    .MapFrom(src => src.Status.ToString()))
+                .ForMember(dest => dest.Tasks, opt => opt
+                    .MapFrom(src => src.Tasks));
 
-        CreateMap<List<Client>, GetAllClientsResponse>()
-            .ForMember(dest => dest.Clients, opt => opt
-                .MapFrom(src => src));
+            
+            CreateMap<Tasks, KanbanTaskResponse>()
+                .ForMember(dest => dest.TaskId, opt => opt
+                    .MapFrom(src => src.Id))
+                .ForMember(dest => dest.Status, opt => opt
+                    .MapFrom(src => src.Status.ToString()));
+
+            
+            CreateMap<List<Client>, List<ClientWithOrdersAndTasksResponse>>()
+                .ConvertUsing((src, dest, context) => src
+                    .Select(client => context.Mapper.Map<ClientWithOrdersAndTasksResponse>(client)).ToList());
+
+            
+            CreateMap<List<Order>, List<KanbanOrderResponse>>()
+                .ConvertUsing((src, dest, context) => src
+                    .Select(order => context.Mapper.Map<KanbanOrderResponse>(order)).ToList());
+
+            
+            CreateMap<List<Tasks>, List<KanbanTaskResponse>>()
+                .ConvertUsing((src, dest, context) => src
+                    .Select(task => context.Mapper.Map<KanbanTaskResponse>(task)).ToList());
+        }
     }
 }

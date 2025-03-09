@@ -16,9 +16,9 @@ public class FindClientValidator : AbstractValidator<FindClientRequest>
         
         RuleFor(x => x.email)
             .NotEmpty()
-            .WithMessage("Email is required")
+            .WithMessage("Id is required")
             .MustAsync(IsClientExist)
-            .WithMessage("The client email does not exist.");
+            .WithMessage("The client id does not exist.");
     }
     private async Task<bool> IsClientExist(string email, CancellationToken cancellationToken)
     {

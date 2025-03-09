@@ -5,4 +5,12 @@ export interface Order {
     totalAmount: string,
     createdAt: Date,
     tasks: Task
+    status: OrderStatus
+}
+
+export enum OrderStatus
+{
+    New,
+    Processing,
+    Completed
 }

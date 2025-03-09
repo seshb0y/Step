@@ -43,10 +43,18 @@ public class OrderController : ControllerBase
         return Ok("Order deleted");
     }
     
-    [HttpGet("FindOrder")]
+    [HttpGet("find/order")]
     // [Authorize(Policy = "ManagerPolicy")]
     public async Task<IActionResult> FindOrder([FromQuery] FindOrderRequest request)
     {
         return Ok(await _orderService.FindOrder(request));
+    }
+    
+    [HttpGet("{orderId}")]
+    public async Task<IActionResult> GetOrderDetails(int orderId)
+    {
+        var orderDetails = await _orderService.GetOrderDetailsAsync(orderId);
+
+        return Ok(orderDetails);
     }
 }

@@ -1,3 +1,4 @@
+using ControllerFirst.DTO.Responses;
 using CRMSolution.Contexts;
 using CRMSolution.Data.Models;
 using CRMSolution.Data.Repository.Interface;
@@ -24,6 +25,47 @@ public class ClientRep : Repository<Client>, IClientRep
     {
         return await _dbSet.FirstOrDefaultAsync(c => c.Email == email);
     }
+
+    public async Task<FindClientResponse?> GetClientsOrdersAndUsersAsync(string email)
+    {
+        var client = await _dbSet
+            .Where(c => c.Email == email)
+            .Include(c => c.ClientOrders)
+            .ThenInclude(co => co.Order)
+            .Include(c => c.ClientUsers)
+            .ThenInclude(cu => cu.User)
+            .FirstOrDefaultAsync();
+
+        if (client == null) return null;
+
+        return new FindClientResponse
+        {
+            Orders = client.ClientOrders.Select(co => new OrderDto
+            {
+                Id = co.Order.Id,
+                Amount = co.Order.TotalAmount,
+                Status = co.Order.Status
+            }).ToArray(),
+
+            Users = client.ClientUsers.Select(cu => new UserDto
+            {
+                Id = cu.User.Id,
+                Name = cu.User.UserName,
+                Email = cu.User.Email
+            }).ToArray()
+        };
+    }
+    
+    public async Task<List<Client>> GetClientsWithOrdersAndTasks()
+    {
+        return await _context.Clients
+            .Include(c => c.ClientOrders)
+            .ThenInclude(co => co.Order)
+            .ThenInclude(o => o.Tasks)
+            .ToListAsync();
+    }
+
+
 
     public async Task<Client?> GetClientByName(string name)
     {

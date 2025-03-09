@@ -1,6 +1,7 @@
 import { Order } from "./Order"
 
 export interface Task {
+    taskId: string
     title: string,
     description: string,
     status: TaskStatus

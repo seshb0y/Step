@@ -5,7 +5,8 @@ import Clients from "../pages/Clients";
 import Tasks from "../pages/Tasks";
 import Orders from "../pages/Orders";
 import PrivateRoute from "./PrivateRoute";
-
+import DashboardKanban from "../pages/DashboardKanban";
+import OrderDetailsPage from "../components/kanban/OrderDetailsPage";
 const AppRoutes = () => {
   return (
     <Routes>
@@ -15,6 +16,8 @@ const AppRoutes = () => {
         <Route path="/clients" element={<Clients />} />
         <Route path="/tasks" element={<Tasks />} />
         <Route path="/orders" element={<Orders />} />
+        <Route path="/kanban" element={<DashboardKanban />} />
+        <Route path="/orders/:orderId" element={<OrderDetailsPage />} /> 
       </Route>
     </Routes>
   );

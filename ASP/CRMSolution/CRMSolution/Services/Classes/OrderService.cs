@@ -65,4 +65,18 @@ public class OrderService : IOrderService
         Order order = await _unitOfWork.OrderRep.GetOrderInclude(request.orderId);
         return _mapper.Map<OrderResponse>(order);
     }
+    
+    public async Task<OrderDetailsResponse> GetOrderDetailsAsync(int orderId)
+    {
+        _logger.LogInformation("Получение деталей заказа: {OrderId}", orderId);
+
+        var order = await _unitOfWork.OrderRep.GetOrderWithClientAndTasks(orderId);
+        if (order == null)
+        {
+            _logger.LogWarning("Заказ с ID {OrderId} не найден", orderId);
+            return null;
+        }
+
+        return _mapper.Map<OrderDetailsResponse>(order);
+    }
 }

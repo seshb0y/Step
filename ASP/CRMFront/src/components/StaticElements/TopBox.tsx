@@ -16,8 +16,6 @@ const TopBox = () => {
 
   const storedUser = localStorage.getItem("user");
   const user : User = storedUser ? JSON.parse(storedUser) : null;
-  console.log("User",user)
-  console.log("Username", user.username)
   const dispatch = useAppDispatch();
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -53,7 +51,7 @@ const TopBox = () => {
       <UserProfileModal open={isProfileOpen} onClose={() => setIsProfileOpen(false)} user={user} />
 
       <Typography variant="h6" sx={{ color: "#fff", fontWeight: "bold" }}>
-        Dashboard
+        CRMSolution
       </Typography>
 
       <Box sx={{ display: "flex", alignItems: "center" }}>

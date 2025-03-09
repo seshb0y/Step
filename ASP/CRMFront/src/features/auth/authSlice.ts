@@ -16,7 +16,7 @@ interface AuthState {
 
 export const checkAuth = createAsyncThunk("auth/checkAuth", async () => {
   const response = await axiosInstance.get("/Account/me");
-  console.log(response.data)
+
   return response.data;
 });
 
@@ -25,7 +25,7 @@ export const loginUser = createAsyncThunk<User,{ username: string; password: str
   "auth/login",
   async ({ username, password }) => {
     const response = await axiosInstance.post("/Auth/Login", { username, password });
-    console.log(response.data)
+
     return response.data;
   }
 );
@@ -61,7 +61,6 @@ const authSlice = createSlice({
         state.user = action.payload;
         localStorage.setItem("user", JSON.stringify(action.payload));
         localStorage.setItem("isLogin", JSON.stringify("true") );
-        console.log("User saved:", action.payload);
         state.loading = false;
       })
       .addCase(checkAuth.rejected, (state) => {

@@ -21,15 +21,16 @@ public class ClientService : IClientService
         _logger = logger;
     }
     
-    public async Task CreateClient(CreateClientRequest request)
+    public async Task<Client> CreateClient(CreateClientRequest request)
     {
         _logger.LogInformation("Создаем нового клиента: {@Request}", request);
         Client client = _mapper.Map<Client>(request);
         await _clientRepository.ClientRep.AddAsync(client);
         await _clientRepository.SaveChangesAsync();
+        return await _clientRepository.ClientRep.GetClientByName(request.name);
     }
 
-    public async Task ChangeDataClient(ChangeDataClientRequest request)
+    public async Task<Client> ChangeDataClient(ChangeDataClientRequest request)
     {
         _logger.LogInformation("Изменяем данные клиента: {@Request}", request);
         Client client = await _clientRepository.ClientRep.GetClientByEmail(request.oldEmail);
@@ -40,6 +41,7 @@ public class ClientService : IClientService
         client = _mapper.Map(request, client);
         _clientRepository.ClientRep.Update(client);
         await _clientRepository.SaveChangesAsync();
+        return await _clientRepository.ClientRep.GetClientByEmail(request.newEmail);
     }
     
     public async Task DeleteClient(DeleteClientRequest request)
@@ -54,16 +56,16 @@ public class ClientService : IClientService
         await _clientRepository.SaveChangesAsync();
     }
 
-    public async Task<Client> FindClient(FindClientRequest request)
+    public async Task<FindClientResponse> FindClient(FindClientRequest request)
     {
         _logger.LogInformation("Поиск клиента: {@Request}", request);
-        Client? client = await _clientRepository.ClientRep.GetClientByEmail(request.email);
+        FindClientResponse? client = await _clientRepository.ClientRep.GetClientsOrdersAndUsersAsync(request.email);
         if (client == null)
         {
-            _logger.LogWarning("Клиент с email {Email} не найден", request.email);
+            _logger.LogWarning("Клиент с email {Email} не найден",request.email);
             throw new KeyNotFoundException($"Client with email {request.email} not found");
         }
-        _logger.LogInformation("Клиент найден: {ClientId}", client.Id);
+        _logger.LogInformation("Клиент найден: {ClientId}", request.email);
         return client;
     }
 
@@ -75,5 +77,12 @@ public class ClientService : IClientService
             Clients = _mapper.Map<List<Client>>(clients)
         };
     }
+    
+    public async Task<List<ClientWithOrdersAndTasksResponse>> GetClientsWithOrdersAndTasks()
+    {
+        var clients = await _clientRepository.ClientRep.GetClientsWithOrdersAndTasks();
+        return _mapper.Map<List<ClientWithOrdersAndTasksResponse>>(clients);
+    }
+
 
 }

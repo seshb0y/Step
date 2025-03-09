@@ -10,4 +10,5 @@ public interface IOrderService
     public Task ChangeDataOrder(ChangeOrderDataRequest request);
     public Task DeleteOrder(DeleteOrderRequest request);
     public Task<OrderResponse> FindOrder(FindOrderRequest request);
+    Task<OrderDetailsResponse> GetOrderDetailsAsync(int orderId);
 }

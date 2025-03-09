@@ -44,5 +44,13 @@ public class OrderProfile : Profile
                 .MapFrom(src => src.Client.CreatedAt.ToString()))
             .ForMember(dest => dest.ClientAddress, opt => opt
                 .MapFrom(src => src.Client.Address));
+        
+        CreateMap<Order, OrderDetailsResponse>()
+            .ForMember(dest => dest.Client, opt => opt.MapFrom(src => src.ClientOrders.FirstOrDefault().Client));
+
+
+        CreateMap<Client, ClientResponse>();
+        CreateMap<Tasks, OrderDetailsTaskResponse>()
+            .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()));
     }
 }

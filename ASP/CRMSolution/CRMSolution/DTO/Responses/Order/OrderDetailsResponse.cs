@@ -1,0 +1,30 @@
+﻿namespace ControllerFirst.DTO.Responses;
+
+public class OrderDetailsResponse
+{
+    public int Id { get; set; }
+    public decimal TotalAmount { get; set; }
+    public string Status { get; set; }
+    public DateTime CreatedAt { get; set; }
+
+    public ClientResponse Client { get; set; }
+    public List<OrderDetailsTaskResponse> Tasks { get; set; } = new();
+}
+
+public class ClientResponse
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public string Email { get; set; }
+    public string Phone { get; set; }
+    public string Address { get; set; }
+}
+
+public class OrderDetailsTaskResponse
+{
+    public int Id { get; set; }
+    public string Title { get; set; }
+    public string Description { get; set; }
+    public string Status { get; set; }
+    public DateTime DueDate { get; set; }
+}

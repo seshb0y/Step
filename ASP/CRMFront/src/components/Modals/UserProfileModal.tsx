@@ -3,7 +3,6 @@ import { User } from "../../types/User";
 import axiosInstance from "../../api/axiosInstance";
 
 const UserProfileModal = ({ open, onClose, user }: { open: boolean; onClose: () => void; user: User }) => {
-    console.log("UserProfileModal", user.username)
 
     const handleConfirmEmail = async () => {
         try {

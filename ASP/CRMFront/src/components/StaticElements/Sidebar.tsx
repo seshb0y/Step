@@ -6,6 +6,7 @@ import AssignmentIcon from "@mui/icons-material/Assignment";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import SettingsIcon from "@mui/icons-material/Settings";
 import GroupIcon from "@mui/icons-material/Group";
+import ViewKanbanIcon from "@mui/icons-material/ViewKanban"; // Иконка для Kanban-доски
 
 const menuItems = [
   { text: "Дэшборд", icon: <DashboardIcon />, path: "/dashboard" },
@@ -13,6 +14,7 @@ const menuItems = [
   { text: "Заказы", icon: <ShoppingCartIcon />, path: "/orders" },
   { text: "Задачи", icon: <AssignmentIcon />, path: "/tasks" },
   { text: "Пользователи", icon: <GroupIcon />, path: "/users" },
+  { text: "Канбан", icon: <ViewKanbanIcon />, path: "/kanban" }, // Новая кнопка
   { text: "Настройки", icon: <SettingsIcon />, path: "/settings" },
 ];
 

@@ -1,11 +1,14 @@
 import { Order } from "./Order"
+import { User } from "./User"
 
 export interface Client {
-    userName: string,
+    id?: string,
+    name: string,
     email: string,
-    isEmailConfirmed: boolean,
+    isEmailConfirmed?: boolean,
     phone: string,
     address: string,
-    createdAt: string
-    orders: Order[]
+    createdAt: string,
+    orders?: Order[],
+    users?: User[]
 }
