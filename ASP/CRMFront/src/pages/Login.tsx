@@ -3,6 +3,8 @@ import { loginUser, checkAuth } from "../features/auth/authSlice"
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../hooks/useAppDispatch";
 import { motion } from "framer-motion";
+import Lottie from "lottie-react";
+import eyeAnimation from "../assets/8RPcWqCdL3.json";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -24,65 +26,10 @@ const Login = () => {
 
   return (
     <div className="h-screen w-screen flex flex-col items-center justify-center bg-gradient-to-b from-gray-900 to-purple-900 text-white">
-      <div className="relative mb-6">
-          <motion.svg
-            className="w-40 h-40"
-            viewBox="0 0 200 200"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <defs>
-                <linearGradient id="yetiGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" stopColor="#111827" /> 
-                    <stop offset="100%" stopColor="#581c87" /> 
-                </linearGradient>
-            </defs>
-            <circle cx="100" cy="100" r="80" fill="url(#yetiGradient)" stroke="black" strokeWidth="4" />
-            <motion.circle
-              cx="70"
-              cy="85"
-              r="8"
-              fill="black"
-              animate={{ opacity: isTypingPassword ? 0 : 1 }}
-              transition={{ duration: 0.2 }}
-            />
-            <motion.circle
-              cx="130"
-              cy="85"
-              r="8"
-              fill="black"
-              animate={{ opacity: isTypingPassword ? 0 : 1 }}
-              transition={{ duration: 0.2 }}
-            />
+    <div className="relative mb-6 w-40 h-40">
+      <Lottie animationData={eyeAnimation} loop={true} />
+    </div>
 
-            <motion.ellipse
-                cx="70" cy="70" 
-                rx="15" ry="10"
-                fill="black"
-                stroke="black" strokeWidth="4"
-                animate={{ cy: isTypingPassword ? 85 : 70 }} 
-                transition={{ duration: 0.2 }}
-            />
-            <motion.rect
-              x="85" y="74"
-              width="30" height="1"
-              fill="black"
-              stroke="black" strokeWidth="4"
-              animate={{ y: isTypingPassword ? 10 : -5 }}
-              transition={{ duration: 0.2 }}
-            />
-            <motion.ellipse
-                cx="130" cy="70" 
-                rx="15" ry="10"
-                fill="black"
-                stroke="black" strokeWidth="4"
-                animate={{ cy: isTypingPassword ? 85 : 70 }}
-                transition={{ duration: 0.2 }}
-            />
-
-            <path d="M80 120 Q100 140 120 120" stroke="black" strokeWidth="4" fill="none" />
-          </motion.svg>
-        </div>
 
       <div className="bg-gray-800 p-8 rounded-xl shadow-lg w-96">
         <h2 className="text-3xl font-bold mb-6 text-center">Sign In</h2>

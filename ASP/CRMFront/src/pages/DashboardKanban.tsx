@@ -14,7 +14,7 @@ export const DashboardKanban = () => {
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
 
   useEffect(() => {
-    dispatch(fetchClientsWithOrdersAndTasks() as any);
+    dispatch(fetchClientsWithOrdersAndTasks() as never);
   }, [dispatch]);
 
 
@@ -40,8 +40,6 @@ export const DashboardKanban = () => {
     <div className="min-h-screen flex bg-dark-bg text-white overflow-hidden">
       <Sidebar isExpanded={isSidebarExpanded} setIsExpanded={setIsSidebarExpanded} />
       <TopBox />
-  
-      {/* Показываем спиннер, если загрузка идет */}
       {loading ? (
         <div className="flex justify-center items-center w-full h-screen">
           <LoadingSpinner />

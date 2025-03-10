@@ -9,6 +9,7 @@ public class OrderDetailsResponse
 
     public ClientResponse Client { get; set; }
     public List<OrderDetailsTaskResponse> Tasks { get; set; } = new();
+    public List<OrderDetailsUserResponse> Users { get; set; } = new();
 }
 
 public class ClientResponse
@@ -27,4 +28,9 @@ public class OrderDetailsTaskResponse
     public string Description { get; set; }
     public string Status { get; set; }
     public DateTime DueDate { get; set; }
+}
+
+public class OrderDetailsUserResponse
+{
+    public string Username { get; set; }
 }

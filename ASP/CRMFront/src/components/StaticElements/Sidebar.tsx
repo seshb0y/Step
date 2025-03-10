@@ -6,16 +6,16 @@ import AssignmentIcon from "@mui/icons-material/Assignment";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import SettingsIcon from "@mui/icons-material/Settings";
 import GroupIcon from "@mui/icons-material/Group";
-import ViewKanbanIcon from "@mui/icons-material/ViewKanban"; // Иконка для Kanban-доски
+import ViewKanbanIcon from "@mui/icons-material/ViewKanban";
 
 const menuItems = [
-  { text: "Дэшборд", icon: <DashboardIcon />, path: "/dashboard" },
-  { text: "Клиенты", icon: <PeopleIcon />, path: "/clients" },
-  { text: "Заказы", icon: <ShoppingCartIcon />, path: "/orders" },
-  { text: "Задачи", icon: <AssignmentIcon />, path: "/tasks" },
-  { text: "Пользователи", icon: <GroupIcon />, path: "/users" },
-  { text: "Канбан", icon: <ViewKanbanIcon />, path: "/kanban" }, // Новая кнопка
-  { text: "Настройки", icon: <SettingsIcon />, path: "/settings" },
+  { text: "Dashboard", icon: <DashboardIcon />, path: "/dashboard",},
+  { text: "Clients", icon: <PeopleIcon />, path: "/clients" },
+  { text: "Orders", icon: <ShoppingCartIcon />, path: "/orders" },
+  { text: "Tasks", icon: <AssignmentIcon />, path: "/tasks" },
+  { text: "Users", icon: <GroupIcon />, path: "/users" },
+  { text: "Kanban", icon: <ViewKanbanIcon />, path: "/kanban" }, 
+  { text: "Settings", icon: <SettingsIcon />, path: "/settings" },
 ];
 
 interface SidebarProps {

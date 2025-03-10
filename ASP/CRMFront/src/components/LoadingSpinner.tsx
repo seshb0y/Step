@@ -1,9 +1,11 @@
 import React from "react";
+import Lottie from "lottie-react";
+import loadAnimation from "../assets/LoadAnimation.json";
 
 const LoadingSpinner: React.FC = () => {
   return (
-    <div className="flex justify-center items-center h-full">
-      <div className="w-12 h-12 border-4 border-purple-700 border-t-transparent rounded-full animate-spin"></div>
+    <div className="relative mb-6 w-40 h-40">
+      <Lottie animationData={loadAnimation} loop={true} />
     </div>
   );
 };

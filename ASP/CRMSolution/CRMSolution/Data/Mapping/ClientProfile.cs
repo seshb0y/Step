@@ -65,6 +65,17 @@ namespace CRMSolution.Data.Mapping
                     .MapFrom(src => src.Tasks));
 
             CreateMap<Tasks, KanbanTaskResponse>();
+            
+            CreateMap<Order, OrderDetailsResponse>()
+                .ForMember(dest => dest.Client, opt => opt
+                    .MapFrom(src => src.ClientOrders.FirstOrDefault().Client)) 
+                .ForMember(dest => dest.Users, opt => opt
+                    .MapFrom(src => src.UserOrders.Select(uo => uo.User)));
+
+            CreateMap<Client, ClientResponse>(); 
+            CreateMap<User, OrderDetailsUserResponse>()
+                .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.UserName));
+
         }
     }
 }

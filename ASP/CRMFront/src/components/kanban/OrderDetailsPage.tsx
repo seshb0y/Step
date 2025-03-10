@@ -11,6 +11,7 @@ const OrderDetailsPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
+  const [taskText, setTaskText] = useState(""); // Поле ввода задачи
 
   useEffect(() => {
     if (!orderId) {
@@ -35,6 +36,22 @@ const OrderDetailsPage = () => {
     fetchOrderDetails();
   }, [orderId]);
 
+  const handleAddTask = () => {
+    if (!taskText.trim()) return;
+    const newTask = {
+      id: Date.now(),
+      title: "Новая задача",
+      description: taskText,
+      status: "Новое",
+      dueDate: new Date(),
+    };
+    setOrder((prev) => ({
+      ...prev,
+      tasks: [...(prev?.tasks || []), newTask],
+    }));
+    setTaskText("");
+  };
+
   if (loading) return <LoadingSpinner />;
   if (error) return <p className="text-red-500">{error}</p>;
 
@@ -48,47 +65,69 @@ const OrderDetailsPage = () => {
       <Sidebar isExpanded={isSidebarExpanded} setIsExpanded={setIsSidebarExpanded} />
 
       {/* Main Content */}
-      <div className="flex-1">
+      <div className="flex-1 flex flex-col">
         <TopBox />
 
-        <div className={`transition-all duration-300 p-6 mt-20 ${isSidebarExpanded ? "ml-[200px]" : "ml-[0px]"} w-full`}>
-          <h1 className="text-3xl font-bold mb-4">Детали заказа #{order.id}</h1>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Информация о заказе */}
-            <div className="bg-[#2a1042] p-6 rounded-lg shadow-md">
-              <h2 className="text-lg font-semibold">Информация о заказе</h2>
-              <p>Total: {order.totalAmount} ₽</p>
-              <p>Статус: {order.status}</p>
-              <p>Создан: {new Date(order.createdAt).toLocaleDateString()}</p>
-            </div>
-
-            {/* Информация о клиенте */}
-            <div className="bg-[#2a1042] p-6 rounded-lg shadow-md">
-              <h2 className="text-lg font-semibold">Информация о клиенте</h2>
-              <p>Имя: {order.client.name}</p>
-              <p>Email: {order.client.email}</p>
-              <p>Телефон: {order.client.phone}</p>
+        <div className={`transition-all duration-300 flex mt-20 ${isSidebarExpanded ? "ml-[200px]" : "ml-[0px]"} w-full`}>
+          
+          {/* Левая колонка (Информация о сделке) */}
+          <div className="w-1/3 bg-[#1a0b2e] p-6 rounded-lg shadow-md h-[calc(100vh-80px)]">
+            <h2 className="text-lg font-semibold mb-4">Сделка #{order.id}</h2>
+            <div className="text-gray-300">
+              <p><span className="text-white font-medium">Отв-ный:</span> {order.users[0].username}</p>
+              <p><span className="text-white font-medium">Бюджет:</span> {order.totalAmount} ₽</p>
+              <p><span className="text-white font-medium">Email:</span> {order.client.email}</p>
+              <p><span className="text-white font-medium">Телефон:</span> {order.client.phone}</p>
             </div>
           </div>
 
-          {/* Блок задач */}
-          <div className="mt-6">
-            <h2 className="text-xl font-bold mb-4">Задачи по заказу</h2>
-            {order.tasks?.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {order.tasks.map((task) => (
-                  <div key={task.id} className="bg-[#3a1a5e] p-4 rounded-md shadow-md">
-                    <h3 className="text-lg font-semibold">{task.title}</h3>
-                    <p>{task.description}</p>
-                    <p>Статус: {task.status}</p>
-                    <p>Дедлайн: {new Date(task.dueDate).toLocaleDateString()}</p>
-                  </div>
-                ))}
+          {/* Правая колонка (Задачи и история) */}
+          <div className="w-2/3 flex flex-col px-6">
+            
+            {/* История событий */}
+            <div className="bg-[#2a1042] p-6 rounded-lg shadow-md mb-6 flex-1">
+              <h2 className="text-lg font-semibold mb-4">История событий</h2>
+              <p className="text-gray-400 text-sm">Сегодня 11:18 | Создано 3 события <span className="text-blue-400 cursor-pointer">Развернуть</span></p>
+            </div>
+
+            {/* Блок задач */}
+            <div className="bg-[#2a1042] p-6 rounded-lg shadow-md">
+              <h2 className="text-lg font-semibold mb-4">Задачи</h2>
+              {order.tasks?.length > 0 ? (
+                <div className="space-y-4">
+                  {order.tasks.map((task) => (
+                    <div key={task.id} className="bg-[#3a1a5e] p-4 rounded-md shadow-md">
+                      <h3 className="text-lg font-semibold">{task.title}</h3>
+                      <p>{task.description}</p>
+                      <p className="text-sm text-gray-400">Статус: {task.status}</p>
+                      <p className="text-sm text-gray-400">Дедлайн: {new Date(task.dueDate).toLocaleDateString()}</p>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-gray-400">Нет задач</p>
+              )}
+            </div>
+
+            {/* Форма для добавления задачи */}
+            <div className="bg-[#2a1042] p-4 rounded-lg shadow-md mt-4 flex flex-col">
+              <label className="text-sm text-gray-400">Примечание:</label>
+              <textarea
+                className="w-full bg-gray-700 p-3 rounded-md text-white mt-2"
+                placeholder="Напишите задачу..."
+                value={taskText}
+                onChange={(e) => setTaskText(e.target.value)}
+              />
+              <div className="flex justify-between mt-2">
+                <button className="bg-primary-purple px-4 py-2 rounded text-white" onClick={handleAddTask}>
+                  Добавить
+                </button>
+                <button className="bg-gray-600 px-4 py-2 rounded text-white" onClick={() => setTaskText("")}>
+                  Отменить
+                </button>
               </div>
-            ) : (
-              <p className="text-gray-400">Нет задач</p>
-            )}
+            </div>
+
           </div>
         </div>
       </div>

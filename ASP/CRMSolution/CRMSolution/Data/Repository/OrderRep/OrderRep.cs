@@ -35,9 +35,15 @@ public class OrderRep : Repository<Order>, IOrderRep
     public async Task<Order> GetOrderWithClientAndTasks(int orderId)
     {
         return await _context.Orders
+            .AsNoTracking()
             .Include(o => o.ClientOrders)
             .ThenInclude(co => co.Client)
             .Include(o => o.Tasks)
+            .Include(o => o.UserOrders) 
+            .ThenInclude(uo => uo.User) 
             .FirstOrDefaultAsync(o => o.Id == orderId);
     }
+
+
+
 }

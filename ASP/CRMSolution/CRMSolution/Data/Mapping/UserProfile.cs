@@ -24,5 +24,8 @@ public class UserProfile : Profile
                 .MapFrom(src => src.UserName))
             .ForMember(dest => dest.Role, opt => opt
                 .MapFrom(src => src.Role));
+        
+        CreateMap<User, OrderDetailsUserResponse>()
+            .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.UserName));
     }
 }
