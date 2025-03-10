@@ -14,7 +14,10 @@ public interface IClientRep : IRepository<Client>
     
     Task<Client?> GetClientByName(string name);
     Task<List<Client>> GetLowInfoClientsList(SortClientsRequest sortClientsRequest);
+
+    Task<List<Order>> GetOrdersByUsername(string username);
     
-    Task<List<Client>> GetClientsWithOrdersAndTasks();
+    Task<List<Client>> GetClientsByOrdersAsync(List<Order> orders);
+
 
 }

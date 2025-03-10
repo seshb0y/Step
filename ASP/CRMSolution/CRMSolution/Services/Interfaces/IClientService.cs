@@ -11,6 +11,6 @@ public interface IClientService
     public Task DeleteClient(DeleteClientRequest request);
     public Task<FindClientResponse> FindClient(FindClientRequest request);
     public Task<GetAllClientsResponse> GetAllClients(SortClientsRequest sortClientsRequest);
-    Task<List<ClientWithOrdersAndTasksResponse>> GetClientsWithOrdersAndTasks();
+    Task<List<ClientWithOrdersAndTasksResponse>> GetClientsWithOrdersAndTasks(HttpContext httpContext);
 
 }

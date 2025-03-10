@@ -68,7 +68,7 @@ public class ClientController : ControllerBase
     [HttpGet("Get/Clients/With/Orders/And/Tasks")]
     public async Task<IActionResult> GetClientsWithOrdersAndTasks()
     {
-        var clients = await _clientService.GetClientsWithOrdersAndTasks();
+        var clients = await _clientService.GetClientsWithOrdersAndTasks(HttpContext);
         return Ok(clients);
     }
 

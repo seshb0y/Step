@@ -69,7 +69,7 @@ public class OrderService : IOrderService
     public async Task<OrderDetailsResponse> GetOrderDetailsAsync(int orderId)
     {
         _logger.LogInformation("Получение деталей заказа: {OrderId}", orderId);
-
+        
         var order = await _unitOfWork.OrderRep.GetOrderWithClientAndTasks(orderId);
         if (order == null)
         {

@@ -13,12 +13,14 @@ public class ClientService : IClientService
     private readonly IUnitOfWork _clientRepository;
     private readonly IMapper _mapper;
     private readonly ILogger<ClientService> _logger;
+    private readonly ITokenService  _tokenService;
     
-    public ClientService(IUnitOfWork clientRepository, IMapper mapper, ILogger<ClientService> logger)
+    public ClientService(IUnitOfWork clientRepository, IMapper mapper, ILogger<ClientService> logger,  ITokenService tokenService)
     {
         _clientRepository = clientRepository;
         _mapper = mapper;
         _logger = logger;
+        _tokenService = tokenService;
     }
     
     public async Task<Client> CreateClient(CreateClientRequest request)
@@ -78,9 +80,14 @@ public class ClientService : IClientService
         };
     }
     
-    public async Task<List<ClientWithOrdersAndTasksResponse>> GetClientsWithOrdersAndTasks()
+    public async Task<List<ClientWithOrdersAndTasksResponse>> GetClientsWithOrdersAndTasks(HttpContext httpContext)
     {
-        var clients = await _clientRepository.ClientRep.GetClientsWithOrdersAndTasks();
+        var username = await _tokenService.GetNameFromCookies(httpContext);
+    
+        var orders = await _clientRepository.ClientRep.GetOrdersByUsername(username);
+    
+        var clients = await _clientRepository.ClientRep.GetClientsByOrdersAsync(orders);
+    
         return _mapper.Map<List<ClientWithOrdersAndTasksResponse>>(clients);
     }
 

@@ -25,11 +25,11 @@ const ClientPreviewCard = ({ client }: CardProps) => {
         {client.orders.length > 0 ? (
           client.orders?.map((order) => (
             <div 
-              key={order.id} 
+              key={order.orderId} 
               className="p-2 bg-[#2a1042] rounded-md mb-2 cursor-pointer hover:bg-[#3a1f5a] transition"
               onClick={() => navigate(`/orders/${order.orderId}`)} // Переход на страницу заказа
             >
-              <p className="text-sm">ID: {order.id}</p>
+              <p className="text-sm">ID: {order.orderId}</p>
               <p className="text-sm">Total: {order.totalAmount} ₽</p>
               <p className="text-sm">Created: {new Date(order.createdAt).toLocaleDateString()}</p>
               <Badge className={`text-xs ${order.status.toString() === "New" ? "bg-blue-500" : order.status.toString() === "Processing" ? "bg-yellow-500" : "bg-green-500"}`}>

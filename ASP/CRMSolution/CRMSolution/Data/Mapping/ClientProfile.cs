@@ -51,19 +51,20 @@ namespace CRMSolution.Data.Mapping
                     .MapFrom(src => src.Status.ToString()));
 
             
-            CreateMap<List<Client>, List<ClientWithOrdersAndTasksResponse>>()
-                .ConvertUsing((src, dest, context) => src
-                    .Select(client => context.Mapper.Map<ClientWithOrdersAndTasksResponse>(client)).ToList());
+            CreateMap<Client, ClientWithOrdersAndTasksResponse>()
+                .ForMember(dest => dest.CreatedAt, opt => opt
+                    .MapFrom(src => src.CreatedAt))
+                .ForMember(dest => dest.Orders, opt => opt
+                    .MapFrom(src => src.ClientOrders.Select(co => co.Order).ToList()));
 
-            
-            CreateMap<List<Order>, List<KanbanOrderResponse>>()
-                .ConvertUsing((src, dest, context) => src
-                    .Select(order => context.Mapper.Map<KanbanOrderResponse>(order)).ToList());
+            CreateMap<Order, KanbanOrderResponse>()
+         
+                .ForMember(dest => dest.OrderId, opt => opt
+                    .MapFrom(src => src.Id))
+                .ForMember(dest => dest.Tasks, opt => opt
+                    .MapFrom(src => src.Tasks));
 
-            
-            CreateMap<List<Tasks>, List<KanbanTaskResponse>>()
-                .ConvertUsing((src, dest, context) => src
-                    .Select(task => context.Mapper.Map<KanbanTaskResponse>(task)).ToList());
+            CreateMap<Tasks, KanbanTaskResponse>();
         }
     }
 }

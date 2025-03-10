@@ -20,7 +20,7 @@ const OrderStatusColumn = ({ title, status, clients }: Props) => {
       .filter(client => client.orders.length > 0);
   
     return (
-      <div className="w-1/4 bg-gray-900 p-4 rounded-lg gap">
+      <div className="w-1/4 bg-gray-900 p-4 rounded-lg gap ml-20">
         <h2 className="text-xl font-bold text-primary-purple">{title}</h2>
         <div className="mt-4 flex flex-col gap-4">
           {filteredClients.length > 0 ? (

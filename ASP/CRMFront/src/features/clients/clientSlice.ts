@@ -90,6 +90,7 @@ export const fetchClientsWithOrdersAndTasks = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.get("/Client/Get/Clients/With/Orders/And/Tasks");
+      console.log(response.data)
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response?.data || "Failed to fetch clients with orders and tasks");

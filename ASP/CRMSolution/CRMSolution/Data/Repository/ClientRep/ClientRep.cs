@@ -56,12 +56,22 @@ public class ClientRep : Repository<Client>, IClientRep
         };
     }
     
-    public async Task<List<Client>> GetClientsWithOrdersAndTasks()
+    public async Task<List<Order>> GetOrdersByUsername(string username)
+    {
+        return await _context.Orders
+            .Include(o => o.Tasks)
+            .Include(o => o.UserOrders)
+            .ThenInclude(uo => uo.User)
+            .Where(o => o.UserOrders.Any(uo => uo.User.UserName == username))
+            .ToListAsync();
+    }
+
+    public async Task<List<Client>> GetClientsByOrdersAsync(List<Order> orders)
     {
         return await _context.Clients
             .Include(c => c.ClientOrders)
             .ThenInclude(co => co.Order)
-            .ThenInclude(o => o.Tasks)
+            .Where(c => c.ClientOrders.Any(co => orders.Contains(co.Order)))
             .ToListAsync();
     }
 
