@@ -37,7 +37,7 @@ const TopBox = () => {
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
-        padding: "16px 24px",
+        padding: "5px 24px",
         backgroundColor: "#1a1a2e",
         borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
         position: "fixed",

@@ -5,6 +5,7 @@ using CRMSolution.Data.Repository;
 using CRMSolution.Data.Repository.Interface;
 using CRMSolution.Data.Repository.OrderResp;
 using CRMSolution.DTO.Requests;
+using CRMSolution.DTO.Requests.Orders;
 using CRMSolution.Services.Interfaces;
 
 namespace CRMSolution.Services.Classes;
@@ -26,12 +27,13 @@ public class OrderService : IOrderService
     {
         _logger.LogInformation("Создаем новый заказ: {@Request}", request);
         Client client = await _unitOfWork.ClientRep.GetClientByEmail(request.clientEmail);
+        User user = await _unitOfWork.UserRep.FindByEmailAsync(request.userEmail);
         
         Order order = _mapper.Map<Order>(request);
         await _unitOfWork.OrderRep.AddAsync(order); 
         await _unitOfWork.SaveChangesAsync();
         
-        await _unitOfWork.OrderRep.AddOrderToClient(client, order);
+        await _unitOfWork.OrderRep.AddOrderToClientAndUser(client, order, user);
         await _unitOfWork.SaveChangesAsync();
     }
 
@@ -59,12 +61,12 @@ public class OrderService : IOrderService
         await _unitOfWork.SaveChangesAsync();
     }
 
-    public async Task<OrderResponse> FindOrder(FindOrderRequest request)
-    {
-        _logger.LogInformation("Поиск клиента: {@Request}", request);
-        Order order = await _unitOfWork.OrderRep.GetOrderInclude(request.orderId);
-        return _mapper.Map<OrderResponse>(order);
-    }
+    // public async Task<OrderResponse> FindOrder(FindOrderRequest request)
+    // {
+    //     _logger.LogInformation("Поиск клиента: {@Request}", request);
+    //     Order order = await _unitOfWork.OrderRep.GetOrderInclude(request.orderId);
+    //     return _mapper.Map<OrderResponse>(order);
+    // }
     
     public async Task<OrderDetailsResponse> GetOrderDetailsAsync(int orderId)
     {
@@ -78,14 +80,22 @@ public class OrderService : IOrderService
         }
     
         var response = _mapper.Map<OrderDetailsResponse>(order);
-
-        // 🚀 Проверяем, есть ли клиент, и добавляем его вручную
+        
         if (order.ClientOrders.Any())
         {
             response.Client = _mapper.Map<ClientResponse>(order.ClientOrders.First().Client);
         }
     
         return response;
+    }
+    
+    public async Task<GetAllOrdersResponse> GetAllOrders(SortOrdersRequest sortClientsRequest)
+    {
+        var orders = await _unitOfWork.OrderRep.GetLowInfoOrdersList(sortClientsRequest);
+        return new GetAllOrdersResponse()
+        {
+            Orders = _mapper.Map<List<Order>>(orders)
+        };
     }
 
 }

@@ -28,6 +28,7 @@ export const deleteClient = createAsyncThunk(
     try {
       await axiosInstance.delete(`/Client/Delete/`, {data: {email: email} });
       return email;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       return rejectWithValue(error.response?.data || "Failed to delete client");
     }
@@ -42,6 +43,7 @@ export const fetchChangeClientData = createAsyncThunk(
     try {
       const response = await axiosInstance.put(`/Client/Change/`, { name, newEmail, oldEmail, address, phone });
       return response.data; 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       return rejectWithValue(error.response?.data || "Failed to update client data");
     }
@@ -67,6 +69,7 @@ export const fetchAddClientData = createAsyncThunk(
     try {
       const response = await axiosInstance.get(`Client/Load/Client/Data?email=${encodeURIComponent(email)}`);
       return response.data;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       return rejectWithValue(error.response?.data || "Failed to load client data");
     }
@@ -79,6 +82,7 @@ export const createClient = createAsyncThunk(
     try {
       const response = await axiosInstance.post("/Client/Add/Client", clientData);
       return response.data;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       return rejectWithValue(error.response?.data || "Failed to create client");
     }
@@ -92,6 +96,7 @@ export const fetchClientsWithOrdersAndTasks = createAsyncThunk(
       const response = await axiosInstance.get("/Client/Get/Clients/With/Orders/And/Tasks");
       console.log(response.data)
       return response.data;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       return rejectWithValue(error.response?.data || "Failed to fetch clients with orders and tasks");
     }
@@ -104,7 +109,6 @@ const clientsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      // Запрос всех клиентов
       .addCase(fetchClients.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -118,13 +122,12 @@ const clientsSlice = createSlice({
         state.error = action.payload as string;
       })
 
-      // Запрос клиентов с заказами и задачами (Kanban)
       .addCase(fetchClientsWithOrdersAndTasks.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(fetchClientsWithOrdersAndTasks.fulfilled, (state, action) => {
-        state.clients = action.payload; // Заменяем клиентов новыми с заказами и задачами
+        state.clients = action.payload; 
         state.loading = false;
       })
       .addCase(fetchClientsWithOrdersAndTasks.rejected, (state, action) => {
@@ -132,7 +135,6 @@ const clientsSlice = createSlice({
         state.error = action.payload as string;
       })
 
-      // Загрузка данных отдельного клиента (используется в ClientModal)
       .addCase(fetchAddClientData.pending, (state) => {
         state.clientLoading = true;
         state.clientError = null;
@@ -153,7 +155,6 @@ const clientsSlice = createSlice({
         state.clientError = action.payload as string;
       })
 
-      // Изменение данных клиента
       .addCase(fetchChangeClientData.pending, (state) => {
         state.clientLoading = true;
         state.clientError = null;
@@ -170,7 +171,6 @@ const clientsSlice = createSlice({
         state.clientError = action.payload as string;
       })
 
-      // Удаление клиента
       .addCase(deleteClient.fulfilled, (state, action) => {
         state.clients = state.clients.filter(client => client.email !== action.payload);
       })

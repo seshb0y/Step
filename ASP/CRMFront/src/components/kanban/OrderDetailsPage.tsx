@@ -72,12 +72,17 @@ const OrderDetailsPage = () => {
           
           {/* Левая колонка (Информация о сделке) */}
           <div className="w-1/3 bg-[#1a0b2e] p-6 rounded-lg shadow-md h-[calc(100vh-80px)]">
-            <h2 className="text-lg font-semibold mb-4">Сделка #{order.id}</h2>
+            <h2 
+                className="text-lg font-semibold mb-4">Сделка #{order.id}
+                <p><span className="text-white font-medium">Бюджет:</span> {order.totalAmount} ₽</p>
+                <p><span className="text-white font-medium">Отв-ный:</span> {order.users[0].username}</p>
+            </h2>
+            
             <div className="text-gray-300">
-              <p><span className="text-white font-medium">Отв-ный:</span> {order.users[0].username}</p>
-              <p><span className="text-white font-medium">Бюджет:</span> {order.totalAmount} ₽</p>
+              <p><span className="text-white font-medium">Client:</span> {order.client.name}</p>
               <p><span className="text-white font-medium">Email:</span> {order.client.email}</p>
-              <p><span className="text-white font-medium">Телефон:</span> {order.client.phone}</p>
+              <p><span className="text-white font-medium">Phone:</span> {order.client.phone}</p>
+              <p><span className="text-white font-medium">Address:</span> {order.client.address}</p>
             </div>
           </div>
 
@@ -87,7 +92,7 @@ const OrderDetailsPage = () => {
             {/* История событий */}
             <div className="bg-[#2a1042] p-6 rounded-lg shadow-md mb-6 flex-1">
               <h2 className="text-lg font-semibold mb-4">История событий</h2>
-              <p className="text-gray-400 text-sm">Сегодня 11:18 | Создано 3 события <span className="text-blue-400 cursor-pointer">Развернуть</span></p>
+              <p className="text-gray-400 text-sm">Создано 3 события <span className="text-blue-400 cursor-pointer">Развернуть</span></p>
             </div>
 
             {/* Блок задач */}

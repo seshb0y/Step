@@ -14,10 +14,13 @@ public class OrderProfile : Profile
                 opt.MapFrom(src => src.totalAmount));
         
         CreateMap<ChangeOrderDataRequest, Order>()
+            .ForMember(dest => dest.Status, opt => opt
+                .MapFrom(src => src.status))
             .ForMember(dest => dest.TotalAmount, opt =>
                 opt.MapFrom(src => src.totalAmount))
             .ForMember(dest => dest.Id, opt => opt
                 .MapFrom(src => src.orderId));
+        
         
         CreateMap<DeleteOrderRequest, Order>()
             .ForMember(dest => dest.Id, opt => opt

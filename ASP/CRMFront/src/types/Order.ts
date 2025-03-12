@@ -1,11 +1,16 @@
+import { Client } from "./Client";
 import { Task } from "./Task";
+import { User } from "./User";
 
 export interface Order {
-    orderId: string,
+    id: number;
+    orderId: number,
     totalAmount: string,
     createdAt: Date,
-    tasks: Task
-    status: OrderStatus
+    tasks: Task[],
+    status: OrderStatus,
+    user: User[],
+    client: Client,
 }
 
 export enum OrderStatus

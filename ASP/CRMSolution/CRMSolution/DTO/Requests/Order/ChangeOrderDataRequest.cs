@@ -1,3 +1,5 @@
-﻿namespace CRMSolution.DTO.Requests;
+﻿using CRMSolution.Data.Models;
 
-public record ChangeOrderDataRequest(decimal totalAmount, int orderId);
+namespace CRMSolution.DTO.Requests;
+
+public record ChangeOrderDataRequest(decimal totalAmount, OrderStatus status, int orderId);
