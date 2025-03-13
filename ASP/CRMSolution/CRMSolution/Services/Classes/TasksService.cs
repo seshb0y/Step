@@ -56,4 +56,13 @@ public class TasksService : ITasksService
         Tasks task = await _unitOfWork.TasksRep.GetById(request.taskId);
         return _mapper.Map<TaskResponse>(task);
     }
+    
+    public async Task<GetAllTasksResponse> GetAllTasks(SortTasksRequest sortTasksRequest)
+    {
+        var tasks = await _unitOfWork.TasksRep.GetLowInfoTasksList(sortTasksRequest);
+        return new GetAllTasksResponse()
+        {
+            Tasks = _mapper.Map<List<Tasks>>(tasks)
+        };
+    }
 }

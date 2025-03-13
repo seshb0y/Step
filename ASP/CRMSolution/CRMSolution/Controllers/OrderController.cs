@@ -60,7 +60,7 @@ public class OrderController : ControllerBase
     }
     
     [HttpGet("all/sorted")]
-    public async Task<IActionResult> GetAllClients([FromQuery] SortOrdersRequest sortOrdersRequest)
+    public async Task<IActionResult> GetAllOrders([FromQuery] SortOrdersRequest sortOrdersRequest)
     {
         var orders = await _orderService.GetAllOrders(sortOrdersRequest);
         return Ok(orders);

@@ -26,7 +26,7 @@ public class TaskController : ControllerBase
         return Ok("Task created");
     }
     
-    [HttpPost("ChangeTask")]
+    [HttpPut("ChangeTask")]
     // [Authorize(Policy = "ManagerPolicy")]
     public async Task<IActionResult> ChangeTask([FromBody] UpdateTaskRequest request)
     {
@@ -34,7 +34,7 @@ public class TaskController : ControllerBase
         return Ok("Task updated");
     }
     
-    [HttpPost("DeleteTask")]
+    [HttpDelete("DeleteTask")]
     // [Authorize(Policy = "ManagerPolicy")]
     public async Task<IActionResult> DeleteTask([FromBody] DeleteTaskRequest request)
     {
@@ -47,5 +47,12 @@ public class TaskController : ControllerBase
     public async Task<IActionResult> FindTask([FromQuery] FindTaskRequest request)
     {
         return Ok(await _tasksService.FindTaskByIdAsync(request));
+    }
+    
+    [HttpGet("all/sorted")]
+    public async Task<IActionResult> GetAllTasks([FromQuery] SortTasksRequest sortTasksRequest)
+    {
+        var orders = await _tasksService.GetAllTasks(sortTasksRequest);
+        return Ok(orders);
     }
 }

@@ -58,5 +58,6 @@ public class TaskProfile : Profile
                 .MapFrom(src => src.User.CreatedAt))
             .ForMember(dest => dest.IsEmailConfirmed, opt => opt
                 .MapFrom(src => src.User.IsEmailConfirmed));
+        
     }
 }

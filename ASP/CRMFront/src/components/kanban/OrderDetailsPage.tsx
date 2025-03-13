@@ -4,30 +4,32 @@ import axiosInstance from "../../api/axiosInstance";
 import LoadingSpinner from "../LoadingSpinner";
 import Sidebar from "../StaticElements/Sidebar";
 import TopBox from "../StaticElements/TopBox";
+import { Order } from "../../types/Order";
 
 const OrderDetailsPage = () => {
   const { orderId } = useParams();
-  const [order, setOrder] = useState(null);
+  const [order, setOrder] = useState<Order>();
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string>("");
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
-  const [taskText, setTaskText] = useState(""); // Поле ввода задачи
+  const [taskText, setTaskText] = useState("");
 
   useEffect(() => {
     if (!orderId) {
-      setError("Некорректный ID заказа.");
+      setError("Incorrect order ID.");
       setLoading(false);
       return;
     }
 
     const fetchOrderDetails = async () => {
       try {
-        console.log(`Запрос: /api/orders/${orderId}`);
+        console.log(`Request: /api/orders/${orderId}`);
         const response = await axiosInstance.get(`/Order/${orderId}`);
-        console.log("Ответ сервера:", response.data);
+        console.log("Server response:", response.data);
         setOrder(response.data);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (err) {
-        setError("Ошибка загрузки заказа.");
+        setError("Order loading error.",);
       } finally {
         setLoading(false);
       }
@@ -40,9 +42,9 @@ const OrderDetailsPage = () => {
     if (!taskText.trim()) return;
     const newTask = {
       id: Date.now(),
-      title: "Новая задача",
+      title: "New task",
       description: taskText,
-      status: "Новое",
+      status: "New",
       dueDate: new Date(),
     };
     setOrder((prev) => ({

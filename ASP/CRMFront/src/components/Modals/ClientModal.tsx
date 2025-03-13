@@ -18,8 +18,10 @@ const ClientModal = ({ client, onClose }: ClientModalProps) => {
 
   useEffect(() => {
     if (!client.orders || client.orders.length === 0 || !client.users || client.users.length === 0) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       dispatch(fetchAddClientData({ email: client.email }) as any);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [client.email, dispatch]);
 
   useEffect(() => {
@@ -40,12 +42,14 @@ const ClientModal = ({ client, onClose }: ClientModalProps) => {
       oldEmail: client.email,
       phone: formData.phone, 
       address: formData.address 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     }) as any);
     setIsEditing(false);
   };
   
   const handleDelete = () => {
     if (window.confirm("Are you sure you want to delete this client?")) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       dispatch(deleteClient(client.email) as any);
       onClose();
     }

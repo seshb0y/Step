@@ -1,12 +1,14 @@
 import { Order } from "./Order"
+import { User } from "./User"
 
 export interface Task {
-    taskId: string
+    id: number
     title: string,
     description: string,
     status: TaskStatus
-    dueTime: Date
+    dueDate: Date
     order: Order
+    userTasks: { user: User }[];
 }
 
 

@@ -57,7 +57,7 @@ public class OrderRep : Repository<Order>, IOrderRep
             .FirstOrDefaultAsync(o => o.Id == orderId);
     }
 
-    public async Task<List<Order>> GetLowInfoOrdersList(SortOrdersRequest sortClientsRequest)
+    public async Task<List<Order>> GetLowInfoOrdersList(SortOrdersRequest sortOrdersRequest)
     {
         var query = _dbSet.Select(o => new Order()
         {
@@ -67,12 +67,12 @@ public class OrderRep : Repository<Order>, IOrderRep
             CreatedAt = o.CreatedAt,
         });
         
-        query = sortClientsRequest.sortBy?.ToLower() switch
+        query = sortOrdersRequest.sortBy?.ToLower() switch
         {
-            "id" => sortClientsRequest.Descending ? query.OrderByDescending(c => c.Id) : query.OrderBy(c => c.Id),
-            "totalamount" => sortClientsRequest.Descending ? query.OrderByDescending(c => c.TotalAmount) : query.OrderBy(c => c.TotalAmount),
-            "status" => sortClientsRequest.Descending ? query.OrderByDescending(c => c.Status) : query.OrderBy(c => c.Status),
-            "createdat" => sortClientsRequest.Descending ? query.OrderByDescending(c => c.CreatedAt) : query.OrderBy(c => c.CreatedAt),
+            "id" => sortOrdersRequest.Descending ? query.OrderByDescending(c => c.Id) : query.OrderBy(c => c.Id),
+            "totalamount" => sortOrdersRequest.Descending ? query.OrderByDescending(c => c.TotalAmount) : query.OrderBy(c => c.TotalAmount),
+            "status" => sortOrdersRequest.Descending ? query.OrderByDescending(c => c.Status) : query.OrderBy(c => c.Status),
+            "createdat" => sortOrdersRequest.Descending ? query.OrderByDescending(c => c.CreatedAt) : query.OrderBy(c => c.CreatedAt),
             _ => query
         };
 

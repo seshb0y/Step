@@ -6,6 +6,9 @@ import { User } from "../../types/User";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
 import { logoutUser } from "../../features/auth/authSlice";
+import LogoAnimation from "../../assets/CRMLogoAnimation.json"
+import Lottie from "lottie-react";
+
 
 const TopBox = () => {
   const [isSidebarExpanded] = useState(false);
@@ -50,9 +53,19 @@ const TopBox = () => {
 
       <UserProfileModal open={isProfileOpen} onClose={() => setIsProfileOpen(false)} user={user} />
 
-      <Typography variant="h6" sx={{ color: "#fff", fontWeight: "bold" }}>
+      <Typography 
+        variant="h6" 
+        sx={{ 
+          display: "flex", 
+          alignItems: "center", 
+          color: "#fff", 
+          fontWeight: "bold" 
+        }}
+      >
+        <Lottie animationData={LogoAnimation} style={{ width: 80, height: 50, marginRight: 10 }} />
         CRMSolution
       </Typography>
+
 
       <Box sx={{ display: "flex", alignItems: "center" }}>
         <Typography sx={{ marginRight: "10px", color: "#fff" }}>{user?.username || "User"}</Typography>

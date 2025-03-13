@@ -89,9 +89,9 @@ public class OrderService : IOrderService
         return response;
     }
     
-    public async Task<GetAllOrdersResponse> GetAllOrders(SortOrdersRequest sortClientsRequest)
+    public async Task<GetAllOrdersResponse> GetAllOrders(SortOrdersRequest sortOrdersRequest)
     {
-        var orders = await _unitOfWork.OrderRep.GetLowInfoOrdersList(sortClientsRequest);
+        var orders = await _unitOfWork.OrderRep.GetLowInfoOrdersList(sortOrdersRequest);
         return new GetAllOrdersResponse()
         {
             Orders = _mapper.Map<List<Order>>(orders)

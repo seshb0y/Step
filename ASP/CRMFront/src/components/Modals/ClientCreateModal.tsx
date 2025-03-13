@@ -24,6 +24,7 @@ const ClientCreateModal = ({ onClose }: ClientCreateModalProps) => {
   };
 
   const handleSave = () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     dispatch(createClient(formData) as any);
     onClose();
   };

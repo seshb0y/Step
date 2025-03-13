@@ -1,6 +1,8 @@
-﻿using CRMSolution.Contexts;
+﻿using ControllerFirst.DTO.Responses.User;
+using CRMSolution.Contexts;
 using CRMSolution.Data.Models;
 using CRMSolution.Data.Repository.Interface;
+using CRMSolution.DTO.Requests;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 
@@ -26,5 +28,66 @@ public class UserRep : Repository<User>, IUserRep
     public async Task SaveChangesAsync()
     {
         await _context.SaveChangesAsync();
+    }
+    
+    public async Task<FindUserReponse> GetUsersTasksOrdersClientsAsync(string email)
+    {
+        var user = await _dbSet
+            .Where(u => u.Email == email)
+            .Include(c => c.UserOrders)
+            .ThenInclude(uo => uo.Order)
+            .Include(c => c.ClientUsers)
+            .ThenInclude(uc => uc.Client)
+            .Include(c => c.UserTasks)
+            .ThenInclude(ut => ut.Task)
+            .FirstOrDefaultAsync();
+
+        if (user == null) return null;
+
+        return new FindUserReponse
+        {
+            orders = user.UserOrders.Select(uo => new FindUserOrdersResponse()
+            {
+                orderId = uo.Order.Id.ToString(),
+                status = uo.Order.Status
+            }).ToArray(),
+
+            clients = user.ClientUsers.Select(uc => new FindUserClientsResponse()
+            {
+                clientName = uc.Client.Name,
+            }).ToArray(),
+            
+            tasks = user.UserTasks.Select(ut => new FindUserTasksResponse()
+            {
+                taskId = ut.Task.Id.ToString(),
+                status = (TaskStatus)ut.Task.Status
+            }).ToArray()
+        };
+    }
+    
+    public async Task<List<User>> GetLowInfoUsersList(SortUsersRequest sortUsersRequest)
+    {
+        var query = _dbSet.Select(c => new User()
+        {
+            Id = c.Id,
+            UserName = c.UserName,
+            Email = c.Email,
+            IsEmailConfirmed = c.IsEmailConfirmed,
+            Role =  c.Role,
+            CreatedAt = c.CreatedAt,
+        });
+        
+        query = sortUsersRequest.sortBy?.ToLower() switch
+        {
+            "id" => sortUsersRequest.Descending ? query.OrderByDescending(c => c.Id) : query.OrderBy(c => c.Id),
+            "userName" =>sortUsersRequest.Descending ? query.OrderByDescending(c => c.UserName) :  query.OrderBy(c => c.UserName),
+            "email" => sortUsersRequest.Descending ? query.OrderByDescending(c => c.Email) : query.OrderBy(c => c.Email),
+            "role" => sortUsersRequest.Descending ? query.OrderByDescending(c => c.Role) : query.OrderBy(c => c.Role),
+            "isEmailConfirmed" => sortUsersRequest.Descending ? query.OrderByDescending(c => c.IsEmailConfirmed) : query.OrderBy(c => c.IsEmailConfirmed),
+            "createdat" => sortUsersRequest.Descending ? query.OrderByDescending(c => c.CreatedAt) : query.OrderBy(c => c.CreatedAt),
+            _ => query
+        };
+
+        return await query.ToListAsync();
     }
 }

@@ -9,5 +9,5 @@ public interface IOrderRep : IRepository<Order>
     public Task AddOrderToClientAndUser(Client client, Order order, User user);
     // public Task<Order> GetOrderInclude(int orderId);
     Task<Order> GetOrderWithClientAndTasks(int orderId);
-    Task<List<Order>> GetLowInfoOrdersList(SortOrdersRequest sortClientsRequest);
+    Task<List<Order>> GetLowInfoOrdersList(SortOrdersRequest sortOrdersRequest);
 }

@@ -1,5 +1,6 @@
 import { Drawer, List, ListItemButton, ListItemIcon, ListItemText, Toolbar } from "@mui/material";
 import { NavLink } from "react-router-dom";
+import Lottie from "lottie-react";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import PeopleIcon from "@mui/icons-material/People";
 import AssignmentIcon from "@mui/icons-material/Assignment";
@@ -8,14 +9,23 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import GroupIcon from "@mui/icons-material/Group";
 import ViewKanbanIcon from "@mui/icons-material/ViewKanban";
 
+import DashboardAnimation from "../../assets/DashboardAnimation.json";
+import ClientsAnimation from "../../assets/ClientsAnimation.json";
+import OrdersAnimation from "../../assets/OrdersAnimation.json";
+import TasksAnimation from "../../assets/TasksAnimation.json";
+import UsersAnimation from "../../assets/UsersAnimation.json";
+import KanbanAnimation from "../../assets/KanbanAnimation.json";
+import SettingsAnimation from "../../assets/SettingsAnimation.json";
+import { useState } from "react";
+
 const menuItems = [
-  { text: "Dashboard", icon: <DashboardIcon />, path: "/dashboard",},
-  { text: "Clients", icon: <PeopleIcon />, path: "/clients" },
-  { text: "Orders", icon: <ShoppingCartIcon />, path: "/orders" },
-  { text: "Tasks", icon: <AssignmentIcon />, path: "/tasks" },
-  { text: "Users", icon: <GroupIcon />, path: "/users" },
-  { text: "Kanban", icon: <ViewKanbanIcon />, path: "/kanban" }, 
-  { text: "Settings", icon: <SettingsIcon />, path: "/settings" },
+  { text: "Dashboard", icon: <DashboardIcon />, animation: DashboardAnimation, path: "/dashboard",},
+  { text: "Clients", icon: <PeopleIcon />, animation: ClientsAnimation, path: "/clients" },
+  { text: "Orders", icon: <ShoppingCartIcon />, animation: OrdersAnimation, path: "/orders" },
+  { text: "Tasks", icon: <AssignmentIcon />, animation: TasksAnimation, path: "/tasks" },
+  { text: "Users", icon: <GroupIcon />, animation: UsersAnimation, path: "/users" },
+  { text: "Kanban", icon: <ViewKanbanIcon />, animation: KanbanAnimation, path: "/kanban" }, 
+  { text: "Settings", icon: <SettingsIcon />, animation: SettingsAnimation, path: "/settings" },
 ];
 
 interface SidebarProps {
@@ -23,7 +33,10 @@ interface SidebarProps {
   setIsExpanded: (expanded: boolean) => void;
 }
 
+
+
 const Sidebar = ({ isExpanded, setIsExpanded }: SidebarProps) => {
+  const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   return (
     <Drawer
       variant="permanent"
@@ -44,11 +57,13 @@ const Sidebar = ({ isExpanded, setIsExpanded }: SidebarProps) => {
     >
       <Toolbar />
       <List>
-        {menuItems.map(({ text, icon, path }) => (
+        {menuItems.map(({ text, icon, animation, path }) => (
           <ListItemButton
             key={text}
             component={NavLink}
             to={path}
+            onMouseEnter={() => setHoveredItem(text)}
+            onMouseLeave={() => setHoveredItem(null)}
             sx={{
               color: "#fff",
               "&.active": {
@@ -57,7 +72,13 @@ const Sidebar = ({ isExpanded, setIsExpanded }: SidebarProps) => {
               },
             }}
           >
-            <ListItemIcon sx={{ color: "#fff", minWidth: "40px" }}>{icon}</ListItemIcon>
+            <ListItemIcon sx={{ color: "#fff", minWidth: "40px" }}>
+              {hoveredItem === text ? (
+                <Lottie animationData={animation} style={{ width: 60, height: 40, marginLeft: -20 }} />
+              ) : (
+                icon
+              )}
+            </ListItemIcon>
             {isExpanded && <ListItemText primary={text} />}
           </ListItemButton>
         ))}

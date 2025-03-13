@@ -12,5 +12,5 @@ public interface IOrderService
     public Task DeleteOrder(DeleteOrderRequest request);
     // public Task<OrderResponse> FindOrder(FindOrderRequest request);
     Task<OrderDetailsResponse> GetOrderDetailsAsync(int orderId);
-    public Task<GetAllOrdersResponse> GetAllOrders(SortOrdersRequest sortClientsRequest);
+    public Task<GetAllOrdersResponse> GetAllOrders(SortOrdersRequest sortOrdersRequest);
 }

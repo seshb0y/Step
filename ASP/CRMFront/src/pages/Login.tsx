@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../hooks/useAppDispatch";
 import { motion } from "framer-motion";
 import Lottie from "lottie-react";
-import eyeAnimation from "../assets/8RPcWqCdL3.json";
+import eyeAnimation from "../assets/Login.json";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -26,7 +26,7 @@ const Login = () => {
 
   return (
     <div className="h-screen w-screen flex flex-col items-center justify-center bg-gradient-to-b from-gray-900 to-purple-900 text-white">
-    <div className="relative mb-6 w-40 h-40">
+    <div className="relative w-40 h-40">
       <Lottie animationData={eyeAnimation} loop={true} />
     </div>
 

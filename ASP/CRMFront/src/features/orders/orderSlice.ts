@@ -52,7 +52,7 @@ export const fetchChangeOrderData = createAsyncThunk(
 
 
 export const fetchGetAllOrders = createAsyncThunk(
-  "clients/fetchOrders",
+  "orders/fetchOrders",
   async ({ sortBy, descending }: { sortBy?: string; descending?: boolean }) => {
     const params = new URLSearchParams();
     if (sortBy) params.append("sortBy", sortBy);
@@ -65,14 +65,14 @@ export const fetchGetAllOrders = createAsyncThunk(
 );
 
 export const createOrder = createAsyncThunk(
-  "clients/createClient",
+  "orders/createOrder",
   async (orderData: Omit<Order, "id">, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.post("/Order/add", orderData);
       return response.data;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
-      return rejectWithValue(error.response?.data || "Failed to create client");
+      return rejectWithValue(error.response?.data || "Failed to create order");
     }
   }
 );
