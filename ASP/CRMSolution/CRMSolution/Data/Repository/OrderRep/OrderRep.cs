@@ -53,16 +53,9 @@ public class OrderRep : Repository<Order>, IOrderRep
             .Include(o => o.Tasks)
             .Include(o => o.UserOrders)
             .ThenInclude(uo => uo.User)
-            .Select(o => new Order
-            {
-                Id = o.Id,
-                TotalAmount = o.TotalAmount,
-                Status = o.Status,
-                CreatedAt = o.CreatedAt,
-                Tasks = o.Tasks
-            })
             .FirstOrDefaultAsync(o => o.Id == orderId);
     }
+
 
 
     public async Task<List<Order>> GetLowInfoOrdersList(SortOrdersRequest sortOrdersRequest)

@@ -72,6 +72,8 @@ public class UserProfile : Profile
         CreateMap<User, GetAllUsersUserResponse>()
             .ForMember(dest => dest.UserId, opt => opt
                 .MapFrom(src => src.Id))
+            .ForMember(dest => dest.IsEmailConfirmed, opt => opt
+                .MapFrom(src => src.IsEmailConfirmed))
             .ForMember(dest => dest.UserName, opt => opt
                 .MapFrom(src => src.UserName))
             .ForMember(dest => dest.Email, opt => opt

@@ -23,6 +23,7 @@ export const OrdersPage = () => {
     dispatch(fetchGetAllOrders(sortOrder));
   }, [dispatch, sortOrder]);
 
+  console.log(orders)
   const handleSort = (key: string) => {
     setSortOrder((prev) => ({
       sortBy: key,
@@ -69,7 +70,7 @@ export const OrdersPage = () => {
                       onClick={() => navigate(`/orders/${order.id}`)}>
                     <td className="py-2 px-4 text-center">{order.id}</td>
                     <td className="py-2 px-4 text-center">{order.totalAmount}$</td>
-                    <td className="py-2 px-4 text-center">{OrderStatus[order.orderStatus]}</td>
+                    <td className="py-2 px-4 text-center">{OrderStatus[order.status]}</td>
                     <td className="py-2 px-4 text-center">{new Date(order.createdAt).toLocaleDateString()}</td>
                   </tr>
                 ))}

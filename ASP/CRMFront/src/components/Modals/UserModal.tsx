@@ -101,7 +101,7 @@ const UserModal = ({ user, onClose }: UserModalProps) => {
         <ul className="list-disc ml-5">
           {user.tasks && user.tasks.length > 0 ? (
             user.tasks.map((task) => (
-              <li key={task.id}>Task ID: {task.id}, Status: {TaskStatus[task.taskStatus]}</li>
+              <li key={task.taskId}>Task ID: {task.taskId}, Status: {TaskStatus[task.taskStatus]}</li>
             ))
           ) : (
             <li>No tasks available</li>

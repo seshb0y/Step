@@ -10,6 +10,8 @@ public class GetAllUsersUserResponse
     public string UserId { get; set; }
     public string UserName { get; set; }
     public string Email { get; set; }
+    
+    public bool IsEmailConfirmed { get; set; }
     public UserRole UserRole { get; set; }
     public List<GetAllUsersTasksResponse> Tasks { get; set; }
     public List<GetAllUsersOrdersResponse> Orders { get; set; }

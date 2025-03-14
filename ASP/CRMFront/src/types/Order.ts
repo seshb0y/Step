@@ -3,11 +3,13 @@ import { Task } from "./Task";
 import { User } from "./User";
 
 export interface Order {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     id: number;
     orderId: number,
     totalAmount: string,
     createdAt: Date,
     tasks: Task[],
+    status: OrderStatus;
     orderStatus: OrderStatus,
     user: User[],
     client: Client,

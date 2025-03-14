@@ -30,6 +30,7 @@ export const UsersPage = () => {
     setIsCreateModalOpen(true);
   };
 
+  console.log(users)
   const openUserModal = (user: User) => {
     setSelectedUser(user);
     setIsUserModalOpen(true);
@@ -90,7 +91,7 @@ export const UsersPage = () => {
                       onClick={() => openUserModal(user)}>
                     <td className="py-2 px-4 text-center">{user.userId}</td>
                     <td className="py-2 px-4 text-center">{user.userName}</td>
-                    <td className="py-2 px-4 text-center">{user.isEmailConfirmed}</td>
+                    <td className="py-2 px-4 text-center">{ user.isEmailConfirmed.toString()}</td>
                     <td className="py-2 px-4 text-center">{user.email}</td>
                     <td className="py-2 px-4 text-center">{UserRole[user.userRole]}</td>
                     <td className="py-2 px-4 text-center">{new Date(user.createdAt).toLocaleDateString()}</td>
