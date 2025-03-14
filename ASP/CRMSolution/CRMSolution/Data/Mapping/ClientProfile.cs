@@ -38,10 +38,11 @@ namespace CRMSolution.Data.Mapping
             CreateMap<Order, KanbanOrderResponse>()
                 .ForMember(dest => dest.OrderId, opt => opt
                     .MapFrom(src => src.Id))
-                .ForMember(dest => dest.Status, opt => opt
-                    .MapFrom(src => src.Status.ToString()))
+                .ForMember(dest => dest.OrderStatus, opt => opt
+                    .MapFrom(src => (int)src.Status)) // Приведение к int
                 .ForMember(dest => dest.Tasks, opt => opt
                     .MapFrom(src => src.Tasks));
+
 
             
             CreateMap<Tasks, KanbanTaskResponse>()
@@ -58,11 +59,13 @@ namespace CRMSolution.Data.Mapping
                     .MapFrom(src => src.ClientOrders.Select(co => co.Order).ToList()));
 
             CreateMap<Order, KanbanOrderResponse>()
-         
                 .ForMember(dest => dest.OrderId, opt => opt
                     .MapFrom(src => src.Id))
+                .ForMember(dest => dest.OrderStatus, opt => opt
+                    .MapFrom(src => src.Status)) 
                 .ForMember(dest => dest.Tasks, opt => opt
                     .MapFrom(src => src.Tasks));
+
 
             CreateMap<Tasks, KanbanTaskResponse>();
             

@@ -92,7 +92,7 @@ export const ClientsPage = () => {
                   <tr key={client.id} className="border-b border-gray-700 bg-dark-bg hover:bg-gray-700 cursor-pointer"
                       onClick={() => openClientModal(client)}>
                     <td className="py-2 px-4 text-center">{client.id}</td>
-                    <td className="py-2 px-4 text-center">{client.name}</td>
+                    <td className="py-2 px-4 text-center">{client.clientName}</td>
                     <td className="py-2 px-4 text-center">{client.email}</td>
                     <td className="py-2 px-4 text-center">{client.phone}</td>
                     <td className="py-2 px-4 text-center">{client.address}</td>

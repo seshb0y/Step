@@ -83,13 +83,23 @@ public class ClientService : IClientService
     public async Task<List<ClientWithOrdersAndTasksResponse>> GetClientsWithOrdersAndTasks(HttpContext httpContext)
     {
         var username = await _tokenService.GetNameFromCookies(httpContext);
-    
+
         var orders = await _clientRepository.ClientRep.GetOrdersByUsername(username);
-    
+        
+        orders = orders.Select(o => new Order
+        {
+            Id = o.Id,
+            TotalAmount = o.TotalAmount,
+            Status = o.Status,
+            CreatedAt = o.CreatedAt,
+            Tasks = o.Tasks
+        }).ToList();
+
         var clients = await _clientRepository.ClientRep.GetClientsByOrdersAsync(orders);
-    
+
         return _mapper.Map<List<ClientWithOrdersAndTasksResponse>>(clients);
     }
+
 
 
 }

@@ -1,6 +1,34 @@
-﻿namespace ControllerFirst.DTO.Responses.User;
+﻿using CRMSolution.Data.Models;
 
 public class GetAllUsersResponse
 {
-    public List<CRMSolution.Data.Models.User> Users { get; set; }
+    public List<GetAllUsersUserResponse> Users { get; set; }
+}
+
+public class GetAllUsersUserResponse
+{
+    public string UserId { get; set; }
+    public string UserName { get; set; }
+    public string Email { get; set; }
+    public UserRole UserRole { get; set; }
+    public List<GetAllUsersTasksResponse> Tasks { get; set; }
+    public List<GetAllUsersOrdersResponse> Orders { get; set; }
+    public List<GetAllUsersClientsResponse> Clients { get; set; }
+}
+
+public class GetAllUsersTasksResponse
+{
+    public string TaskId { get; set; }
+    public TaskStatus TaskStatus { get; set; }
+}
+
+public class GetAllUsersOrdersResponse
+{
+    public string OrderId { get; set; }
+    public OrderStatus OrderStatus { get; set; }
+}
+
+public class GetAllUsersClientsResponse
+{
+    public string ClientName { get; set; }
 }

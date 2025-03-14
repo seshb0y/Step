@@ -3,7 +3,7 @@ import { User } from "./User"
 
 export interface Client {
     id?: string,
-    name: string,
+    clientName: string,
     email: string,
     isEmailConfirmed?: boolean,
     phone: string,

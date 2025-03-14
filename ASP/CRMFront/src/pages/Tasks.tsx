@@ -69,7 +69,7 @@ export const TasksPage = () => {
                       onClick={() => navigate(`/orders/${task.order.id}`)}>
                     <td className="py-2 px-4 text-center">{task.id}</td>
                     <td className="py-2 px-4 text-center">{task.title}</td>
-                    <td className="py-2 px-4 text-center">{TaskStatus[task.status]}</td>
+                    <td className="py-2 px-4 text-center">{TaskStatus[task.taskStatus]}</td>
                     <td className="py-2 px-4 text-center">{new Date(task.dueDate).toLocaleDateString()}</td>
                     <td className="py-2 px-4 text-center">{task.userTasks[0].user.userName}</td>
                   </tr>

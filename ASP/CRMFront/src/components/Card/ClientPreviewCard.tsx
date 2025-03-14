@@ -2,6 +2,25 @@ import { Client } from "../../types/Client";
 import { Card, CardHeader, CardTitle, CardContent } from "../ui/card";
 import { Badge } from "../ui/badge";
 import { useNavigate } from "react-router-dom";
+import { OrderStatus } from "../../types/Order";
+
+
+const getOrderStatusText = (status: number) => {
+  return OrderStatus[status] || "Unknown";
+};
+
+const getOrderStatusClass = (status: number) => {
+  switch (status) {
+    case OrderStatus.New:
+      return "bg-blue-500";
+    case OrderStatus.Processing:
+      return "bg-yellow-500";
+    case OrderStatus.Completed:
+      return "bg-green-500";
+    default:
+      return "bg-gray-500";
+  }
+};
 
 interface CardProps {
   client: Client;
@@ -13,7 +32,7 @@ const ClientPreviewCard = ({ client }: CardProps) => {
   return (
     <Card className="bg-[#1a0b2e] text-white border border-[#5a2d82] shadow-md p-4">
       <CardHeader>
-        <CardTitle className="text-lg font-semibold">{client.name}</CardTitle>
+        <CardTitle className="text-lg font-semibold">{client.clientName}</CardTitle>
         <p className="text-gray-400">{client.email}</p>
         <p className="text-gray-400">{client.phone}</p>
       </CardHeader>
@@ -22,18 +41,18 @@ const ClientPreviewCard = ({ client }: CardProps) => {
         <p className="text-sm text-gray-300">Дата регистрации: {new Date(client.createdAt).toLocaleDateString()}</p>
 
         <h3 className="text-md font-medium text-gray-300 mt-3">Orders:</h3>
-        {client.orders.length > 0 ? (
+        {client.orders != null && client.orders.length > 0 ? (
           client.orders?.map((order) => (
-            <div 
-              key={order.orderId} 
+            <div
+              key={order.orderId}
               className="p-2 bg-[#2a1042] rounded-md mb-2 cursor-pointer hover:bg-[#3a1f5a] transition"
-              onClick={() => navigate(`/orders/${order.orderId}`)} // Переход на страницу заказа
+              onClick={() => navigate(`/orders/${order.orderId}`)}
             >
               <p className="text-sm">ID: {order.orderId}</p>
               <p className="text-sm">Total: {order.totalAmount} ₽</p>
               <p className="text-sm">Created: {new Date(order.createdAt).toLocaleDateString()}</p>
-              <Badge className={`text-xs ${order.status.toString() === "New" ? "bg-blue-500" : order.status.toString() === "Processing" ? "bg-yellow-500" : "bg-green-500"}`}>
-                {order.status}
+              <Badge className={`text-xs ${getOrderStatusClass(order.orderStatus)}`}>
+                {getOrderStatusText(order.orderStatus)}
               </Badge>
             </div>
           ))

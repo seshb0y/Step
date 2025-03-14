@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "../../api/axiosInstance";
-import { Client } from "../../types/Client";
 import { User, UserRole } from "../../types/User";
 
 interface UsersState {
@@ -40,9 +39,9 @@ export const deleteUser = createAsyncThunk(
 
 export const fetchChangeUserData = createAsyncThunk(
   "users/data/change",
-  async ({ username, newEmail, oldEmail, password, role }: { username: string; newEmail: string; oldEmail: string; password: string; role: UserRole }, { rejectWithValue }) => {
+  async ({ username, newEmail, oldEmail, role }: { username: string; newEmail: string; oldEmail: string; role: UserRole }, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.put(`/User/change/`, { username, newEmail, oldEmail, password, role });
+      const response = await axiosInstance.put(`/User/change/`, { username, newEmail, oldEmail, role });
       return response.data; 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
@@ -58,8 +57,8 @@ export const fetchUsers = createAsyncThunk(
     const params = new URLSearchParams();
     if (sortBy) params.append("sortBy", sortBy);
     if (descending !== undefined) params.append("Descending", descending.toString());
-
-    const response = await axiosInstance.get(`/Users/all?${params.toString()}`);
+    const response = await axiosInstance.get(`/User/all?${params.toString()}`);
+    console.log(response.data)
     return response.data;
   }
 );
@@ -78,17 +77,17 @@ export const fetchAddUserData = createAsyncThunk(
 );
 
 export const createUser = createAsyncThunk(
-  "users/create",
-  async (userData: Omit<Client, "id">, { rejectWithValue }) => {
-    try {
-      const response = await axiosInstance.post("/Account/Register", userData);
-      return response.data;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      return rejectWithValue(error.response?.data || "Failed to create user");
+    "users/create",
+    async (userData: { username: string; password: string; email: string; confirmPassword: string }, { rejectWithValue }) => {
+      try {
+        const response = await axiosInstance.post("/Account/Register", userData);
+        return response.data;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (error: any) {
+        return rejectWithValue(error.response?.data || "Failed to create user");
+      }
     }
-  }
-);
+  );
 
 // export const fetchClientsWithOrdersAndTasks = createAsyncThunk(
 //   "clients/fetchClientsWithOrdersAndTasks",
@@ -161,7 +160,7 @@ const usersSlice = createSlice({
         state.userError = null;
       })
       .addCase(fetchChangeUserData.fulfilled, (state, action) => {
-        const index = state.users.findIndex(user => user.id === action.payload.id);
+        const index = state.users.findIndex(user => user.userId === action.payload.id);
         if (index !== -1) {
           state.users[index] = action.payload; 
         }

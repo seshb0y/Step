@@ -7,6 +7,7 @@ import Orders from "../pages/Orders";
 import PrivateRoute from "./PrivateRoute";
 import DashboardKanban from "../pages/DashboardKanban";
 import OrderDetailsPage from "../components/kanban/OrderDetailsPage";
+import Users from "../pages/Users"
 const AppRoutes = () => {
   return (
     <Routes>
@@ -18,6 +19,7 @@ const AppRoutes = () => {
         <Route path="/orders" element={<Orders />} />
         <Route path="/kanban" element={<DashboardKanban />} />
         <Route path="/orders/:orderId" element={<OrderDetailsPage />} /> 
+        <Route path="/users" element={<Users />} /> 
       </Route>
     </Routes>
   );

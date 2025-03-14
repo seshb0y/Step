@@ -1,16 +1,18 @@
 import { Client } from "./Client"
 import { Order } from "./Order"
+import { Task } from "./Task"
 
 export interface User {
     username: string
-    id: string,
+    userId: string,
     userName: string,
-    role: UserRole,
+    userRole: UserRole,
     email: string,
     isEmailConfirmed: boolean
     createdAt: Date,
     orders: Order[]
     clients: Client[],
+    tasks: Task[]
 }
 
 export enum UserRole

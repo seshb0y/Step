@@ -13,12 +13,12 @@ const OrderStatusColumn = ({ title, status, clients }: Props) => {
       .map(client => ({
         ...client,
         orders: client.orders?.filter(order => {
-          const orderStatusAsNumber = Object.values(OrderStatus).indexOf(order.status as unknown as OrderStatus);
-          return orderStatusAsNumber === status;
+        //   const orderStatusAsNumber = Object.values(OrderStatus).indexOf(order.orderStatus as unknown as OrderStatus);
+          return order.orderStatus === status;
         }) || []
       }))
       .filter(client => client.orders.length > 0);
-  
+console.log("Second", clients)
     return (
       <div className="w-1/4 bg-gray-900 p-4 rounded-lg gap ml-20">
         <h2 className="text-xl font-bold text-primary-purple">{title}</h2>

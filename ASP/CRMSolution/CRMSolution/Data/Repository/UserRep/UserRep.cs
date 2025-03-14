@@ -67,27 +67,38 @@ public class UserRep : Repository<User>, IUserRep
     
     public async Task<List<User>> GetLowInfoUsersList(SortUsersRequest sortUsersRequest)
     {
-        var query = _dbSet.Select(c => new User()
-        {
-            Id = c.Id,
-            UserName = c.UserName,
-            Email = c.Email,
-            IsEmailConfirmed = c.IsEmailConfirmed,
-            Role =  c.Role,
-            CreatedAt = c.CreatedAt,
-        });
+        var query = _dbSet
+            .Include(u => u.UserTasks)
+            .ThenInclude(ut => ut.Task)
+            .Include(u => u.UserOrders)
+            .ThenInclude(uo => uo.Order)
+            .Include(u => u.ClientUsers)
+            .ThenInclude(uc => uc.Client)
+            .Select(c => new User()
+            {
+                Id = c.Id,
+                UserName = c.UserName,
+                Email = c.Email,
+                IsEmailConfirmed = c.IsEmailConfirmed,
+                Role = c.Role,
+                CreatedAt = c.CreatedAt,
+                UserTasks = c.UserTasks, 
+                UserOrders = c.UserOrders,
+                ClientUsers = c.ClientUsers
+            });
+
         
         query = sortUsersRequest.sortBy?.ToLower() switch
         {
             "id" => sortUsersRequest.Descending ? query.OrderByDescending(c => c.Id) : query.OrderBy(c => c.Id),
-            "userName" =>sortUsersRequest.Descending ? query.OrderByDescending(c => c.UserName) :  query.OrderBy(c => c.UserName),
+            "username" =>sortUsersRequest.Descending ? query.OrderByDescending(c => c.UserName) :  query.OrderBy(c => c.UserName),
             "email" => sortUsersRequest.Descending ? query.OrderByDescending(c => c.Email) : query.OrderBy(c => c.Email),
             "role" => sortUsersRequest.Descending ? query.OrderByDescending(c => c.Role) : query.OrderBy(c => c.Role),
-            "isEmailConfirmed" => sortUsersRequest.Descending ? query.OrderByDescending(c => c.IsEmailConfirmed) : query.OrderBy(c => c.IsEmailConfirmed),
+            "isemailconfirmed" => sortUsersRequest.Descending ? query.OrderByDescending(c => c.IsEmailConfirmed) : query.OrderBy(c => c.IsEmailConfirmed),
             "createdat" => sortUsersRequest.Descending ? query.OrderByDescending(c => c.CreatedAt) : query.OrderBy(c => c.CreatedAt),
             _ => query
         };
-
+    
         return await query.ToListAsync();
     }
 }

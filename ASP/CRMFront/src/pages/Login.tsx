@@ -2,13 +2,13 @@ import { useState } from "react";
 import { loginUser, checkAuth } from "../features/auth/authSlice"
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../hooks/useAppDispatch";
-import { motion } from "framer-motion";
 import Lottie from "lottie-react";
 import eyeAnimation from "../assets/Login.json";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isTypingPassword, setIsTypingPassword] = useState(false);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();

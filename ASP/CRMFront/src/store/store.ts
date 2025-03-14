@@ -4,6 +4,7 @@ import dashboardReducer from "../features/dashboard/dashboardSlice"
 import clientsReducer from "../features/clients/clientSlice"
 import ordersReducer from "../features/orders/orderSlice"
 import tasksReducer from "../features/tasks/tasksSlice"
+import userReducer from "../features/user/userSlice"
 
 const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ const store = configureStore({
     clients: clientsReducer,
     orders: ordersReducer,
     tasks: tasksReducer,
+    users: userReducer
   },
 });
 

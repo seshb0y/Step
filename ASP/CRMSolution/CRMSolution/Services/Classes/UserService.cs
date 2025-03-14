@@ -64,11 +64,8 @@ public class UserService : IUserService
 
     public async Task<GetAllUsersResponse> GetAllUsers(SortUsersRequest sortUsersRequest)
     {
-        var user = await _userRepository.UserRep.GetLowInfoUsersList(sortUsersRequest);
-        return new GetAllUsersResponse()
-        {
-            Users = _mapper.Map<List<User>>(user)
-        };
+        var users = await _userRepository.UserRep.GetLowInfoUsersList(sortUsersRequest);
+        return _mapper.Map<GetAllUsersResponse>(users);
     }
     
     // public async Task<List<ClientWithOrdersAndTasksResponse>> GetClientsWithOrdersAndTasks(HttpContext httpContext)

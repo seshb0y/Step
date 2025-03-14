@@ -16,24 +16,19 @@ export const DashboardKanban = () => {
   useEffect(() => {
     dispatch(fetchClientsWithOrdersAndTasks() as never);
   }, [dispatch]);
-
-
-  
+  console.log(clients)
   if (error) return <p className="text-red-500">{error}</p>;
 
   // Фильтруем клиентов по статусу их активного заказа
   const filterClientsByOrderStatus = (status: OrderStatus) => {
     return clients.filter(client =>
       client.orders?.some(order => {
-
         // Приводим order.status к числу перед сравнением
-        const orderStatusAsNumber = Object.values(OrderStatus).indexOf(order.status as unknown as OrderStatus);
-        
-        return orderStatusAsNumber === status;
+        // const orderStatusAsNumber = Object.values(OrderStatus).indexOf(order.orderStatus as unknown as OrderStatus);
+        return order.orderStatus === status;
       })
     );
   };
-  
   
 
   return (

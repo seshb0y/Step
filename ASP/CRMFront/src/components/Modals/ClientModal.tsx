@@ -37,7 +37,7 @@ const ClientModal = ({ client, onClose }: ClientModalProps) => {
 
   const handleSave = () => {
     dispatch(fetchChangeClientData({ 
-      name: formData.name, 
+      name: formData.clientName, 
       newEmail: formData.email, 
       oldEmail: client.email,
       phone: formData.phone, 

@@ -8,7 +8,7 @@ export interface Order {
     totalAmount: string,
     createdAt: Date,
     tasks: Task[],
-    status: OrderStatus,
+    orderStatus: OrderStatus,
     user: User[],
     client: Client,
 }
