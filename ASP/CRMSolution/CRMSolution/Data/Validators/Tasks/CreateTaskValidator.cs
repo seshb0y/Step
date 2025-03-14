@@ -32,11 +32,11 @@ public class CreateTaskValidator : AbstractValidator<CreateTaskRequest>
             .NotEmpty()
             .WithMessage("End date is required.");
         
-        RuleFor(r => r.userEmail)
+        RuleFor(r => r.userName)
             .NotNull()
-            .WithMessage("User email is required.")
+            .WithMessage("User name is required.")
             .MustAsync(IsUserExist)
-            .WithMessage("The user email does not exist.");
+            .WithMessage("The user name does not exist.");
         
         RuleFor(r => r.orderId)
             .NotNull()

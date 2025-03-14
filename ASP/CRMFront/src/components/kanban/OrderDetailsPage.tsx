@@ -1,20 +1,26 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import axiosInstance from "../../api/axiosInstance";
+import { createTask } from "../../features/tasks/tasksSlice";
 import LoadingSpinner from "../LoadingSpinner";
 import Sidebar from "../StaticElements/Sidebar";
 import TopBox from "../StaticElements/TopBox";
 import { Order } from "../../types/Order";
-import { Task, TaskStatus } from "../../types/Task";
+import { TaskStatus } from "../../types/Task";
+import { AppDispatch } from "../../store/store";
+import Modal from "../ui/Modal";
 
 const OrderDetailsPage = () => {
   const { orderId } = useParams();
+  const dispatch = useDispatch<AppDispatch>();
   const [order, setOrder] = useState<Order>();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string>("");
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [taskTitle, setTaskTitle] = useState("");
-  const [taskText, setTaskText] = useState("");
+  const [taskDescription, setTaskDescription] = useState("");
   const [taskDueDate, setTaskDueDate] = useState("");
 
   useEffect(() => {
@@ -40,26 +46,21 @@ const OrderDetailsPage = () => {
     fetchOrderDetails();
   }, [orderId]);
 
-  const handleAddTask = () => {
-    if (!taskTitle.trim() || !taskText.trim() || !taskDueDate) return;
+  const handleCreateTask = async () => {
+    if (!taskTitle.trim() || !taskDescription.trim() || !taskDueDate || !order) return;
 
-    const newTask: Task = {
-      id: Date.now(),
+    const taskData = {
       title: taskTitle,
-      description: taskText,
-      status: TaskStatus.New,
-      dueDate: new Date(taskDueDate),
-      order: order,
-      userTasks: [],
+      description: taskDescription,
+      endDate: new Date(taskDueDate),
+      userName: order.users[0].username,
+      orderId: order.id,
     };
 
-    setOrder((prev) => ({
-      ...prev,
-      tasks: [...(prev?.tasks || []), newTask],
-    }));
-
+    await dispatch(createTask(taskData));
+    setIsModalOpen(false);
     setTaskTitle("");
-    setTaskText("");
+    setTaskDescription("");
     setTaskDueDate("");
   };
 
@@ -72,55 +73,34 @@ const OrderDetailsPage = () => {
 
   return (
     <div className="min-h-screen flex bg-dark-bg text-white overflow-hidden">
-      {/* Sidebar */}
       <Sidebar isExpanded={isSidebarExpanded} setIsExpanded={setIsSidebarExpanded} />
-
-      {/* Main Content */}
       <div className="flex-1 flex flex-col">
         <TopBox />
 
         <div className={`transition-all duration-300 flex mt-20 ${isSidebarExpanded ? "ml-[200px]" : "ml-[0px]"} w-full`}>
-          {/* Левая колонка (Информация о сделке) */}
           <div className="w-1/3 bg-[#1a0b2e] p-6 rounded-lg shadow-md h-[calc(100vh-80px)]">
             <h2 className="text-lg font-semibold mb-4">
               Сделка #{order.id}
-              <p>
-                <span className="text-white font-medium">Бюджет:</span> {order.totalAmount} ₽
-              </p>
-              <p>
-                <span className="text-white font-medium">Отв-ный:</span> {order.users[0].username}
-              </p>
+              <p><span className="text-white font-medium">Бюджет:</span> {order.totalAmount} ₽</p>
+              <p><span className="text-white font-medium">Отв-ный:</span> {order.users[0].username}</p>
             </h2>
-
             <div className="text-gray-300">
-              <p>
-                <span className="text-white font-medium">Client:</span> {order.client.name}
-              </p>
-              <p>
-                <span className="text-white font-medium">Email:</span> {order.client.email}
-              </p>
-              <p>
-                <span className="text-white font-medium">Phone:</span> {order.client.phone}
-              </p>
-              <p>
-                <span className="text-white font-medium">Address:</span> {order.client.address}
-              </p>
+              <p><span className="text-white font-medium">Client:</span> {order.client.name}</p>
+              <p><span className="text-white font-medium">Email:</span> {order.client.email}</p>
+              <p><span className="text-white font-medium">Phone:</span> {order.client.phone}</p>
+              <p><span className="text-white font-medium">Address:</span> {order.client.address}</p>
             </div>
           </div>
 
-          {/* Правая колонка (Задачи и история) */}
           <div className="w-2/3 flex flex-col px-6">
-            {/* История событий */}
-            <div className="bg-[#2a1042] p-6 rounded-lg shadow-md mb-6 flex-1">
-              <h2 className="text-lg font-semibold mb-4">История событий</h2>
-              <p className="text-gray-400 text-sm">
-                Создано 3 события <span className="text-blue-400 cursor-pointer">Развернуть</span>
-              </p>
-            </div>
-
-            {/* Блок задач */}
             <div className="bg-[#2a1042] p-6 rounded-lg shadow-md">
               <h2 className="text-lg font-semibold mb-4">Задачи</h2>
+              <button
+                className="mb-4 px-4 py-2 bg-primary-purple text-white rounded-md hover:bg-purple-700 transition"
+                onClick={() => setIsModalOpen(true)}
+              >
+                Добавить задачу
+              </button>
               {order.tasks?.length > 0 ? (
                 <div className="space-y-4">
                   {order.tasks.map((task) => (
@@ -136,46 +116,22 @@ const OrderDetailsPage = () => {
                 <p className="text-gray-400">Нет задач</p>
               )}
             </div>
-
-            {/* Форма для добавления задачи */}
-            <div className="bg-[#2a1042] p-4 rounded-lg shadow-md mt-4 flex flex-col">
-              <label className="text-sm text-gray-400">Название задачи:</label>
-              <input
-                type="text"
-                className="w-full bg-gray-700 p-3 rounded-md text-white mt-2"
-                placeholder="Введите название задачи..."
-                value={taskTitle}
-                onChange={(e) => setTaskTitle(e.target.value)}
-              />
-
-              <label className="text-sm text-gray-400 mt-2">Описание:</label>
-              <textarea
-                className="w-full bg-gray-700 p-3 rounded-md text-white mt-2"
-                placeholder="Введите описание задачи..."
-                value={taskText}
-                onChange={(e) => setTaskText(e.target.value)}
-              />
-
-              <label className="text-sm text-gray-400 mt-2">Дедлайн:</label>
-              <input
-                type="date"
-                className="w-full bg-gray-700 p-3 rounded-md text-white mt-2"
-                value={taskDueDate}
-                onChange={(e) => setTaskDueDate(e.target.value)}
-              />
-
-              <div className="flex justify-between mt-2">
-                <button className="bg-primary-purple px-4 py-2 rounded text-white" onClick={handleAddTask}>
-                  Добавить
-                </button>
-                <button className="bg-gray-600 px-4 py-2 rounded text-white" onClick={() => { setTaskTitle(""); setTaskText(""); setTaskDueDate(""); }}>
-                  Отменить
-                </button>
-              </div>
-            </div>
           </div>
         </div>
       </div>
+
+      {isModalOpen && (
+        <Modal onClose={() => setIsModalOpen(false)}>
+          <h2 className="text-lg font-bold">Создать задачу</h2>
+          <input type="text" placeholder="Название задачи" className="w-full bg-gray-700 p-2 rounded-md text-white mt-2" value={taskTitle} onChange={(e) => setTaskTitle(e.target.value)} />
+          <textarea placeholder="Описание задачи" className="w-full bg-gray-700 p-2 rounded-md text-white mt-2" value={taskDescription} onChange={(e) => setTaskDescription(e.target.value)} />
+          <input type="date" className="w-full bg-gray-700 p-2 rounded-md text-white mt-2" value={taskDueDate} onChange={(e) => setTaskDueDate(e.target.value)} />
+          <div className="flex justify-end mt-4">
+            <button className="bg-gray-600 px-4 py-2 rounded text-white mr-2" onClick={() => setIsModalOpen(false)}>Отменить</button>
+            <button className="bg-primary-purple px-4 py-2 rounded text-white" onClick={handleCreateTask}>Добавить</button>
+          </div>
+        </Modal>
+      )}
     </div>
   );
 };

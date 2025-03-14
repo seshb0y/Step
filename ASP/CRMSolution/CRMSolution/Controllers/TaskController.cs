@@ -18,7 +18,7 @@ public class TaskController : ControllerBase
     }
 
 
-    [HttpPost("AddTask")]
+    [HttpPost("add")]
     // [Authorize(Policy = "ManagerPolicy")]
     public async Task<IActionResult> AddTask([FromBody] CreateTaskRequest request)
     {
@@ -26,7 +26,7 @@ public class TaskController : ControllerBase
         return Ok("Task created");
     }
     
-    [HttpPut("ChangeTask")]
+    [HttpPut("change")]
     // [Authorize(Policy = "ManagerPolicy")]
     public async Task<IActionResult> ChangeTask([FromBody] UpdateTaskRequest request)
     {
@@ -34,7 +34,7 @@ public class TaskController : ControllerBase
         return Ok("Task updated");
     }
     
-    [HttpDelete("DeleteTask")]
+    [HttpDelete("delete")]
     // [Authorize(Policy = "ManagerPolicy")]
     public async Task<IActionResult> DeleteTask([FromBody] DeleteTaskRequest request)
     {
@@ -42,7 +42,7 @@ public class TaskController : ControllerBase
         return Ok("Task deleted");
     }
     
-    [HttpGet("FindTask")]
+    [HttpGet("find")]
     // [Authorize(Policy = "ManagerPolicy")]
     public async Task<IActionResult> FindTask([FromQuery] FindTaskRequest request)
     {

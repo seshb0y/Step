@@ -27,9 +27,12 @@ public class TasksService : ITasksService
         
         Order order = await _unitOfWork.OrderRep.GetById(request.orderId);
         
-        User user = await _unitOfWork.UserRep.FindByEmailAsync(request.userEmail);
+        User user = await _unitOfWork.UserRep.FindByNameAsync(request.userName);
         
         Tasks task = _mapper.Map<Tasks>(request);
+        Console.Write(order);
+        Console.WriteLine(task);
+        Console.WriteLine(user);
         await _unitOfWork.TasksRep.AddDependency(order, user, task);
         await _unitOfWork.SaveChangesAsync();
     }
