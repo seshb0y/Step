@@ -177,7 +177,15 @@ const usersSlice = createSlice({
       })
       .addCase(deleteUser.rejected, (state, action) => {
         state.error = action.payload as string;
-      });
+      })
+
+      .addCase(createUser.fulfilled, (state, action) => {
+        state.users.push(action.payload)
+        state.users[-1].isEmailConfirmed = false;
+      })
+      .addCase(createUser.rejected, (state, action) => {
+        state.error = action.payload as string
+      })
   },
 });
 

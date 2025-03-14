@@ -49,7 +49,8 @@ public class OrderProfile : Profile
                 .MapFrom(src => src.Client.Address));
         
         CreateMap<Order, OrderDetailsResponse>()
-            .ForMember(dest => dest.Client, opt => opt.MapFrom(src => src.ClientOrders.FirstOrDefault().Client));
+            .ForMember(dest => dest.Client, opt => opt
+                .MapFrom(src => src.ClientOrders.FirstOrDefault().Client));
 
         CreateMap<Order, OrderDetailsResponse>()
             .ForMember(dest => dest.Users, opt => opt
@@ -61,6 +62,7 @@ public class OrderProfile : Profile
         
         CreateMap<Client, ClientResponse>();
         CreateMap<Tasks, OrderDetailsTaskResponse>()
-            .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()));
+            .ForMember(dest => dest.Status, opt => opt
+                .MapFrom(src => src.Status));
     }
 }

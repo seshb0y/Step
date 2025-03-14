@@ -11,7 +11,7 @@ export interface Order {
     tasks: Task[],
     status: OrderStatus;
     orderStatus: OrderStatus,
-    user: User[],
+    users: User[],
     client: Client,
 }
 

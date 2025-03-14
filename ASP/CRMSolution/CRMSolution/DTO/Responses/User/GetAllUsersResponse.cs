@@ -1,4 +1,5 @@
-﻿using CRMSolution.Data.Models;
+﻿using System.Runtime.InteropServices.JavaScript;
+using CRMSolution.Data.Models;
 
 public class GetAllUsersResponse
 {
@@ -13,6 +14,7 @@ public class GetAllUsersUserResponse
     
     public bool IsEmailConfirmed { get; set; }
     public UserRole UserRole { get; set; }
+    public DateTime CreatedAt { get; set; }
     public List<GetAllUsersTasksResponse> Tasks { get; set; }
     public List<GetAllUsersOrdersResponse> Orders { get; set; }
     public List<GetAllUsersClientsResponse> Clients { get; set; }

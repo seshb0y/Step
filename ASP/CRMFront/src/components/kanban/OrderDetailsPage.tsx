@@ -13,7 +13,9 @@ const OrderDetailsPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string>("");
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
+  const [taskTitle, setTaskTitle] = useState("");
   const [taskText, setTaskText] = useState("");
+  const [taskDueDate, setTaskDueDate] = useState("");
 
   useEffect(() => {
     if (!orderId) {
@@ -28,9 +30,8 @@ const OrderDetailsPage = () => {
         const response = await axiosInstance.get(`/Order/${orderId}`);
         console.log("Server response:", response.data);
         setOrder(response.data);
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (err) {
-        setError("Order loading error.",);
+        setError("Order loading error.");
       } finally {
         setLoading(false);
       }
@@ -40,27 +41,27 @@ const OrderDetailsPage = () => {
   }, [orderId]);
 
   const handleAddTask = () => {
-    if (!taskText.trim()) return;
-  
+    if (!taskTitle.trim() || !taskText.trim() || !taskDueDate) return;
+
     const newTask: Task = {
       id: Date.now(),
-      title: "New task",
+      title: taskTitle,
       description: taskText,
       status: TaskStatus.New,
-      dueDate: new Date(),
+      dueDate: new Date(taskDueDate),
       order: order,
       userTasks: [],
     };
-  
+
     setOrder((prev) => ({
       ...prev,
       tasks: [...(prev?.tasks || []), newTask],
     }));
-  
+
+    setTaskTitle("");
     setTaskText("");
+    setTaskDueDate("");
   };
-  
-  
 
   if (loading) return <LoadingSpinner />;
   if (error) return <p className="text-red-500">{error}</p>;
@@ -79,30 +80,42 @@ const OrderDetailsPage = () => {
         <TopBox />
 
         <div className={`transition-all duration-300 flex mt-20 ${isSidebarExpanded ? "ml-[200px]" : "ml-[0px]"} w-full`}>
-          
           {/* Левая колонка (Информация о сделке) */}
           <div className="w-1/3 bg-[#1a0b2e] p-6 rounded-lg shadow-md h-[calc(100vh-80px)]">
-            <h2 
-                className="text-lg font-semibold mb-4">Сделка #{order.id}
-                <p><span className="text-white font-medium">Бюджет:</span> {order.totalAmount} ₽</p>
-                <p><span className="text-white font-medium">Отв-ный:</span> {order.users[0].username}</p>
+            <h2 className="text-lg font-semibold mb-4">
+              Сделка #{order.id}
+              <p>
+                <span className="text-white font-medium">Бюджет:</span> {order.totalAmount} ₽
+              </p>
+              <p>
+                <span className="text-white font-medium">Отв-ный:</span> {order.users[0].username}
+              </p>
             </h2>
-            
+
             <div className="text-gray-300">
-              <p><span className="text-white font-medium">Client:</span> {order.client.name}</p>
-              <p><span className="text-white font-medium">Email:</span> {order.client.email}</p>
-              <p><span className="text-white font-medium">Phone:</span> {order.client.phone}</p>
-              <p><span className="text-white font-medium">Address:</span> {order.client.address}</p>
+              <p>
+                <span className="text-white font-medium">Client:</span> {order.client.name}
+              </p>
+              <p>
+                <span className="text-white font-medium">Email:</span> {order.client.email}
+              </p>
+              <p>
+                <span className="text-white font-medium">Phone:</span> {order.client.phone}
+              </p>
+              <p>
+                <span className="text-white font-medium">Address:</span> {order.client.address}
+              </p>
             </div>
           </div>
 
           {/* Правая колонка (Задачи и история) */}
           <div className="w-2/3 flex flex-col px-6">
-            
             {/* История событий */}
             <div className="bg-[#2a1042] p-6 rounded-lg shadow-md mb-6 flex-1">
               <h2 className="text-lg font-semibold mb-4">История событий</h2>
-              <p className="text-gray-400 text-sm">Создано 3 события <span className="text-blue-400 cursor-pointer">Развернуть</span></p>
+              <p className="text-gray-400 text-sm">
+                Создано 3 события <span className="text-blue-400 cursor-pointer">Развернуть</span>
+              </p>
             </div>
 
             {/* Блок задач */}
@@ -114,7 +127,7 @@ const OrderDetailsPage = () => {
                     <div key={task.id} className="bg-[#3a1a5e] p-4 rounded-md shadow-md">
                       <h3 className="text-lg font-semibold">{task.title}</h3>
                       <p>{task.description}</p>
-                      <p className="text-sm text-gray-400">Статус: {task.status}</p>
+                      <p className="text-sm text-gray-400">Статус: {TaskStatus[task.status]}</p>
                       <p className="text-sm text-gray-400">Дедлайн: {new Date(task.dueDate).toLocaleDateString()}</p>
                     </div>
                   ))}
@@ -126,23 +139,40 @@ const OrderDetailsPage = () => {
 
             {/* Форма для добавления задачи */}
             <div className="bg-[#2a1042] p-4 rounded-lg shadow-md mt-4 flex flex-col">
-              <label className="text-sm text-gray-400">Примечание:</label>
+              <label className="text-sm text-gray-400">Название задачи:</label>
+              <input
+                type="text"
+                className="w-full bg-gray-700 p-3 rounded-md text-white mt-2"
+                placeholder="Введите название задачи..."
+                value={taskTitle}
+                onChange={(e) => setTaskTitle(e.target.value)}
+              />
+
+              <label className="text-sm text-gray-400 mt-2">Описание:</label>
               <textarea
                 className="w-full bg-gray-700 p-3 rounded-md text-white mt-2"
-                placeholder="Напишите задачу..."
+                placeholder="Введите описание задачи..."
                 value={taskText}
                 onChange={(e) => setTaskText(e.target.value)}
               />
+
+              <label className="text-sm text-gray-400 mt-2">Дедлайн:</label>
+              <input
+                type="date"
+                className="w-full bg-gray-700 p-3 rounded-md text-white mt-2"
+                value={taskDueDate}
+                onChange={(e) => setTaskDueDate(e.target.value)}
+              />
+
               <div className="flex justify-between mt-2">
                 <button className="bg-primary-purple px-4 py-2 rounded text-white" onClick={handleAddTask}>
                   Добавить
                 </button>
-                <button className="bg-gray-600 px-4 py-2 rounded text-white" onClick={() => setTaskText("")}>
+                <button className="bg-gray-600 px-4 py-2 rounded text-white" onClick={() => { setTaskTitle(""); setTaskText(""); setTaskDueDate(""); }}>
                   Отменить
                 </button>
               </div>
             </div>
-
           </div>
         </div>
       </div>

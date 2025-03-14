@@ -40,9 +40,9 @@ export const StatsCard: React.FC<StatsCardProps> = ({ title, value, change, unit
             {unit}
             {value}
           </div>
-          <div className={`text-sm font-medium ${isNegative ? "text-red-400" : "text-green-400"}`}>
+          {/* <div className={`text-sm font-medium ${isNegative ? "text-red-400" : "text-green-400"}`}>
             {isNegative ? "▼" : "▲"} {Math.abs(change)}%
-          </div>
+          </div> */}
         </CardContent>
       </Card>
     </motion.div>

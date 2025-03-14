@@ -12,7 +12,7 @@ const ClientCreateModal = ({ onClose }: ClientCreateModalProps) => {
   const { clientCreating, clientCreateError } = useSelector((state: RootState) => state.clients);
 
   const [formData, setFormData] = useState({
-    clientName: "",
+    name: "",
     email: "",
     phone: "",
     address: "",

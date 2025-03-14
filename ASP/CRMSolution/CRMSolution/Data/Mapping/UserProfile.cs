@@ -72,6 +72,8 @@ public class UserProfile : Profile
                 .MapFrom(src => src.Id))
             .ForMember(dest => dest.IsEmailConfirmed, opt => opt
                 .MapFrom(src => src.IsEmailConfirmed))
+            .ForMember(dest => dest.CreatedAt, opt => opt
+                .MapFrom(src => src.CreatedAt))
             .ForMember(dest => dest.Username, opt => opt
                 .MapFrom(src => src.Username))
             .ForMember(dest => dest.Email, opt => opt
