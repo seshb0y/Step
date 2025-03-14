@@ -50,8 +50,8 @@ public class TaskProfile : Profile
         CreateMap<UserTask, UserTaskResponse>()
             .ForMember(dest => dest.Id, opt => opt
                 .MapFrom(src => src.UserId))
-            .ForMember(dest => dest.UserName, opt => opt
-                .MapFrom(src => src.User.UserName))
+            .ForMember(dest => dest.Username, opt => opt
+                .MapFrom(src => src.User.Username))
             .ForMember(dest => dest.Email, opt => opt
                 .MapFrom(src => src.User.Email))
             .ForMember(dest => dest.CreatedAt, opt => opt

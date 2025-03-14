@@ -3,7 +3,7 @@
 public class User
 {
     public int Id { get; set; }
-    public string UserName { get; set; } 
+    public string Username { get; set; } 
     public string Email { get; set; } = string.Empty;
     public bool IsEmailConfirmed { get; set; }
     public string PasswordHash { get; set; } = string.Empty;

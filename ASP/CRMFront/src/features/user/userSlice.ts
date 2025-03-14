@@ -41,6 +41,7 @@ export const fetchChangeUserData = createAsyncThunk(
   "users/data/change",
   async ({ username, newEmail, oldEmail, role }: { username: string; newEmail: string; oldEmail: string; role: UserRole }, { rejectWithValue }) => {
     try {
+      console.log(username, newEmail, oldEmail, role)
       const response = await axiosInstance.put(`/User/change/`, { username, newEmail, oldEmail, role });
       return response.data; 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

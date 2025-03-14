@@ -56,7 +56,7 @@ public class TasksRep : Repository<Tasks>, ITasksRep
                 UserId = ut.UserId,
                 User = new User
                 {
-                    UserName = ut.User.UserName,
+                    Username = ut.User.Username,
                 }
             }).ToList()
         });

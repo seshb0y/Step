@@ -17,7 +17,7 @@ public class UserRep : Repository<User>, IUserRep
     
     public async Task<User?> FindByNameAsync(string name)
     {
-        return await _dbSet.FirstOrDefaultAsync(u => u.UserName == name);
+        return await _dbSet.FirstOrDefaultAsync(u => u.Username == name);
     }
     
     public async Task<User?> FindByEmailAsync(string email)
@@ -77,7 +77,7 @@ public class UserRep : Repository<User>, IUserRep
             .Select(c => new User()
             {
                 Id = c.Id,
-                UserName = c.UserName,
+                Username = c.Username,
                 Email = c.Email,
                 IsEmailConfirmed = c.IsEmailConfirmed,
                 Role = c.Role,
@@ -91,7 +91,7 @@ public class UserRep : Repository<User>, IUserRep
         query = sortUsersRequest.sortBy?.ToLower() switch
         {
             "id" => sortUsersRequest.Descending ? query.OrderByDescending(c => c.Id) : query.OrderBy(c => c.Id),
-            "username" =>sortUsersRequest.Descending ? query.OrderByDescending(c => c.UserName) :  query.OrderBy(c => c.UserName),
+            "username" =>sortUsersRequest.Descending ? query.OrderByDescending(c => c.Username) :  query.OrderBy(c => c.Username),
             "email" => sortUsersRequest.Descending ? query.OrderByDescending(c => c.Email) : query.OrderBy(c => c.Email),
             "role" => sortUsersRequest.Descending ? query.OrderByDescending(c => c.Role) : query.OrderBy(c => c.Role),
             "isemailconfirmed" => sortUsersRequest.Descending ? query.OrderByDescending(c => c.IsEmailConfirmed) : query.OrderBy(c => c.IsEmailConfirmed),

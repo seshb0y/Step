@@ -50,7 +50,7 @@ public class ClientRep : Repository<Client>, IClientRep
             Users = client.ClientUsers.Select(cu => new UserDto
             {
                 Id = cu.User.Id,
-                Name = cu.User.UserName,
+                Name = cu.User.Username,
                 Email = cu.User.Email
             }).ToArray()
         };
@@ -62,7 +62,7 @@ public class ClientRep : Repository<Client>, IClientRep
             .Include(o => o.Tasks)
             .Include(o => o.UserOrders)
             .ThenInclude(uo => uo.User)
-            .Where(o => o.UserOrders.Any(uo => uo.User.UserName == username))
+            .Where(o => o.UserOrders.Any(uo => uo.User.Username == username))
             .ToListAsync();
     }
 

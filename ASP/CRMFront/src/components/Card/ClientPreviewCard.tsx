@@ -32,7 +32,7 @@ const ClientPreviewCard = ({ client }: CardProps) => {
   return (
     <Card className="bg-[#1a0b2e] text-white border border-[#5a2d82] shadow-md p-4">
       <CardHeader>
-        <CardTitle className="text-lg font-semibold">{client.clientName}</CardTitle>
+        <CardTitle className="text-lg font-semibold">{client.name}</CardTitle>
         <p className="text-gray-400">{client.email}</p>
         <p className="text-gray-400">{client.phone}</p>
       </CardHeader>

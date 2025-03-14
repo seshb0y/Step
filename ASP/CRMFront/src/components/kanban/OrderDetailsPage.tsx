@@ -46,7 +46,7 @@ const OrderDetailsPage = () => {
       id: Date.now(),
       title: "New task",
       description: taskText,
-      taskStatus: TaskStatus.New,
+      status: TaskStatus.New,
       dueDate: new Date(),
       order: order,
       userTasks: [],
@@ -89,7 +89,7 @@ const OrderDetailsPage = () => {
             </h2>
             
             <div className="text-gray-300">
-              <p><span className="text-white font-medium">Client:</span> {order.client.clientName}</p>
+              <p><span className="text-white font-medium">Client:</span> {order.client.name}</p>
               <p><span className="text-white font-medium">Email:</span> {order.client.email}</p>
               <p><span className="text-white font-medium">Phone:</span> {order.client.phone}</p>
               <p><span className="text-white font-medium">Address:</span> {order.client.address}</p>
@@ -114,7 +114,7 @@ const OrderDetailsPage = () => {
                     <div key={task.id} className="bg-[#3a1a5e] p-4 rounded-md shadow-md">
                       <h3 className="text-lg font-semibold">{task.title}</h3>
                       <p>{task.description}</p>
-                      <p className="text-sm text-gray-400">Статус: {task.taskStatus}</p>
+                      <p className="text-sm text-gray-400">Статус: {task.status}</p>
                       <p className="text-sm text-gray-400">Дедлайн: {new Date(task.dueDate).toLocaleDateString()}</p>
                     </div>
                   ))}

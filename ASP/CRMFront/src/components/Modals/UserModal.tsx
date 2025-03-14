@@ -26,7 +26,7 @@ const UserModal = ({ user, onClose }: UserModalProps) => {
 
   const handleSave = () => {
     dispatch(fetchChangeUserData({ 
-      username: formData.username,
+      username: formData.username != undefined ? formData.username : user.username,
       newEmail: formData.email,
       oldEmail: user.email,
       role: formData.userRole
@@ -54,7 +54,7 @@ const UserModal = ({ user, onClose }: UserModalProps) => {
           <input
             type="text"
             name="username"
-            value={formData.userName}
+            value={formData.username}
             disabled={!isEditing}
             onChange={handleChange}
             className="w-full px-3 py-2 rounded bg-gray-700 text-white"
@@ -78,8 +78,9 @@ const UserModal = ({ user, onClose }: UserModalProps) => {
           <input
             type="text"
             name="role"
-            value={UserRole[user.userRole] ?? "Unknown"}
-            disabled
+            value={UserRole[user.userRole]}
+            disabled={!isEditing}
+            onChange={(e) => setFormData({ ...formData, userRole: e.target.value as unknown as UserRole })}
             className="w-full px-3 py-2 rounded bg-gray-700 text-white"
           />
         </div>
@@ -101,7 +102,7 @@ const UserModal = ({ user, onClose }: UserModalProps) => {
         <ul className="list-disc ml-5">
           {user.tasks && user.tasks.length > 0 ? (
             user.tasks.map((task) => (
-              <li key={task.taskId}>Task ID: {task.taskId}, Status: {TaskStatus[task.taskStatus]}</li>
+              <li key={task.taskId}>Task ID: {task.taskId}, Status: {TaskStatus[task.status]}</li>
             ))
           ) : (
             <li>No tasks available</li>
@@ -113,7 +114,7 @@ const UserModal = ({ user, onClose }: UserModalProps) => {
         <ul className="list-disc ml-5">
           {user.clients && user.clients.length > 0 ? (
             user.clients.map((client) => (
-              <li key={client.id}>Client: {client.clientName}</li>
+              <li key={client.id}>Client: {client.name}</li>
             ))
           ) : (
             <li>No clients available</li>

@@ -20,7 +20,7 @@ public class DataSeeder
         int userId = 1;
         var userFaker = new Faker<User>()
             // .RuleFor(u => u.Id, f => userId++) 
-            .RuleFor(u => u.UserName, f => f.Internet.UserName())
+            .RuleFor(u => u.Username, f => f.Internet.UserName())
             .RuleFor(u => u.Email, f => f.Internet.Email())
             .RuleFor(u => u.PasswordHash, f => f.Internet.Password())
             .RuleFor(u => u.IsEmailConfirmed, f => f.Random.Bool())

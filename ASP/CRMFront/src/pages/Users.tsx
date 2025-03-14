@@ -90,7 +90,7 @@ export const UsersPage = () => {
                   <tr key={user.userId} className="border-b border-gray-700 bg-dark-bg hover:bg-gray-700 cursor-pointer"
                       onClick={() => openUserModal(user)}>
                     <td className="py-2 px-4 text-center">{user.userId}</td>
-                    <td className="py-2 px-4 text-center">{user.userName}</td>
+                    <td className="py-2 px-4 text-center">{user.username}</td>
                     <td className="py-2 px-4 text-center">{ user.isEmailConfirmed.toString()}</td>
                     <td className="py-2 px-4 text-center">{user.email}</td>
                     <td className="py-2 px-4 text-center">{UserRole[user.userRole]}</td>

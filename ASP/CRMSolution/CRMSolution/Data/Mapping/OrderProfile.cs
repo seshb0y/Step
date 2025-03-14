@@ -57,7 +57,7 @@ public class OrderProfile : Profile
 
 
         CreateMap<User, OrderDetailsUserResponse>()
-            .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.UserName));
+            .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.Username));
         
         CreateMap<Client, ClientResponse>();
         CreateMap<Tasks, OrderDetailsTaskResponse>()

@@ -6,7 +6,7 @@ export interface Task {
     id: number
     title: string,
     description: string,
-    taskStatus: TaskStatus
+    status: TaskStatus
     dueDate: Date
     order: Order
     userTasks: { user: User }[];

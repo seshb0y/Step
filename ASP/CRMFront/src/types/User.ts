@@ -3,9 +3,9 @@ import { Order } from "./Order"
 import { Task } from "./Task"
 
 export interface User {
-    username: string
     userId: string,
-    userName: string,
+    username: string
+    // userName: string,
     userRole: UserRole,
     email: string,
     isEmailConfirmed: boolean

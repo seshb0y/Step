@@ -77,7 +77,7 @@ namespace CRMSolution.Data.Mapping
 
             CreateMap<Client, ClientResponse>(); 
             CreateMap<User, OrderDetailsUserResponse>()
-                .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.UserName));
+                .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.Username));
 
         }
     }

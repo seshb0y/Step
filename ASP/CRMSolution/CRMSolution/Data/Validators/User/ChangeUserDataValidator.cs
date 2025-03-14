@@ -24,11 +24,6 @@ public class ChangeUserDataValidator : AbstractValidator<ChangeUserDataRequest>
             .MustAsync(IsClientExist)
             .WithMessage("The client email does not exist.");
         
-        RuleFor(x => x.password)
-            .MinimumLength(8)
-            .WithMessage("Password must be at least 8 characters long")
-            .Matches(RegexPattern.Password)
-            .WithMessage("Password must contain at least one lowercase letter, one uppercase letter, and one number");
     }
 
     private async Task<bool> IsClientExist(string email, CancellationToken cancellationToken)
