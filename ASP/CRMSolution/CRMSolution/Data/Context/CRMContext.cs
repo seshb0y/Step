@@ -26,4 +26,5 @@ public class CRMContext : DbContext
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(CRMContext).Assembly); 
     }
+    
 }

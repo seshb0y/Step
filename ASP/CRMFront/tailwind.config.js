@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-	darkMode: "class", // Оставляем только одно объявление darkMode
+	darkMode: "class",
 	content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   
 	theme: {
@@ -65,6 +65,6 @@ export default {
 	  },
 	},
   
-	plugins: [require("tailwindcss-animate")], // Убираем дублирование
+	plugins: [require("tailwindcss-animate")],
   };
   

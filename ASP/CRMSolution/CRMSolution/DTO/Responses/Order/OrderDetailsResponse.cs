@@ -6,6 +6,7 @@ public class OrderDetailsResponse
     public decimal TotalAmount { get; set; }
     public string Status { get; set; }
     public DateTime CreatedAt { get; set; }
+    public string? CallRecordingUrl { get; set; }
 
     public ClientResponse Client { get; set; }
     public List<OrderDetailsTaskResponse> Tasks { get; set; } = new();

@@ -46,6 +46,25 @@ const OrderDetailsPage = () => {
     fetchOrderDetails();
   }, [orderId]);
 
+  const handleCallClient = async () => {
+    if (!order?.client.phone) return;
+    
+    const response = await axiosInstance.post("/api/twilio/call", { to: order.client.phone });
+    const { CallSid } = response.data;
+  
+    setTimeout(async () => {
+      const recordingRes = await axiosInstance.get(`/api/twilio/recording/${CallSid}`);
+      const { RecordingUrl } = recordingRes.data;
+      
+      await axiosInstance.post("/api/twilio/call/save-recording", {
+        orderId: order.id,
+        callSid: CallSid,
+      });
+  
+      setOrder({ ...order, callRecordingUrl: RecordingUrl });
+    }, 30000);
+  };
+
   const handleCreateTask = async () => {
     if (!taskTitle.trim() || !taskDescription.trim() || !taskDueDate || !order) return;
 
@@ -90,6 +109,11 @@ const OrderDetailsPage = () => {
               <p><span className="text-white font-medium">Phone:</span> {order.client.phone}</p>
               <p><span className="text-white font-medium">Address:</span> {order.client.address}</p>
             </div>
+            <button 
+              onClick={handleCallClient} 
+              className="bg-primary-purple px-4 py-2 rounded text-white mt-4">
+              Позвонить клиенту
+            </button>
           </div>
 
           <div className="w-2/3 flex flex-col px-6">
@@ -115,11 +139,19 @@ const OrderDetailsPage = () => {
               ) : (
                 <p className="text-gray-400">Нет задач</p>
               )}
+              {order.callRecordingUrl && (
+                <p>
+                  <a href={order.callRecordingUrl} target="_blank" rel="noopener noreferrer">
+                    Прослушать запись звонка
+                  </a>
+                </p>
+              )}
             </div>
           </div>
         </div>
       </div>
 
+              
       {isModalOpen && (
         <Modal onClose={() => setIsModalOpen(false)}>
           <h2 className="text-lg font-bold">Создать задачу</h2>

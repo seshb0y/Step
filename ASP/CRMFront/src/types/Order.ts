@@ -13,6 +13,7 @@ export interface Order {
     orderStatus: OrderStatus,
     users: User[],
     client: Client,
+    callRecordingUrl?: string
 }
 
 export enum OrderStatus

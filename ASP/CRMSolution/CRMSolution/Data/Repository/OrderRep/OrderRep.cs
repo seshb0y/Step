@@ -12,6 +12,18 @@ public class OrderRep : Repository<Order>, IOrderRep
     {
     }
 
+    public async Task<Order> GetByIdAsync(int id)
+    {
+        Console.WriteLine($"Total Orders in DbContext: {_context.Orders.Count()}");
+        Console.WriteLine($"Attempting to fetch Order with ID: {id}");
+        Order order = await _context.Orders.FirstOrDefaultAsync(o => o.Id == id);
+        var sql = $"SELECT * FROM Orders WHERE Id = {id}";
+        var result = _context.Orders.FromSqlRaw(sql).FirstOrDefault();
+        Console.WriteLine($"SQL Query Result: {result?.Id}");
+
+        Console.WriteLine($"Fetched Order: {order?.Id}");
+        return order;
+    }
     public async Task AddOrderToClientAndUser(Client client, Order order, User user)
     {
         order.ClientOrders.Add(
@@ -80,5 +92,7 @@ public class OrderRep : Repository<Order>, IOrderRep
         return await query.ToListAsync();
     }
 
+    
+    
     
 }

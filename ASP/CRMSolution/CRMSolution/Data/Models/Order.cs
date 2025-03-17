@@ -6,6 +6,8 @@ public class Order
     public decimal TotalAmount { get; set; }
     public OrderStatus Status { get; set; } = OrderStatus.New;
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public string CallRecordingUrl { get; set; } = string.Empty;
+
 
     public ICollection<ClientOrder> ClientOrders { get; set; } = new List<ClientOrder>();
     
