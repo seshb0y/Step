@@ -48,23 +48,41 @@ const OrderDetailsPage = () => {
 
   const handleCallClient = async () => {
     if (!order?.client.phone) return;
-    
-    const response = await axiosInstance.post("/api/twilio/call", { to: order.client.phone });
-    const { CallSid } = response.data;
   
-    setTimeout(async () => {
-      const recordingRes = await axiosInstance.get(`/api/twilio/recording/${CallSid}`);
-      const { RecordingUrl } = recordingRes.data;
-      
-      await axiosInstance.post("/api/twilio/call/save-recording", {
-        orderId: order.id,
-        callSid: CallSid,
-      });
+    try {
+      // 1️⃣ Отправляем запрос на звонок
+      const response = await axiosInstance.post("/api/twilio/call", { to: order.client.phone });
+      const callSid = response.data.callSid;
   
-      setOrder({ ...order, callRecordingUrl: RecordingUrl });
-    }, 30000);
+      console.log("Звонок инициирован, CallSid:", callSid);
+  
+      // 2️⃣ Ждём 30 секунд (можно заменить на Webhook)
+      setTimeout(async () => {
+        try {
+          // 3️⃣ Получаем URL записи звонка
+          const recordingRes = await axiosInstance.get(`/api/twilio/recording/${callSid}`);
+          const mediaUrl = recordingRes.data.mediaUrl;
+  
+          console.log("Получен URL записи:", mediaUrl);
+          
+          // 4️⃣ Сохраняем запись звонка в БД
+          await axiosInstance.post("/api/twilio/call/save-recording", {
+            orderId: order.id,
+            callSid: callSid,
+          });
+  
+          // 5️⃣ Обновляем `order` с записью звонка
+          setOrder({ ...order, callRecordingUrl: mediaUrl });
+  
+        } catch (error) {
+          console.error("Ошибка при получении записи звонка:", error);
+        }
+      }, 30000);
+  
+    } catch (error) {
+      console.error("Ошибка при совершении звонка:", error);
+    }
   };
-
   const handleCreateTask = async () => {
     if (!taskTitle.trim() || !taskDescription.trim() || !taskDueDate || !order) return;
 
@@ -95,9 +113,8 @@ const OrderDetailsPage = () => {
       <Sidebar isExpanded={isSidebarExpanded} setIsExpanded={setIsSidebarExpanded} />
       <div className="flex-1 flex flex-col">
         <TopBox />
-
-        <div className={`transition-all duration-300 flex mt-20 ${isSidebarExpanded ? "ml-[200px]" : "ml-[0px]"} w-full`}>
-          <div className="w-1/3 bg-[#1a0b2e] p-6 rounded-lg shadow-md h-[calc(100vh-80px)]">
+        <div className={`transition-all duration-300 flex mt-20 ml-5 w-full`}>
+          <div className="min-w-96 bg-[#1a0b2e] p-6 rounded-lg shadow-md h-[calc(100vh-80px)]">
             <h2 className="text-lg font-semibold mb-4">
               Сделка #{order.id}
               <p><span className="text-white font-medium">Бюджет:</span> {order.totalAmount} ₽</p>
@@ -116,7 +133,7 @@ const OrderDetailsPage = () => {
             </button>
           </div>
 
-          <div className="w-2/3 flex flex-col px-6">
+          <div className="w-screen flex flex-col px-6 ">
             <div className="bg-[#2a1042] p-6 rounded-lg shadow-md">
               <h2 className="text-lg font-semibold mb-4">Задачи</h2>
               <button

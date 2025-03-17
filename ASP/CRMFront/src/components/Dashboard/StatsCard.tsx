@@ -9,8 +9,7 @@ interface StatsCardProps {
   unit?: string;
 }
 
-export const StatsCard: React.FC<StatsCardProps> = ({ title, value, change, unit }) => {
-  const isNegative = change < 0;
+export const StatsCard: React.FC<StatsCardProps> = ({ title, value, unit }) => {
   const navigate = useNavigate();
 
   const getRoute = (title: string) => {

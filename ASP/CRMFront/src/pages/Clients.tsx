@@ -17,7 +17,7 @@ export const ClientsPage = () => {
   const [selectedClient, setSelectedClient] = useState<Client | null>(null);
   const [isClientModalOpen, setIsClientModalOpen] = useState(false);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  const [sortOrder, setSortOrder] = useState<{ sortBy: string; descending: boolean }>({
+  const [sortClients, setSortClients] = useState<{ sortBy: string; descending: boolean }>({
     sortBy: "id",
     descending: false,
   });
@@ -39,11 +39,11 @@ export const ClientsPage = () => {
   };
 
   const handleSort = (key: string) => {
-    setSortOrder((prev) => ({
+    setSortClients((prev) => ({
       sortBy: key,
       descending: prev.sortBy === key ? !prev.descending : false,
     }));
-    dispatch(fetchClients({ sortBy: key, descending: sortOrder.sortBy === key ? !sortOrder.descending : false }));
+    dispatch(fetchClients({ sortBy: key, descending: sortClients.sortBy === key ? !sortClients.descending : false }));
   };
 
   return (

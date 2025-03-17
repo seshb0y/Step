@@ -6,7 +6,7 @@ const UserProfileModal = ({ open, onClose, user }: { open: boolean; onClose: () 
 
     const handleConfirmEmail = async () => {
         try {
-            await axiosInstance.post("/Account/ConfirmEmail", { username: user.userName });
+            await axiosInstance.post("/Account/ConfirmEmail", { username: user.username });
             console.log("Email confirmation request sent successfully");
         } catch (error) {
             console.error("Error confirming email:", error);
@@ -30,9 +30,9 @@ const UserProfileModal = ({ open, onClose, user }: { open: boolean; onClose: () 
       >
         <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
           <Avatar sx={{ width: 80, height: 80, bgcolor: "primary.main", mb: 2 }}>
-            {user?.userName?.charAt(0).toUpperCase()}
+            {user?.username?.charAt(0).toUpperCase()}
           </Avatar>
-          <Typography variant="h6">{user.userName || "Имя пользователя"}</Typography>
+          <Typography variant="h6">{user.username || "Имя пользователя"}</Typography>
           <Typography variant="body1" sx={{ opacity: 0.8 }}>
             {user?.email || "example@email.com"}
           </Typography>

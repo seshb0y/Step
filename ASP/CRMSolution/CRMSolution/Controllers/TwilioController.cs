@@ -29,7 +29,7 @@ public class TwilioController : ControllerBase
     public IActionResult GetRecordingUrl(string callSid)
     {
         var url = _twilioService.GetRecordingUrl(callSid);
-        return Ok(new { RecordingUrl = url });
+        return url != null ? Ok(new { MediaUrl = url }) : NotFound();
     }
     
     [HttpPost("call/save-recording")]

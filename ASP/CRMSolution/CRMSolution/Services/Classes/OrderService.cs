@@ -30,6 +30,18 @@ public class OrderService : IOrderService
         User user = await _unitOfWork.UserRep.FindByEmailAsync(request.userEmail);
         
         Order order = _mapper.Map<Order>(request);
+        
+        Tasks firstTask = new Tasks
+        {
+            Title = "First contact",
+            Description = "Connect the client",
+            DueDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day),
+            OrderId = order.Id,
+            Order = order,
+        };
+        
+        order.Tasks.Add(firstTask);
+        
         await _unitOfWork.OrderRep.AddAsync(order); 
         await _unitOfWork.SaveChangesAsync();
         

@@ -112,6 +112,19 @@ const ordersSlice = createSlice({
         state.orderError = action.payload as string;
       })
 
+      .addCase(createOrder.pending, (state) => {
+        state.orderCreating = true;
+        state.orderCreateError = null;
+      })
+      .addCase(createOrder.fulfilled, (state, action) => {
+        state.orders.push(action.payload);
+        state.orderCreating = false;
+      })
+      .addCase(createOrder.rejected, (state, action) => {
+        state.orderCreating = false;
+        state.orderCreateError = action.payload as string;
+      })
+
       .addCase(deleteOrder.fulfilled, (state, action) => {
         state.orders = state.orders.filter(order => order.orderId !== action.payload);
       })

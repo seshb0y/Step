@@ -16,11 +16,9 @@ public class OrderRep : Repository<Order>, IOrderRep
     {
         Console.WriteLine($"Total Orders in DbContext: {_context.Orders.Count()}");
         Console.WriteLine($"Attempting to fetch Order with ID: {id}");
-        Order order = await _context.Orders.FirstOrDefaultAsync(o => o.Id == id);
-        var sql = $"SELECT * FROM Orders WHERE Id = {id}";
-        var result = _context.Orders.FromSqlRaw(sql).FirstOrDefault();
-        Console.WriteLine($"SQL Query Result: {result?.Id}");
-
+        var order = _context.Orders.Where(o => o.Id == id).First();
+        
+  
         Console.WriteLine($"Fetched Order: {order?.Id}");
         return order;
     }

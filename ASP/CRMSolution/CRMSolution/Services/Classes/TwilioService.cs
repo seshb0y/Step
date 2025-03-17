@@ -39,10 +39,9 @@ public class TwilioService : ITwilioService
 
     public string GetRecordingUrl(string callSid)
     {
-        var recording = Twilio.Rest.Api.V2010.Account.RecordingResource.Read(
-            callSid: callSid).FirstOrDefault();
+        var recording = RecordingResource.Read(callSid: callSid).FirstOrDefault();
         
-        return recording?.Uri;
+        return $"https://api.twilio.com{recording.Uri.Replace(".json", ".mp3")}";
     }
     
     public async Task SaveCallRecording(int orderId, string callSid)

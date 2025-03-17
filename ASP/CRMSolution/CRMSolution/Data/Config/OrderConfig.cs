@@ -11,9 +11,9 @@ public class OrderConfig : IEntityTypeConfiguration<Order>
         builder.ToTable("Orders");
 
         builder.HasKey(o => o.Id);
-        builder.Property(o => o.TotalAmount).HasColumnType("decimal(18,2)");
-        builder.Property(o => o.Status).IsRequired();
-        builder.Property(o => o.CreatedAt).IsRequired();
-        builder.Property(o => o.CallRecordingUrl).HasMaxLength(200);
+        // builder.Property(o => o.TotalAmount).HasColumnType("decimal(18,2)");
+        // builder.Property(o => o.Status).IsRequired();
+        // builder.Property(o => o.CreatedAt).IsRequired();
+        // builder.Property(o => o.CallRecordingUrl).HasMaxLength(200);
     }
 }
