@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axiosInstance from "../../api/axiosInstance";
-import { createTask } from "../../features/tasks/tasksSlice";
+import { createTask, deleteTask } from "../../features/tasks/tasksSlice";
 import { fetchUsers } from "../../features/user/userSlice";
 import LoadingSpinner from "../LoadingSpinner";
 import Sidebar from "../StaticElements/Sidebar";
@@ -12,6 +12,7 @@ import { TaskStatus } from "../../types/Task";
 import { AppDispatch, RootState } from "../../store/store";
 import Modal from "../ui/Modal";
 import { User } from "../../types/User";
+import { fetchChangeClientData } from "../../features/clients/clientSlice";
 
 const OrderDetailsPage = () => {
   const { orderId } = useParams();
@@ -31,6 +32,24 @@ const OrderDetailsPage = () => {
   const [newStatus, setNewStatus] = useState<OrderStatus>(OrderStatus.New);
   const { users } = useSelector((state: RootState) => state.users);
   const [isEdited, setIsEdited] = useState(false);
+  const [deletingTaskIds, setDeletingTaskIds] = useState<number[]>([]);
+  const [isEditTaskModalOpen, setIsEditTaskModalOpen] = useState(false);
+  const [editingTask, setEditingTask] = useState<{
+    id: number;
+    title: string;
+    description: string;
+    status: TaskStatus;
+  } | null>(null);
+  const [editingTaskDescription, setEditingTaskDescription] = useState("");
+  const [editingTaskStatus, setEditingTaskStatus] = useState<TaskStatus>(TaskStatus.New);
+  const [updatingTaskId, setUpdatingTaskId] = useState<number | null>(null);
+  const [isEditingClient, setIsEditingClient] = useState(false);
+  const [editedClientData, setEditedClientData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    address: ""
+  });
 
   useEffect(() => {
     if (!orderId) {
@@ -47,6 +66,7 @@ const OrderDetailsPage = () => {
         setOrder(response.data);
         setNewBudget(response.data.totalAmount.toString());
         setNewStatus(response.data.status);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (err) {
         setError("Order loading error.");
       } finally {
@@ -57,6 +77,17 @@ const OrderDetailsPage = () => {
     fetchOrderDetails();
     dispatch(fetchUsers({}));
   }, [orderId, dispatch]);
+
+  useEffect(() => {
+    if (order?.client) {
+      setEditedClientData({
+        name: order.client.name,
+        email: order.client.email,
+        phone: order.client.phone,
+        address: order.client.address
+      });
+    }
+  }, [order?.client]);
 
   const handleCallClient = async () => {
     if (!order?.client.phone) return;
@@ -157,6 +188,95 @@ const OrderDetailsPage = () => {
     setTaskTitle("");
     setTaskDescription("");
     setTaskDueDate("");
+  };
+
+  const handleDeleteTask = async (taskId: number) => {
+    if (!order) return;
+    
+    try {
+      setDeletingTaskIds(prev => [...prev, taskId]);
+      await dispatch(deleteTask(taskId));
+      setOrder({
+        ...order,
+        tasks: order.tasks.filter(task => task.id !== taskId)
+      });
+    } catch (error) {
+      console.error("Ошибка при удалении задачи:", error);
+    } finally {
+      setDeletingTaskIds(prev => prev.filter(id => id !== taskId));
+    }
+  };
+
+  const handleEditTask = async () => {
+    if (!editingTask || !order) return;
+    
+    try {
+      setUpdatingTaskId(editingTask.id);
+      
+      await axiosInstance.put("/Task/change", {
+        taskId: editingTask.id,
+        description: editingTaskDescription,
+        status: TaskStatus[editingTaskStatus]
+      });
+
+      // Обновляем локальное состояние
+      setOrder({
+        ...order,
+        tasks: order.tasks.map(task =>
+          task.id === editingTask.id
+            ? { ...task, description: editingTaskDescription, status: editingTaskStatus }
+            : task
+        )
+      });
+
+      setIsEditTaskModalOpen(false);
+      setEditingTask(null);
+    } catch (error) {
+      console.error("Ошибка при обновлении задачи:", error);
+    } finally {
+      setUpdatingTaskId(null);
+    }
+  };
+
+  const openEditTaskModal = (task: typeof editingTask) => {
+    setEditingTask(task);
+    setEditingTaskDescription(task?.description || "");
+    setEditingTaskStatus(task?.status || TaskStatus.New);
+    setIsEditTaskModalOpen(true);
+  };
+
+  const handleClientDataChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEditedClientData({
+      ...editedClientData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleSaveClientData = async () => {
+    if (!order?.client) return;
+
+    try {
+      await dispatch(fetchChangeClientData({
+        name: editedClientData.name,
+        newEmail: editedClientData.email,
+        oldEmail: order.client.email,
+        phone: editedClientData.phone,
+        address: editedClientData.address
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      }) as any);
+
+      setOrder({
+        ...order,
+        client: {
+          ...order.client,
+          ...editedClientData
+        }
+      });
+
+      setIsEditingClient(false);
+    } catch (error) {
+      console.error("Ошибка при обновлении данных клиента:", error);
+    }
   };
 
   if (loading) return <LoadingSpinner />;
@@ -268,10 +388,64 @@ const OrderDetailsPage = () => {
               </div>
             </h2>
             <div className="text-gray-300">
-              <p><span className="text-white font-medium">Client:</span> {order.client.name}</p>
-              <p><span className="text-white font-medium">Email:</span> {order.client.email}</p>
-              <p><span className="text-white font-medium">Phone:</span> {order.client.phone}</p>
-              <p><span className="text-white font-medium">Address:</span> {order.client.address}</p>
+              {isEditingClient ? (
+                <div className="space-y-3">
+                  {[
+                    { label: "Client", name: "name" },
+                    { label: "Email", name: "email" },
+                    { label: "Phone", name: "phone" },
+                    { label: "Address", name: "address" }
+                  ].map((field) => (
+                    <div key={field.name} className="flex flex-col">
+                      <label className="text-sm text-white font-medium mb-1">{field.label}:</label>
+                      <input
+                        type="text"
+                        name={field.name}
+                        value={editedClientData[field.name as keyof typeof editedClientData]}
+                        onChange={handleClientDataChange}
+                        className="bg-[#2a1042] text-white px-2 py-1 rounded w-full"
+                      />
+                    </div>
+                  ))}
+                  <div className="flex gap-2 mt-4">
+                    <button
+                      onClick={handleSaveClientData}
+                      className="bg-primary-purple px-4 py-2 rounded text-white flex-1"
+                    >
+                      Сохранить
+                    </button>
+                    <button
+                      onClick={() => {
+                        setIsEditingClient(false);
+                        setEditedClientData({
+                          name: order.client.name,
+                          email: order.client.email,
+                          phone: order.client.phone,
+                          address: order.client.address
+                        });
+                      }}
+                      className="bg-gray-600 px-4 py-2 rounded text-white flex-1"
+                    >
+                      Отменить
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <div className="flex justify-between items-center mb-2">
+                    <p><span className="text-white font-medium">Client:</span> {order.client.name}</p>
+                    <button
+                      onClick={() => setIsEditingClient(true)}
+                      className="bg-primary-purple px-3 py-1 rounded text-sm"
+                    >
+                      Изменить
+                    </button>
+                  </div>
+                  <p><span className="text-white font-medium">Email:</span> {order.client.email}</p>
+                  <p><span className="text-white font-medium">Phone:</span> {order.client.phone}</p>
+                  <p><span className="text-white font-medium">Address:</span> {order.client.address}</p>
+                </>
+              )}
             </div>
             <button 
               onClick={handleCallClient} 
@@ -280,7 +454,7 @@ const OrderDetailsPage = () => {
             </button>
           </div>
 
-          <div className="w-screen flex flex-col px-6 ">
+          <div className="flex-1 flex flex-col px-6 w-screen">
             <div className="bg-[#2a1042] p-6 rounded-lg shadow-md">
               <h2 className="text-lg font-semibold mb-4">Задачи</h2>
               <button
@@ -293,17 +467,53 @@ const OrderDetailsPage = () => {
                 <div className="space-y-4">
                   {order.tasks.map((task) => (
                     <div key={task.id} className="bg-[#3a1a5e] p-4 rounded-md shadow-md">
-                      <h3 className="text-lg font-semibold">{task.title}</h3>
-                      <p>{task.description}</p>
-                      <p className="text-sm text-gray-400">Статус: {TaskStatus[task.status]}</p>
-                      <p className="text-sm text-gray-400">Дедлайн: {new Date(task.dueDate).toLocaleDateString()}</p>
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <h3 className="text-lg font-semibold">{task.title}</h3>
+                          <p>{task.description}</p>
+                          <p className="text-sm text-gray-400">Статус: {TaskStatus[task.status]}</p>
+                          <p className="text-sm text-gray-400">Дедлайн: {new Date(task.dueDate).toLocaleDateString()}</p>
+                        </div>
+                        <div className="flex gap-2">
+                          <button
+                            onClick={() => openEditTaskModal(task)}
+                            className={`${
+                              updatingTaskId === task.id
+                                ? "bg-purple-700"
+                                : "bg-primary-purple hover:bg-purple-700"
+                            } text-white px-3 py-1 rounded-md text-sm transition-colors flex items-center justify-center min-w-[80px]`}
+                            disabled={updatingTaskId === task.id}
+                          >
+                            {updatingTaskId === task.id ? (
+                              <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                            ) : (
+                              "Изменить"
+                            )}
+                          </button>
+                          <button
+                            onClick={() => handleDeleteTask(task.id)}
+                            className={`${
+                              deletingTaskIds.includes(task.id)
+                                ? "bg-red-700"
+                                : "bg-red-600 hover:bg-red-700"
+                            } text-white px-3 py-1 rounded-md text-sm transition-colors flex items-center justify-center min-w-[80px]`}
+                            disabled={deletingTaskIds.includes(task.id)}
+                          >
+                            {deletingTaskIds.includes(task.id) ? (
+                              <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                            ) : (
+                              "Удалить"
+                            )}
+                          </button>
+                        </div>
+                      </div>
                     </div>
                   ))}
                 </div>
               ) : (
                 <p className="text-gray-400">Нет задач</p>
               )}
-              {order.callRecordingUrl && (
+              {order.callRecordingUrl?.length != 0 && (
                 <p>
                   <a href={order.callRecordingUrl} target="_blank" rel="noopener noreferrer">
                     Прослушать запись звонка
@@ -325,6 +535,60 @@ const OrderDetailsPage = () => {
           <div className="flex justify-end mt-4">
             <button className="bg-gray-600 px-4 py-2 rounded text-white mr-2" onClick={() => setIsModalOpen(false)}>Отменить</button>
             <button className="bg-primary-purple px-4 py-2 rounded text-white" onClick={handleCreateTask}>Добавить</button>
+          </div>
+        </Modal>
+      )}
+
+      {isEditTaskModalOpen && editingTask && (
+        <Modal onClose={() => setIsEditTaskModalOpen(false)}>
+          <h2 className="text-lg font-bold mb-4">Редактировать задачу</h2>
+          <div className="mb-4">
+            <label className="block text-sm font-medium mb-2">Название</label>
+            <p className="text-gray-300">{editingTask.title}</p>
+          </div>
+          <div className="mb-4">
+            <label className="block text-sm font-medium mb-2">Описание</label>
+            <textarea
+              value={editingTaskDescription}
+              onChange={(e) => setEditingTaskDescription(e.target.value)}
+              className="w-full bg-gray-700 p-2 rounded-md text-white"
+              rows={3}
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-sm font-medium mb-2">Статус</label>
+            <select
+              value={editingTaskStatus}
+              onChange={(e) => setEditingTaskStatus(Number(e.target.value) as TaskStatus)}
+              className="w-full bg-gray-700 p-2 rounded-md text-white"
+            >
+              {Object.entries(TaskStatus)
+                .filter(([key]) => !isNaN(Number(key)))
+                .map(([key, value]) => (
+                  <option key={key} value={key}>
+                    {value}
+                  </option>
+                ))}
+            </select>
+          </div>
+          <div className="flex justify-end gap-2">
+            <button
+              onClick={() => setIsEditTaskModalOpen(false)}
+              className="bg-gray-600 px-4 py-2 rounded text-white"
+            >
+              Отменить
+            </button>
+            <button
+              onClick={handleEditTask}
+              className="bg-primary-purple px-4 py-2 rounded text-white"
+              disabled={updatingTaskId !== null}
+            >
+              {updatingTaskId === editingTask.id ? (
+                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+              ) : (
+                "Сохранить"
+              )}
+            </button>
           </div>
         </Modal>
       )}

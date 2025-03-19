@@ -6,7 +6,7 @@ export interface Order {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     id: number;
     orderId: number,
-    totalAmount: string,
+    totalAmount: number,
     createdAt: Date,
     tasks: Task[],
     status: OrderStatus;

@@ -41,12 +41,10 @@ export const Dashboard = () => {
         } w-screen`}
       >
         {loading ? (
-          // Показываем спиннер, если данные загружаются
           <div className="flex justify-center items-center h-full">
             <LoadingSpinner />
           </div>
         ) : (
-          // Показываем контент, когда данные загружены
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pr-10 ml-16">
               <StatsCard title="Clients" value={contacts} change={-12} />
