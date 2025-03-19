@@ -23,7 +23,6 @@ export const OrdersPage = () => {
     dispatch(fetchGetAllOrders(sortOrder));
   }, [dispatch, sortOrder]);
 
-  console.log(orders)
   const handleSort = (key: string) => {
     setSortOrder((prev) => ({
       sortBy: key,
@@ -46,6 +45,7 @@ export const OrdersPage = () => {
           <button className="bg-gray-900 px-4 py-2 rounded" onClick={() => handleSort("totalAmount")}>Sort by Total Amount</button>
           <button className="bg-gray-900 px-4 py-2 rounded" onClick={() => handleSort("status")}>Sort by Status</button>
           <button className="bg-gray-900 px-4 py-2 rounded" onClick={() => handleSort("createdAt")}>Sort by Created At</button>
+          <button className="bg-gray-900 px-4 py-2 rounded" onClick={() => handleSort("username")}>Sort by Responsible</button>
         </div>
 
         {/* Таблица заказов */}
@@ -62,6 +62,7 @@ export const OrdersPage = () => {
                   <th className="py-2 px-4">Total Amount</th>
                   <th className="py-2 px-4">Status</th>
                   <th className="py-2 px-4">Created At</th>
+                  <th className="py-2 px-4">Responsible</th>
                 </tr>
               </thead>
               <tbody>
@@ -72,6 +73,7 @@ export const OrdersPage = () => {
                     <td className="py-2 px-4 text-center">{order.totalAmount}$</td>
                     <td className="py-2 px-4 text-center">{OrderStatus[order.status]}</td>
                     <td className="py-2 px-4 text-center">{new Date(order.createdAt).toLocaleDateString()}</td>
+                    <td className="py-2 px-4 text-center">{order.username}</td>
                   </tr>
                 ))}
               </tbody>

@@ -25,11 +25,12 @@ export const TasksPage = () => {
 
   const handleSort = (key: string) => {
     setSortTask((prev) => ({
-      sortBy: key,
-      descending: prev.sortBy === key ? !prev.descending : false,
+        sortBy: key,
+        descending: prev.sortBy === key ? !prev.descending : false,
     }));
     dispatch(fetchGetAllTasks({ sortBy: key, descending: sortTask.sortBy === key ? !sortTask.descending : false }));
-  };
+};
+
   return (
     <div className="min-h-screen w-full bg-dark-bg text-white overflow-hidden">
       <Sidebar isExpanded={isSidebarExpanded} setIsExpanded={setIsSidebarExpanded} />
@@ -38,15 +39,16 @@ export const TasksPage = () => {
       <div className={`transition-all duration-300 p-6 mt-20 ${isSidebarExpanded ? "ml-[200px]" : "ml-[0px]"} w-screen`}>
         <h1 className="text-2xl font-bold mb-4 ml-16">Tasks</h1>
 
-        {/* Кнопки сортировки */}
+
         <div className="flex gap-4 mb-4 ml-16 text-primary-purple">
-          <button className="bg-gray-900 px-4 py-2 rounded" onClick={() => handleSort("id")}>Sort by Id</button>
+          <button className="bg-gray-900 px-4 py-2 rounded" onClick={() => handleSort("taskid")}>Sort by Id</button>
           <button className="bg-gray-900 px-4 py-2 rounded" onClick={() => handleSort("title")}>Sort by Title</button>
           <button className="bg-gray-900 px-4 py-2 rounded" onClick={() => handleSort("status")}>Sort by Status</button>
-          <button className="bg-gray-900 px-4 py-2 rounded" onClick={() => handleSort("createdAt")}>Sort by expiration date</button>
+          <button className="bg-gray-900 px-4 py-2 rounded" onClick={() => handleSort("duedate")}>Sort by expiration date</button>
+          <button className="bg-gray-900 px-4 py-2 rounded" onClick={() => handleSort("username")}>Sort by responsible</button>
         </div>
 
-        {/* Таблица задач */}
+
         <div className="overflow-x-auto ml-16">
           {loading ? (
             <LoadingSpinner />
@@ -65,13 +67,13 @@ export const TasksPage = () => {
               </thead>
               <tbody>
                 {tasks.map((task : Task) => (
-                  <tr key={task.id} className="border-b border-gray-700 bg-dark-bg hover:bg-gray-700 cursor-pointer"
-                      onClick={() => navigate(`/orders/${task.order.id}`)}>
-                    <td className="py-2 px-4 text-center">{task.id}</td>
+                  <tr key={task.taskId} className="border-b border-gray-700 bg-dark-bg hover:bg-gray-700 cursor-pointer"
+                      onClick={() => navigate(`/orders/${task.orderId}`)}>
+                    <td className="py-2 px-4 text-center">{task.taskId}</td>
                     <td className="py-2 px-4 text-center">{task.title}</td>
                     <td className="py-2 px-4 text-center">{TaskStatus[task.status]}</td>
                     <td className="py-2 px-4 text-center">{new Date(task.dueDate).toLocaleDateString()}</td>
-                    <td className="py-2 px-4 text-center">{task.userTasks[0].user.username}</td>
+                    <td className="py-2 px-4 text-center">{task.username}</td>
                   </tr>
                 ))}
               </tbody>

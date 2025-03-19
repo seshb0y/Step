@@ -1,4 +1,6 @@
-﻿namespace CRMSolution.Data.Models;
+﻿using System.Collections;
+
+namespace CRMSolution.Data.Models;
 
 public class Order
 {
@@ -6,7 +8,8 @@ public class Order
     public decimal TotalAmount { get; set; }
     public OrderStatus Status { get; set; } = OrderStatus.New;
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-    public string CallRecordingUrl { get; set; } = string.Empty;
+    
+    public List<CallRecording> CallRecordings { get; set; } = new();
 
 
     public ICollection<ClientOrder> ClientOrders { get; set; } = new List<ClientOrder>();

@@ -5,6 +5,7 @@ using CRMSolution.Data.Repository;
 using CRMSolution.Data.Repository.Interface;
 using CRMSolution.Data.Repository.OrderResp;
 using CRMSolution.DTO.Requests;
+using CRMSolution.DTO.Requests.Order;
 using CRMSolution.DTO.Requests.Orders;
 using CRMSolution.Services.Interfaces;
 
@@ -106,8 +107,25 @@ public class OrderService : IOrderService
         var orders = await _unitOfWork.OrderRep.GetLowInfoOrdersList(sortOrdersRequest);
         return new GetAllOrdersResponse()
         {
-            Orders = _mapper.Map<List<Order>>(orders)
+            Orders = _mapper.Map<List<OrderDTO>>(orders)
         };
     }
 
+    public async Task ChangeResponsible(int orderId, ChangeResponsibleRequest request)
+    {
+        var order = await _unitOfWork.OrderRep.GetOrderWithClientAndTasks(orderId);
+        var user = await _unitOfWork.UserRep.GetById(request.userId);
+        var existingUser = order.UserOrders.FirstOrDefault();
+        order.UserOrders.Remove(existingUser);
+        order.UserOrders.Add(new UserOrders
+        {
+            OrderId = order.Id,
+            UserId = user.Id,
+            Order = order,
+            User = user
+        });
+        
+        _unitOfWork.OrderRep.Update(order);
+        await _unitOfWork.SaveChangesAsync();
+    }
 }

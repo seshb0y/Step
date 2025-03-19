@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CRMSolution.DTO.Requests;
+using CRMSolution.DTO.Requests.Order;
 using CRMSolution.DTO.Requests.Orders;
 using CRMSolution.Services.Classes;
 using CRMSolution.Services.Interfaces;
@@ -58,6 +59,15 @@ public class OrderController : ControllerBase
 
         return Ok(orderDetails);
     }
+    
+    [HttpPut("{orderId}/assign-user")]
+    public async Task<IActionResult> ChangeResponsible(int orderId, ChangeResponsibleRequest request)
+    {
+        await _orderService.ChangeResponsible(orderId, request);
+        return Ok("Responsible changed");
+    }
+    
+    
     
     [HttpGet("all/sorted")]
     public async Task<IActionResult> GetAllOrders([FromQuery] SortOrdersRequest sortOrdersRequest)

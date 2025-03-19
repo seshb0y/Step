@@ -4,5 +4,14 @@ namespace ControllerFirst.DTO.Responses;
 
 public class GetAllOrdersResponse
 {
-    public List<Order> Orders { get; set; }
+    public List<OrderDTO> Orders { get; set; }
+}
+
+public class OrderDTO
+{
+    public int Id { get; set; }
+    public decimal TotalAmount { get; set; }
+    public OrderStatus Status { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public string Username { get; set; }
 }

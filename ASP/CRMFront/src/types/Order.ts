@@ -14,6 +14,7 @@ export interface Order {
     users: User[],
     client: Client,
     callRecordingUrl?: string
+    username: string
 }
 
 export enum OrderStatus

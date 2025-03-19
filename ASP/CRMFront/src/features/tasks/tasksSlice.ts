@@ -51,18 +51,12 @@ export const fetchChangeTaskData = createAsyncThunk(
 );
 
 
-export const fetchGetAllTasks = createAsyncThunk(
-  "tasks/fetchTasks",
-  async ({ sortBy, descending }: { sortBy?: string; descending?: boolean }) => {
-    const params = new URLSearchParams();
-    if (sortBy) params.append("sortBy", sortBy);
-    if (descending !== undefined) params.append("Descending", descending.toString());
+export const fetchGetAllTasks = createAsyncThunk("tasks/fetchAll", async (sort: { sortBy: string; descending: boolean }) => {
+  const response = await axiosInstance.get("/Task/all/sorted", { params: sort });
+  console.log("Response", response.data)
+  return response.data;
+});
 
-    const response = await axiosInstance.get(`/Task/all/sorted?${params.toString()}`);
-    console.log(response.data)
-    return response.data;
-  }
-);
 
 export const createTask = createAsyncThunk(
   "tasks/createTask",

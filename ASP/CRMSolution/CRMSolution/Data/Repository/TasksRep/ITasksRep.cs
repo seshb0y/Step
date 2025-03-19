@@ -1,4 +1,5 @@
-﻿using CRMSolution.Data.Models;
+﻿using ControllerFirst.DTO.Responses;
+using CRMSolution.Data.Models;
 using CRMSolution.Data.Repository.Interface;
 using CRMSolution.DTO.Requests.Task;
 
@@ -10,5 +11,5 @@ public interface ITasksRep : IRepository<Tasks>
 
     public Task<Tasks> GetById(int taskId);
     
-    Task<List<Tasks>> GetLowInfoTasksList(SortTasksRequest sortTasksRequest);
+    Task<List<TaskDto>> GetLowInfoTasksList(SortTasksRequest sortTasksRequest);
 }

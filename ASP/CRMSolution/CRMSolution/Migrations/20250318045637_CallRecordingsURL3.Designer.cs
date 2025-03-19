@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CRMSolution.Migrations
 {
     [DbContext(typeof(CRMContext))]
-    [Migration("20250316103020_Twilio")]
-    partial class Twilio
+    [Migration("20250318045637_CallRecordingsURL3")]
+    partial class CallRecordingsURL3
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,29 @@ namespace CRMSolution.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("CRMSolution.Data.Models.CallRecording", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("CallRecording", (string)null);
+                });
 
             modelBuilder.Entity("CRMSolution.Data.Models.Client", b =>
                 {
@@ -98,9 +121,6 @@ namespace CRMSolution.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("CallRecordingUrl")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -221,6 +241,17 @@ namespace CRMSolution.Migrations
                     b.ToTable("UserTasks", (string)null);
                 });
 
+            modelBuilder.Entity("CRMSolution.Data.Models.CallRecording", b =>
+                {
+                    b.HasOne("CRMSolution.Data.Models.Order", "Order")
+                        .WithMany("CallRecordings")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+                });
+
             modelBuilder.Entity("CRMSolution.Data.Models.ClientOrder", b =>
                 {
                     b.HasOne("CRMSolution.Data.Models.Client", "Client")
@@ -317,6 +348,8 @@ namespace CRMSolution.Migrations
 
             modelBuilder.Entity("CRMSolution.Data.Models.Order", b =>
                 {
+                    b.Navigation("CallRecordings");
+
                     b.Navigation("ClientOrders");
 
                     b.Navigation("Tasks");

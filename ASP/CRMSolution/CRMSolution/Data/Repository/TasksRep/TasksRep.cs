@@ -1,4 +1,5 @@
-﻿using CRMSolution.Contexts;
+﻿using ControllerFirst.DTO.Responses;
+using CRMSolution.Contexts;
 using CRMSolution.Data.Models;
 using CRMSolution.Data.Repository.Interface;
 using CRMSolution.DTO.Requests.Task;
@@ -37,36 +38,29 @@ public class TasksRep : Repository<Tasks>, ITasksRep
     }
     
     
-    public async Task<List<Tasks>> GetLowInfoTasksList(SortTasksRequest sortTasksRequest)
+    public async Task<List<TaskDto>> GetLowInfoTasksList(SortTasksRequest sortTasksRequest)
     {
-    var query = _dbSet
-        .Include(t => t.Order)
-        .Include(t => t.UserTasks)
-        .ThenInclude(ut => ut.User)
-        .Select(t => new Tasks()
-        {
-            Id = t.Id,
-            Title = t.Title,
-            Description = t.Description,
-            DueDate = t.DueDate,
-            Status = t.Status,
-            Order = t.Order,
-            UserTasks = t.UserTasks.Select(ut => new UserTask
+        var query = _dbSet
+            .Include(t => t.Order)
+            .Include(t => t.UserTasks)
+            .ThenInclude(ut => ut.User)
+            .Select(t => new TaskDto
             {
-                UserId = ut.UserId,
-                User = new User
-                {
-                    Username = ut.User.Username,
-                }
-            }).ToList()
-        });
-        
+                TaskId = t.Id,
+                OrderId = t.Order.Id,
+                Title = t.Title,
+                Status = t.Status,
+                DueDate = t.DueDate,
+                Username = t.UserTasks.Select(ut => ut.User.Username).FirstOrDefault()
+            });
+
         query = sortTasksRequest.sortBy?.ToLower() switch
         {
-            "id" => sortTasksRequest.Descending ? query.OrderByDescending(c => c.Id) : query.OrderBy(c => c.Id),
-            "totalamount" => sortTasksRequest.Descending ? query.OrderByDescending(c => c.Title) : query.OrderBy(c => c.Title),
+            "taskid" => sortTasksRequest.Descending ? query.OrderByDescending(c => c.TaskId) : query.OrderBy(c => c.TaskId),
+            "title" => sortTasksRequest.Descending ? query.OrderByDescending(c => c.Title) : query.OrderBy(c => c.Title),
             "status" => sortTasksRequest.Descending ? query.OrderByDescending(c => c.Status) : query.OrderBy(c => c.Status),
-            "createdat" => sortTasksRequest.Descending ? query.OrderByDescending(c => c.DueDate) : query.OrderBy(c => c.DueDate),
+            "duedate" => sortTasksRequest.Descending ? query.OrderByDescending(c => c.DueDate) : query.OrderBy(c => c.DueDate),
+            "username" => sortTasksRequest.Descending ? query.OrderByDescending(c => c.Username) : query.OrderBy(c => c.Username),
             _ => query
         };
 

@@ -9,7 +9,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="78d5c6cb-1c07-48ae-b5e3-20f99f0db482" name="Changes" comment="" />
+    <list default="true" id="78d5c6cb-1c07-48ae-b5e3-20f99f0db482" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../../.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../../.gitignore" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -71,23 +73,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    ".NET Launch Settings Profile.CRMSolution: IIS Express.executor": "Run",
-    ".NET Launch Settings Profile.CRMSolution: http.executor": "Run",
-    ".NET Launch Settings Profile.CRMSolution: https.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.lookFeel",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;.NET Launch Settings Profile.CRMSolution: IIS Express.executor&quot;: &quot;Run&quot;,
+    &quot;.NET Launch Settings Profile.CRMSolution: http.executor&quot;: &quot;Run&quot;,
+    &quot;.NET Launch Settings Profile.CRMSolution: https.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected=".NET Launch Settings Profile.CRMSolution: http">
     <configuration name="CRMSolution: IIS Express" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
       <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/CRMSolution/CRMSolution.csproj" />
@@ -153,7 +155,7 @@
       <workItem from="1741076354810" duration="30731000" />
       <workItem from="1741950219826" duration="6488000" />
       <workItem from="1742211876966" duration="760000" />
-      <workItem from="1742212686644" duration="10323000" />
+      <workItem from="1742212686644" duration="35329000" />
     </task>
     <servers />
   </component>
@@ -178,19 +180,6 @@
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/CRMSolution/Services/Classes/TasksService.cs</url>
-          <line>25</line>
-          <properties documentPath="C:\Users\Batyr_lg06\Desktop\Step\Step\ASP\CRMSolution\CRMSolution\Services\Classes\TasksService.cs" containingFunctionPresentation="Method 'CreateTaskAsync'">
-            <startOffsets>
-              <option value="741" />
-            </startOffsets>
-            <endOffsets>
-              <option value="809" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/CRMSolution/Data/Repository/MainRepository/Repository.cs</url>
           <line>18</line>
           <properties documentPath="C:\Users\seshb\OneDrive\Рабочий стол\Rep\Step\ASP\CRMSolution\CRMSolution\Data\Repository\MainRepository\Repository.cs" containingFunctionPresentation="Method 'GetById'">
@@ -205,29 +194,42 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/CRMSolution/Data/Repository/OrderRep/OrderRep.cs</url>
-          <line>15</line>
+          <line>16</line>
           <properties documentPath="C:\Users\seshb\OneDrive\Рабочий стол\Rep\Step\ASP\CRMSolution\CRMSolution\Data\Repository\OrderRep\OrderRep.cs" containingFunctionPresentation="Method 'GetByIdAsync'">
             <startOffsets>
-              <option value="409" />
+              <option value="446" />
             </startOffsets>
             <endOffsets>
-              <option value="410" />
+              <option value="447" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="16" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/CRMSolution/Services/Classes/OrderService.cs</url>
-          <line>27</line>
+          <line>28</line>
           <properties documentPath="C:\Users\seshb\OneDrive\Рабочий стол\Rep\Step\ASP\CRMSolution\CRMSolution\Services\Classes\OrderService.cs" containingFunctionPresentation="Method 'CreateOrder'">
             <startOffsets>
-              <option value="821" />
+              <option value="859" />
             </startOffsets>
             <endOffsets>
-              <option value="888" />
+              <option value="926" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="20" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/CRMSolution/Services/Classes/TwilioService.cs</url>
+          <line>49</line>
+          <properties documentPath="C:\Users\seshb\OneDrive\Рабочий стол\Rep\Step\ASP\CRMSolution\CRMSolution\Services\Classes\TwilioService.cs" containingFunctionPresentation="Method 'SaveCallRecording'">
+            <startOffsets>
+              <option value="1535" />
+            </startOffsets>
+            <endOffsets>
+              <option value="1579" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="22" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

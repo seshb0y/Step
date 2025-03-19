@@ -1,4 +1,5 @@
-﻿using CRMSolution.Data.Repository;
+﻿using CRMSolution.Data.Models;
+using CRMSolution.Data.Repository;
 using CRMSolution.Services.Interfaces;
 using Twilio;
 using Twilio.Rest.Api.V2010.Account;
@@ -50,10 +51,14 @@ public class TwilioService : ITwilioService
         if (!string.IsNullOrEmpty(recordingUrl))
         {
             var order = await _unitOfWork.OrderRep.GetByIdAsync(orderId);
-            Console.WriteLine($"Saving changes for Order ID: {order.Id}, Recording URL: {order.CallRecordingUrl}");
-            order.CallRecordingUrl = recordingUrl;
+            var record = new CallRecording
+            {
+                OrderId = orderId,
+                Url = recordingUrl,
+                Order = order
+            };
+            order.CallRecordings.Add(record);
             await _unitOfWork.SaveChangesAsync();
-            Console.WriteLine("Changes saved successfully.");
         }
     }
 }

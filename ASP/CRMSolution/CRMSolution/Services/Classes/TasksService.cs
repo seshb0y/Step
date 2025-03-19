@@ -65,7 +65,7 @@ public class TasksService : ITasksService
         var tasks = await _unitOfWork.TasksRep.GetLowInfoTasksList(sortTasksRequest);
         return new GetAllTasksResponse()
         {
-            Tasks = _mapper.Map<List<Tasks>>(tasks)
+            Tasks = _mapper.Map<List<TaskDto>>(tasks)
         };
     }
 }

@@ -17,6 +17,7 @@ public class CRMContext : DbContext
     public DbSet<ClientUser> ClientUser { get; set; }
     public DbSet<UserOrders> UserOrders { get; set; }
     public DbSet<UserTask> UserTasks { get; set; }
+    public DbSet<CallRecording>  CallRecordings { get; set; }
     
 
     public CRMContext(DbContextOptions<CRMContext> ops): base(ops)

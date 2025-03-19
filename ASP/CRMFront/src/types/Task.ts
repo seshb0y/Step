@@ -10,6 +10,8 @@ export interface Task {
     dueDate: Date
     order: Order
     userTasks: { user: User }[];
+    username: string
+    orderId: string
 }
 
 

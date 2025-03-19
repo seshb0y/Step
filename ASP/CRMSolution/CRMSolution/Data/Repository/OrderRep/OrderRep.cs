@@ -1,4 +1,5 @@
-﻿using CRMSolution.Contexts;
+﻿using ControllerFirst.DTO.Responses;
+using CRMSolution.Contexts;
 using CRMSolution.Data.Models;
 using CRMSolution.Data.Repository.Interface;
 using CRMSolution.DTO.Requests.Orders;
@@ -17,8 +18,6 @@ public class OrderRep : Repository<Order>, IOrderRep
         Console.WriteLine($"Total Orders in DbContext: {_context.Orders.Count()}");
         Console.WriteLine($"Attempting to fetch Order with ID: {id}");
         var order = _context.Orders.Where(o => o.Id == id).First();
-        
-  
         Console.WriteLine($"Fetched Order: {order?.Id}");
         return order;
     }
@@ -63,27 +62,33 @@ public class OrderRep : Repository<Order>, IOrderRep
             .Include(o => o.Tasks)
             .Include(o => o.UserOrders)
             .ThenInclude(uo => uo.User)
+            .Include(o => o.CallRecordings)
             .FirstOrDefaultAsync(o => o.Id == orderId);
     }
 
 
 
-    public async Task<List<Order>> GetLowInfoOrdersList(SortOrdersRequest sortOrdersRequest)
+    public async Task<List<OrderDTO>> GetLowInfoOrdersList(SortOrdersRequest sortOrdersRequest)
     {
-        var query = _dbSet.Select(o => new Order()
-        {
-            Id = o.Id,
-            TotalAmount = o.TotalAmount,
-            Status = o.Status,
-            CreatedAt = o.CreatedAt,
-        });
-        
+        var query = _dbSet
+            .Include(o => o.UserOrders)
+            .ThenInclude(uo => uo.User)
+            .Select(o => new OrderDTO()
+            {
+                Id = o.Id,
+                TotalAmount = o.TotalAmount,
+                Status = o.Status,
+                CreatedAt = o.CreatedAt,
+                Username = o.UserOrders.Any() ? o.UserOrders.First().User.Username : "No user"
+            });
+
         query = sortOrdersRequest.sortBy?.ToLower() switch
         {
             "id" => sortOrdersRequest.Descending ? query.OrderByDescending(c => c.Id) : query.OrderBy(c => c.Id),
             "totalamount" => sortOrdersRequest.Descending ? query.OrderByDescending(c => c.TotalAmount) : query.OrderBy(c => c.TotalAmount),
             "status" => sortOrdersRequest.Descending ? query.OrderByDescending(c => c.Status) : query.OrderBy(c => c.Status),
             "createdat" => sortOrdersRequest.Descending ? query.OrderByDescending(c => c.CreatedAt) : query.OrderBy(c => c.CreatedAt),
+            "username" => sortOrdersRequest.Descending ? query.OrderByDescending(c => c.Username) : query.OrderBy(c => c.Username),
             _ => query
         };
 

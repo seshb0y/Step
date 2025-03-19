@@ -59,10 +59,11 @@ export const fetchGetAllOrders = createAsyncThunk(
     if (descending !== undefined) params.append("Descending", descending.toString());
 
     const response = await axiosInstance.get(`/Order/all/sorted?${params.toString()}`);
-    console.log(response.data)
+    console.log("Response", response.data)
     return response.data;
   }
 );
+
 
 export const createOrder = createAsyncThunk(
   "orders/createOrder",

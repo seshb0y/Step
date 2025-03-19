@@ -1,15 +1,17 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import axiosInstance from "../../api/axiosInstance";
 import { createTask } from "../../features/tasks/tasksSlice";
+import { fetchUsers } from "../../features/user/userSlice";
 import LoadingSpinner from "../LoadingSpinner";
 import Sidebar from "../StaticElements/Sidebar";
 import TopBox from "../StaticElements/TopBox";
-import { Order } from "../../types/Order";
+import { Order, OrderStatus } from "../../types/Order";
 import { TaskStatus } from "../../types/Task";
-import { AppDispatch } from "../../store/store";
+import { AppDispatch, RootState } from "../../store/store";
 import Modal from "../ui/Modal";
+import { User } from "../../types/User";
 
 const OrderDetailsPage = () => {
   const { orderId } = useParams();
@@ -22,6 +24,13 @@ const OrderDetailsPage = () => {
   const [taskTitle, setTaskTitle] = useState("");
   const [taskDescription, setTaskDescription] = useState("");
   const [taskDueDate, setTaskDueDate] = useState("");
+  const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
+  const [isEditingBudget, setIsEditingBudget] = useState(false);
+  const [isStatusDropdownOpen, setIsStatusDropdownOpen] = useState(false);
+  const [newBudget, setNewBudget] = useState("");
+  const [newStatus, setNewStatus] = useState<OrderStatus>(OrderStatus.New);
+  const { users } = useSelector((state: RootState) => state.users);
+  const [isEdited, setIsEdited] = useState(false);
 
   useEffect(() => {
     if (!orderId) {
@@ -36,6 +45,8 @@ const OrderDetailsPage = () => {
         const response = await axiosInstance.get(`/Order/${orderId}`);
         console.log("Server response:", response.data);
         setOrder(response.data);
+        setNewBudget(response.data.totalAmount.toString());
+        setNewStatus(response.data.status);
       } catch (err) {
         setError("Order loading error.");
       } finally {
@@ -44,34 +55,30 @@ const OrderDetailsPage = () => {
     };
 
     fetchOrderDetails();
-  }, [orderId]);
+    dispatch(fetchUsers({}));
+  }, [orderId, dispatch]);
 
   const handleCallClient = async () => {
     if (!order?.client.phone) return;
   
     try {
-      // 1️⃣ Отправляем запрос на звонок
       const response = await axiosInstance.post("/api/twilio/call", { to: order.client.phone });
       const callSid = response.data.callSid;
   
       console.log("Звонок инициирован, CallSid:", callSid);
   
-      // 2️⃣ Ждём 30 секунд (можно заменить на Webhook)
       setTimeout(async () => {
         try {
-          // 3️⃣ Получаем URL записи звонка
           const recordingRes = await axiosInstance.get(`/api/twilio/recording/${callSid}`);
           const mediaUrl = recordingRes.data.mediaUrl;
   
           console.log("Получен URL записи:", mediaUrl);
           
-          // 4️⃣ Сохраняем запись звонка в БД
           await axiosInstance.post("/api/twilio/call/save-recording", {
             orderId: order.id,
             callSid: callSid,
           });
   
-          // 5️⃣ Обновляем `order` с записью звонка
           setOrder({ ...order, callRecordingUrl: mediaUrl });
   
         } catch (error) {
@@ -83,6 +90,57 @@ const OrderDetailsPage = () => {
       console.error("Ошибка при совершении звонка:", error);
     }
   };
+
+  const handleAssignUser = async (user: User) => {
+    if (!order) return;
+    
+    try {
+      await axiosInstance.put(`/Order/${order.id}/assign-user`, { userId: user.userId });
+      setOrder({
+        ...order,
+        users: [user]
+      });
+      setIsUserDropdownOpen(false);
+    } catch (error) {
+      console.error("Ошибка при назначении пользователя:", error);
+    }
+  };
+
+  const handleUpdateOrder = async () => {
+    if (!order) return;
+
+    try {
+      const numericBudget = parseFloat(newBudget.replace(/[^\d.-]/g, ''));
+      
+      if (isNaN(numericBudget)) {
+        console.error("Некорректное значение бюджета");
+        return;
+      }
+
+      const updateData = {
+        totalAmount: numericBudget,
+        status: newStatus,
+        orderId: order.id
+      };
+
+      console.log("Отправляемые данные:", updateData);
+      
+      await axiosInstance.put("/Order/change", updateData);
+
+      setOrder({
+        ...order,
+        totalAmount: numericBudget,
+        status: newStatus
+      });
+
+      setIsEditingBudget(false);
+      setIsStatusDropdownOpen(false);
+      setIsEdited(false);
+    } catch (error) {
+      console.error("Ошибка при обновлении заказа:", error);
+    }
+  };
+
   const handleCreateTask = async () => {
     if (!taskTitle.trim() || !taskDescription.trim() || !taskDueDate || !order) return;
 
@@ -117,8 +175,97 @@ const OrderDetailsPage = () => {
           <div className="min-w-96 bg-[#1a0b2e] p-6 rounded-lg shadow-md h-[calc(100vh-80px)]">
             <h2 className="text-lg font-semibold mb-4">
               Сделка #{order.id}
-              <p><span className="text-white font-medium">Бюджет:</span> {order.totalAmount} ₽</p>
-              <p><span className="text-white font-medium">Отв-ный:</span> {order.users[0].username}</p>
+              <div className="relative">
+                {isEditingBudget ? (
+                  <div className="flex items-center">
+                    <span className="text-white font-medium mr-2">Бюджет:</span>
+                    <input
+                      type="text"
+                      value={newBudget}
+                      onChange={(e) => {
+                        setNewBudget(e.target.value);
+                        setIsEdited(true);
+                      }}
+                      className="bg-[#2a1042] text-white w-24 px-1 rounded"
+                      autoFocus
+                    />
+                  </div>
+                ) : (
+                  <p 
+                    className="cursor-pointer hover:bg-[#2a1042] px-2 py-1 rounded transition-colors duration-200" 
+                    onClick={() => setIsEditingBudget(true)}
+                  >
+                    <span className="text-white font-medium">Бюджет:</span> {order.totalAmount.toLocaleString('ru-RU')} ₽
+                  </p>
+                )}
+              </div>
+              <div className="relative">
+                <p 
+                  className="cursor-pointer hover:bg-[#2a1042] px-2 py-1 rounded transition-colors duration-200" 
+                  onClick={() => setIsStatusDropdownOpen(!isStatusDropdownOpen)}
+                >
+                  <span className="text-white font-medium">Статус:</span> {OrderStatus[order.status]}
+                </p>
+                {isStatusDropdownOpen && (
+                  <div className="absolute z-10 mt-1 w-48 bg-[#2a1042] rounded-md shadow-lg">
+                    {Object.values(OrderStatus)
+                      .filter(value => typeof value === 'number')
+                      .map(status => (
+                        <div
+                          key={status}
+                          className="px-4 py-2 hover:bg-[#3a1a5e] cursor-pointer"
+                          onClick={() => {
+                            setNewStatus(status as OrderStatus);
+                            setIsEdited(true);
+                            setIsStatusDropdownOpen(false);
+                          }}
+                        >
+                          {OrderStatus[status]}
+                        </div>
+                      ))}
+                  </div>
+                )}
+              </div>
+              {isEdited && (
+                <div className="mt-2">
+                  <button
+                    onClick={handleUpdateOrder}
+                    className="bg-primary-purple px-4 py-2 rounded text-white"
+                  >
+                    Сохранить изменения
+                  </button>
+                  <button
+                    onClick={() => {
+                      setIsEditingBudget(false);
+                      setIsStatusDropdownOpen(false);
+                      setIsEdited(false);
+                      setNewBudget(order.totalAmount.toString());
+                      setNewStatus(order.status);
+                    }}
+                    className="bg-gray-600 px-4 py-2 rounded text-white ml-2"
+                  >
+                    Отменить
+                  </button>
+                </div>
+              )}
+              <div className="relative">
+                <p className="cursor-pointer hover:bg-[#2a1042] px-2 py-1 rounded transition-colors duration-200" onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)}>
+                  <span className="text-white font-medium">Отв-ный:</span> {order.users[0].username}
+                </p>
+                {isUserDropdownOpen && (
+                  <div className="absolute z-10 mt-1 w-48 bg-[#2a1042] rounded-md shadow-lg">
+                    {users.map((user) => (
+                      <div
+                        key={user.userId}
+                        className="px-4 py-2 hover:bg-[#3a1a5e] cursor-pointer"
+                        onClick={() => handleAssignUser(user)}
+                      >
+                        {user.username}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
             </h2>
             <div className="text-gray-300">
               <p><span className="text-white font-medium">Client:</span> {order.client.name}</p>

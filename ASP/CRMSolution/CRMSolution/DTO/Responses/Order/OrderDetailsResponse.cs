@@ -1,12 +1,14 @@
-﻿namespace ControllerFirst.DTO.Responses;
+﻿using CRMSolution.Data.Models;
+
+namespace ControllerFirst.DTO.Responses;
 
 public class OrderDetailsResponse
 {
     public int Id { get; set; }
     public decimal TotalAmount { get; set; }
-    public string Status { get; set; }
+    public OrderStatus Status { get; set; }
     public DateTime CreatedAt { get; set; }
-    public string? CallRecordingUrl { get; set; }
+    public List<string> CallRecordingUrl { get; set; }
 
     public ClientResponse Client { get; set; }
     public List<OrderDetailsTaskResponse> Tasks { get; set; } = new();

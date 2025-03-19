@@ -1,4 +1,5 @@
-﻿using CRMSolution.Data.Models;
+﻿using Newtonsoft.Json;
+using CRMSolution.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -11,9 +12,12 @@ public class OrderConfig : IEntityTypeConfiguration<Order>
         builder.ToTable("Orders");
 
         builder.HasKey(o => o.Id);
-        // builder.Property(o => o.TotalAmount).HasColumnType("decimal(18,2)");
-        // builder.Property(o => o.Status).IsRequired();
-        // builder.Property(o => o.CreatedAt).IsRequired();
-        // builder.Property(o => o.CallRecordingUrl).HasMaxLength(200);
+        builder.Property(o => o.TotalAmount).HasColumnType("decimal(18,2)");
+        builder.Property(o => o.Status).IsRequired();
+        builder.Property(o => o.CreatedAt).IsRequired();
+        builder.HasMany(o => o.CallRecordings)
+            .WithOne(r => r.Order)
+            .HasForeignKey(r => r.OrderId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

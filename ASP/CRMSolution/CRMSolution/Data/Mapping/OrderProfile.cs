@@ -47,14 +47,15 @@ public class OrderProfile : Profile
                 .MapFrom(src => src.Client.CreatedAt.ToString()))
             .ForMember(dest => dest.ClientAddress, opt => opt
                 .MapFrom(src => src.Client.Address));
-        
-        CreateMap<Order, OrderDetailsResponse>()
-            .ForMember(dest => dest.Client, opt => opt
-                .MapFrom(src => src.ClientOrders.FirstOrDefault().Client));
 
         CreateMap<Order, OrderDetailsResponse>()
+            .ForMember(dest => dest.Client, opt => opt
+                .MapFrom(src => src.ClientOrders.FirstOrDefault().Client))
+            .ForMember(dest => dest.CallRecordingUrl, opt => opt
+                .MapFrom(src => src.CallRecordings != null ? src.CallRecordings.Select(cr => cr.Url).ToList() : new List<string>()))
             .ForMember(dest => dest.Users, opt => opt
                 .MapFrom(src => src.UserOrders.Select(uo => uo.User)));
+
 
 
         CreateMap<User, OrderDetailsUserResponse>()
