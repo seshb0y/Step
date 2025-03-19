@@ -14,6 +14,13 @@ export interface Task {
     orderId: string
 }
 
+export interface CreateTask{
+    title: string,
+    description: string,
+    endDate: Date,
+    userName: string,
+    orderId: number,
+}
 
 export enum TaskStatus
 {

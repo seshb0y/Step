@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "../../api/axiosInstance";
-import { Order, OrderStatus } from "../../types/Order";
+import { CreateOrder, Order, OrderStatus } from "../../types/Order";
 
 interface OrdersState {
   orders: Order[];
@@ -67,7 +67,7 @@ export const fetchGetAllOrders = createAsyncThunk(
 
 export const createOrder = createAsyncThunk(
   "orders/createOrder",
-  async (orderData: Omit<Order, "id">, { rejectWithValue }) => {
+  async (orderData: Omit<CreateOrder, "id">, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.post("/Order/add", orderData);
       return response.data;

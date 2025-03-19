@@ -17,6 +17,12 @@ export interface Order {
     username: string
 }
 
+export interface CreateOrder{
+    totalAmount: number,
+    clientEmail: string,
+    userEmail: string,
+}
+
 export enum OrderStatus
 {
     New,

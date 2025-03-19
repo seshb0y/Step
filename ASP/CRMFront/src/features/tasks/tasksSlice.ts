@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "../../api/axiosInstance";
-import { Task, TaskStatus } from "../../types/Task";
+import { CreateTask, Task, TaskStatus } from "../../types/Task";
 
 interface TaskState {
   tasks: Task[];
@@ -60,7 +60,7 @@ export const fetchGetAllTasks = createAsyncThunk("tasks/fetchAll", async (sort: 
 
 export const createTask = createAsyncThunk(
   "tasks/createTask",
-  async (taskData: Omit<Task, "id">, { rejectWithValue }) => {
+  async (taskData: Omit<CreateTask, "id">, { rejectWithValue }) => {
     try {
       console.log(taskData)
       const response = await axiosInstance.post("/Task/add", taskData);

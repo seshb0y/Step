@@ -41,6 +41,7 @@ const ClientModal = ({ client, onClose }: ClientModalProps) => {
         oldEmail: client.email,
         phone: formData.phone,
         address: formData.address,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       }) as any
     );
     setIsEditing(false);
@@ -48,6 +49,7 @@ const ClientModal = ({ client, onClose }: ClientModalProps) => {
 
   const handleDelete = () => {
     if (window.confirm("Are you sure you want to delete this client?")) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       dispatch(deleteClient(client.email) as any);
       onClose();
     }
@@ -72,6 +74,7 @@ const ClientModal = ({ client, onClose }: ClientModalProps) => {
           totalAmount: parseFloat(newOrderData.totalAmount),
           clientEmail: client.email,
           userEmail: updatedUserEmail,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         }) as any
       );
   
