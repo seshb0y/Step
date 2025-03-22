@@ -61,7 +61,7 @@ public class TokenService : ITokenService
     public async Task<string> CreateTokenAsync(string username)
     {
         _logger.LogInformation("Создаем новый токен: {@Username}", username);
-        var user = await _userRepository.FindByEmailAsync(username);
+        var user = await _userRepository.FindByNameAsync(username);
 
         if (user == null)
             throw new SecurityTokenException("User not found");
@@ -135,10 +135,10 @@ public class TokenService : ITokenService
     public async Task<string> CreateResetPasswordTokenAsync(string username)
     {
         _logger.LogInformation("Создаем токен для сброса пароля: {@Username}", username);
+    
         var claims = new List<Claim>
         {
-            new Claim(ClaimTypes.Name, username),
-            new Claim(JwtRegisteredClaimNames.Exp, DateTime.UtcNow.AddMinutes(5).ToString())
+            new Claim(ClaimTypes.Name, username)
         };
 
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JWT:EmailKey"]));
@@ -146,17 +146,20 @@ public class TokenService : ITokenService
 
         var securityToken = new JwtSecurityToken(
             claims: claims,
-            expires: DateTime.UtcNow.AddMinutes(60),
+            expires: DateTime.UtcNow.AddMinutes(5),
             issuer: _config["JWT:Issuer"],
             audience: _config["JWT:Audience"],
-            signingCredentials: signingCred);
+            signingCredentials: signingCred
+        );
 
         return new JwtSecurityTokenHandler().WriteToken(securityToken);
     }
+
     
     public async Task<bool> ValidateChangePasswordTokenAsync(string token)
     {
         _logger.LogInformation("Проверка токена для сброса пароля: {@Token}", token);
+    
         var tokenHandler = new JwtSecurityTokenHandler();
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JWT:EmailKey"]));
 
@@ -169,12 +172,7 @@ public class TokenService : ITokenService
             ValidIssuer = _config["JWT:Issuer"],
             ValidAudience = _config["JWT:Audience"],
             IssuerSigningKey = securityKey,
-            ClockSkew = TimeSpan.Zero, 
-
-            LifetimeValidator = (notBefore, expires, securityToken, parameters) =>
-            {
-                return expires.HasValue && expires.Value > DateTime.UtcNow;
-            }
+            ClockSkew = TimeSpan.Zero
         };
 
         try
@@ -187,4 +185,5 @@ public class TokenService : ITokenService
             return false;
         }
     }
+
 }

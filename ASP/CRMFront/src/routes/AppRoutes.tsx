@@ -7,11 +7,14 @@ import Orders from "../pages/Orders";
 import PrivateRoute from "./PrivateRoute";
 import DashboardKanban from "../pages/DashboardKanban";
 import OrderDetailsPage from "../components/kanban/OrderDetailsPage";
-import Users from "../pages/Users"
+import Users from "../pages/Users";
+import ChangePassword from "../pages/ChangePassword";
+
 const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<Login />} />
+      <Route path="/change-password" element={<ChangePassword />} />
       <Route element={<PrivateRoute/>}>
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/clients" element={<Clients />} />

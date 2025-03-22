@@ -1,6 +1,4 @@
-﻿using System.Net;
-using System.Net.Mail;
-using System.Text;
+﻿using System.Text;
 using AutoMapper;
 using CRMSolution.Data.Models;
 using CRMSolution.Data.Repository.Interface;
@@ -8,13 +6,16 @@ using CRMSolution.DTO.Requests;
 using CRMSolution.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using System;
-using System.Runtime.InteropServices.JavaScript;
 using System.Threading.Tasks;
 using ControllerFirst.DTO.Requests;
 using ControllerFirst.DTO.Responses;
 using CRMSolution.Data.Repository;
 using CRMSolution.Data.Repository.UserRep;
 using Microsoft.AspNetCore.Mvc;
+using MimeKit;
+using MailKit.Net.Smtp;
+using MailKit.Security;
+
 
 namespace CRMSolution.Services.Classes;
 
@@ -68,26 +69,8 @@ public class AccountService : IAccountService
         string token = await _tokenService.CreateEmailTokenAsync(request.username);
         string link = $"{context.Request.Scheme}://{context.Request.Host}/Account/VerifyEmail?token={token}";
 
-        using var client = new SmtpClient
-        {
-            Port = 587,
-            EnableSsl = true,
-            Host = _config["Smtp:Host"],
-            Credentials = new NetworkCredential(_config["Smtp:Username"], _config["Smtp:Password"])
-        };
-
         string emailBody = $"<p>Привет, {request.username}! Подтвердите вашу почту, нажав <a href='{link}'>сюда</a>.</p>";
-
-        var message = new MailMessage
-        {
-            From = new MailAddress(_config["Smtp:Username"]),
-            Subject = "Подтверждение email",
-            Body = emailBody,
-            IsBodyHtml = true
-        };
-
-        message.To.Add(user.Email);
-        await client.SendMailAsync(message);
+        await SendEmailAsync(user.Email, "Подтверждение email", emailBody);
     }
 
     public async Task VerifyEmailAsync(string token)
@@ -118,28 +101,10 @@ public class AccountService : IAccountService
             throw new Exception("User not found");
 
         string token = await _tokenService.CreateResetPasswordTokenAsync(request.username);
-        string link = $"http://localhost:5174/change-password?token={token}";
-
-        using var client = new SmtpClient
-        {
-            Port = 587,
-            EnableSsl = true,
-            Host = _config["Smtp:Host"],
-            Credentials = new NetworkCredential(_config["Smtp:Username"], _config["Smtp:Password"])
-        };
+        string link = $"http://localhost:5173/change-password?token={token}";
 
         string emailBody = $"<p>Привет, {request.username}! Чтобы сбросить пароль, перейдите <a href='{link}'>сюда</a>.</p>";
-
-        var message = new MailMessage
-        {
-            From = new MailAddress(_config["Smtp:Username"]),
-            Subject = "Сброс пароля",
-            Body = emailBody,
-            IsBodyHtml = true
-        };
-
-        message.To.Add(user.Email);
-        await client.SendMailAsync(message);
+        await SendEmailAsync(user.Email, "Сброс пароля", emailBody);
     }
 
     public async Task ChangePasswordAsync(ChangePasswordRequest request)
@@ -183,4 +148,35 @@ public class AccountService : IAccountService
         
         return _mapper.Map<GetCurrentUserResponse>(user);
     }
+    
+    public async Task SendEmailAsync(string to, string subject, string html)
+    {
+        var email = new MimeMessage();
+        email.From.Add(MailboxAddress.Parse(_config["Smtp:SenderEmail"]));
+        email.To.Add(MailboxAddress.Parse(to));
+        email.Subject = subject;
+        email.Body = new TextPart("html") { Text = html };
+
+        using var smtp = new MailKit.Net.Smtp.SmtpClient();
+        var port = int.Parse(_config["Smtp:Port"]);
+        var host = _config["Smtp:Host"];
+        var username = _config["Smtp:Username"];
+        var password = _config["Smtp:Password"];
+
+        var socketOption = _config["Smtp:SecureSocketOption"]?.ToLower() switch
+        {
+            "none" => SecureSocketOptions.None,
+            "ssl" => SecureSocketOptions.SslOnConnect,
+            "starttls" => SecureSocketOptions.StartTls,
+            "starttlswhenavailable" => SecureSocketOptions.StartTlsWhenAvailable,
+            _ => SecureSocketOptions.StartTls
+        };
+        
+        await smtp.ConnectAsync(host, port, socketOption);
+        smtp.AuthenticationMechanisms.Remove("XOAUTH2"); 
+        await smtp.AuthenticateAsync(username, password);
+        await smtp.SendAsync(email);
+        await smtp.DisconnectAsync(true);
+    }
+
 }

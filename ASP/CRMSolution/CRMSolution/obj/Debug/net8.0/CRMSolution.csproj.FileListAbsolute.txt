@@ -612,3 +612,8 @@ C:\Users\Batyr_lg06\Desktop\Step\Step\ASP\CRMSolution\CRMSolution\obj\Debug\net8
 C:\Users\Batyr_lg06\Desktop\Step\Step\ASP\CRMSolution\CRMSolution\obj\Debug\net8.0\CRMSolution.genruntimeconfig.cache
 C:\Users\Batyr_lg06\Desktop\Step\Step\ASP\CRMSolution\CRMSolution\obj\Debug\net8.0\ref\CRMSolution.dll
 C:\Users\seshb\OneDrive\Рабочий стол\Rep\Step\ASP\CRMSolution\CRMSolution\bin\Debug\net8.0\Twilio.dll
+C:\Users\seshb\OneDrive\Рабочий стол\Rep\Step\ASP\CRMSolution\CRMSolution\bin\Debug\net8.0\BouncyCastle.Cryptography.dll
+C:\Users\seshb\OneDrive\Рабочий стол\Rep\Step\ASP\CRMSolution\CRMSolution\bin\Debug\net8.0\MailKit.dll
+C:\Users\seshb\OneDrive\Рабочий стол\Rep\Step\ASP\CRMSolution\CRMSolution\bin\Debug\net8.0\MimeKit.dll
+C:\Users\seshb\OneDrive\Рабочий стол\Rep\Step\ASP\CRMSolution\CRMSolution\bin\Debug\net8.0\System.Security.Cryptography.Pkcs.dll
+C:\Users\seshb\OneDrive\Рабочий стол\Rep\Step\ASP\CRMSolution\CRMSolution\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Security.Cryptography.Pkcs.dll

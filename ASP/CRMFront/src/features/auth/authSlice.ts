@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "../../api/axiosInstance";
 import { User } from "../../types/User";
+import { ResetPasswordRequest } from "../../types/auth";
 
 interface AuthState {
   user: User | null;
@@ -35,6 +36,13 @@ export const logoutUser = createAsyncThunk("Auth/Logout", async () => {
   await axiosInstance.post("/Auth/Logout");
 });
 
+export const resetPassword = createAsyncThunk(
+  "auth/resetPassword",
+  async (request: ResetPasswordRequest) => {
+    const response = await axiosInstance.post("/Account/ResetPassword", request);
+    return response.data;
+  }
+);
 
 localStorage.setItem("isLogin", JSON.stringify("false"));
 const initialState: AuthState = {

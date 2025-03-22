@@ -31,8 +31,8 @@ public class AuthService : IAuthService
     public async Task<LoginResponse> LoginAsync(LoginRequest request, HttpContext context)
     {
         _logger.LogInformation("Вход в аккаунт: {@Request}", request);
-        var user = await _unitOfWork.UserRep.FindByEmailAsync(request.username);
-        var accessToken = await _tokenService.CreateTokenAsync(user.Email);
+        var user = await _unitOfWork.UserRep.FindByNameAsync(request.username);
+        var accessToken = await _tokenService.CreateTokenAsync(user.Username);
         var refreshToken = user.RefreshToken.ToString();
         
         context.Response.Cookies.Append("accessToken", accessToken, new CookieOptions
