@@ -43,6 +43,10 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "AutoFixture": {
+              "target": "Package",
+              "version": "[4.18.1, )"
+            },
             "AutoMapper": {
               "target": "Package",
               "version": "[13.0.1, )"
@@ -54,6 +58,10 @@
             "Bogus": {
               "target": "Package",
               "version": "[35.6.2, )"
+            },
+            "FluentAssertions": {
+              "target": "Package",
+              "version": "[8.2.0, )"
             },
             "FluentValidation.AspNetCore": {
               "target": "Package",
@@ -95,6 +103,10 @@
               "target": "Package",
               "version": "[8.4.0, )"
             },
+            "Moq": {
+              "target": "Package",
+              "version": "[4.20.72, )"
+            },
             "Newtonsoft.Json": {
               "target": "Package",
               "version": "[13.0.3, )"
@@ -114,6 +126,10 @@
             "Twilio": {
               "target": "Package",
               "version": "[7.9.0, )"
+            },
+            "xunit": {
+              "target": "Package",
+              "version": "[2.9.3, )"
             }
           },
           "imports": [

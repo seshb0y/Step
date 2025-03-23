@@ -56,10 +56,10 @@ const Login = () => {
           <label className="block text-gray-400 mb-2">Username</label>
           <input
             type="text"
-            placeholder="Введите имя пользователя"
+            placeholder="Enter username"
             value={username}
             onChange={(e: ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)}
-            className="w-full p-3 rounded-md bg-gray-700 border border-gray-600 focus:outline-none focus:border-purple-400"
+            className="w-full p-3 rounded-md bg-gray-700 border border-gray-600 focus:outline-none focus:border-purple-400 text-white"
           />
         </div>
 
@@ -67,10 +67,10 @@ const Login = () => {
           <label className="block text-gray-400 mb-2">Password</label>
           <input
             type="password"
-            placeholder="••••••••"
+            placeholder="Enter password"
             value={password}
             onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
-            className="w-full p-3 rounded-md bg-gray-700 border border-gray-600 focus:outline-none focus:border-purple-400"
+            className="w-full p-3 rounded-md bg-gray-700 border border-gray-600 focus:outline-none focus:border-purple-400 text-white"
           />
         </div>
 
@@ -79,14 +79,14 @@ const Login = () => {
           disabled={isLoading}
           className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 rounded-md transition-all disabled:opacity-50"
         >
-          {isLoading ? "Вход..." : "Войти"}
+          {isLoading ? "Loading..." : "Sign In"}
         </button>
 
         <button
           onClick={() => setIsResetModalOpen(true)}
           className="w-full mt-4 text-gray-400 hover:text-white transition-colors"
         >
-          Забыли пароль?
+          Reset Password
         </button>
       </div>
 
@@ -95,14 +95,14 @@ const Login = () => {
           <Dialog.Overlay className="fixed inset-0 bg-black/50 backdrop-blur-sm" />
           <Dialog.Content className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-dark-card p-6 rounded-xl w-96 border border-dark-border shadow-xl">
             <Dialog.Title className="text-2xl font-bold mb-4 text-text-light">
-              Сброс пароля
+              Reset Password
             </Dialog.Title>
             <Dialog.Description className="text-gray-400 mb-6">
-              Введите имя пользователя для получения инструкций по сбросу пароля
+              Enter your username to receive password reset instructions
             </Dialog.Description>
             <input
               type="text"
-              placeholder="Введите имя пользователя"
+              placeholder="Enter username"
               value={resetUsername}
               onChange={(e: ChangeEvent<HTMLInputElement>) => setResetUsername(e.target.value)}
               className="w-full p-3 rounded-lg bg-dark-bg border border-dark-border focus:outline-none focus:border-primary-purple mb-6"
@@ -112,14 +112,14 @@ const Login = () => {
                 onClick={() => setIsResetModalOpen(false)}
                 className="px-4 py-2 rounded-lg border border-dark-border hover:bg-dark-bg transition-colors text-gray-400 hover:text-text-light"
               >
-                Отмена
+                Cancel
               </button>
               <button
                 onClick={handleResetPassword}
                 disabled={isLoading}
                 className="px-6 py-2 rounded-lg bg-primary-purple hover:bg-accent-purple transition-colors text-white font-medium disabled:opacity-50"
               >
-                {isLoading ? "Отправка..." : "Отправить"}
+                {isLoading ? "Sending..." : "Send"}
               </button>
             </div>
           </Dialog.Content>
@@ -131,17 +131,17 @@ const Login = () => {
           <Dialog.Overlay className="fixed inset-0 bg-black/50 backdrop-blur-sm" />
           <Dialog.Content className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-dark-card p-6 rounded-xl w-96 border border-dark-border shadow-xl">
             <Dialog.Title className="text-2xl font-bold mb-4 text-text-light">
-              Успешно!
+              Success!
             </Dialog.Title>
             <Dialog.Description className="text-gray-400 mb-6">
-              Инструкции по сбросу пароля отправлены на вашу электронную почту
+              Password reset instructions have been sent to your email
             </Dialog.Description>
             <div className="flex justify-end">
               <button
                 onClick={() => setIsSuccessModalOpen(false)}
                 className="px-6 py-2 rounded-lg bg-primary-purple hover:bg-accent-purple transition-colors text-white font-medium"
               >
-                Понятно
+                OK
               </button>
             </div>
           </Dialog.Content>

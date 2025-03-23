@@ -1,6 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+# 
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CRMSolution", "CRMSolution\CRMSolution.csproj", "{522A5DF3-E44F-4B16-BD8D-9E9C33BDEC0A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CRMSolution", "CRMSolution", "{DD36F032-3F59-4498-94E2-4AAF45280F4F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CRMSolution.Tests", "CRMSolution\CRMSolution.Tests\CRMSolution.Tests.csproj", "{09B364C2-362B-4CE1-8EF3-9EBAF00843B3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -12,5 +17,13 @@ Global
 		{522A5DF3-E44F-4B16-BD8D-9E9C33BDEC0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{522A5DF3-E44F-4B16-BD8D-9E9C33BDEC0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{522A5DF3-E44F-4B16-BD8D-9E9C33BDEC0A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09B364C2-362B-4CE1-8EF3-9EBAF00843B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09B364C2-362B-4CE1-8EF3-9EBAF00843B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09B364C2-362B-4CE1-8EF3-9EBAF00843B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09B364C2-362B-4CE1-8EF3-9EBAF00843B3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{522A5DF3-E44F-4B16-BD8D-9E9C33BDEC0A} = {DD36F032-3F59-4498-94E2-4AAF45280F4F}
+		{09B364C2-362B-4CE1-8EF3-9EBAF00843B3} = {DD36F032-3F59-4498-94E2-4AAF45280F4F}
 	EndGlobalSection
 EndGlobal
