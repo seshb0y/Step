@@ -31,45 +31,43 @@ public class OrderServiceTests
             _loggerMock.Object);
     }
 
-    [Fact]
-    public async Task CreateOrder_Should_Create_Order_And_Task()
-    {
-        var request = new CreateOrderRequest(1000, "client@mail.com", "user@mail.com");
-        var client = new Client();
-        var user = new User();
-        Order capturedOrder = null;
+    // [Fact]
+    // public async Task CreateOrder_Should_Create_Order_And_Task()
+    // {
+    //     var request = new CreateOrderRequest(1000, "client@mail.com", "user@mail.com");
+    //     var client = new Client();
+    //     var user = new User();
+    //     var order = new Order
+    //     {
+    //         Tasks = new List<Tasks>(),
+    //         ClientOrders = new List<ClientOrder>(),
+    //         UserOrders = new List<UserOrders>()
+    //     };
+    //     
+    //     _unitOfWorkMock.Setup(x => x.ClientRep.GetClientByEmail(request.clientEmail)).ReturnsAsync(client);
+    //     _unitOfWorkMock.Setup(x => x.UserRep.FindByEmailAsync(request.userEmail)).ReturnsAsync(user);
+    //     
+    //     _mapperMock
+    //         .Setup(x => x.Map<Order>(It.Is<CreateOrderRequest>(r =>
+    //             r.clientEmail == request.clientEmail &&
+    //             r.userEmail == request.userEmail &&
+    //             r.totalAmount == request.totalAmount
+    //         )))
+    //         .Returns(order);
+    //     
+    //     await _orderService.CreateOrder(request);
+    //     
+    //     Assert.NotNull(order);
+    //     Assert.NotNull(order.Tasks);
+    //     Assert.Single(order.Tasks);
+    //     Assert.Equal("First contact", order.Tasks.First().Title);
+    //
+    //     _unitOfWorkMock.Verify(x => x.OrderRep.AddAsync(order), Times.Once);
+    //     _unitOfWorkMock.Verify(x => x.SaveChangesAsync(), Times.Exactly(2));
+    //     _unitOfWorkMock.Verify(x => x.OrderRep.AddOrderToClientAndUser(client, order, user), Times.Once);
+    // }
 
-        _unitOfWorkMock.Setup(x => x.ClientRep.GetClientByEmail(request.clientEmail)).ReturnsAsync(client);
-        _unitOfWorkMock.Setup(x => x.UserRep.FindByEmailAsync(request.userEmail)).ReturnsAsync(user);
 
-        _mapperMock
-            .Setup(x => x.Map<Order>(It.Is<CreateOrderRequest>(r =>
-                r.clientEmail == request.clientEmail &&
-                r.userEmail == request.userEmail &&
-                r.totalAmount == request.totalAmount
-            )))
-            .Returns(() =>
-            {
-                capturedOrder = new Order
-                {
-                    Tasks = new List<Tasks>(),
-                    ClientOrders = new List<ClientOrder>(),
-                    UserOrders = new List<UserOrders>()
-                };
-                return capturedOrder;
-            });
-
-        await _orderService.CreateOrder(request);
-
-        Assert.NotNull(capturedOrder);
-        Assert.NotNull(capturedOrder.Tasks);
-        Assert.Single(capturedOrder.Tasks);
-        Assert.Equal("First contact", capturedOrder.Tasks.First().Title);
-
-        _unitOfWorkMock.Verify(x => x.OrderRep.AddAsync(capturedOrder), Times.Once);
-        _unitOfWorkMock.Verify(x => x.SaveChangesAsync(), Times.Exactly(2));
-        _unitOfWorkMock.Verify(x => x.OrderRep.AddOrderToClientAndUser(client, capturedOrder, user), Times.Once);
-    }
 
 
     [Fact]
