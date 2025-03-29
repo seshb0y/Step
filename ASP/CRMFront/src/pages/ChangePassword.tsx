@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import axios from "axios";
 import Lottie from "lottie-react";
 import eyeAnimation from "../assets/Login.json";
+import axiosInstance from "../api/axiosInstance";
 
 const ChangePassword = () => {
   const [searchParams] = useSearchParams();
@@ -32,13 +33,13 @@ const ChangePassword = () => {
 
     try {
       setIsLoading(true);
-      await axios.post("/api/Account/ChangePassword", {
+      await axiosInstance.post("/Account/ChangePassword", {
         newPassword,
         token
       });
       
       toast.success("Пароль успешно изменен");
-      navigate("/login");
+      navigate("/");
     } catch {
       toast.error("Ошибка при смене пароля. Возможно, ссылка устарела или недействительна");
     } finally {

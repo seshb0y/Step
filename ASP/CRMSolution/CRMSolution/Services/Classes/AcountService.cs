@@ -115,7 +115,7 @@ public class AccountService : IAccountService
             throw new Exception("Invalid or expired token");
 
         var username = await _tokenService.GetNameFromToken(request.token);
-        var user = await _unitOfWork.UserRep.FindByEmailAsync(username);
+        var user = await _unitOfWork.UserRep.FindByNameAsync(username);
         if (user == null)
             throw new Exception("User not found");
 
