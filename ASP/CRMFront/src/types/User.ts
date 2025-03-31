@@ -4,19 +4,17 @@ import { Task } from "./Task"
 
 export interface User {
     userId: string,
-    username: string
-    // userName: string,
-    userRole: UserRole,
+    username: string,
+    role: number,
     email: string,
-    isEmailConfirmed: boolean
+    isEmailConfirmed: boolean,
     createdAt: Date,
-    orders: Order[]
+    orders: Order[],
     clients: Client[],
     tasks: Task[]
 }
 
-export enum UserRole
-{
-    Admin,
-    Manager
-}
+export const UserRole = {
+    Admin: 0,
+    Manager: 1
+} as const;

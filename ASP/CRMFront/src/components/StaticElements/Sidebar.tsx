@@ -8,6 +8,7 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import SettingsIcon from "@mui/icons-material/Settings";
 import GroupIcon from "@mui/icons-material/Group";
 import ViewKanbanIcon from "@mui/icons-material/ViewKanban";
+import { useAppSelector } from "../../hooks/useAppSelector";
 
 import DashboardAnimation from "../../assets/DashboardAnimation.json";
 import ClientsAnimation from "../../assets/ClientsAnimation.json";
@@ -19,13 +20,13 @@ import SettingsAnimation from "../../assets/SettingsAnimation.json";
 import { useState } from "react";
 
 const menuItems = [
-  { text: "Dashboard", icon: <DashboardIcon />, animation: DashboardAnimation, path: "/dashboard",},
-  { text: "Clients", icon: <PeopleIcon />, animation: ClientsAnimation, path: "/clients" },
-  { text: "Orders", icon: <ShoppingCartIcon />, animation: OrdersAnimation, path: "/orders" },
-  { text: "Tasks", icon: <AssignmentIcon />, animation: TasksAnimation, path: "/tasks" },
-  { text: "Users", icon: <GroupIcon />, animation: UsersAnimation, path: "/users" },
-  { text: "Kanban", icon: <ViewKanbanIcon />, animation: KanbanAnimation, path: "/kanban" }, 
-  { text: "Settings", icon: <SettingsIcon />, animation: SettingsAnimation, path: "/settings" },
+  { text: "Dashboard", icon: <DashboardIcon />, animation: DashboardAnimation, path: "/dashboard", roles: [0, 1] },
+  { text: "Clients", icon: <PeopleIcon />, animation: ClientsAnimation, path: "/clients", roles: [0] },
+  { text: "Orders", icon: <ShoppingCartIcon />, animation: OrdersAnimation, path: "/orders", roles: [0] },
+  { text: "Tasks", icon: <AssignmentIcon />, animation: TasksAnimation, path: "/tasks", roles: [0] },
+  { text: "Users", icon: <GroupIcon />, animation: UsersAnimation, path: "/users", roles: [0] },
+  { text: "Kanban", icon: <ViewKanbanIcon />, animation: KanbanAnimation, path: "/kanban", roles: [0, 1] },
+  { text: "Settings", icon: <SettingsIcon />, animation: SettingsAnimation, path: "/settings", roles: [0] },
 ];
 
 interface SidebarProps {
@@ -33,10 +34,16 @@ interface SidebarProps {
   setIsExpanded: (expanded: boolean) => void;
 }
 
-
-
 const Sidebar = ({ isExpanded, setIsExpanded }: SidebarProps) => {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+  const user = useAppSelector(state => state.auth.user);
+  
+  console.log('User Role:', user?.role, 'Role type:', typeof user?.role);
+  
+  const filteredMenuItems = menuItems.filter(item => 
+    item.roles.includes(user?.role ?? 1)
+  );
+
   return (
     <Drawer
       variant="permanent"
@@ -57,7 +64,7 @@ const Sidebar = ({ isExpanded, setIsExpanded }: SidebarProps) => {
     >
       <Toolbar />
       <List>
-        {menuItems.map(({ text, icon, animation, path }) => (
+        {filteredMenuItems.map(({ text, icon, animation, path }) => (
           <ListItemButton
             key={text}
             component={NavLink}

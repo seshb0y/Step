@@ -1,14 +1,14 @@
 import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
 import { StatsCard } from "../components/Dashboard/StatsCard";
-import { NewDealsChart } from "../components/Dashboard/NewDealChart";
+import { NewDealChart } from "../components/Dashboard/NewDealChart";
 import { useAppDispatch } from "../hooks/useAppDispatch";
 import { useEffect, useState } from "react";
 import { getDashboardData } from "../features/dashboard/dashboardSlice";
 import { TasksStatusTable } from "../components/Dashboard/TasksInfoTable";
 import Sidebar from "../components/StaticElements/Sidebar";
 import LoadingSpinner from "../components/LoadingSpinner";
-
+import { fetchGetAllOrders } from "../features/orders/orderSlice";
 import { checkAuth } from "../features/auth/authSlice";
 import TopBox from "../components/StaticElements/TopBox";
 
@@ -17,18 +17,14 @@ export const Dashboard = () => {
     (state: RootState) => state.dashboard
   );
 
-
-
   const dispatch = useAppDispatch();
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
-
 
   useEffect(() => {
     dispatch(getDashboardData());
     dispatch(checkAuth());
+    dispatch(fetchGetAllOrders({}));
   }, [dispatch]);
-
-
 
   return (
     <div className="w-max h-screen bg-dark-bg text-white overflow-hidden">
@@ -53,7 +49,7 @@ export const Dashboard = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6 pr-10 ml-16">
-              <NewDealsChart />
+              <NewDealChart />
               <TasksStatusTable />
             </div>
           </>

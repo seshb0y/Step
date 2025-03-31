@@ -1,52 +1,67 @@
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
-import { format, parseISO, eachDayOfInterval } from "date-fns";
+import { format, parseISO } from "date-fns";
+import { useState } from "react";
 
-export const NewDealsChart = () => {
-  const ordersCreatedDates = useSelector((state: RootState) => state.dashboard.ordersCreatedDates);
+export const NewDealChart = () => {
+  const [showCumulative, setShowCumulative] = useState(true);
+  const orders = useSelector((state: RootState) => state.orders.orders);
 
-  if (ordersCreatedDates.length === 0) return null; 
+  console.log("NewDealChart rendered");
+  console.log("Orders state:", orders);
 
-  const sortedDates = [...ordersCreatedDates].sort(
-    (a, b) => new Date(a).getTime() - new Date(b).getTime()
+  if (!orders || orders.length === 0) {
+    console.log("No orders data");
+    return null;
+  }
+
+  const sortedOrders = [...orders].sort(
+    (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
   );
 
-  const startDate = parseISO(sortedDates[0]);
-  const endDate = parseISO(sortedDates[sortedDates.length - 1]);
-
-  const dealsByDate: Record<string, number> = {};
-  sortedDates.forEach(date => {
-    const formattedDate = format(parseISO(date), "yyyy-MM-dd");
-    dealsByDate[formattedDate] = (dealsByDate[formattedDate] || 0) + 1;
-  });
-
-  let cumulativeDeals = 0;
-  const formattedData = eachDayOfInterval({ start: startDate, end: endDate }).map(date => {
-    const formattedDate = format(date, "yyyy-MM-dd");
-
-    if (dealsByDate[formattedDate]) {
-      cumulativeDeals += dealsByDate[formattedDate];
-    }
-
+  console.log("Chart CHEK");
+  let cumulativeAmount = 0;
+  const formattedData = sortedOrders.map((order, index) => {
+    cumulativeAmount += order.totalAmount;
     return {
-      name: format(date, "MMM d"),
-      fullDate: formattedDate, 
-      deals: cumulativeDeals,
+      name: `Deal ${index + 1}`,
+      amount: cumulativeAmount,
+      singleAmount: order.totalAmount,
+      date: format(new Date(order.createdAt), "MMM d"),
+      fullDate: format(new Date(order.createdAt), "yyyy-MM-dd"),
     };
   });
 
   return (
     <div className="bg-dark-card p-6 rounded-lg shadow-md border border-dark-border">
-      <h2 className="text-lg font-semibold text-text-light mb-4">New Deals</h2>
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-lg font-semibold text-text-light">
+          {showCumulative ? "Cumulative Deal Amount" : "Individual Deal Amount"}
+        </h2>
+        <button
+          onClick={() => setShowCumulative(!showCumulative)}
+          className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-md transition-colors"
+        >
+          {showCumulative ? "Show Individual" : "Show Cumulative"}
+        </button>
+      </div>
       <ResponsiveContainer width="100%" height={500}>
         <LineChart data={formattedData}>
-          <XAxis dataKey="name" stroke="#D580FF" />
-          <YAxis stroke="#D580FF" />
+          <XAxis 
+            dataKey="name" 
+            stroke="#D580FF"
+            tickFormatter={(value, index) => formattedData[index].date}
+          />
+          <YAxis 
+            stroke="#D580FF"
+            tickFormatter={(value) => `$${value.toLocaleString('en-US')}`}
+          />
           <Tooltip
             content={({ active, payload }) => {
               if (active && payload && payload.length) {
                 const data = payload[0].payload;
+                const amount = showCumulative ? data.amount : data.singleAmount;
                 
                 return (
                   <div style={{
@@ -58,16 +73,30 @@ export const NewDealsChart = () => {
                     boxShadow: "0px 0px 6px rgba(255, 255, 255, 0.2)"
                   }}>
                     <p>{format(parseISO(data.fullDate), "MMMM d, yyyy")}</p>
-                    <p><strong>{data.deals}</strong> deals</p>
+                    <p><strong>₽{amount.toLocaleString('en-US')}</strong></p>
+                    <p>Deal #{data.name.split(' ')[1]}</p>
                   </div>
                 );
               }
               return null;
             }}
           />
-          <Line type="natural" dataKey="deals" stroke="#9A4DFF" strokeWidth={1} dot={false}/>
+          <Line 
+            type={showCumulative ? "monotone" : "linear"}
+            dataKey={showCumulative ? "amount" : "singleAmount"}
+            stroke="#9A4DFF" 
+            strokeWidth={2} 
+            dot={{ 
+              stroke: '#9A4DFF',
+              strokeWidth: 2,
+              r: 4,
+              fill: '#1E1E2E'
+            }}
+          />
         </LineChart>
       </ResponsiveContainer>
     </div>
   );
 };
+
+

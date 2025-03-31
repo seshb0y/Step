@@ -1,7 +1,6 @@
 import { useState, ChangeEvent } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
-import axios from "axios";
 import Lottie from "lottie-react";
 import eyeAnimation from "../assets/Login.json";
 import axiosInstance from "../api/axiosInstance";

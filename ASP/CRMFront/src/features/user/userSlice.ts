@@ -39,7 +39,7 @@ export const deleteUser = createAsyncThunk(
 
 export const fetchChangeUserData = createAsyncThunk(
   "users/data/change",
-  async ({ username, newEmail, oldEmail, role }: { username: string; newEmail: string; oldEmail: string; role: UserRole }, { rejectWithValue }) => {
+  async ({ username, newEmail, oldEmail, role }: { username: string; newEmail: string; oldEmail: string; role: typeof UserRole[keyof typeof UserRole] }, { rejectWithValue }) => {
     try {
       console.log(username, newEmail, oldEmail, role)
       const response = await axiosInstance.put(`/User/change/`, { username, newEmail, oldEmail, role });

@@ -1,10 +1,23 @@
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useAppSelector } from "../hooks/useAppSelector";
 
 const PrivateRoute = () => {
   const isAuthenticated = useAppSelector(state => state.auth.isAuthenticated);
+  const user = useAppSelector(state => state.auth.user);
+  const location = useLocation();
   
-  return isAuthenticated ? <Outlet /> : <Navigate to="/" replace />;
+  if (!isAuthenticated) {
+    return <Navigate to="/" replace />;
+  }
+
+  // Проверяем доступ к страницам в зависимости от роли
+  const isAdminRoute = ['/clients', '/tasks', '/orders', '/users'].includes(location.pathname);
+  
+  if (isAdminRoute && user?.role !== 0) {
+    return <Navigate to="/dashboard" replace />;
+  }
+
+  return <Outlet />;
 };
 
 export default PrivateRoute;
