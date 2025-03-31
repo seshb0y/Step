@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "../../api/axiosInstance";
 import { User, UserRole } from "../../types/User";
+import { toast } from 'react-toastify';
 
 interface UsersState {
   users: User[];
@@ -27,30 +28,30 @@ export const deleteUser = createAsyncThunk(
   async (email: string, { rejectWithValue }) => {
     try {
       await axiosInstance.delete(`/User/delete/`, {data: {email: email} });
+      toast.success('Пользователь успешно удален');
       return email;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
+      toast.error(error.response?.data || "Ошибка при удалении пользователя");
       return rejectWithValue(error.response?.data || "Failed to delete user");
     }
   }
 );
 
-
-
 export const fetchChangeUserData = createAsyncThunk(
   "users/data/change",
   async ({ username, newEmail, oldEmail, role }: { username: string; newEmail: string; oldEmail: string; role: typeof UserRole[keyof typeof UserRole] }, { rejectWithValue }) => {
     try {
-      console.log(username, newEmail, oldEmail, role)
       const response = await axiosInstance.put(`/User/change/`, { username, newEmail, oldEmail, role });
+      toast.success('Данные пользователя успешно обновлены');
       return response.data; 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
+      toast.error(error.response?.data || "Ошибка при обновлении данных пользователя");
       return rejectWithValue(error.response?.data || "Failed to update user data");
     }
   }
 );
-
 
 export const fetchUsers = createAsyncThunk(
   "users/fetch",
@@ -78,17 +79,19 @@ export const fetchAddUserData = createAsyncThunk(
 );
 
 export const createUser = createAsyncThunk(
-    "users/create",
-    async (userData: { username: string; password: string; email: string; confirmPassword: string }, { rejectWithValue }) => {
-      try {
-        const response = await axiosInstance.post("/Account/Register", userData);
-        return response.data;
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } catch (error: any) {
-        return rejectWithValue(error.response?.data || "Failed to create user");
-      }
+  "users/create",
+  async (userData: { username: string; password: string; email: string; confirmPassword: string }, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.post("/Account/Register", userData);
+      toast.success('Пользователь успешно создан');
+      return response.data;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      toast.error(error.response?.data || "Ошибка при создании пользователя");
+      return rejectWithValue(error.response?.data || "Failed to create user");
     }
-  );
+  }
+);
 
 // export const fetchClientsWithOrdersAndTasks = createAsyncThunk(
 //   "clients/fetchClientsWithOrdersAndTasks",

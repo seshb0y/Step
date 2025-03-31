@@ -2,13 +2,13 @@ import { Avatar, Box, IconButton, Menu, MenuItem, Typography } from "@mui/materi
 import { Logout } from "@mui/icons-material";
 import { useState } from "react";
 import UserProfileModal from "../Modals/UserProfileModal";
-import { User } from "../../types/User";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
 import { logoutUser } from "../../features/auth/authSlice";
 import LogoAnimation from "../../assets/CRMLogoAnimation.json"
 import Lottie from "lottie-react";
-
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 
 const TopBox = () => {
   const [isSidebarExpanded] = useState(false);
@@ -16,10 +16,8 @@ const TopBox = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const navigate = useNavigate();
-
-  const storedUser = localStorage.getItem("user");
-  const user : User = storedUser ? JSON.parse(storedUser) : null;
   const dispatch = useAppDispatch();
+  const user = useSelector((state: RootState) => state.auth.user);
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -50,8 +48,7 @@ const TopBox = () => {
         transition: "left 0.3s ease",
       }}
     >
-
-      <UserProfileModal open={isProfileOpen} onClose={() => setIsProfileOpen(false)} user={user} />
+      {user && <UserProfileModal open={isProfileOpen} onClose={() => setIsProfileOpen(false)} user={user} />}
 
       <Typography 
         variant="h6" 
@@ -66,11 +63,10 @@ const TopBox = () => {
         CRMSolution
       </Typography>
 
-
       <Box sx={{ display: "flex", alignItems: "center" }}>
         <Typography sx={{ marginRight: "10px", color: "#fff" }}>{user?.username || "User"}</Typography>
         <IconButton onClick={handleMenuOpen}>
-          <Avatar sx={{ bgcolor: "primary.main" }}>{user?.username?.charAt(0).toUpperCase()}</Avatar>
+          <Avatar sx={{ bgcolor: "primary.main" }}>{user?.username?.charAt(0).toUpperCase() || "U"}</Avatar>
         </IconButton>
 
         <Menu

@@ -1,18 +1,17 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import axiosInstance from "../../api/axiosInstance";
 import { createTask, deleteTask } from "../../features/tasks/tasksSlice";
-import { fetchUsers } from "../../features/user/userSlice";
 import LoadingSpinner from "../LoadingSpinner";
 import Sidebar from "../StaticElements/Sidebar";
 import TopBox from "../StaticElements/TopBox";
 import { Order, OrderStatus } from "../../types/Order";
 import { TaskStatus } from "../../types/Task";
-import { AppDispatch, RootState } from "../../store/store";
+import { AppDispatch } from "../../store/store";
 import Modal from "../ui/Modal";
-import { User } from "../../types/User";
 import { fetchChangeClientData } from "../../features/clients/clientSlice";
+import OrderEditModal from "../Modals/OrderEditModal";
 
 const OrderDetailsPage = () => {
   const { orderId } = useParams();
@@ -25,13 +24,6 @@ const OrderDetailsPage = () => {
   const [taskTitle, setTaskTitle] = useState("");
   const [taskDescription, setTaskDescription] = useState("");
   const [taskDueDate, setTaskDueDate] = useState("");
-  const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
-  const [isEditingBudget, setIsEditingBudget] = useState(false);
-  const [isStatusDropdownOpen, setIsStatusDropdownOpen] = useState(false);
-  const [newBudget, setNewBudget] = useState("");
-  const [newStatus, setNewStatus] = useState<OrderStatus>(OrderStatus.New);
-  const { users } = useSelector((state: RootState) => state.users);
-  const [isEdited, setIsEdited] = useState(false);
   const [deletingTaskIds, setDeletingTaskIds] = useState<number[]>([]);
   const [isEditTaskModalOpen, setIsEditTaskModalOpen] = useState(false);
   const [editingTask, setEditingTask] = useState<{
@@ -50,6 +42,7 @@ const OrderDetailsPage = () => {
     phone: "",
     address: ""
   });
+  const [isOrderEditModalOpen, setIsOrderEditModalOpen] = useState(false);
 
   useEffect(() => {
     if (!orderId) {
@@ -64,8 +57,6 @@ const OrderDetailsPage = () => {
         const response = await axiosInstance.get(`/Order/${orderId}`);
         console.log("Server response:", response.data);
         setOrder(response.data);
-        setNewBudget(response.data.totalAmount.toString());
-        setNewStatus(response.data.status);
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (err) {
         setError("Order loading error.");
@@ -75,7 +66,6 @@ const OrderDetailsPage = () => {
     };
 
     fetchOrderDetails();
-    dispatch(fetchUsers({}));
   }, [orderId, dispatch]);
 
   useEffect(() => {
@@ -122,56 +112,6 @@ const OrderDetailsPage = () => {
     }
   };
 
-  const handleAssignUser = async (user: User) => {
-    if (!order) return;
-    
-    try {
-      await axiosInstance.put(`/Order/${order.id}/assign-user`, { userId: user.userId });
-      setOrder({
-        ...order,
-        users: [user]
-      });
-      setIsUserDropdownOpen(false);
-    } catch (error) {
-      console.error("Ошибка при назначении пользователя:", error);
-    }
-  };
-
-  const handleUpdateOrder = async () => {
-    if (!order) return;
-
-    try {
-      const numericBudget = parseFloat(newBudget.replace(/[^\d.-]/g, ''));
-      
-      if (isNaN(numericBudget)) {
-        console.error("Некорректное значение бюджета");
-        return;
-      }
-
-      const updateData = {
-        totalAmount: numericBudget,
-        status: newStatus,
-        orderId: order.id
-      };
-
-      console.log("Отправляемые данные:", updateData);
-      
-      await axiosInstance.put("/Order/change", updateData);
-
-      setOrder({
-        ...order,
-        totalAmount: numericBudget,
-        status: newStatus
-      });
-
-      setIsEditingBudget(false);
-      setIsStatusDropdownOpen(false);
-      setIsEdited(false);
-    } catch (error) {
-      console.error("Ошибка при обновлении заказа:", error);
-    }
-  };
-
   const handleCreateTask = async () => {
     if (!taskTitle.trim() || !taskDescription.trim() || !taskDueDate || !order) return;
 
@@ -180,7 +120,7 @@ const OrderDetailsPage = () => {
       description: taskDescription,
       endDate: new Date(taskDueDate),
       userName: order.users[0].username,
-      orderId: order.id,
+      orderId: order.id
     };
 
     await dispatch(createTask(taskData));
@@ -252,31 +192,56 @@ const OrderDetailsPage = () => {
     });
   };
 
+  const formatPhoneNumber = (phone: string): string => {
+    return phone.replace(/\D/g, '');
+  };
+
+  const formatPhoneNumberForDisplay = (phone: string): string => {
+    const cleaned = phone.replace(/\D/g, '');
+    
+    if (cleaned.length < 7) return phone;
+    
+    if (cleaned.length <= 10) {
+      return `(${cleaned.slice(0, 3)}) ${cleaned.slice(3, 6)}-${cleaned.slice(6)}`;
+    } else {
+      return `+${cleaned.slice(0, 1)} (${cleaned.slice(1, 4)}) ${cleaned.slice(4, 7)}-${cleaned.slice(7, 9)}-${cleaned.slice(9)}`;
+    }
+  };
+
   const handleSaveClientData = async () => {
     if (!order?.client) return;
 
     try {
-      await dispatch(fetchChangeClientData({
+      const formattedPhone = formatPhoneNumber(editedClientData.phone);
+      
+      const result = await dispatch(fetchChangeClientData({
         name: editedClientData.name,
         newEmail: editedClientData.email,
         oldEmail: order.client.email,
-        phone: editedClientData.phone,
+        phone: formattedPhone,
         address: editedClientData.address
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      }) as any);
+      })).unwrap();
 
-      setOrder({
-        ...order,
-        client: {
-          ...order.client,
-          ...editedClientData
-        }
-      });
-
-      setIsEditingClient(false);
-    } catch (error) {
-      console.error("Ошибка при обновлении данных клиента:", error);
+      if (result) {
+        setOrder({
+          ...order,
+          client: {
+            ...order.client,
+            name: editedClientData.name,
+            email: editedClientData.email,
+            phone: editedClientData.phone,
+            address: editedClientData.address
+          }
+        });
+        setIsEditingClient(false);
+      }
+    } catch {
+      console.error("Ошибка при обновлении данных клиента");
     }
+  };
+
+  const handleOrderUpdate = (updatedOrder: Order) => {
+    setOrder(updatedOrder);
   };
 
   if (loading) return <LoadingSpinner />;
@@ -295,96 +260,18 @@ const OrderDetailsPage = () => {
           <div className="min-w-96 bg-[#1a0b2e] p-6 rounded-lg shadow-md h-[calc(100vh-80px)]">
             <h2 className="text-lg font-semibold mb-4">
               Сделка #{order.id}
-              <div className="relative">
-                {isEditingBudget ? (
-                  <div className="flex items-center">
-                    <span className="text-white font-medium mr-2">Бюджет:</span>
-                    <input
-                      type="text"
-                      value={newBudget}
-                      onChange={(e) => {
-                        setNewBudget(e.target.value);
-                        setIsEdited(true);
-                      }}
-                      className="bg-[#2a1042] text-white w-24 px-1 rounded"
-                      autoFocus
-                    />
-                  </div>
-                ) : (
-                  <p 
-                    className="cursor-pointer hover:bg-[#2a1042] px-2 py-1 rounded transition-colors duration-200" 
-                    onClick={() => setIsEditingBudget(true)}
-                  >
-                    <span className="text-white font-medium">Бюджет:</span> {order.totalAmount.toLocaleString('ru-RU')} ₽
-                  </p>
-                )}
-              </div>
-              <div className="relative">
-                <p 
-                  className="cursor-pointer hover:bg-[#2a1042] px-2 py-1 rounded transition-colors duration-200" 
-                  onClick={() => setIsStatusDropdownOpen(!isStatusDropdownOpen)}
-                >
-                  <span className="text-white font-medium">Статус:</span> {OrderStatus[order.status]}
-                </p>
-                {isStatusDropdownOpen && (
-                  <div className="absolute z-10 mt-1 w-48 bg-[#2a1042] rounded-md shadow-lg">
-                    {Object.values(OrderStatus)
-                      .filter(value => typeof value === 'number')
-                      .map(status => (
-                        <div
-                          key={status}
-                          className="px-4 py-2 hover:bg-[#3a1a5e] cursor-pointer"
-                          onClick={() => {
-                            setNewStatus(status as OrderStatus);
-                            setIsEdited(true);
-                            setIsStatusDropdownOpen(false);
-                          }}
-                        >
-                          {OrderStatus[status]}
-                        </div>
-                      ))}
-                  </div>
-                )}
-              </div>
-              {isEdited && (
-                <div className="mt-2">
-                  <button
-                    onClick={handleUpdateOrder}
-                    className="bg-primary-purple px-4 py-2 rounded text-white"
-                  >
-                    Сохранить изменения
-                  </button>
-                  <button
-                    onClick={() => {
-                      setIsEditingBudget(false);
-                      setIsStatusDropdownOpen(false);
-                      setIsEdited(false);
-                      setNewBudget(order.totalAmount.toString());
-                      setNewStatus(order.status);
-                    }}
-                    className="bg-gray-600 px-4 py-2 rounded text-white ml-2"
-                  >
-                    Отменить
-                  </button>
+              <div className="flex justify-between items-center">
+                <div>
+                  <p className="text-white font-medium">Бюджет: {order.totalAmount.toLocaleString('ru-RU')} ₽</p>
+                  <p className="text-white font-medium">Статус: {OrderStatus[order.status]}</p>
+                  <p className="text-white font-medium">Отв-ный: {order.users[0].username}</p>
                 </div>
-              )}
-              <div className="relative">
-                <p className="cursor-pointer hover:bg-[#2a1042] px-2 py-1 rounded transition-colors duration-200" onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)}>
-                  <span className="text-white font-medium">Отв-ный:</span> {order.users[0].username}
-                </p>
-                {isUserDropdownOpen && (
-                  <div className="absolute z-10 mt-1 w-48 bg-[#2a1042] rounded-md shadow-lg">
-                    {users.map((user) => (
-                      <div
-                        key={user.userId}
-                        className="px-4 py-2 hover:bg-[#3a1a5e] cursor-pointer"
-                        onClick={() => handleAssignUser(user)}
-                      >
-                        {user.username}
-                      </div>
-                    ))}
-                  </div>
-                )}
+                <button
+                  onClick={() => setIsOrderEditModalOpen(true)}
+                  className="bg-primary-purple px-3 py-1 rounded text-sm"
+                >
+                  Изменить
+                </button>
               </div>
             </h2>
             <div className="text-gray-300">
@@ -442,7 +329,7 @@ const OrderDetailsPage = () => {
                     </button>
                   </div>
                   <p><span className="text-white font-medium">Email:</span> {order.client.email}</p>
-                  <p><span className="text-white font-medium">Phone:</span> {order.client.phone}</p>
+                  <p><span className="text-white font-medium">Phone:</span> {formatPhoneNumberForDisplay(order.client.phone)}</p>
                   <p><span className="text-white font-medium">Address:</span> {order.client.address}</p>
                 </>
               )}
@@ -525,7 +412,14 @@ const OrderDetailsPage = () => {
         </div>
       </div>
 
-              
+      {isOrderEditModalOpen && order && (
+        <OrderEditModal
+          order={order}
+          onClose={() => setIsOrderEditModalOpen(false)}
+          onUpdate={handleOrderUpdate}
+        />
+      )}
+
       {isModalOpen && (
         <Modal onClose={() => setIsModalOpen(false)}>
           <h2 className="text-lg font-bold">Создать задачу</h2>

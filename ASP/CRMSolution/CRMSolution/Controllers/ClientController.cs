@@ -20,7 +20,7 @@ public class ClientController : ControllerBase
     }
 
 
-    [HttpPost("Add/Client")]
+    [HttpPost("Add")]
     // [Authorize(Policy = "ManagerPolicy")]
     public async Task<IActionResult> AddClient([FromBody] CreateClientRequest request)
     {

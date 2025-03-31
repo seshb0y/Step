@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "../../api/axiosInstance";
 import { CreateOrder, Order, OrderStatus } from "../../types/Order";
+import { toast } from 'react-toastify';
 
 interface OrdersState {
   orders: Order[];
@@ -27,29 +28,41 @@ export const deleteOrder = createAsyncThunk(
   async (orderId: number, { rejectWithValue }) => {
     try {
       await axiosInstance.delete(`/Order/delete/`, {data: {orderId: orderId} });
+      toast.success('Заказ успешно удален');
       return orderId;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
+      toast.error(error.response?.data || "Ошибка при удалении заказа");
       return rejectWithValue(error.response?.data || "Failed to delete order");
     }
   }
 );
 
-
-
 export const fetchChangeOrderData = createAsyncThunk(
   "order/data/change",
-  async ({ totalAmount, status, orderId }: { totalAmount: string; status: OrderStatus; orderId: number }, { rejectWithValue }) => {
+  async ({ totalAmount, status, orderId }: { 
+    totalAmount: string; 
+    status: OrderStatus; 
+    orderId: number;
+  }, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.put(`/Order/change/`, { totalAmount, status, orderId });
-      return response.data; 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      return rejectWithValue(error.response?.data || "Failed to update order data");
+      const response = await axiosInstance.put(`/Order/change`, { 
+        totalAmount: parseFloat(totalAmount), 
+        status: status, 
+        orderId: orderId 
+      });
+      toast.success('Данные заказа успешно обновлены');
+      return response.data;
+    } catch (error: unknown) {
+      const err = error as { response?: { data?: unknown } };
+      const errorMessage = typeof err.response?.data === 'string' 
+        ? err.response.data 
+        : "Ошибка при обновлении данных заказа";
+      toast.error(errorMessage);
+      return rejectWithValue(errorMessage);
     }
   }
 );
-
 
 export const fetchGetAllOrders = createAsyncThunk(
   "orders/fetchOrders",
@@ -64,16 +77,32 @@ export const fetchGetAllOrders = createAsyncThunk(
   }
 );
 
-
 export const createOrder = createAsyncThunk(
   "orders/createOrder",
   async (orderData: Omit<CreateOrder, "id">, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.post("/Order/add", orderData);
+      toast.success('Заказ успешно создан');
       return response.data;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
+      toast.error(error.response?.data || "Ошибка при создании заказа");
       return rejectWithValue(error.response?.data || "Failed to create order");
+    }
+  }
+);
+
+export const fetchAssignUserToOrder = createAsyncThunk(
+  "order/assign-user",
+  async ({ orderId, userId }: { orderId: number; userId: number }, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.put(`/Order/${orderId}/assign-user`, { userId });
+      toast.success('Пользователь успешно назначен');
+      return response.data;
+    } catch (error: unknown) {
+      const err = error as { response?: { data?: string } };
+      toast.error(err.response?.data || "Ошибка при назначении пользователя");
+      return rejectWithValue(err.response?.data || "Failed to assign user");
     }
   }
 );
@@ -131,6 +160,22 @@ const ordersSlice = createSlice({
       })
       .addCase(deleteOrder.rejected, (state, action) => {
         state.error = action.payload as string;
+      })
+
+      .addCase(fetchAssignUserToOrder.pending, (state) => {
+        state.orderLoading = true;
+        state.orderError = null;
+      })
+      .addCase(fetchAssignUserToOrder.fulfilled, (state, action) => {
+        const index = state.orders.findIndex(order => order.orderId === action.payload.id);
+        if (index !== -1) {
+          state.orders[index] = action.payload;
+        }
+        state.orderLoading = false;
+      })
+      .addCase(fetchAssignUserToOrder.rejected, (state, action) => {
+        state.orderLoading = false;
+        state.orderError = action.payload as string;
       });
   },
 });

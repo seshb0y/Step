@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "../../api/axiosInstance";
 import { Client } from "../../types/Client";
+import { toast } from 'react-toastify';
 
 interface ClientsState {
   clients: Client[];
@@ -23,33 +24,59 @@ const initialState: ClientsState = {
 };
 
 export const deleteClient = createAsyncThunk(
-  "clients/deleteClient",
+  "clients/delete",
   async (email: string, { rejectWithValue }) => {
     try {
-      await axiosInstance.delete(`/Client/Delete/`, {data: {email: email} });
+      console.log('Attempting to delete client...');
+      await axiosInstance.delete(`/Client/delete/`, {data: {email: email} });
+      console.log('Client deleted successfully');
+      toast.success('Клиент успешно удален');
       return email;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
+      console.error('Error deleting client:', error);
+      console.log('Error response:', error.response);
+      toast.error(error.response?.data || "Ошибка при удалении клиента");
       return rejectWithValue(error.response?.data || "Failed to delete client");
     }
   }
 );
 
-
-
 export const fetchChangeClientData = createAsyncThunk(
-  "clients/data/change",
-  async ({ name, newEmail, oldEmail, address, phone }: { name: string; newEmail: string; oldEmail: string; address: string; phone: string }, { rejectWithValue }) => {
+  "client/data/change",
+  async ({ 
+    name,
+    newEmail,
+    oldEmail,
+    phone,
+    address 
+  }: { 
+    name: string;
+    newEmail: string;
+    oldEmail: string;
+    phone: string;
+    address: string;
+  }, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.put(`/Client/Change/`, { name, newEmail, oldEmail, address, phone });
-      return response.data; 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      return rejectWithValue(error.response?.data || "Failed to update client data");
+      const response = await axiosInstance.put(`/Client/change/`, { 
+        name,
+        newEmail,
+        oldEmail,
+        phone,
+        address
+      });
+      toast.success('Данные клиента успешно обновлены');
+      return response.data;
+    } catch (error: unknown) {
+      const err = error as { response?: { data?: unknown } };
+      const errorMessage = typeof err.response?.data === 'string' 
+        ? err.response.data 
+        : "Ошибка при обновлении данных клиента";
+      toast.error(errorMessage);
+      return rejectWithValue(errorMessage);
     }
   }
 );
-
 
 export const fetchClients = createAsyncThunk(
   "clients/fetchClients",
@@ -77,13 +104,19 @@ export const fetchAddClientData = createAsyncThunk(
 );
 
 export const createClient = createAsyncThunk(
-  "clients/createClient",
-  async (clientData: Omit<Client, "id">, { rejectWithValue }) => {
+  "clients/create",
+  async (clientData: { username: string; email: string }, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.post("/Client/Add/Client", clientData);
+      console.log('Attempting to create client...');
+      const response = await axiosInstance.post("/Client/add", clientData);
+      console.log('Client created successfully:', response.data);
+      toast.success('Клиент успешно создан');
       return response.data;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
+      console.error('Error creating client:', error);
+      console.log('Error response:', error.response);
+      toast.error(error.response?.data || "Ошибка при создании клиента");
       return rejectWithValue(error.response?.data || "Failed to create client");
     }
   }

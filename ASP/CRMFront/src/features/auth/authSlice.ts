@@ -66,30 +66,25 @@ const authSlice = createSlice({
       .addCase(checkAuth.fulfilled, (state, action) => {
         state.isAuthenticated = true;
         state.user = action.payload;
-        localStorage.setItem("user", JSON.stringify(action.payload));
-        localStorage.setItem("isLogin", JSON.stringify("true") );
+        localStorage.setItem("isLogin", JSON.stringify("true"));
         state.loading = false;
-        console.log("User", state.user);
       })
       .addCase(checkAuth.rejected, (state) => {
         state.isAuthenticated = false;
         state.user = null;
+        localStorage.removeItem("isLogin");
         state.loading = false;
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.isAuthenticated = true;
         state.user = action.payload;
-        
-        
+        localStorage.setItem("isLogin", JSON.stringify("true"));
       })
-      
       .addCase(logoutUser.fulfilled, (state) => {
         state.isAuthenticated = false;
         state.user = null;
-        localStorage.removeItem("user");
-        localStorage.removeItem("isLogin");
-    });
-    
+        localStorage.clear();
+      });
   },
 });
 

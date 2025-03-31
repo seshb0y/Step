@@ -8,7 +8,7 @@ import TopBox from "../components/StaticElements/TopBox";
 import LoadingSpinner from "../components/LoadingSpinner";
 import UserModal from "../components/Modals/UserModal";
 import UserCreateModal from "../components/Modals/UserCreateModal";
-import { User, UserRole } from "../types/User";
+import { User } from "../types/User";
 
 export const UsersPage = () => {
   const dispatch = useAppDispatch();
@@ -93,7 +93,7 @@ export const UsersPage = () => {
                     <td className="py-2 px-4 text-center">{user.username}</td>
                     <td className="py-2 px-4 text-center">{user.isEmailConfirmed.toString()}</td>
                     <td className="py-2 px-4 text-center">{user.email}</td>
-                    <td className="py-2 px-4 text-center">{UserRole[user.userRole]}</td>
+                    <td className="py-2 px-4 text-center">{user.role === 0 ? 'Admin' : 'Manager'}</td>
                     <td className="py-2 px-4 text-center">{new Date(user.createdAt).toLocaleDateString()}</td>
                   </tr>
                 ))}

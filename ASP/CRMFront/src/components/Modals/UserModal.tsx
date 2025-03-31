@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { deleteUser, fetchChangeUserData } from "../../features/user/userSlice";
-import { User, UserRole } from "../../types/User";
+import { User } from "../../types/User";
 import { TaskStatus } from "../../types/Task";
 import { OrderStatus } from "../../types/Order";
 
@@ -29,7 +29,7 @@ const UserModal = ({ user, onClose }: UserModalProps) => {
       username: formData.username != undefined ? formData.username : user.username,
       newEmail: formData.email,
       oldEmail: user.email,
-      role: formData.userRole
+      role: formData.role as 0 | 1
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     }) as any);
     setIsEditing(false);
@@ -78,9 +78,9 @@ const UserModal = ({ user, onClose }: UserModalProps) => {
           <input
             type="text"
             name="role"
-            value={UserRole[user.userRole]}
+            value={user.role === 0 ? 'Admin' : 'Manager'}
             disabled={!isEditing}
-            onChange={(e) => setFormData({ ...formData, userRole: e.target.value as unknown as UserRole })}
+            onChange={(e) => setFormData({ ...formData, role: e.target.value === 'Admin' ? 0 : 1 })}
             className="w-full px-3 py-2 rounded bg-gray-700 text-white"
           />
         </div>
