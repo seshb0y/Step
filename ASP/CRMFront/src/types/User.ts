@@ -1,17 +1,15 @@
-import { Client } from "./Client"
 import { Order } from "./Order"
 import { Task } from "./Task"
 
 export interface User {
-    userId: string,
-    username: string,
-    role: number,
-    email: string,
-    isEmailConfirmed: boolean,
-    createdAt: Date,
-    orders: Order[],
-    clients: Client[],
-    tasks: Task[]
+    userId: string;
+    username: string;
+    email: string;
+    role: 0 | 1;
+    isEmailConfirmed: boolean;
+    createdAt: Date;
+    orders: Order[];
+    tasks: Task[];
 }
 
 export const UserRole = {

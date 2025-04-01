@@ -12,6 +12,7 @@ import { AppDispatch } from "../../store/store";
 import Modal from "../ui/Modal";
 import { fetchChangeClientData } from "../../features/clients/clientSlice";
 import OrderEditModal from "../Modals/OrderEditModal";
+import { fetchUsers } from "../../features/user/userSlice";
 
 const OrderDetailsPage = () => {
   const { orderId } = useParams();
@@ -43,6 +44,11 @@ const OrderDetailsPage = () => {
     address: ""
   });
   const [isOrderEditModalOpen, setIsOrderEditModalOpen] = useState(false);
+
+  useEffect(() => {
+    // Загружаем список пользователей при монтировании компонента
+    dispatch(fetchUsers({}));
+  }, [dispatch]);
 
   useEffect(() => {
     if (!orderId) {

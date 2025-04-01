@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Order, OrderStatus } from '../../types/Order';
 import { fetchChangeOrderData } from '../../features/orders/orderSlice';
@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import Modal from '../ui/Modal';
 import { AppDispatch, RootState } from '../../store/store';
 import { fetchAssignUserToOrder } from '../../features/orders/orderSlice';
+import { fetchUsers } from '../../features/user/userSlice';
 
 interface OrderEditModalProps {
   order: Order;
@@ -13,22 +14,38 @@ interface OrderEditModalProps {
   onUpdate: (updatedOrder: Order) => void;
 }
 
+interface FormData {
+  totalAmount: string;
+  status: OrderStatus;
+  userId: number;
+}
+
 const OrderEditModal = ({ order, onClose, onUpdate }: OrderEditModalProps) => {
-  console.log("Order data in modal:", order);
   const dispatch = useDispatch<AppDispatch>();
-  const { users } = useSelector((state: RootState) => state.users);
-  const [formData, setFormData] = useState({
+  const { users, loading, error } = useSelector((state: RootState) => state.users);
+  
+  useEffect(() => {
+    console.log('Текущий список пользователей:', users);
+  }, [users]);
+
+  const [formData, setFormData] = useState<FormData>({
     totalAmount: order.totalAmount.toString(),
     status: order.status,
-    userId: order.users[0]?.userId
+    userId: Number(order.users[0]?.userId) || 0
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: name === 'status' ? parseInt(value) : value
-    }));
+  const handleTotalAmountChange = (value: string) => {
+    setFormData(prev => ({ ...prev, totalAmount: value }));
+  };
+
+  const handleStatusChange = (value: string) => {
+    const status = parseInt(value) as OrderStatus;
+    setFormData(prev => ({ ...prev, status }));
+  };
+
+  const handleUserChange = (value: string) => {
+    const userId = parseInt(value);
+    setFormData(prev => ({ ...prev, userId }));
   };
 
   const handleSubmit = async () => {
@@ -40,12 +57,6 @@ const OrderEditModal = ({ order, onClose, onUpdate }: OrderEditModalProps) => {
         return;
       }
 
-      console.log("Отправляем данные заказа:", {
-        totalAmount: numericBudget.toString(),
-        status: formData.status,
-        orderId: order.id
-      });
-
       const result = await dispatch(fetchChangeOrderData({
         totalAmount: numericBudget.toString(),
         status: formData.status,
@@ -55,7 +66,7 @@ const OrderEditModal = ({ order, onClose, onUpdate }: OrderEditModalProps) => {
       if (formData.userId !== order.users[0]?.userId) {
         await dispatch(fetchAssignUserToOrder({
           orderId: order.id,
-          userId: Number(formData.userId)
+          userId: formData.userId
         }));
       }
 
@@ -74,6 +85,27 @@ const OrderEditModal = ({ order, onClose, onUpdate }: OrderEditModalProps) => {
     }
   };
 
+  if (loading) {
+    return (
+      <Modal onClose={onClose}>
+        <div className="bg-gray-800 p-6 rounded-lg">
+          <h2 className="text-2xl text-primary-purple mb-4">Загрузка пользователей...</h2>
+        </div>
+      </Modal>
+    );
+  }
+
+  if (error) {
+    return (
+      <Modal onClose={onClose}>
+        <div className="bg-gray-800 p-6 rounded-lg">
+          <h2 className="text-2xl text-red-500 mb-4">Ошибка загрузки</h2>
+          <p className="text-white">{error}</p>
+        </div>
+      </Modal>
+    );
+  }
+
   return (
     <Modal onClose={onClose}>
       <div className="bg-gray-800 p-6 rounded-lg">
@@ -85,7 +117,7 @@ const OrderEditModal = ({ order, onClose, onUpdate }: OrderEditModalProps) => {
             type="text"
             name="totalAmount"
             value={formData.totalAmount}
-            onChange={handleChange}
+            onChange={(e) => handleTotalAmountChange(e.target.value)}
             className="w-full px-3 py-2 rounded bg-gray-700 text-white"
           />
         </div>
@@ -95,7 +127,7 @@ const OrderEditModal = ({ order, onClose, onUpdate }: OrderEditModalProps) => {
           <select
             name="status"
             value={formData.status}
-            onChange={handleChange}
+            onChange={(e) => handleStatusChange(e.target.value)}
             className="w-full px-3 py-2 rounded bg-gray-700 text-white"
           >
             {Object.entries(OrderStatus)
@@ -113,14 +145,18 @@ const OrderEditModal = ({ order, onClose, onUpdate }: OrderEditModalProps) => {
           <select
             name="userId"
             value={formData.userId}
-            onChange={handleChange}
+            onChange={(e) => handleUserChange(e.target.value)}
             className="w-full px-3 py-2 rounded bg-gray-700 text-white"
           >
-            {users.map((user) => (
-              <option key={user.userId} value={user.userId}>
-                {user.username}
-              </option>
-            ))}
+            {users && users.length > 0 ? (
+              users.map((user) => (
+                <option key={user.userId} value={user.userId}>
+                  {user.username}
+                </option>
+              ))
+            ) : (
+              <option value="">Нет доступных пользователей</option>
+            )}
           </select>
         </div>
 

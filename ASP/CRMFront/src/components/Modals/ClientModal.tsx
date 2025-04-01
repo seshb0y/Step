@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../store/store";
+import { RootState, AppDispatch } from "../../store/store";
 import { deleteClient, fetchChangeClientData } from "../../features/clients/clientSlice";
 import { createOrder } from "../../features/orders/orderSlice";
 import { Client } from "../../types/Client";
 import { checkAuth } from "../../features/auth/authSlice";
+import { fetchUsers } from "../../features/user/userSlice";
 
 interface ClientModalProps {
   client: Client;
@@ -12,15 +13,21 @@ interface ClientModalProps {
 }
 
 const ClientModal = ({ client, onClose }: ClientModalProps) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const { clientLoading, clientError, clients } = useSelector((state: RootState) => state.clients);
-  const { user } = useSelector((state: RootState) => state.auth); // Достаём текущего пользователя
+  const { user } = useSelector((state: RootState) => state.auth);
+  const { users } = useSelector((state: RootState) => state.users);
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState<Client>(client);
 
   const [newOrderData, setNewOrderData] = useState({
     totalAmount: "",
+    userId: ""
   });
+
+  useEffect(() => {
+    dispatch(fetchUsers({}));
+  }, [dispatch]);
 
   useEffect(() => {
     const updatedClient = clients.find((c) => c.id === client.id);
@@ -41,16 +48,14 @@ const ClientModal = ({ client, onClose }: ClientModalProps) => {
         oldEmail: client.email,
         phone: formData.phone,
         address: formData.address,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      }) as any
+      })
     );
     setIsEditing(false);
   };
 
   const handleDelete = () => {
     if (window.confirm("Are you sure you want to delete this client?")) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      dispatch(deleteClient(client.email) as any);
+      dispatch(deleteClient(client.email));
       onClose();
     }
   };
@@ -60,26 +65,28 @@ const ClientModal = ({ client, onClose }: ClientModalProps) => {
       alert("Введите сумму заказа");
       return;
     }
+
+    if (!newOrderData.userId) {
+      alert("Выберите ответственного");
+      return;
+    }
   
     try {
-      // 1️⃣ Ждём обновления пользователя перед созданием заказа
       const authResponse = await dispatch(checkAuth()).unwrap();
       const updatedUserEmail = authResponse?.email || user?.email || "";
   
       console.log("Обновленный userEmail:", updatedUserEmail);
   
-      // 2️⃣ Отправляем запрос на создание заказа
       dispatch(
         createOrder({
           totalAmount: parseFloat(newOrderData.totalAmount),
           clientEmail: client.email,
           userEmail: updatedUserEmail,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        }) as any
+          userId: Number(newOrderData.userId)
+        })
       );
   
-      // 3️⃣ Очистка формы после создания заказа
-      setNewOrderData({ totalAmount: "" });
+      setNewOrderData({ totalAmount: "", userId: "" });
   
     } catch (error) {
       console.error("Ошибка при обновлении пользователя:", error);
@@ -124,6 +131,26 @@ const ClientModal = ({ client, onClose }: ClientModalProps) => {
           />
         </div>
 
+        {/* Выбор ответственного */}
+        <div className="mb-2">
+          <label className="block text-sm">Ответственный</label>
+          <select
+            name="userId"
+            value={newOrderData.userId}
+            onChange={(e) =>
+              setNewOrderData({ ...newOrderData, userId: e.target.value })
+            }
+            className="w-full px-3 py-2 rounded bg-gray-700 text-white"
+          >
+            <option value="">Выберите ответственного</option>
+            {users.map((user) => (
+              <option key={user.userId} value={user.userId}>
+                {user.username}
+              </option>
+            ))}
+          </select>
+        </div>
+
         {/* Кнопка создания заказа */}
         <button className="bg-primary-purple w-full py-2 rounded mt-4" onClick={handleCreateOrder}>
           Create Order
@@ -136,7 +163,10 @@ const ClientModal = ({ client, onClose }: ClientModalProps) => {
           {isEditing ? "Save" : "Edit"}
         </button>
 
-        <button className="bg-red-600 w-full py-2 rounded mt-4" onClick={handleDelete}>
+        <button
+          className="bg-red-600 w-full py-2 rounded mt-4"
+          onClick={handleDelete}
+        >
           Delete Client
         </button>
 

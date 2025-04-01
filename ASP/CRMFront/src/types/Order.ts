@@ -21,6 +21,7 @@ export interface CreateOrder{
     totalAmount: number,
     clientEmail: string,
     userEmail: string,
+    userId: number
 }
 
 export enum OrderStatus

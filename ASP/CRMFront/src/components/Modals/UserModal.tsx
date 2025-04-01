@@ -1,44 +1,61 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { deleteUser, fetchChangeUserData } from "../../features/user/userSlice";
-import { User } from "../../types/User";
+import { User } from '../../types/User';
 import { TaskStatus } from "../../types/Task";
 import { OrderStatus } from "../../types/Order";
+import { AppDispatch } from "../../store/store";
 
 interface UserModalProps {
   user: User;
   onClose: () => void;
 }
 
+interface FormData {
+  username: string;
+  email: string;
+  role: 0 | 1;
+}
+
 const UserModal = ({ user, onClose }: UserModalProps) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const [isEditing, setIsEditing] = useState(false);
-  const [formData, setFormData] = useState<User>(user);
+  const [formData, setFormData] = useState<FormData>({
+    username: user.username,
+    email: user.email,
+    role: user.role === 0 ? 0 : 1
+  });
 
   useEffect(() => {
     console.log("User data in modal:", user);
     setFormData(user);
   }, [user]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    if (name === 'role') {
+      console.log('Changing role to:', value, typeof value);
+      const roleValue = Number(value) as 0 | 1;
+      setFormData(prev => ({ ...prev, role: roleValue }));
+    } else {
+      setFormData(prev => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleSave = () => {
-    dispatch(fetchChangeUserData({ 
-      username: formData.username != undefined ? formData.username : user.username,
+    console.log('Saving user with role:', formData.role);
+    dispatch(fetchChangeUserData({
+      username: formData.username,
       newEmail: formData.email,
       oldEmail: user.email,
-      role: formData.role as 0 | 1
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    }) as any);
+      role: formData.role
+    }));
     setIsEditing(false);
   };
 
   const handleDelete = () => {
-    if (window.confirm("Are you sure you want to delete this user?")) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      dispatch(deleteUser(user.email) as any);
+    if (window.confirm("Вы уверены, что хотите удалить этого пользователя?")) {
+      dispatch(deleteUser(user.email));
       onClose();
     }
   };
@@ -46,89 +63,132 @@ const UserModal = ({ user, onClose }: UserModalProps) => {
   return (
     <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
       <div className="bg-gray-800 p-6 rounded-lg w-[500px] max-h-[80vh] overflow-auto">
-        <h2 className="text-2xl text-primary-purple mb-4">{isEditing ? "Edit User" : "User Details"}</h2>
+        <h2 className="text-2xl text-primary-purple mb-4">{isEditing ? "Редактировать пользователя" : "Информация о пользователе"}</h2>
 
-        {/* Основная информация о пользователе */}
-        <div className="mb-2">
-          <label className="block text-sm">USERNAME</label>
-          <input
-            type="text"
-            name="username"
-            value={formData.username}
-            disabled={!isEditing}
-            onChange={handleChange}
-            className="w-full px-3 py-2 rounded bg-gray-700 text-white"
-          />
-        </div>
+        {!isEditing ? (
+          <>
+            <div className="mb-2">
+              <label className="block text-sm">Имя пользователя</label>
+              <input
+                type="text"
+                name="username"
+                value={formData.username}
+                disabled={true}
+                className="w-full px-3 py-2 rounded bg-gray-700 text-white"
+              />
+            </div>
 
-        <div className="mb-2">
-          <label className="block text-sm">EMAIL</label>
-          <input
-            type="text"
-            name="email"
-            value={formData.email}
-            disabled={!isEditing}
-            onChange={handleChange}
-            className="w-full px-3 py-2 rounded bg-gray-700 text-white"
-          />
-        </div>
+            <div className="mb-2">
+              <label className="block text-sm">Email</label>
+              <input
+                type="text"
+                name="email"
+                value={formData.email}
+                disabled={true}
+                className="w-full px-3 py-2 rounded bg-gray-700 text-white"
+              />
+            </div>
 
-        <div className="mb-2">
-          <label className="block text-sm">ROLE</label>
-          <input
-            type="text"
-            name="role"
-            value={user.role === 0 ? 'Admin' : 'Manager'}
-            disabled={!isEditing}
-            onChange={(e) => setFormData({ ...formData, role: e.target.value === 'Admin' ? 0 : 1 })}
-            className="w-full px-3 py-2 rounded bg-gray-700 text-white"
-          />
-        </div>
+            <div className="mb-2">
+              <label className="block text-sm">Роль</label>
+              <input
+                type="text"
+                value={formData.role === 0 ? 'Администратор' : 'Менеджер'}
+                disabled
+                className="w-full px-3 py-2 rounded bg-gray-700 text-white"
+              />
+            </div>
+          </>
+        ) : (
+          <form onSubmit={handleSave}>
+            <div className="mb-2">
+              <label className="block text-sm">Имя пользователя</label>
+              <input
+                type="text"
+                name="username"
+                value={formData.username}
+                onChange={handleChange}
+                className="w-full px-3 py-2 rounded bg-gray-700 text-white"
+              />
+            </div>
 
-        {/* Список заказов */}
-        <h3 className="text-xl font-semibold mt-4">Orders</h3>
-        <ul className="list-disc ml-5">
-          {user.orders && user.orders.length > 0 ? (
-            user.orders.map((order) => (
-              <li key={order.id}>Order ID: {order.orderId}, Status: {OrderStatus[order.orderStatus]}</li>
-            ))
-          ) : (
-            <li>No orders available</li>
-          )}
-        </ul>
+            <div className="mb-2">
+              <label className="block text-sm">Email</label>
+              <input
+                type="text"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                className="w-full px-3 py-2 rounded bg-gray-700 text-white"
+              />
+            </div>
 
-        {/* Список задач */}
-        <h3 className="text-xl font-semibold mt-4">Tasks</h3>
-        <ul className="list-disc ml-5">
-          {user.tasks && user.tasks.length > 0 ? (
-            user.tasks.map((task) => (
-              <li key={task.taskId}>Task ID: {task.taskId}, Status: {TaskStatus[task.status]}</li>
-            ))
-          ) : (
-            <li>No tasks available</li>
-          )}
-        </ul>
+            <div className="mb-2">
+              <label className="block text-sm">Роль</label>
+              <select
+                name="role"
+                value={formData.role}
+                onChange={handleChange}
+                className="w-full px-3 py-2 rounded bg-gray-700 text-white"
+              >
+                <option value={0}>Администратор</option>
+                <option value={1}>Менеджер</option>
+              </select>
+            </div>
+          </form>
+        )}
 
-        {/* Список клиентов */}
-        <h3 className="text-xl font-semibold mt-4">Clients</h3>
-        <ul className="list-disc ml-5">
-          {user.clients && user.clients.length > 0 ? (
-            user.clients.map((client) => (
-              <li key={client.id}>Client: {client.name}</li>
-            ))
-          ) : (
-            <li>No clients available</li>
-          )}
-        </ul>
+        <h3 className="text-xl font-semibold mt-4">Заказы</h3>
+        {user.orders && user.orders.length > 0 ? (
+          <ul className="mt-2">
+            {user.orders.map(order => (
+              <li key={order.id} className="mb-2 p-2 bg-gray-700 rounded">
+                <p>ID: {order.id}</p>
+                <p>Бюджет: {order.totalAmount}</p>
+                <p>Статус: {OrderStatus[order.status]}</p>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="text-gray-400 mt-2">Нет доступных заказов</p>
+        )}
 
-        {/* Кнопки управления */}
-        <button className="bg-primary-purple w-full py-2 rounded mt-4" onClick={isEditing ? handleSave : () => setIsEditing(true)}>
-          {isEditing ? "Save" : "Edit"}
+        <h3 className="text-xl font-semibold mt-4">Задачи</h3>
+        {user.tasks && user.tasks.length > 0 ? (
+          <ul className="mt-2">
+            {user.tasks.map(task => (
+              <li key={task.id} className="mb-2 p-2 bg-gray-700 rounded">
+                <p>Название: {task.title}</p>
+                <p>Описание: {task.description}</p>
+                <p>Статус: {TaskStatus[task.status]}</p>
+                <p>Дедлайн: {new Date(task.dueDate).toLocaleDateString()}</p>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="text-gray-400 mt-2">Нет доступных задач</p>
+        )}
+
+        <button
+          className="bg-primary-purple w-full py-2 rounded mt-4"
+          onClick={isEditing ? handleSave : () => setIsEditing(true)}
+        >
+          {isEditing ? "Сохранить" : "Редактировать"}
         </button>
-        <button className="bg-red-600 w-full py-2 rounded mt-4" onClick={handleDelete}>
-          Delete User
+
+        <button
+          className="bg-red-600 w-full py-2 rounded mt-4"
+          onClick={handleDelete}
+        >
+          Удалить пользователя
         </button>
-        <button className="bg-gray-600 w-full py-2 rounded mt-2" onClick={onClose}>Close</button>
+
+        <button
+          className="bg-gray-600 w-full py-2 rounded mt-4"
+          onClick={onClose}
+        >
+          Закрыть
+        </button>
       </div>
     </div>
   );
