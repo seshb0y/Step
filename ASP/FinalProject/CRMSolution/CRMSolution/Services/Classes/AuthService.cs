@@ -1,0 +1,153 @@
+﻿using AutoMapper;
+using BCrypt.Net;
+using CRMSolution.Data.Models;
+using CRMSolution.Data.Repository.Interface;
+using CRMSolution.DTO.Requests;
+using CRMSolution.Services.Interfaces;
+using System;
+using System.Threading.Tasks;
+using ControllerFirst.DTO.Requests;
+using ControllerFirst.DTO.Responses;
+using CRMSolution.Data.Repository;
+using CRMSolution.Data.Repository.UserRep;
+
+namespace CRMSolution.Services.Classes;
+
+public class AuthService : IAuthService
+{
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly ITokenService _tokenService;
+    private readonly IMapper _mapper;
+    private readonly ILogger<AuthService> _logger;
+    private readonly INotificationService _notificationService;
+
+    public AuthService(IUnitOfWork unitOfWork, IMapper mapper, ITokenService tokenService, ILogger<AuthService> logger, INotificationService notificationService)
+    {
+        _unitOfWork = unitOfWork;
+        _mapper = mapper;
+        _tokenService = tokenService;
+        _logger = logger;
+        _notificationService = notificationService;
+    }
+
+    public async Task<LoginResponse> LoginAsync(LoginRequest request, HttpContext context)
+    {
+        _logger.LogInformation("Вход в аккаунт: {@Request}", request);
+        var user = await _unitOfWork.UserRep.FindByNameAsync(request.username);
+        var accessToken = await _tokenService.CreateTokenAsync(user.Username);
+        var refreshToken = user.RefreshToken.ToString();
+        
+        context.Response.Cookies.Append("accessToken", accessToken, new CookieOptions
+        {
+            HttpOnly = true,
+            Secure = true,
+            SameSite = SameSiteMode.Strict,
+            Expires = DateTime.UtcNow.AddMinutes(15)
+        });
+
+        context.Response.Cookies.Append("refreshToken", refreshToken, new CookieOptions
+        {
+            HttpOnly = true,
+            Secure = true,
+            SameSite = SameSiteMode.Strict,
+            Expires = DateTime.UtcNow.AddDays(7)
+        });
+
+        await _notificationService.NotifyUserLoggedIn(user);
+
+        return new LoginResponse(accessToken, refreshToken);
+    }
+
+    public async Task<RefreshTokenResponse> RefreshTokenAsync(HttpContext context)
+    {
+        _logger.LogInformation("Обновление токена через cookies");
+
+        var accessToken = context.Request.Cookies["accessToken"];
+        var refreshToken = context.Request.Cookies["refreshToken"];
+
+        Console.WriteLine(refreshToken);
+        if (string.IsNullOrEmpty(refreshToken) || string.IsNullOrEmpty(accessToken))
+            throw new Exception("Tokens are missing");
+
+        var username = await _tokenService.GetNameFromToken(accessToken);
+        var user = await _unitOfWork.UserRep.FindByNameAsync(username);
+
+        if (user == null || user.RefreshToken.ToString() != refreshToken || user.RefreshTokenExpiration < DateTime.UtcNow)
+            throw new Exception("Invalid refresh token");
+        
+        user.RefreshToken = Guid.NewGuid();
+        user.RefreshTokenExpiration = DateTime.UtcNow.AddDays(7);
+        await _unitOfWork.SaveChangesAsync();
+
+        var newAccessToken = await _tokenService.CreateTokenAsync(user.Email);
+        var newRefreshToken = user.RefreshToken.ToString();
+        
+        context.Response.Cookies.Append("accessToken", newAccessToken, new CookieOptions
+        {
+            HttpOnly = true,
+            Secure = true,
+            SameSite = SameSiteMode.Strict,
+            Expires = DateTime.UtcNow.AddMinutes(15)
+        });
+
+        context.Response.Cookies.Append("refreshToken", newRefreshToken, new CookieOptions
+        {
+            HttpOnly = true,
+            Secure = true,
+            SameSite = SameSiteMode.Strict,
+            Expires = DateTime.UtcNow.AddDays(7)
+        });
+
+        await _notificationService.NotifyUserLoggedIn(user);
+
+        return new RefreshTokenResponse(newAccessToken, newRefreshToken);
+    }
+
+    public Task LogoutAsync(HttpContext context)
+    {
+        context.Response.Cookies.Delete("accessToken");
+        context.Response.Cookies.Delete("refreshToken");
+        return Task.CompletedTask;
+    }
+
+    public async Task Logout(string userId)
+    {
+        _logger.LogInformation("Выход пользователя: {UserId}", userId);
+        var user = await _unitOfWork.UserRep.GetByIdAsync(userId);
+        if (user != null)
+        {
+            await _notificationService.NotifyUserLoggedOut(user);
+        }
+    }
+
+    public async Task ChangePassword(string userId, ChangePasswordRequest request)
+    {
+        _logger.LogInformation("Изменение пароля пользователя: {UserId}", userId);
+        var user = await _unitOfWork.UserRep.GetByIdAsync(userId);
+        if (user == null)
+        {
+            throw new KeyNotFoundException($"User with id {userId} not found");
+        }
+
+        if (!VerifyPassword(request.CurrentPassword, user.PasswordHash))
+        {
+            throw new UnauthorizedAccessException("Invalid current password");
+        }
+
+        user.PasswordHash = HashPassword(request.NewPassword);
+        _unitOfWork.UserRep.Update(user);
+        await _unitOfWork.SaveChangesAsync();
+
+        await _notificationService.NotifyPasswordChanged(user);
+    }
+
+    private bool VerifyPassword(string password, string hash)
+    {
+        return BCrypt.Net.BCrypt.Verify(password, hash);
+    }
+
+    private string HashPassword(string password)
+    {
+        return BCrypt.Net.BCrypt.HashPassword(password);
+    }
+}
