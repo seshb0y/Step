@@ -30,7 +30,6 @@ export const UsersPage = () => {
     setIsCreateModalOpen(true);
   };
 
-  console.log(users)
   const openUserModal = (user: User) => {
     setSelectedUser(user);
     setIsUserModalOpen(true);

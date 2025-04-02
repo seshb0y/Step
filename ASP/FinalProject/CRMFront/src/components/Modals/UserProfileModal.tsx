@@ -7,7 +7,6 @@ const UserProfileModal = ({ open, onClose, user }: { open: boolean; onClose: () 
     const handleConfirmEmail = async () => {
         try {
             await axiosInstance.post("/Account/ConfirmEmail", { username: user.username });
-            console.log("Email confirmation request sent successfully");
         } catch (error) {
             console.error("Error confirming email:", error);
         }

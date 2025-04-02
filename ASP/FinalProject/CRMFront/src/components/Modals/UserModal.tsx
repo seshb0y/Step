@@ -27,14 +27,12 @@ const UserModal = ({ user, onClose }: UserModalProps) => {
   });
 
   useEffect(() => {
-    console.log("User data in modal:", user);
     setFormData(user);
   }, [user]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     if (name === 'role') {
-      console.log('Changing role to:', value, typeof value);
       const roleValue = Number(value) as 0 | 1;
       setFormData(prev => ({ ...prev, role: roleValue }));
     } else {
@@ -43,7 +41,6 @@ const UserModal = ({ user, onClose }: UserModalProps) => {
   };
 
   const handleSave = () => {
-    console.log('Saving user with role:', formData.role);
     dispatch(fetchChangeUserData({
       username: formData.username,
       newEmail: formData.email,

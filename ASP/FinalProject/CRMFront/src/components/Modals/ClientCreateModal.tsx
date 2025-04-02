@@ -1,7 +1,10 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createClient } from "../../features/clients/clientSlice";
 import { RootState } from "../../store/store";
+import { useSignalRClient } from "../../hooks/useSignalRClient";
+import {addClientRealtime} from "../../features/clients/clientSlice";
+
 
 interface ClientCreateModalProps {
   onClose: () => void;
@@ -18,6 +21,8 @@ const ClientCreateModal = ({ onClose }: ClientCreateModalProps) => {
     address: "",
     createdAt: new Date().toISOString(),
   });
+
+  
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });

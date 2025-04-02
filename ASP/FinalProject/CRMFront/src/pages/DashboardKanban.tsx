@@ -16,7 +16,6 @@ export const DashboardKanban = () => {
   useEffect(() => {
     dispatch(fetchClientsWithOrdersAndTasks() as never);
   }, [dispatch]);
-  console.log(clients)
   if (error) return <p className="text-red-500">{error}</p>;
 
   // Фильтруем клиентов по статусу их активного заказа

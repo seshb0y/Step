@@ -27,15 +27,12 @@ export const deleteClient = createAsyncThunk(
   "clients/delete",
   async (email: string, { rejectWithValue }) => {
     try {
-      console.log('Attempting to delete client...');
       await axiosInstance.delete(`/Client/delete/`, {data: {email: email} });
-      console.log('Client deleted successfully');
       toast.success('Клиент успешно удален');
       return email;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error('Error deleting client:', error);
-      console.log('Error response:', error.response);
       toast.error(error.response?.data || "Ошибка при удалении клиента");
       return rejectWithValue(error.response?.data || "Failed to delete client");
     }
@@ -107,15 +104,12 @@ export const createClient = createAsyncThunk(
   "clients/create",
   async (clientData: { username: string; email: string }, { rejectWithValue }) => {
     try {
-      console.log('Attempting to create client...');
       const response = await axiosInstance.post("/Client/add", clientData);
-      console.log('Client created successfully:', response.data);
       toast.success('Клиент успешно создан');
       return response.data;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error('Error creating client:', error);
-      console.log('Error response:', error.response);
       toast.error(error.response?.data || "Ошибка при создании клиента");
       return rejectWithValue(error.response?.data || "Failed to create client");
     }
@@ -127,7 +121,6 @@ export const fetchClientsWithOrdersAndTasks = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.get("/Client/Get/Clients/With/Orders/And/Tasks");
-      console.log(response.data)
       return response.data;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
@@ -139,7 +132,14 @@ export const fetchClientsWithOrdersAndTasks = createAsyncThunk(
 const clientsSlice = createSlice({
   name: "clients",
   initialState,
-  reducers: {},
+  reducers: {
+    addClientRealtime: (state, action) => {
+      const exists = state.clients.find(client => client.id === action.payload.id);
+      if (!exists) {
+        state.clients.push(action.payload);
+      }
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchClients.pending, (state) => {
@@ -213,5 +213,6 @@ const clientsSlice = createSlice({
   },
 });
 
+export const { addClientRealtime } = clientsSlice.actions;
 export default clientsSlice.reducer;
 

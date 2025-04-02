@@ -53,7 +53,6 @@ export const fetchChangeTaskData = createAsyncThunk(
 
 export const fetchGetAllTasks = createAsyncThunk("tasks/fetchAll", async (sort: { sortBy: string; descending: boolean }) => {
   const response = await axiosInstance.get("/Task/all/sorted", { params: sort });
-  console.log("Response", response.data)
   return response.data;
 });
 
@@ -62,7 +61,6 @@ export const createTask = createAsyncThunk(
   "tasks/createTask",
   async (taskData: Omit<CreateTask, "id">, { rejectWithValue }) => {
     try {
-      console.log(taskData)
       const response = await axiosInstance.post("/Task/add", taskData);
       return response.data;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

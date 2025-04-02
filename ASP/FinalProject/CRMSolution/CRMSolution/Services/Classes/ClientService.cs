@@ -4,7 +4,9 @@ using CRMSolution.Data.Models;
 using CRMSolution.Data.Repository;
 using CRMSolution.Data.Repository.Interface;
 using CRMSolution.DTO.Requests.Client;
+using CRMSolution.Hubs;
 using CRMSolution.Services.Interfaces;
+using Microsoft.AspNetCore.SignalR;
 
 namespace CRMSolution.Services.Classes;
 
@@ -14,13 +16,16 @@ public class ClientService : IClientService
     private readonly IMapper _mapper;
     private readonly ILogger<ClientService> _logger;
     private readonly ITokenService  _tokenService;
+    private readonly IHubContext<NotificationHub> _hubContext;
     
-    public ClientService(IUnitOfWork clientRepository, IMapper mapper, ILogger<ClientService> logger,  ITokenService tokenService)
+    public ClientService(IUnitOfWork clientRepository, IMapper mapper, ILogger<ClientService> logger,  
+        ITokenService tokenService, IHubContext<NotificationHub> hubContext)
     {
         _clientRepository = clientRepository;
         _mapper = mapper;
         _logger = logger;
         _tokenService = tokenService;
+        _hubContext = hubContext;
     }
     
     public async Task<Client> CreateClient(CreateClientRequest request)
@@ -29,6 +34,15 @@ public class ClientService : IClientService
         Client client = _mapper.Map<Client>(request);
         await _clientRepository.ClientRep.AddAsync(client);
         await _clientRepository.SaveChangesAsync();
+        _logger.LogInformation("Отправка сигнала ClientCreated");
+        await _hubContext.Clients.All.SendAsync("ClientCreated", new
+        {
+            client.Id,
+            client.Name,
+            client.Email,
+            client.Phone,
+            client.Address
+        });
         return await _clientRepository.ClientRep.GetClientByName(request.name);
     }
 
@@ -43,6 +57,14 @@ public class ClientService : IClientService
         client = _mapper.Map(request, client);
         _clientRepository.ClientRep.Update(client);
         await _clientRepository.SaveChangesAsync();
+        await _hubContext.Clients.All.SendAsync("ClientUpdated", new
+        {
+            client.Id,
+            client.Name,
+            client.Email,
+            client.Phone,
+            client.Address
+        });
         return await _clientRepository.ClientRep.GetClientByEmail(request.newEmail);
     }
     
@@ -55,6 +77,10 @@ public class ClientService : IClientService
             throw new KeyNotFoundException($"Client with email {request.email} not found");
         }
         _clientRepository.ClientRep.Delete(client);
+        await _hubContext.Clients.All.SendAsync("ClientDeleted", new
+        {
+            client.Id
+        });
         await _clientRepository.SaveChangesAsync();
     }
 

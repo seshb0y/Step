@@ -59,9 +59,7 @@ const OrderDetailsPage = () => {
 
     const fetchOrderDetails = async () => {
       try {
-        console.log(`Request: /api/orders/${orderId}`);
         const response = await axiosInstance.get(`/Order/${orderId}`);
-        console.log("Server response:", response.data);
         setOrder(response.data);
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (err) {

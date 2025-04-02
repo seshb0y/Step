@@ -38,8 +38,6 @@ const Sidebar = ({ isExpanded, setIsExpanded }: SidebarProps) => {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const user = useAppSelector(state => state.auth.user);
   
-  console.log('User Role:', user?.role, 'Role type:', typeof user?.role);
-  
   const filteredMenuItems = menuItems.filter(item => 
     item.roles.includes(user?.role ?? 1)
   );

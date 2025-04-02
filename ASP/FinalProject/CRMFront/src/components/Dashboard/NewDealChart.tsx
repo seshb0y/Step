@@ -8,8 +8,6 @@ export const NewDealChart = () => {
   const [showCumulative, setShowCumulative] = useState(true);
   const orders = useSelector((state: RootState) => state.orders.orders);
 
-  console.log("NewDealChart rendered");
-  console.log("Orders state:", orders);
 
   if (!orders || orders.length === 0) {
     console.log("No orders data");
@@ -20,7 +18,6 @@ export const NewDealChart = () => {
     (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
   );
 
-  console.log("Chart CHEK");
   let cumulativeAmount = 0;
   const formattedData = sortedOrders.map((order, index) => {
     cumulativeAmount += order.totalAmount;

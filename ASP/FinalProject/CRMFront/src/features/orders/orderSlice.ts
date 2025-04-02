@@ -72,7 +72,6 @@ export const fetchGetAllOrders = createAsyncThunk(
     if (descending !== undefined) params.append("Descending", descending.toString());
 
     const response = await axiosInstance.get(`/Order/all/sorted?${params.toString()}`);
-    console.log("Response", response.data)
     return response.data;
   }
 );

@@ -24,9 +24,6 @@ const OrderEditModal = ({ order, onClose, onUpdate }: OrderEditModalProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const { users, loading, error } = useSelector((state: RootState) => state.users);
   
-  useEffect(() => {
-    console.log('Текущий список пользователей:', users);
-  }, [users]);
 
   const [formData, setFormData] = useState<FormData>({
     totalAmount: order.totalAmount.toString(),

@@ -23,7 +23,6 @@ const UserCreateModal = ({ onClose }: UserCreateModalProps) => {
   };
 
   const handleSave = () => {
-    console.log(formData)
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     dispatch(createUser(formData) as any);
     onClose();

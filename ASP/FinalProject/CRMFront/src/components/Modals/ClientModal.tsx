@@ -74,8 +74,7 @@ const ClientModal = ({ client, onClose }: ClientModalProps) => {
     try {
       const authResponse = await dispatch(checkAuth()).unwrap();
       const updatedUserEmail = authResponse?.email || user?.email || "";
-  
-      console.log("Обновленный userEmail:", updatedUserEmail);
+
   
       dispatch(
         createOrder({

@@ -10,6 +10,7 @@ import ClientModal from "../components/Modals/ClientModal";
 import ClientCreateModal from "../components/Modals/ClientCreateModal";
 import { Client } from "../types/Client";
 
+
 export const ClientsPage = () => {
   const dispatch = useAppDispatch();
   const { clients, loading, error } = useSelector((state: RootState) => state.clients);
@@ -21,12 +22,11 @@ export const ClientsPage = () => {
     sortBy: "id",
     descending: false,
   });
-
+  
   useEffect(() => {
 
   }, [clients]);
 
-  console.log(clients)
   const openCreateClientModal = () => {
     setIsCreateModalOpen(true);
   };
