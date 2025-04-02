@@ -16,16 +16,12 @@ public class OrderService : IOrderService
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
     private readonly ILogger<OrderService> _logger;
-    private readonly IOrderRep _orderRepository;
-    private readonly INotificationService _notificationService;
     
-    public OrderService(IUnitOfWork unitOfWork, IMapper mapper, ILogger<OrderService> logger, IOrderRep orderRepository, INotificationService notificationService)
+    public OrderService(IUnitOfWork unitOfWork, IMapper mapper, ILogger<OrderService> logger)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
         _logger = logger;
-        _orderRepository = orderRepository;
-        _notificationService = notificationService;
     }
     
     public async Task CreateOrder(CreateOrderRequest request)
@@ -52,9 +48,6 @@ public class OrderService : IOrderService
         
         await _unitOfWork.OrderRep.AddOrderToClientAndUser(client, order, user);
         await _unitOfWork.SaveChangesAsync();
-
-        await _notificationService.NotifyOrderCreated(order);
-        await _notificationService.NotifyTaskCreated(firstTask);
     }
 
     public async Task ChangeDataOrder(ChangeOrderDataRequest request)
@@ -65,8 +58,6 @@ public class OrderService : IOrderService
         order = _mapper.Map(request, order);
         _unitOfWork.OrderRep.Update(order);
         await _unitOfWork.SaveChangesAsync();
-
-        await _notificationService.NotifyOrderUpdated(order);
     }
 
     public async Task DeleteOrder(DeleteOrderRequest request)
@@ -81,8 +72,6 @@ public class OrderService : IOrderService
         
         _unitOfWork.OrderRep.Delete(order);
         await _unitOfWork.SaveChangesAsync();
-
-        await _notificationService.NotifyOrderDeleted(order);
     }
 
     // public async Task<OrderResponse> FindOrder(FindOrderRequest request)
@@ -138,18 +127,5 @@ public class OrderService : IOrderService
         
         _unitOfWork.OrderRep.Update(order);
         await _unitOfWork.SaveChangesAsync();
-
-        await _notificationService.NotifyOrderResponsibleChanged(order, user);
-    }
-
-    public async Task UpdateOrderStatus(int orderId, OrderStatus newStatus)
-    {
-        var order = await _orderRepository.GetByIdAsync(orderId);
-        if (order != null)
-        {
-            order.Status = newStatus;
-            await _orderRepository.UpdateAsync(order);
-            await _notificationService.NotifyOrderStatusChanged(order);
-        }
     }
 }

@@ -14,15 +14,13 @@ public class ClientService : IClientService
     private readonly IMapper _mapper;
     private readonly ILogger<ClientService> _logger;
     private readonly ITokenService  _tokenService;
-    private readonly INotificationService _notificationService;
     
-    public ClientService(IUnitOfWork clientRepository, IMapper mapper, ILogger<ClientService> logger,  ITokenService tokenService, INotificationService notificationService)
+    public ClientService(IUnitOfWork clientRepository, IMapper mapper, ILogger<ClientService> logger,  ITokenService tokenService)
     {
         _clientRepository = clientRepository;
         _mapper = mapper;
         _logger = logger;
         _tokenService = tokenService;
-        _notificationService = notificationService;
     }
     
     public async Task<Client> CreateClient(CreateClientRequest request)
@@ -31,9 +29,6 @@ public class ClientService : IClientService
         Client client = _mapper.Map<Client>(request);
         await _clientRepository.ClientRep.AddAsync(client);
         await _clientRepository.SaveChangesAsync();
-
-        await _notificationService.NotifyClientCreated(client);
-
         return await _clientRepository.ClientRep.GetClientByName(request.name);
     }
 
@@ -48,9 +43,6 @@ public class ClientService : IClientService
         client = _mapper.Map(request, client);
         _clientRepository.ClientRep.Update(client);
         await _clientRepository.SaveChangesAsync();
-
-        await _notificationService.NotifyClientUpdated(client);
-
         return await _clientRepository.ClientRep.GetClientByEmail(request.newEmail);
     }
     
@@ -64,8 +56,6 @@ public class ClientService : IClientService
         }
         _clientRepository.ClientRep.Delete(client);
         await _clientRepository.SaveChangesAsync();
-
-        await _notificationService.NotifyClientDeleted(client);
     }
 
     public async Task<FindClientResponse> FindClient(FindClientRequest request)
@@ -110,36 +100,6 @@ public class ClientService : IClientService
         return _mapper.Map<List<ClientWithOrdersAndTasksResponse>>(clients);
     }
 
-    public async Task UpdateClient(UpdateClientRequest request)
-    {
-        _logger.LogInformation("Обновляем клиента: {@Request}", request);
-        var client = await _clientRepository.ClientRep.GetByIdAsync(request.Id);
-        if (client == null)
-        {
-            throw new KeyNotFoundException($"Client with id {request.Id} not found");
-        }
 
-        _mapper.Map(request, client);
-        _clientRepository.ClientRep.Update(client);
-        await _clientRepository.SaveChangesAsync();
 
-        await _notificationService.NotifyClientUpdated(client);
-    }
-
-    public async Task AddContact(int clientId, CreateContactRequest request)
-    {
-        _logger.LogInformation("Добавляем контакт для клиента: {ClientId}, {@Request}", clientId, request);
-        var client = await _clientRepository.ClientRep.GetByIdAsync(clientId);
-        if (client == null)
-        {
-            throw new KeyNotFoundException($"Client with id {clientId} not found");
-        }
-
-        var contact = _mapper.Map<Contact>(request);
-        client.Contacts.Add(contact);
-        _clientRepository.ClientRep.Update(client);
-        await _clientRepository.SaveChangesAsync();
-
-        await _notificationService.NotifyClientContactAdded(client, contact);
-    }
 }

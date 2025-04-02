@@ -11,90 +11,48 @@ namespace CRMSolution.Services.Classes;
 
 public class UserService : IUserService
 {
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IUnitOfWork _userRepository;
     private readonly IMapper _mapper;
     private readonly ILogger<UserService> _logger;
-    private readonly INotificationService _notificationService;
     
-    public UserService(IUnitOfWork unitOfWork, IMapper mapper, ILogger<UserService> logger, INotificationService notificationService)
+    public UserService(IUnitOfWork userRepository, IMapper mapper, ILogger<UserService> logger)
     {
-        _unitOfWork = unitOfWork;
+        _userRepository = userRepository;
         _mapper = mapper;
         _logger = logger;
-        _notificationService = notificationService;
     }
     
-    public async Task CreateUser(CreateUserRequest request)
-    {
-        _logger.LogInformation("Создаем нового пользователя: {@Request}", request);
-        var user = _mapper.Map<User>(request);
-        await _unitOfWork.UserRep.AddAsync(user);
-        await _unitOfWork.SaveChangesAsync();
-
-        await _notificationService.NotifyUserCreated(user);
-    }
-
-    public async Task UpdateUser(UpdateUserRequest request)
-    {
-        _logger.LogInformation("Обновляем пользователя: {@Request}", request);
-        var user = await _unitOfWork.UserRep.GetByIdAsync(request.Id);
-        if (user == null)
-        {
-            throw new KeyNotFoundException($"User with id {request.Id} not found");
-        }
-
-        _mapper.Map(request, user);
-        _unitOfWork.UserRep.Update(user);
-        await _unitOfWork.SaveChangesAsync();
-
-        await _notificationService.NotifyUserUpdated(user);
-    }
-
-    public async Task DeleteUser(string userId)
-    {
-        _logger.LogInformation("Удаляем пользователя: {UserId}", userId);
-        var user = await _unitOfWork.UserRep.GetByIdAsync(userId);
-        if (user == null)
-        {
-            throw new KeyNotFoundException($"User with id {userId} not found");
-        }
-
-        _unitOfWork.UserRep.Delete(user);
-        await _unitOfWork.SaveChangesAsync();
-
-        await _notificationService.NotifyUserDeleted(user);
-    }
-
-    public async Task ChangeUserRole(string userId, string newRole)
-    {
-        _logger.LogInformation("Изменяем роль пользователя: {UserId} на {NewRole}", userId, newRole);
-        var user = await _unitOfWork.UserRep.GetByIdAsync(userId);
-        if (user == null)
-        {
-            throw new KeyNotFoundException($"User with id {userId} not found");
-        }
-
-        user.Role = newRole;
-        _unitOfWork.UserRep.Update(user);
-        await _unitOfWork.SaveChangesAsync();
-
-        await _notificationService.NotifyUserRoleChanged(user, newRole);
-    }
+    // public async Task<User> CreateUser(CreateUserRequest request)
+    // {
+    //     _logger.LogInformation("Создаем нового юзера: {@Request}", request);
+    //     User user = _mapper.Map<User>(request);
+    //     await _userRepository.UserRep.AddAsync(user);
+    //     await _userRepository.SaveChangesAsync();
+    //     return await _userRepository.UserRep.FindByEmailAsync(request.email);
+    // }
 
     public async Task<User> ChangeUserData(ChangeUserDataRequest request)
     {
         _logger.LogInformation("Изменяем данные юзера: {@Request}", request);
-        User user = await _unitOfWork.UserRep.FindByEmailAsync(request.oldEmail);
+        User user = await _userRepository.UserRep.FindByEmailAsync(request.oldEmail);
         user = _mapper.Map(request, user);
-        _unitOfWork.UserRep.Update(user);
-        await _unitOfWork.SaveChangesAsync();
-        return await _unitOfWork.UserRep.FindByEmailAsync(request.newEmail);
+        _userRepository.UserRep.Update(user);
+        await _userRepository.SaveChangesAsync();
+        return await _userRepository.UserRep.FindByEmailAsync(request.newEmail);
+    }
+    
+    public async Task DeleteUser(DeleteUserRequest request)
+    {
+        _logger.LogInformation("Удаляем юзера: {@Request}", request);
+        User user = await _userRepository.UserRep.FindByEmailAsync(request.email);
+        _userRepository.UserRep.Delete(user);
+        await _userRepository.SaveChangesAsync();
     }
 
     public async Task<FindUserReponse> FindUser(FindUserRequest request)
     {
         _logger.LogInformation("Поиск юзера: {@Request}", request);
-        FindUserReponse user = await _unitOfWork.UserRep.GetUsersTasksOrdersClientsAsync(request.email);
+        FindUserReponse user = await _userRepository.UserRep.GetUsersTasksOrdersClientsAsync(request.email);
         // if (user == null)
         // {
         //     _logger.LogWarning("Юзер с email {Email} не найден",request.email);
@@ -106,7 +64,7 @@ public class UserService : IUserService
 
     public async Task<GetAllUsersResponse> GetAllUsers(SortUsersRequest sortUsersRequest)
     {
-        var users = await _unitOfWork.UserRep.GetLowInfoUsersList(sortUsersRequest);
+        var users = await _userRepository.UserRep.GetLowInfoUsersList(sortUsersRequest);
         return _mapper.Map<GetAllUsersResponse>(users);
     }
     

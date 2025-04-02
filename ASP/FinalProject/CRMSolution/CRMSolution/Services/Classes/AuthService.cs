@@ -19,15 +19,13 @@ public class AuthService : IAuthService
     private readonly ITokenService _tokenService;
     private readonly IMapper _mapper;
     private readonly ILogger<AuthService> _logger;
-    private readonly INotificationService _notificationService;
 
-    public AuthService(IUnitOfWork unitOfWork, IMapper mapper, ITokenService tokenService, ILogger<AuthService> logger, INotificationService notificationService)
+    public AuthService(IUnitOfWork unitOfWork, IMapper mapper, ITokenService tokenService, ILogger<AuthService> logger)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
         _tokenService = tokenService;
         _logger = logger;
-        _notificationService = notificationService;
     }
 
     public async Task<LoginResponse> LoginAsync(LoginRequest request, HttpContext context)
@@ -53,9 +51,8 @@ public class AuthService : IAuthService
             Expires = DateTime.UtcNow.AddDays(7)
         });
 
-        await _notificationService.NotifyUserLoggedIn(user);
-
         return new LoginResponse(accessToken, refreshToken);
+
     }
 
     public async Task<RefreshTokenResponse> RefreshTokenAsync(HttpContext context)
@@ -64,6 +61,7 @@ public class AuthService : IAuthService
 
         var accessToken = context.Request.Cookies["accessToken"];
         var refreshToken = context.Request.Cookies["refreshToken"];
+
 
         Console.WriteLine(refreshToken);
         if (string.IsNullOrEmpty(refreshToken) || string.IsNullOrEmpty(accessToken))
@@ -98,56 +96,14 @@ public class AuthService : IAuthService
             Expires = DateTime.UtcNow.AddDays(7)
         });
 
-        await _notificationService.NotifyUserLoggedIn(user);
-
         return new RefreshTokenResponse(newAccessToken, newRefreshToken);
     }
 
+    
     public Task LogoutAsync(HttpContext context)
     {
         context.Response.Cookies.Delete("accessToken");
         context.Response.Cookies.Delete("refreshToken");
         return Task.CompletedTask;
-    }
-
-    public async Task Logout(string userId)
-    {
-        _logger.LogInformation("Выход пользователя: {UserId}", userId);
-        var user = await _unitOfWork.UserRep.GetByIdAsync(userId);
-        if (user != null)
-        {
-            await _notificationService.NotifyUserLoggedOut(user);
-        }
-    }
-
-    public async Task ChangePassword(string userId, ChangePasswordRequest request)
-    {
-        _logger.LogInformation("Изменение пароля пользователя: {UserId}", userId);
-        var user = await _unitOfWork.UserRep.GetByIdAsync(userId);
-        if (user == null)
-        {
-            throw new KeyNotFoundException($"User with id {userId} not found");
-        }
-
-        if (!VerifyPassword(request.CurrentPassword, user.PasswordHash))
-        {
-            throw new UnauthorizedAccessException("Invalid current password");
-        }
-
-        user.PasswordHash = HashPassword(request.NewPassword);
-        _unitOfWork.UserRep.Update(user);
-        await _unitOfWork.SaveChangesAsync();
-
-        await _notificationService.NotifyPasswordChanged(user);
-    }
-
-    private bool VerifyPassword(string password, string hash)
-    {
-        return BCrypt.Net.BCrypt.Verify(password, hash);
-    }
-
-    private string HashPassword(string password)
-    {
-        return BCrypt.Net.BCrypt.HashPassword(password);
     }
 }

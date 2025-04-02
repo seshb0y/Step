@@ -3,7 +3,6 @@ using ControllerFirst.DTO.Responses;
 using CRMSolution.Data.Models;
 using CRMSolution.Data.Repository;
 using CRMSolution.Services.Interfaces;
-using Microsoft.Extensions.Logging;
 
 namespace CRMSolution.Services.Classes;
 
@@ -11,17 +10,13 @@ public class DashboardService : IDashboardService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
-    private readonly ILogger<DashboardService> _logger;
-    private readonly INotificationService _notificationService;
 
-    public DashboardService(IUnitOfWork unitOfWork, IMapper mapper, ILogger<DashboardService> logger, INotificationService notificationService)
+    public DashboardService(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
-        _logger = logger;
-        _notificationService = notificationService;
-    }
-
+    } 
+    
     public async Task<DashboardResponse> GetDashboard()
     {
         List<Client> clients = new List<Client>();
@@ -46,21 +41,5 @@ public class DashboardService : IDashboardService
             OrdersCount = orders.Count,
             TasksCount = tasks.Count,
         };
-    }
-
-    public async Task<DashboardData> GetDashboardData(string userId)
-    {
-        _logger.LogInformation("Получение данных дашборда для пользователя: {UserId}", userId);
-        var data = await _unitOfWork.GetDashboardData(userId);
-        await _notificationService.NotifyDashboardUpdated(userId);
-        return data;
-    }
-
-    public async Task<DashboardData> GetAdminDashboardData()
-    {
-        _logger.LogInformation("Получение данных дашборда для администратора");
-        var data = await _unitOfWork.GetAdminDashboardData();
-        await _notificationService.NotifyDashboardUpdated(null);
-        return data;
     }
 }

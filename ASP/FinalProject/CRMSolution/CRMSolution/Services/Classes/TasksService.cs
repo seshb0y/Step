@@ -13,14 +13,12 @@ public class TasksService : ITasksService
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
     private readonly ILogger<TasksService> _logger;
-    private readonly INotificationService _notificationService;
 
-    public TasksService(IUnitOfWork unitOfWork, IMapper mapper, ILogger<TasksService> logger, INotificationService notificationService)
+    public TasksService(IUnitOfWork unitOfWork, IMapper mapper, ILogger<TasksService> logger)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
         _logger = logger;
-        _notificationService = notificationService;
     }
     
     public async Task CreateTaskAsync(CreateTaskRequest request)
@@ -37,8 +35,6 @@ public class TasksService : ITasksService
         Console.WriteLine(user);
         await _unitOfWork.TasksRep.AddDependency(order, user, task);
         await _unitOfWork.SaveChangesAsync();
-
-        await _notificationService.NotifyTaskCreated(task);
     }
 
     public async Task UpdateTaskAsync(UpdateTaskRequest request)
@@ -47,8 +43,6 @@ public class TasksService : ITasksService
         Tasks task = await _unitOfWork.TasksRep.GetById(request.taskId);
         task = _mapper.Map(request, task);
         await _unitOfWork.SaveChangesAsync();
-
-        await _notificationService.NotifyTaskUpdated(task);
     }
 
     public async Task DeleteTaskAsync(DeleteTaskRequest request)
@@ -57,8 +51,6 @@ public class TasksService : ITasksService
         Tasks task = await _unitOfWork.TasksRep.GetById(request.taskId);
         _unitOfWork.TasksRep.Delete(task);
         await _unitOfWork.SaveChangesAsync();
-
-        await _notificationService.NotifyTaskDeleted(task);
     }
 
     public async Task<TaskResponse> FindTaskByIdAsync(FindTaskRequest request)
@@ -75,21 +67,5 @@ public class TasksService : ITasksService
         {
             Tasks = _mapper.Map<List<TaskDto>>(tasks)
         };
-    }
-
-    public async Task CompleteTask(int taskId)
-    {
-        _logger.LogInformation("Завершаем задачу: {TaskId}", taskId);
-        var task = await _unitOfWork.TasksRep.GetByIdAsync(taskId);
-        if (task == null)
-        {
-            throw new KeyNotFoundException($"Task with id {taskId} not found");
-        }
-
-        task.Status = TaskStatus.Completed;
-        _unitOfWork.TasksRep.Update(task);
-        await _unitOfWork.SaveChangesAsync();
-
-        await _notificationService.NotifyTaskCompleted(task);
     }
 }
