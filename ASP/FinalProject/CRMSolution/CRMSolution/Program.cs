@@ -19,7 +19,6 @@ using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Логирование
 var loggerFactory = LoggerFactory.Create(builder => {
     builder.AddConsole();
     builder.AddDebug();
@@ -28,7 +27,7 @@ var logger = loggerFactory.CreateLogger<Program>();
 builder.Services.AddSingleton(loggerFactory);
 builder.Services.AddLogging();
 
-// CORS
+
 builder.Services.AddCors(policy => {
     policy.AddPolicy("Default", builder => {
         builder
@@ -39,13 +38,13 @@ builder.Services.AddCors(policy => {
     });
 });
 
-// Валидация, Swagger, Accessor
+
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpContextAccessor();
 
-// JWT
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options => {
         options.Events = new JwtBearerEvents {
@@ -68,7 +67,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-// Авторизация
+
 builder.Services.AddAuthorization(options => {
     options.AddPolicy("AdminPolicy", policy =>
         policy.RequireRole(UserRole.Admin.ToString()));
@@ -76,12 +75,12 @@ builder.Services.AddAuthorization(options => {
         policy.RequireRole(UserRole.Manager.ToString(), UserRole.Admin.ToString()));
 });
 
-// Подключение к БД
+
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<CRMContext>(options =>
     options.UseSqlServer(connectionString), ServiceLifetime.Scoped);
 
-// DI
+
 builder.Services.AddTransient<DataSeeder>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -107,14 +106,14 @@ builder.Services.AddControllers();
 
 var app = builder.Build();
 
-// Seed
+
 using (var scope = app.Services.CreateScope()) {
     var services = scope.ServiceProvider;
     var seeder = services.GetRequiredService<DataSeeder>();
     seeder.Seed();
 }
 
-// Middleware pipeline
+
 if (app.Environment.IsDevelopment()) {
     app.UseSwagger();
     app.UseSwaggerUI();
@@ -122,7 +121,7 @@ if (app.Environment.IsDevelopment()) {
 
 app.UseMiddleware<CRMSolution.Middlewares.ExceptionHandlerMiddleware>();
 
-// ❗ ОБЯЗАТЕЛЬНО
+
 app.UseRouting();
 
 app.UseCors("Default");
@@ -130,13 +129,12 @@ app.UseCors("Default");
 app.UseAuthentication();
 app.UseAuthorization();
 
-// ❗ Используем endpoints
+
 app.UseEndpoints(endpoints => {
     endpoints.MapControllers();
     endpoints.MapHub<NotificationHub>("/notificationHub");
 });
 
-// ❌ отключено: app.UseHttpsRedirection();
-// для локальной отладки можно оставить отключенным
+//app.UseHttpsRedirection();
 
 app.Run();

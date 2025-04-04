@@ -22,11 +22,10 @@ export interface CreateOrder{
     clientEmail: string,
     userEmail: string,
     userId: number
-}
-
-export enum OrderStatus
+}export enum OrderStatus
 {
     New,
     Processing,
     Completed
 }
+

@@ -16,19 +16,16 @@ export const DashboardKanban = () => {
   useEffect(() => {
     dispatch(fetchClientsWithOrdersAndTasks() as never);
   }, [dispatch]);
+
   if (error) return <p className="text-red-500">{error}</p>;
 
-  // Фильтруем клиентов по статусу их активного заказа
   const filterClientsByOrderStatus = (status: OrderStatus) => {
     return clients.filter(client =>
       client.orders?.some(order => {
-        // Приводим order.status к числу перед сравнением
-        // const orderStatusAsNumber = Object.values(OrderStatus).indexOf(order.orderStatus as unknown as OrderStatus);
         return order.orderStatus === status;
       })
     );
   };
-  
 
   return (
     <div className="min-h-screen flex bg-dark-bg text-white overflow-hidden">
@@ -39,17 +36,35 @@ export const DashboardKanban = () => {
           <LoadingSpinner />
         </div>
       ) : (
-        <div className={`transition-all duration-300 p-6 mt-20 ${isSidebarExpanded ? "ml-[10px]" : "ml-[10px]"} w-screen`}>
-          <div className="flex flex-row gap-6">
-            <OrderStatusColumn title="New Orders" status={OrderStatus.New} clients={filterClientsByOrderStatus(OrderStatus.New)} />
-            <OrderStatusColumn title="Processing" status={OrderStatus.Processing} clients={filterClientsByOrderStatus(OrderStatus.Processing)} />
-            <OrderStatusColumn title="Completed" status={OrderStatus.Completed} clients={filterClientsByOrderStatus(OrderStatus.Completed)} />
+        <div className={`w-screen flex-1 transition-all duration-300 p-8 mt-20 ${isSidebarExpanded ? "ml-[0px]" : "ml-[-80px]"}`}>
+          <div className="mb-6 text-center">
+            <h1 className="text-3xl font-bold text-primary-purple mb-2">Kanban Board</h1>
+            <p className="text-gray-400">Manage orders using drag-and-drop</p>
+          </div>
+          <div className="flex flex-row justify-center gap-8 overflow-x-auto pb-4 px-4">
+            <OrderStatusColumn 
+              title="New orders" 
+              status={OrderStatus.New} 
+              clients={filterClientsByOrderStatus(OrderStatus.New)}
+              columnColor="from-blue-500/20 to-blue-600/5"
+            />
+            <OrderStatusColumn 
+              title="Processing" 
+              status={OrderStatus.Processing} 
+              clients={filterClientsByOrderStatus(OrderStatus.Processing)}
+              columnColor="from-yellow-500/20 to-yellow-600/5"
+            />
+            <OrderStatusColumn 
+              title="Completed" 
+              status={OrderStatus.Completed} 
+              clients={filterClientsByOrderStatus(OrderStatus.Completed)}
+              columnColor="from-green-500/20 to-green-600/5"
+            />
           </div>
         </div>
       )}
     </div>
   );
-  
 };
 
 export default DashboardKanban;
