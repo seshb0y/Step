@@ -1,9 +1,9 @@
 import ClientPreviewCard from "../Card/ClientPreviewCard";
 import { Client } from "../../types/Client";
 import { OrderStatus } from "../../types/Order";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchChangeOrderData } from "../../features/orders/orderSlice";
-import { AppDispatch } from "../../store/store";
+import { AppDispatch, RootState } from "../../store/store";
 
 interface Props {
   title: string;
@@ -14,6 +14,7 @@ interface Props {
 
 const OrderStatusColumn = ({ title, status, clients, columnColor }: Props) => {
   const dispatch = useDispatch<AppDispatch>();
+  const allClients = useSelector((state: RootState) => state.clients.clients);
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -37,11 +38,17 @@ const OrderStatusColumn = ({ title, status, clients, columnColor }: Props) => {
 
     if (currentStatus !== status) {
       try {
-        await dispatch(fetchChangeOrderData({
-          orderId,
-          status,
-          totalAmount: "0" // Мы не меняем сумму заказа при перетаскивании
-        }));
+        const currentOrder = allClients
+          .flatMap(client => client.orders || [])
+          .find(order => order.orderId === orderId);
+
+        if (currentOrder) {
+          await dispatch(fetchChangeOrderData({
+            orderId,
+            status,
+            totalAmount: currentOrder.totalAmount.toString()
+          }));
+        }
       } catch (error) {
         console.error("Error updating order status:", error);
       }
