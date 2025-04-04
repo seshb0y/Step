@@ -17,22 +17,24 @@ export const Dashboard = () => {
     (state: RootState) => state.dashboard
   );
 
+
   const dispatch = useAppDispatch();
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
+  const [showCumulative, setShowCumulative] = useState(true);
 
   useEffect(() => {
     dispatch(getDashboardData());
     dispatch(checkAuth());
-    dispatch(fetchGetAllOrders({}));
+    dispatch(fetchGetAllOrders({ sortBy: "createdAt", descending: true }));
   }, [dispatch]);
 
   return (
-    <div className="w-max h-screen bg-dark-bg text-white overflow-hidden">
+    <div className="w-max h-screen bg-gradient-to-br from-indigo-950 via-purple-950 to-slate-900 text-white overflow-hidden">
       <Sidebar isExpanded={isSidebarExpanded} setIsExpanded={setIsSidebarExpanded} />
       <TopBox />
 
       <div
-        className={`transition-all duration-300 p-6 mt-20  ${
+        className={`transition-all duration-300 p-6 mt-20 ${
           isSidebarExpanded ? "ml-[200px]" : "ml-[0px]"
         } w-screen`}
       >
@@ -41,18 +43,39 @@ export const Dashboard = () => {
             <LoadingSpinner />
           </div>
         ) : (
-          <>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pr-10 ml-16">
-              <StatsCard title="Clients" value={contacts} change={-12} />
-              <StatsCard title="Orders" value={ordersCount} change={-4} />
-              <StatsCard title="Orders Amount" value={ordersTotalAmount} unit="$" change={-37} />
-            </div>
+          <div className="px-16 pr-[calc(1rem*4-70px)]">
+            <div className="grid grid-cols-2 gap-8">
+              <div>
+                <div className="grid grid-cols-2 gap-6 mb-8">
+                  <StatsCard title="Clients" value={contacts} change={-12} />
+                  <StatsCard title="Orders" value={ordersCount} change={-4} />
+                </div>
+                <div className="bg-gradient-to-br from-indigo-900 to-purple-900 backdrop-blur-sm rounded-lg p-6 min-h-[400px] shadow-xl">
+                  <NewDealChart 
+                    showCumulative={showCumulative}
+                    onToggleView={() => setShowCumulative(!showCumulative)}
+                  />
+                </div>
+              </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6 pr-10 ml-16">
-              <NewDealChart />
-              <TasksStatusTable />
+              <div>
+                <StatsCard
+                  title="Orders Amount" 
+                  value={ordersTotalAmount} 
+                  unit="$" 
+                  change={-37} 
+                />
+                <div className="mt-8 bg-gradient-to-br from-indigo-900 to-purple-900 backdrop-blur-sm rounded-lg p-6 shadow-xl">
+                  <div className="flex items-center justify-between mb-6">
+                    <h2 className="text-xl font-medium text-white">Tasks Info Table</h2>
+                  </div>
+                  <div className="bg-[#0f0d2a]/80 rounded-lg p-4">
+                    <TasksStatusTable />
+                  </div>
+                </div>
+              </div>
             </div>
-          </>
+          </div>
         )}
       </div>
     </div>

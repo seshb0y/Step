@@ -54,9 +54,12 @@ const Sidebar = ({ isExpanded, setIsExpanded }: SidebarProps) => {
         "& .MuiDrawer-paper": {
           width: isExpanded ? 240 : 60,
           boxSizing: "border-box",
-          backgroundColor: "#1a1a2e",
+          background: "linear-gradient(180deg, rgba(30, 27, 75, 0.95) 0%, rgba(88, 28, 135, 0.9) 100%)",
+          backdropFilter: "blur(8px)",
           color: "#fff",
-          transition: "width 0.3s ease",
+          transition: "all 0.3s ease",
+          borderRight: "1px solid rgba(139, 92, 246, 0.1)",
+          boxShadow: "4px 0 6px -1px rgba(0, 0, 0, 0.1), 2px 0 4px -1px rgba(0, 0, 0, 0.06)",
         },
       }}
     >
@@ -71,20 +74,49 @@ const Sidebar = ({ isExpanded, setIsExpanded }: SidebarProps) => {
             onMouseLeave={() => setHoveredItem(null)}
             sx={{
               color: "#fff",
+              margin: "4px 8px",
+              borderRadius: "8px",
+              transition: "all 0.2s ease",
               "&.active": {
-                backgroundColor: "#16213e",
-                marginTop: "15px"
+                background: "linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(124, 58, 237, 0.1))",
+                boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+                marginTop: "8px",
+                marginBottom: "8px",
+              },
+              "&:hover": {
+                background: "linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(124, 58, 237, 0.05))",
+                transform: "translateX(4px)",
               },
             }}
           >
-            <ListItemIcon sx={{ color: "#fff", minWidth: "40px" }}>
+            <ListItemIcon 
+              sx={{ 
+                color: "#fff", 
+                minWidth: "40px",
+                transition: "transform 0.2s ease",
+                "&:hover": {
+                  transform: "scale(1.1)",
+                },
+              }}
+            >
               {hoveredItem === text ? (
                 <Lottie animationData={animation} style={{ width: 60, height: 40, marginLeft: -20 }} />
               ) : (
                 icon
               )}
             </ListItemIcon>
-            {isExpanded && <ListItemText primary={text} />}
+            {isExpanded && (
+              <ListItemText 
+                primary={text} 
+                sx={{
+                  "& .MuiListItemText-primary": {
+                    fontWeight: "500",
+                    fontSize: "0.95rem",
+                    transition: "color 0.2s ease",
+                  },
+                }}
+              />
+            )}
           </ListItemButton>
         ))}
       </List>

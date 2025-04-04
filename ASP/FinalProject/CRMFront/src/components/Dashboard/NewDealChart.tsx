@@ -1,99 +1,112 @@
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
-import { format, parseISO } from "date-fns";
-import { useState } from "react";
+import { format } from "date-fns";
 
-export const NewDealChart = () => {
-  const [showCumulative, setShowCumulative] = useState(true);
-  const orders = useSelector((state: RootState) => state.orders.orders);
+interface NewDealChartProps {
+  showCumulative: boolean;
+  onToggleView: () => void;
+}
 
+export const NewDealChart: React.FC<NewDealChartProps> = ({ showCumulative, onToggleView }) => {
+  const orders = useSelector((state: RootState) => {
+    return state.orders.orders;
+  });
 
-  if (!orders || orders.length === 0) {
-    console.log("No orders data");
+  if (!orders) {
     return null;
   }
+
+  if (orders.length === 0) {
+    return <div className="text-gray-400 text-center py-4">Нет данных для отображения</div>;
+  }
+
 
   const sortedOrders = [...orders].sort(
     (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
   );
 
+
   let cumulativeAmount = 0;
   const formattedData = sortedOrders.map((order, index) => {
-    cumulativeAmount += order.totalAmount;
+    const amount = Number(order.totalAmount) || 0;
+    cumulativeAmount += amount;
     return {
       name: `Deal ${index + 1}`,
-      amount: cumulativeAmount,
-      singleAmount: order.totalAmount,
+      amount: showCumulative ? cumulativeAmount : amount,
       date: format(new Date(order.createdAt), "MMM d"),
       fullDate: format(new Date(order.createdAt), "yyyy-MM-dd"),
     };
   });
 
+
   return (
-    <div className="bg-dark-card p-6 rounded-lg shadow-md border border-dark-border">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-lg font-semibold text-text-light">
+    <div className="h-[400px] w-full">
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-xl font-medium text-white">
           {showCumulative ? "Cumulative Deal Amount" : "Individual Deal Amount"}
         </h2>
-        <button
-          onClick={() => setShowCumulative(!showCumulative)}
-          className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-md transition-colors"
+        <button 
+          onClick={onToggleView}
+          className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg text-sm transition-colors"
         >
           {showCumulative ? "Show Individual" : "Show Cumulative"}
         </button>
       </div>
-      <ResponsiveContainer width="100%" height={500}>
-        <LineChart data={formattedData}>
-          <XAxis 
-            dataKey="name" 
-            stroke="#D580FF"
-            tickFormatter={(value, index) => formattedData[index].date}
-          />
-          <YAxis 
-            stroke="#D580FF"
-            tickFormatter={(value) => `$${value.toLocaleString('en-US')}`}
-          />
-          <Tooltip
-            content={({ active, payload }) => {
-              if (active && payload && payload.length) {
-                const data = payload[0].payload;
-                const amount = showCumulative ? data.amount : data.singleAmount;
-                
-                return (
-                  <div style={{
-                    background: "#1E1E2E",
-                    padding: "8px 12px",
-                    borderRadius: "6px",
-                    color: "#FFFFFF",
-                    fontSize: "14px",
-                    boxShadow: "0px 0px 6px rgba(255, 255, 255, 0.2)"
-                  }}>
-                    <p>{format(parseISO(data.fullDate), "MMMM d, yyyy")}</p>
-                    <p><strong>₽{amount.toLocaleString('en-US')}</strong></p>
-                    <p>Deal #{data.name.split(' ')[1]}</p>
-                  </div>
-                );
-              }
-              return null;
-            }}
-          />
-          <Line 
-            type={showCumulative ? "monotone" : "linear"}
-            dataKey={showCumulative ? "amount" : "singleAmount"}
-            stroke="#9A4DFF" 
-            strokeWidth={2} 
-            dot={{ 
-              stroke: '#9A4DFF',
-              strokeWidth: 2,
-              r: 4,
-              fill: '#1E1E2E'
-            }}
-          />
-        </LineChart>
-      </ResponsiveContainer>
+      <div className="bg-[#0f0d2a]/80 backdrop-blur-sm rounded-lg p-4 h-[300px]">
+        <ResponsiveContainer width="100%" height="100%">
+          <LineChart 
+            data={formattedData}
+            margin={{ top: 10, right: 30, left: 10, bottom: 10 }}
+          >
+            <XAxis 
+              dataKey="date" 
+              stroke="#9CA3AF"
+              fontSize={12}
+              tickLine={false}
+              axisLine={false}
+            />
+            <YAxis 
+              stroke="#9CA3AF"
+              fontSize={12}
+              tickLine={false}
+              axisLine={false}
+              tickFormatter={(value) => `$${value}`}
+            />
+            <Tooltip
+              content={({ active, payload }) => {
+                if (active && payload && payload.length) {
+                  const data = payload[0].payload;
+                  return (
+                    <div className="bg-indigo-900/90 backdrop-blur-sm p-3 rounded-lg border border-purple-500/20 shadow-xl">
+                      <p className="text-white">{data.fullDate}</p>
+                      <p className="text-white font-bold">${data.amount}</p>
+                      <p className="text-gray-400">{data.name}</p>
+                    </div>
+                  );
+                }
+                return null;
+              }}
+            />
+            <Line 
+              type={showCumulative ? "monotone" : "linear"}
+              dataKey="amount" 
+              stroke="#A855F7"
+              strokeWidth={2}
+              dot={{
+                stroke: "#A855F7",
+                strokeWidth: 2,
+                r: 4,
+                fill: "#1e1b4b"
+              }}
+            />
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
     </div>
   );
 };
+
+export default NewDealChart;
 
 

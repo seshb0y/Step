@@ -3,6 +3,11 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { TaskStatus } from "../../types/Task";
 
+interface TasksData {
+  metric: string;
+  value: number;
+}
+
 export const TasksStatusTable = () => {
   const tasksStatuses = useSelector((state: RootState) => state.dashboard.tasksStatuses);
   const tasksCount = useSelector((state: RootState) => state.dashboard.tasksCount);
@@ -13,7 +18,7 @@ export const TasksStatusTable = () => {
     Completed: tasksStatuses.filter(status => status === TaskStatus.Completed).length,
   };
 
-  const tasksData = [
+  const tasksData: TasksData[] = [
     { metric: "Total Tasks", value: tasksCount },
     { metric: "New Tasks", value: statusCounts.New },
     { metric: "In Progress", value: statusCounts.InProgress },
@@ -21,20 +26,22 @@ export const TasksStatusTable = () => {
   ];
 
   return (
-    <div className="bg-dark-card p-6 rounded-lg shadow-md border border-dark-border">
-      <h2 className="text-lg font-semibold text-primary-purple mb-4">Tasks Info Table</h2>
+    <div className="w-full">
       <Table>
         <TableHeader>
-          <TableRow>
-            <TableHead className="text-primary-purple bg-dark-bg">Metric</TableHead>
-            <TableHead className="text-primary-purple bg-dark-bg">Value</TableHead>
+          <TableRow className="border-b border-purple-500/20">
+            <TableHead className="text-purple-300 font-medium">Metric</TableHead>
+            <TableHead className="text-center text-purple-300 font-medium">Value</TableHead>
           </TableRow>
         </TableHeader>
-        <TableBody className="text-primary-purple">
-          {tasksData.map((item, index) => (
-            <TableRow key={index}>
-              <TableCell>{item.metric}</TableCell>
-              <TableCell>{item.value}</TableCell>
+        <TableBody>
+          {tasksData.map((task) => (
+            <TableRow 
+              key={task.metric}
+              className="border-b border-purple-500/10 hover:bg-purple-500/5 transition-colors"
+            >
+              <TableCell className="text-gray-300 text-center">{task.metric}</TableCell>
+              <TableCell className="text-center font-medium text-white">{task.value}</TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -42,3 +49,5 @@ export const TasksStatusTable = () => {
     </div>
   );
 };
+
+export default TasksStatusTable;

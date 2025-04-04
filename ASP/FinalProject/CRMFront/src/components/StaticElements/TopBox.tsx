@@ -39,13 +39,16 @@ const TopBox = () => {
         justifyContent: "space-between",
         alignItems: "center",
         padding: "5px 24px",
-        backgroundColor: "#1a1a2e",
-        borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
+        background: "linear-gradient(to right, rgba(30, 27, 75, 0.9), rgba(88, 28, 135, 0.8))",
+        backdropFilter: "blur(8px)",
+        borderBottom: "1px solid rgba(139, 92, 246, 0.1)",
         position: "fixed",
         top: 0,
         left: isSidebarExpanded ? "240px" : "60px",
         right: 0,
-        transition: "left 0.3s ease",
+        transition: "all 0.3s ease",
+        zIndex: 10,
+        boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
       }}
     >
       {user && <UserProfileModal open={isProfileOpen} onClose={() => setIsProfileOpen(false)} user={user} />}
@@ -55,25 +58,73 @@ const TopBox = () => {
         sx={{ 
           display: "flex", 
           alignItems: "center", 
-          color: "#fff", 
-          fontWeight: "bold" 
+          color: "#fff",
+          fontWeight: "bold",
+          textShadow: "0 2px 4px rgba(0,0,0,0.1)",
         }}
       >
         <Lottie animationData={LogoAnimation} style={{ width: 80, height: 50, marginRight: 10 }} />
         CRMSolution
       </Typography>
 
-      <Box sx={{ display: "flex", alignItems: "center" }}>
-        <Typography sx={{ marginRight: "10px", color: "#fff" }}>{user?.username || "User"}</Typography>
-        <IconButton onClick={handleMenuOpen}>
-          <Avatar sx={{ bgcolor: "primary.main" }}>{user?.username?.charAt(0).toUpperCase() || "U"}</Avatar>
+      <Box 
+        sx={{ 
+          display: "flex", 
+          alignItems: "center",
+          position: "absolute",
+          right: "-5px",
+          paddingRight: "24px",
+        }}
+      >
+        <Typography 
+          sx={{ 
+            marginRight: "10px", 
+            color: "#fff",
+            fontSize: "0.95rem",
+            fontWeight: "500",
+          }}
+        >
+          {user?.username || "User"}
+        </Typography>
+        <IconButton 
+          onClick={handleMenuOpen}
+          sx={{
+            transition: "transform 0.2s ease",
+            "&:hover": {
+              transform: "scale(1.05)",
+            }
+          }}
+        >
+          <Avatar 
+            sx={{ 
+              bgcolor: "transparent",
+              background: "linear-gradient(135deg, #8B5CF6 0%, #6D28D9 100%)",
+              boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+            }}
+          >
+            {user?.username?.charAt(0).toUpperCase() || "U"}
+          </Avatar>
         </IconButton>
 
         <Menu
           anchorEl={anchorEl}
           open={open}
           onClose={handleMenuClose}
-          sx={{ "& .MuiPaper-root": { backgroundColor: "#1a1a2e", color: "#fff" } }}
+          sx={{ 
+            "& .MuiPaper-root": { 
+              backgroundColor: "rgba(30, 27, 75, 0.95)",
+              backdropFilter: "blur(8px)",
+              color: "#fff",
+              border: "1px solid rgba(139, 92, 246, 0.1)",
+              boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
+            },
+            "& .MuiMenuItem-root": {
+              transition: "background-color 0.2s ease",
+              "&:hover": {
+                backgroundColor: "rgba(139, 92, 246, 0.1)",
+              }
+            }
+          }}
         >
           <MenuItem
             onClick={() => {
@@ -84,7 +135,7 @@ const TopBox = () => {
             Профиль
           </MenuItem>
           <MenuItem onClick={handleLogOut}>
-            <Logout fontSize="small" sx={{ marginRight: "8px" }} />
+            <Logout fontSize="small" sx={{ marginRight: "8px", color: "#8B5CF6" }} />
             Выйти
           </MenuItem>
         </Menu>
