@@ -5,7 +5,9 @@ using CRMSolution.Data.Models;
 using CRMSolution.Data.Repository;
 using CRMSolution.DTO.Requests;
 using CRMSolution.DTO.Requests.Client;
+using CRMSolution.Hubs;
 using CRMSolution.Services.Interfaces;
+using Microsoft.AspNetCore.SignalR;
 
 namespace CRMSolution.Services.Classes;
 
@@ -14,12 +16,14 @@ public class UserService : IUserService
     private readonly IUnitOfWork _userRepository;
     private readonly IMapper _mapper;
     private readonly ILogger<UserService> _logger;
+    private readonly IHubContext<NotificationHub> _notificationHub;
     
-    public UserService(IUnitOfWork userRepository, IMapper mapper, ILogger<UserService> logger)
+    public UserService(IUnitOfWork userRepository, IMapper mapper, ILogger<UserService> logger, IHubContext<NotificationHub> notificationHub)
     {
         _userRepository = userRepository;
         _mapper = mapper;
         _logger = logger;
+        _notificationHub = notificationHub;
     }
     
     // public async Task<User> CreateUser(CreateUserRequest request)
@@ -38,6 +42,14 @@ public class UserService : IUserService
         user = _mapper.Map(request, user);
         _userRepository.UserRep.Update(user);
         await _userRepository.SaveChangesAsync();
+        await _notificationHub.Clients.All.SendAsync("UserUpdated", new
+        {
+            user.Id,
+            user.Email,
+            user.Username,
+            user.CreatedAt,
+            user.Role,
+        });
         return await _userRepository.UserRep.FindByEmailAsync(request.newEmail);
     }
     
@@ -47,6 +59,10 @@ public class UserService : IUserService
         User user = await _userRepository.UserRep.FindByEmailAsync(request.email);
         _userRepository.UserRep.Delete(user);
         await _userRepository.SaveChangesAsync();
+        await _notificationHub.Clients.All.SendAsync("UserDeleted", new
+        {
+            user.Id,
+        });
     }
 
     public async Task<FindUserReponse> FindUser(FindUserRequest request)

@@ -14,7 +14,7 @@ interface UserModalProps {
 interface FormData {
   username: string;
   email: string;
-  role: 0 | 1;
+  userRole: 0 | 1;
 }
 
 const UserModal = ({ user, onClose }: UserModalProps) => {
@@ -23,31 +23,39 @@ const UserModal = ({ user, onClose }: UserModalProps) => {
   const [formData, setFormData] = useState<FormData>({
     username: user.username,
     email: user.email,
-    role: user.role === 0 ? 0 : 1
+    userRole: user.userRole === 0 ? 0 : 1
   });
 
   useEffect(() => {
-    setFormData(user);
+    setFormData({
+      username: user.username,
+      email: user.email,
+      userRole: user.userRole
+    });
   }, [user]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    if (name === 'role') {
+    if (name === 'userRole') {
       const roleValue = Number(value) as 0 | 1;
-      setFormData(prev => ({ ...prev, role: roleValue }));
+      setFormData(prev => ({ ...prev, userRole: roleValue }));
     } else {
       setFormData(prev => ({ ...prev, [name]: value }));
     }
   };
 
-  const handleSave = () => {
-    dispatch(fetchChangeUserData({
-      username: formData.username,
-      newEmail: formData.email,
-      oldEmail: user.email,
-      role: formData.role
-    }));
-    setIsEditing(false);
+  const handleSave = async () => {
+    try {
+      await dispatch(fetchChangeUserData({
+        username: formData.username,
+        newEmail: formData.email,
+        oldEmail: user.email,
+        role: formData.userRole
+      })).unwrap();
+      setIsEditing(false);
+    } catch (error) {
+      console.error('Error updating user:', error);
+    }
   };
 
   const handleDelete = () => {
@@ -90,7 +98,7 @@ const UserModal = ({ user, onClose }: UserModalProps) => {
               <label className="block text-sm">Роль</label>
               <input
                 type="text"
-                value={formData.role === 0 ? 'Администратор' : 'Менеджер'}
+                value={formData.userRole === 0 ? 'Администратор' : 'Менеджер'}
                 disabled
                 className="w-full px-3 py-2 rounded bg-gray-700 text-white"
               />
@@ -123,8 +131,8 @@ const UserModal = ({ user, onClose }: UserModalProps) => {
             <div className="mb-2">
               <label className="block text-sm">Роль</label>
               <select
-                name="role"
-                value={formData.role}
+                name="userRole"
+                value={formData.userRole}
                 onChange={handleChange}
                 className="w-full px-3 py-2 rounded bg-gray-700 text-white"
               >
@@ -140,7 +148,7 @@ const UserModal = ({ user, onClose }: UserModalProps) => {
           <ul className="mt-2">
             {user.orders.map(order => (
               <li key={order.id} className="mb-2 p-2 bg-gray-700 rounded">
-                <p>ID: {order.id}</p>
+                <p>ID: {order.orderId}</p>
                 <p>Бюджет: {order.totalAmount}</p>
                 <p>Статус: {OrderStatus[order.status]}</p>
               </li>
@@ -154,7 +162,7 @@ const UserModal = ({ user, onClose }: UserModalProps) => {
         {user.tasks && user.tasks.length > 0 ? (
           <ul className="mt-2">
             {user.tasks.map(task => (
-              <li key={task.id} className="mb-2 p-2 bg-gray-700 rounded">
+              <li key={task.taskId} className="mb-2 p-2 bg-gray-700 rounded">
                 <p>Название: {task.title}</p>
                 <p>Описание: {task.description}</p>
                 <p>Статус: {TaskStatus[task.status]}</p>

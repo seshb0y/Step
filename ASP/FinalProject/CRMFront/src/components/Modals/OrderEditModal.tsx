@@ -24,12 +24,22 @@ const OrderEditModal = ({ order, onClose, onUpdate }: OrderEditModalProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const { users, loading, error } = useSelector((state: RootState) => state.users);
   
+  useEffect(() => {
+    void dispatch(fetchUsers());
+  }, [dispatch]);
 
   const [formData, setFormData] = useState<FormData>({
     totalAmount: order.totalAmount.toString(),
     status: order.status,
     userId: Number(order.users[0]?.userId) || 0
   });
+
+  useEffect(() => {
+    setFormData(prev => ({
+      ...prev,
+      userId: Number(order.users[0]?.userId) || 0
+    }));
+  }, [order.users]);
 
   const handleTotalAmountChange = (value: string) => {
     setFormData(prev => ({ ...prev, totalAmount: value }));
@@ -60,7 +70,7 @@ const OrderEditModal = ({ order, onClose, onUpdate }: OrderEditModalProps) => {
         orderId: order.id
       })).unwrap();
 
-      if (formData.userId !== order.users[0]?.userId) {
+      if (formData.userId !== Number(order.users[0]?.userId)) {
         await dispatch(fetchAssignUserToOrder({
           orderId: order.id,
           userId: formData.userId
@@ -68,7 +78,7 @@ const OrderEditModal = ({ order, onClose, onUpdate }: OrderEditModalProps) => {
       }
 
       if (result) {
-        const updatedUser = users.find(u => u.userId === formData.userId);
+        const updatedUser = users.find(u => Number(u.userId) === formData.userId);
         onUpdate({
           ...order,
           totalAmount: numericBudget,

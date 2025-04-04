@@ -109,7 +109,23 @@ export const fetchAssignUserToOrder = createAsyncThunk(
 const ordersSlice = createSlice({
   name: "orders",
   initialState,
-  reducers: {},
+  reducers: {
+    addOrderRealtime: (state, action) => {
+      const exists = state.orders.find(order => order.orderId === action.payload.orderId);
+      if (!exists) {
+        state.orders.push(action.payload);
+      }
+    },
+    changeOrderRealtime: (state, action) => {
+      const index = state.orders.findIndex(order => order.orderId === action.payload.orderId);
+      if (index !== -1) {
+        state.orders[index] = action.payload;
+      }
+    },
+    deleteOrderRealtime: (state, action) => {
+      state.orders = state.orders.filter(order => order.orderId !== action.payload.orderId);
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchGetAllOrders.pending, (state) => {
@@ -179,5 +195,6 @@ const ordersSlice = createSlice({
   },
 });
 
+export const { addOrderRealtime, changeOrderRealtime, deleteOrderRealtime } = ordersSlice.actions;
 export default ordersSlice.reducer;
 

@@ -5,14 +5,16 @@ import { useAppDispatch } from "../hooks/useAppDispatch";
 import { fetchUsers } from "../features/user/userSlice";
 import Sidebar from "../components/StaticElements/Sidebar";
 import TopBox from "../components/StaticElements/TopBox";
-import LoadingSpinner from "../components/LoadingSpinner";
+import LoadingScreen from "../components/LoadingScreen";
 import UserModal from "../components/Modals/UserModal";
 import UserCreateModal from "../components/Modals/UserCreateModal";
 import { User } from "../types/User";
 
 export const UsersPage = () => {
   const dispatch = useAppDispatch();
-  const { users, loading, error } = useSelector((state: RootState) => state.users);
+  const { users, loading, error } = useSelector((state: RootState) => {
+    return state.users;
+  });
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [isUserModalOpen, setIsUserModalOpen] = useState(false);
@@ -57,7 +59,6 @@ export const UsersPage = () => {
           </button>
         </div>
 
-        {/* Кнопки сортировки */}
         <div className="flex gap-4 mb-4 ml-16 text-primary-purple">
           <button className="bg-gray-900 px-4 py-2 rounded" onClick={() => handleSort("id")}>Sort by Id</button>
           <button className="bg-gray-900 px-4 py-2 rounded" onClick={() => handleSort("userName")}>Sort by Username</button>
@@ -69,7 +70,7 @@ export const UsersPage = () => {
 
         <div className="overflow-x-auto ml-16">
           {loading ? (
-            <LoadingSpinner />
+            <LoadingScreen title="Users" subtitle="Loading users data..." />
           ) : error ? (
             <p className="text-red-500">{error}</p>
           ) : (
@@ -85,17 +86,22 @@ export const UsersPage = () => {
                 </tr>
               </thead>
               <tbody>
-                {users.map((user) => (
-                  <tr key={user.userId} className="border-b border-gray-700 bg-dark-bg hover:bg-gray-700 cursor-pointer"
-                      onClick={() => openUserModal(user)}>
-                    <td className="py-2 px-4 text-center">{user.userId}</td>
-                    <td className="py-2 px-4 text-center">{user.username}</td>
-                    <td className="py-2 px-4 text-center">{user.isEmailConfirmed.toString()}</td>
-                    <td className="py-2 px-4 text-center">{user.email}</td>
-                    <td className="py-2 px-4 text-center">{user.role === 0 ? 'Admin' : 'Manager'}</td>
-                    <td className="py-2 px-4 text-center">{new Date(user.createdAt).toLocaleDateString()}</td>
-                  </tr>
-                ))}
+                {users.map((user) => {
+                  console.log('User role:', user.role);
+                  return (
+                    <tr key={user.userId} className="border-b border-gray-700 bg-dark-bg hover:bg-gray-700 cursor-pointer"
+                        onClick={() => openUserModal(user)}>
+                      <td className="py-2 px-4 text-center">{user.userId}</td>
+                      <td className="py-2 px-4 text-center">{user.username}</td>
+                      <td className="py-2 px-4 text-center">{user.isEmailConfirmed?.toString() ?? 'false'}</td>
+                      <td className="py-2 px-4 text-center">{user.email}</td>
+                      <td className="py-2 px-4 text-center">
+                        {user.userRole === 0 ? 'Administrator' : 'Manager'}
+                      </td>
+                      <td className="py-2 px-4 text-center">{new Date(user.createdAt).toLocaleDateString()}</td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           )}

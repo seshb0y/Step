@@ -2,7 +2,7 @@ import { useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createClient } from "../../features/clients/clientSlice";
 import { RootState } from "../../store/store";
-import { useSignalRClient } from "../../hooks/useSignalRClient";
+import { useSignalR } from "../../hooks/useSignalR";
 import {addClientRealtime} from "../../features/clients/clientSlice";
 
 

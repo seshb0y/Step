@@ -15,10 +15,7 @@ public class OrderRep : Repository<Order>, IOrderRep
 
     public async Task<Order> GetByIdAsync(int id)
     {
-        Console.WriteLine($"Total Orders in DbContext: {_context.Orders.Count()}");
-        Console.WriteLine($"Attempting to fetch Order with ID: {id}");
         var order = _context.Orders.Where(o => o.Id == id).First();
-        Console.WriteLine($"Fetched Order: {order?.Id}");
         return order;
     }
     public async Task AddOrderToClientAndUser(Client client, Order order, User user)

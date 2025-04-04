@@ -5,7 +5,7 @@ import { useAppDispatch } from "../hooks/useAppDispatch";
 import { fetchGetAllOrders } from "../features/orders/orderSlice";
 import Sidebar from "../components/StaticElements/Sidebar";
 import TopBox from "../components/StaticElements/TopBox";
-import LoadingSpinner from "../components/LoadingSpinner";
+import LoadingScreen from "../components/LoadingScreen";
 import { useNavigate } from "react-router-dom";
 import { OrderStatus } from "../types/Order";
 
@@ -51,7 +51,7 @@ export const OrdersPage = () => {
         {/* Таблица заказов */}
         <div className="overflow-x-auto ml-16">
           {loading ? (
-            <LoadingSpinner />
+            <LoadingScreen title="Orders" subtitle="Loading orders data..." />
           ) : error ? (
             <p className="text-red-500">{error}</p>
           ) : (

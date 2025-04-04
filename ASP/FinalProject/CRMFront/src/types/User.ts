@@ -5,7 +5,7 @@ export interface User {
     userId: string;
     username: string;
     email: string;
-    role: 0 | 1;
+    userRole: 0 | 1;
     isEmailConfirmed: boolean;
     createdAt: Date;
     orders: Order[];

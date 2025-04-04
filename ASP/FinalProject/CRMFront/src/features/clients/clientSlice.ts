@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "../../api/axiosInstance";
 import { Client } from "../../types/Client";
 import { toast } from 'react-toastify';
+import { Order } from "../../types/Order";
 
 interface ClientsState {
   clients: Client[];
@@ -138,6 +139,44 @@ const clientsSlice = createSlice({
       if (!exists) {
         state.clients.push(action.payload);
       }
+    },
+    changeClientRealtime: (state, action) => {
+      const index = state.clients.findIndex(client => client.id === action.payload.id);
+      if (index !== -1) {
+        state.clients[index] = action.payload;
+      }
+    },
+    deleteClientRealtime: (state, action) => {
+      state.clients = state.clients.filter(client => client.id !== action.payload.id);
+    },
+    updateOrderInClientRealtime: (state, action: { payload: Order }) => {
+      console.log("🔄 Начало обновления заказа в clientSlice");
+      console.log("📦 Данные заказа:", action.payload);
+      console.log("👥 Текущие клиенты:", state.clients);
+
+      // Находим клиента с этим заказом
+      const clientIndex = state.clients.findIndex(client => {
+        const hasOrder = client.orders?.some(order => {
+          const match = order.orderId === action.payload.orderId;
+          return match;
+        });
+        return hasOrder;
+      });
+
+
+      if (clientIndex !== -1) {
+        // Находим индекс заказа у клиента
+        const orderIndex = state.clients[clientIndex].orders?.findIndex(
+          order => order.orderId === action.payload.orderId
+        );
+
+        // Если заказ найден, обновляем его
+        if (orderIndex !== undefined && orderIndex !== -1 && state.clients[clientIndex].orders) {
+          state.clients[clientIndex].orders[orderIndex] = action.payload;
+        }
+      } else {
+        console.log("❌ Клиент с заказом не найден");
+      }
     }
   },
   extraReducers: (builder) => {
@@ -213,6 +252,6 @@ const clientsSlice = createSlice({
   },
 });
 
-export const { addClientRealtime } = clientsSlice.actions;
+export const { addClientRealtime, changeClientRealtime, deleteClientRealtime, updateOrderInClientRealtime } = clientsSlice.actions;
 export default clientsSlice.reducer;
 

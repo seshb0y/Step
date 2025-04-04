@@ -11,10 +11,12 @@ using ControllerFirst.DTO.Requests;
 using ControllerFirst.DTO.Responses;
 using CRMSolution.Data.Repository;
 using CRMSolution.Data.Repository.UserRep;
+using CRMSolution.Hubs;
 using Microsoft.AspNetCore.Mvc;
 using MimeKit;
 using MailKit.Net.Smtp;
 using MailKit.Security;
+using Microsoft.AspNetCore.SignalR;
 
 
 namespace CRMSolution.Services.Classes;
@@ -27,9 +29,10 @@ public class AccountService : IAccountService
     private readonly ITokenService _tokenService;
     private readonly ILogger<AccountService> _logger;
     private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly IHubContext<NotificationHub> _notificationHub;
 
     public AccountService(IMapper mapper, IUnitOfWork unitOfWork, IConfiguration config, ITokenService tokenService,
-        ILogger<AccountService> logger,  IHttpContextAccessor httpContextAccessor)
+        ILogger<AccountService> logger,  IHttpContextAccessor httpContextAccessor, IHubContext<NotificationHub> notificationHub)
     {
         _mapper = mapper;
         _unitOfWork = unitOfWork;
@@ -37,6 +40,7 @@ public class AccountService : IAccountService
         _tokenService = tokenService;
         _logger = logger;
         _httpContextAccessor = httpContextAccessor;
+        _notificationHub = notificationHub;
     }
 
     public async Task RegisterAsync(RegisterRequest request)
@@ -57,6 +61,14 @@ public class AccountService : IAccountService
 
         await _unitOfWork.UserRep.AddAsync(user);
         await _unitOfWork.SaveChangesAsync();
+        await _notificationHub.Clients.All.SendAsync("NewUserRegistered", new
+        {
+            user.Id,
+            user.Email,
+            user.Username,
+            user.CreatedAt,
+            user.Role,
+        });
     }
 
     public async Task ConfirmEmailAsync(ConfirmRequest request, HttpContext context)

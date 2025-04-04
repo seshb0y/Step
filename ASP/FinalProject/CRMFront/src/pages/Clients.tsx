@@ -5,7 +5,7 @@ import { useAppDispatch } from "../hooks/useAppDispatch";
 import { fetchClients } from "../features/clients/clientSlice";
 import Sidebar from "../components/StaticElements/Sidebar";
 import TopBox from "../components/StaticElements/TopBox";
-import LoadingSpinner from "../components/LoadingSpinner";
+import LoadingScreen from "../components/LoadingScreen";
 import ClientModal from "../components/Modals/ClientModal";
 import ClientCreateModal from "../components/Modals/ClientCreateModal";
 import { Client } from "../types/Client";
@@ -73,7 +73,7 @@ export const ClientsPage = () => {
         {/* Таблица клиентов */}
         <div className="overflow-x-auto ml-16">
           {loading ? (
-            <LoadingSpinner />
+            <LoadingScreen title="Clients" subtitle="Loading clients data..." />
           ) : error ? (
             <p className="text-red-500">{error}</p>
           ) : (

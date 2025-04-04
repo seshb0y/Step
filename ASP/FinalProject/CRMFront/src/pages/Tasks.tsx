@@ -5,7 +5,7 @@ import { useAppDispatch } from "../hooks/useAppDispatch";
 import { fetchGetAllTasks } from "../features/tasks/tasksSlice";
 import Sidebar from "../components/StaticElements/Sidebar";
 import TopBox from "../components/StaticElements/TopBox";
-import LoadingSpinner from "../components/LoadingSpinner";
+import LoadingScreen from "../components/LoadingScreen";
 import { useNavigate } from "react-router-dom";
 import { Task, TaskStatus } from "../types/Task";
 
@@ -51,7 +51,7 @@ export const TasksPage = () => {
 
         <div className="overflow-x-auto ml-16">
           {loading ? (
-            <LoadingSpinner />
+            <LoadingScreen title="Tasks" subtitle="Loading tasks data..." />
           ) : error ? (
             <p className="text-red-500">{error}</p>
           ) : (

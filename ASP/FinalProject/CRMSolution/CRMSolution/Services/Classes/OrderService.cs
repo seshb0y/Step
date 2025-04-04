@@ -7,7 +7,9 @@ using CRMSolution.Data.Repository.OrderResp;
 using CRMSolution.DTO.Requests;
 using CRMSolution.DTO.Requests.Order;
 using CRMSolution.DTO.Requests.Orders;
+using CRMSolution.Hubs;
 using CRMSolution.Services.Interfaces;
+using Microsoft.AspNetCore.SignalR;
 
 namespace CRMSolution.Services.Classes;
 
@@ -16,12 +18,14 @@ public class OrderService : IOrderService
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
     private readonly ILogger<OrderService> _logger;
+    private readonly IHubContext<NotificationHub> _notificationHub;
     
-    public OrderService(IUnitOfWork unitOfWork, IMapper mapper, ILogger<OrderService> logger)
+    public OrderService(IUnitOfWork unitOfWork, IMapper mapper, ILogger<OrderService> logger,  IHubContext<NotificationHub> notificationHub)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
         _logger = logger;
+        _notificationHub = notificationHub;
     }
     
     public async Task CreateOrder(CreateOrderRequest request)
@@ -48,6 +52,13 @@ public class OrderService : IOrderService
         
         await _unitOfWork.OrderRep.AddOrderToClientAndUser(client, order, user);
         await _unitOfWork.SaveChangesAsync();
+        await _notificationHub.Clients.All.SendAsync("OrderCreated", new
+        {
+            order.Id,
+            order.CreatedAt,
+            order.TotalAmount,
+            order.Status,
+        });
     }
 
     public async Task ChangeDataOrder(ChangeOrderDataRequest request)
@@ -58,6 +69,13 @@ public class OrderService : IOrderService
         order = _mapper.Map(request, order);
         _unitOfWork.OrderRep.Update(order);
         await _unitOfWork.SaveChangesAsync();
+        await _notificationHub.Clients.All.SendAsync("OrderUpdated", new
+        {
+            order.Id,
+            order.CreatedAt,
+            order.TotalAmount,
+            order.Status,
+        });
     }
 
     public async Task DeleteOrder(DeleteOrderRequest request)
@@ -72,6 +90,10 @@ public class OrderService : IOrderService
         
         _unitOfWork.OrderRep.Delete(order);
         await _unitOfWork.SaveChangesAsync();
+        await _notificationHub.Clients.All.SendAsync("OrderDeleted", new
+        {
+            order.Id,
+        });
     }
 
     // public async Task<OrderResponse> FindOrder(FindOrderRequest request)

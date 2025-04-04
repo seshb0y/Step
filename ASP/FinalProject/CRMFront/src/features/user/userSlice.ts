@@ -40,15 +40,28 @@ export const deleteUser = createAsyncThunk(
 
 export const fetchChangeUserData = createAsyncThunk(
   "users/data/change",
-  async ({ username, newEmail, oldEmail, role }: { username: string; newEmail: string; oldEmail: string; role: typeof UserRole[keyof typeof UserRole] }, { rejectWithValue }) => {
+  async ({ username, newEmail, oldEmail, role }: { 
+    username: string; 
+    newEmail: string; 
+    oldEmail: string; 
+    role: typeof UserRole[keyof typeof UserRole] 
+  }, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.put(`/User/change/`, { username, newEmail, oldEmail, role });
+      const response = await axiosInstance.put(`/User/change/`, { 
+        username, 
+        newEmail, 
+        oldEmail, 
+        role
+      });
       toast.success('Данные пользователя успешно обновлены');
       return response.data; 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      toast.error(error.response?.data || "Ошибка при обновлении данных пользователя");
-      return rejectWithValue(error.response?.data || "Failed to update user data");
+    } catch (error: unknown) {
+      const err = error as { response?: { data?: unknown } };
+      const errorMessage = typeof err.response?.data === 'string' 
+        ? err.response.data 
+        : "Ошибка при обновлении данных пользователя";
+      toast.error(errorMessage);
+      return rejectWithValue(errorMessage);
     }
   }
 );
@@ -110,7 +123,32 @@ export const createUser = createAsyncThunk(
 const usersSlice = createSlice({
   name: "users",
   initialState,
-  reducers: {},
+  reducers: {
+    addUserRealtime: (state, action) => {
+      const exists = state.users.find(user => 
+        user.userId === action.payload.userId || 
+        user.email === action.payload.email
+      );
+      if (!exists) {
+        const newUser = {
+          ...action.payload,
+          userId: action.payload.id || action.payload.userId, // Поддерживаем оба варианта id
+          userRole: action.payload.role || action.payload.userRole, // Поддерживаем оба варианта role
+          isEmailConfirmed: action.payload.isEmailConfirmed || false
+        };
+        state.users.push(newUser);
+      }
+    },
+    changeUserRealtime: (state, action) => {
+      const index = state.users.findIndex(user => user.userId === action.payload.userId);
+      if (index !== -1) {
+        state.users[index] = action.payload;
+      }
+    },
+    deleteUserRealtime: (state, action) => {
+      state.users = state.users.filter(user => user.userId !== action.payload.userId);
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchUsers.pending, (state) => {
@@ -149,7 +187,7 @@ const usersSlice = createSlice({
           state.users[userIndex] = {
             ...state.users[userIndex],
             orders: action.payload.orders || [],
-            clients: action.payload.clients || []
+            //clients: action.payload.clients || []
           };
         }
         state.userLoading = false;
@@ -164,9 +202,16 @@ const usersSlice = createSlice({
         state.userError = null;
       })
       .addCase(fetchChangeUserData.fulfilled, (state, action) => {
-        const index = state.users.findIndex(user => user.userId === action.payload.id);
+        const index = state.users.findIndex(user => user.email === action.meta.arg.oldEmail);
         if (index !== -1) {
-          state.users[index] = action.payload; 
+          const updatedUser = {
+            ...state.users[index],
+            username: action.payload.username,
+            email: action.payload.email,
+            userRole: action.payload.role,
+            isEmailConfirmed: action.payload.isEmailConfirmed
+          };
+          state.users[index] = updatedUser;
         }
         state.userLoading = false;
       })
@@ -183,14 +228,17 @@ const usersSlice = createSlice({
       })
 
       .addCase(createUser.fulfilled, (state, action) => {
-        state.users.push(action.payload)
-        state.users[-1].isEmailConfirmed = false;
+        // Не добавляем пользователя здесь, так как он придет через SignalR
+        state.userCreating = false;
+        state.userCreateError = null;
       })
       .addCase(createUser.rejected, (state, action) => {
-        state.error = action.payload as string
+        state.userCreateError = action.payload as string;
+        state.userCreating = false;
       })
   },
 });
 
+export const { addUserRealtime, changeUserRealtime, deleteUserRealtime } = usersSlice.actions;
 export default usersSlice.reducer;
 

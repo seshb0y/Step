@@ -73,7 +73,20 @@ export const createTask = createAsyncThunk(
 const tasksSlice = createSlice({
   name: "tasks",
   initialState,
-  reducers: {},
+  reducers: {
+    addTaskRealtime: (state, action) => {
+      state.tasks.push(action.payload);
+    },
+    changeTaskRealtime: (state, action) => {
+      const index = state.tasks.findIndex(task => task.id === action.payload.id);
+      if (index !== -1) {
+        state.tasks[index] = action.payload;
+      }
+    },
+    deleteTaskRealtime: (state, action) => {
+      state.tasks = state.tasks.filter(task => task.id !== action.payload.id);
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchGetAllTasks.pending, (state) => {
@@ -114,5 +127,6 @@ const tasksSlice = createSlice({
   },
 });
 
+export const { addTaskRealtime, changeTaskRealtime, deleteTaskRealtime } = tasksSlice.actions;
 export default tasksSlice.reducer;
 
