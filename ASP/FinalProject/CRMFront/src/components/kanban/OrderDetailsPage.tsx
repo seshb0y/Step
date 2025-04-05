@@ -7,12 +7,18 @@ import LoadingSpinner from "../LoadingSpinner";
 import Sidebar from "../StaticElements/Sidebar";
 import TopBox from "../StaticElements/TopBox";
 import { Order, OrderStatus } from "../../types/Order";
-import { TaskStatus } from "../../types/Task";
+import { Task, TaskStatus } from "../../types/Task";
 import { AppDispatch } from "../../store/store";
-import Modal from "../ui/Modal";
 import { fetchChangeClientData } from "../../features/clients/clientSlice";
 import OrderEditModal from "../Modals/OrderEditModal";
 import { fetchUsers } from "../../features/user/userSlice";
+
+interface EditingTask {
+  id: number;
+  tittle: string;
+  description: string;
+  status: TaskStatus;
+}
 
 const OrderDetailsPage = () => {
   const { orderId } = useParams();
@@ -27,12 +33,7 @@ const OrderDetailsPage = () => {
   const [taskDueDate, setTaskDueDate] = useState("");
   const [deletingTaskIds, setDeletingTaskIds] = useState<number[]>([]);
   const [isEditTaskModalOpen, setIsEditTaskModalOpen] = useState(false);
-  const [editingTask, setEditingTask] = useState<{
-    id: number;
-    title: string;
-    description: string;
-    status: TaskStatus;
-  } | null>(null);
+  const [editingTask, setEditingTask] = useState<EditingTask | null>(null);
   const [editingTaskDescription, setEditingTaskDescription] = useState("");
   const [editingTaskStatus, setEditingTaskStatus] = useState<TaskStatus>(TaskStatus.New);
   const [updatingTaskId, setUpdatingTaskId] = useState<number | null>(null);
@@ -84,7 +85,7 @@ const OrderDetailsPage = () => {
   }, [order?.client]);
 
   const handleCallClient = async () => {
-    if (!order?.client.phone) return;
+    if (!order?.client?.phone) return;
   
     try {
       const response = await axiosInstance.post("/api/twilio/call", { to: order.client.phone });
@@ -117,7 +118,7 @@ const OrderDetailsPage = () => {
   };
 
   const handleCreateTask = async () => {
-    if (!taskTitle.trim() || !taskDescription.trim() || !taskDueDate || !order) return;
+    if (!taskTitle.trim() || !taskDescription.trim() || !taskDueDate || !order?.id || !order?.users?.[0]?.username) return;
 
     const taskData = {
       title: taskTitle,
@@ -135,14 +136,14 @@ const OrderDetailsPage = () => {
   };
 
   const handleDeleteTask = async (taskId: number) => {
-    if (!order) return;
+    if (!order?.tasks) return;
     
     try {
       setDeletingTaskIds(prev => [...prev, taskId]);
       await dispatch(deleteTask(taskId));
       setOrder({
         ...order,
-        tasks: order.tasks.filter(task => task.id !== taskId)
+        tasks: order.tasks.filter(task => task.id === taskId)
       });
     } catch (error) {
       console.error("Ошибка при удалении задачи:", error);
@@ -152,7 +153,7 @@ const OrderDetailsPage = () => {
   };
 
   const handleEditTask = async () => {
-    if (!editingTask || !order) return;
+    if (!editingTask || !order?.tasks) return;
     
     try {
       setUpdatingTaskId(editingTask.id);
@@ -160,10 +161,9 @@ const OrderDetailsPage = () => {
       await axiosInstance.put("/Task/change", {
         taskId: editingTask.id,
         description: editingTaskDescription,
-        status: TaskStatus[editingTaskStatus]
+        status: editingTaskStatus
       });
 
-      // Обновляем локальное состояние
       setOrder({
         ...order,
         tasks: order.tasks.map(task =>
@@ -182,7 +182,7 @@ const OrderDetailsPage = () => {
     }
   };
 
-  const openEditTaskModal = (task: typeof editingTask) => {
+  const openEditTaskModal = (task: EditingTask) => {
     setEditingTask(task);
     setEditingTaskDescription(task?.description || "");
     setEditingTaskStatus(task?.status || TaskStatus.New);
@@ -248,6 +248,19 @@ const OrderDetailsPage = () => {
     setOrder(updatedOrder);
   };
 
+  const getStatusTextFromNumber = (statusNumber: number): string => {
+    switch (statusNumber) {
+      case 0:
+        return "New";
+      case 1:
+        return "Processing";
+      case 2:
+        return "Completed";
+      default:
+        return "Unknown";
+    }
+  };
+
   if (loading) return <LoadingSpinner />;
   if (error) return <p className="text-red-500">{error}</p>;
 
@@ -269,8 +282,8 @@ const OrderDetailsPage = () => {
               <div className="flex justify-between items-center">
                 <div>
                   <p className="text-white font-medium">Бюджет: {order.totalAmount.toLocaleString('ru-RU')} ₽</p>
-                  <p className="text-white font-medium">Статус: {OrderStatus[order.status]}</p>
-                  <p className="text-white font-medium">Отв-ный: {order.users[0].username}</p>
+                  <p className="text-white font-medium">Статус: {getStatusTextFromNumber(Number(order.status))}</p>
+                  <p className="text-white font-medium">Отв-ный: {order.users?.[0]?.username || 'Не назначен'}</p>
                 </div>
                 <button
                   onClick={() => setIsOrderEditModalOpen(true)}
@@ -310,16 +323,18 @@ const OrderDetailsPage = () => {
                     <button
                       onClick={() => {
                         setIsEditingClient(false);
-                        setEditedClientData({
-                          name: order.client.name,
-                          email: order.client.email,
-                          phone: order.client.phone,
-                          address: order.client.address
-                        });
+                        if (order.client) {
+                          setEditedClientData({
+                            name: order.client.name,
+                            email: order.client.email,
+                            phone: order.client.phone,
+                            address: order.client.address
+                          });
+                        }
                       }}
                       className="bg-gray-600 px-4 py-2 rounded text-white flex-1"
                     >
-                      Отменить
+                      Отмена
                     </button>
                   </div>
                 </div>
@@ -356,20 +371,27 @@ const OrderDetailsPage = () => {
               >
                 Добавить задачу
               </button>
-              {order.tasks?.length > 0 ? (
+              {order.tasks && order.tasks.length > 0 ? (
                 <div className="space-y-4">
                   {order.tasks.map((task) => (
                     <div key={task.id} className="bg-[#3a1a5e] p-4 rounded-md shadow-md">
                       <div className="flex justify-between items-start">
                         <div>
-                          <h3 className="text-lg font-semibold">{task.title}</h3>
+                          <h3 className="text-lg font-semibold">{task.tittle}</h3>
                           <p>{task.description}</p>
                           <p className="text-sm text-gray-400">Статус: {TaskStatus[task.status]}</p>
-                          <p className="text-sm text-gray-400">Дедлайн: {new Date(task.dueDate).toLocaleDateString()}</p>
+                          <p className="text-sm text-gray-400">
+                            Дедлайн: {task.dueDate ? new Date(task.dueDate).toLocaleDateString() : 'Не указан'}
+                          </p>
                         </div>
                         <div className="flex gap-2">
                           <button
-                            onClick={() => openEditTaskModal(task)}
+                            onClick={() => task.id && openEditTaskModal({
+                              id: task.id,
+                              tittle: task.tittle,
+                              description: task.description || '',
+                              status: task.status
+                            })}
                             className={`${
                               updatingTaskId === task.id
                                 ? "bg-purple-700"
@@ -384,15 +406,15 @@ const OrderDetailsPage = () => {
                             )}
                           </button>
                           <button
-                            onClick={() => handleDeleteTask(task.id)}
+                            onClick={() => task.id && handleDeleteTask(task.id)}
                             className={`${
-                              deletingTaskIds.includes(task.id)
+                              deletingTaskIds.includes(task.id || 0)
                                 ? "bg-red-700"
                                 : "bg-red-600 hover:bg-red-700"
                             } text-white px-3 py-1 rounded-md text-sm transition-colors flex items-center justify-center min-w-[80px]`}
-                            disabled={deletingTaskIds.includes(task.id)}
+                            disabled={deletingTaskIds.includes(task.id || 0)}
                           >
-                            {deletingTaskIds.includes(task.id) ? (
+                            {deletingTaskIds.includes(task.id || 0) ? (
                               <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                             ) : (
                               "Удалить"
@@ -510,7 +532,7 @@ const OrderDetailsPage = () => {
             <div className="space-y-4">
               <div>
                 <label className="block text-sm text-gray-300 mb-1">Название</label>
-                <p className="text-white font-medium">{editingTask.title}</p>
+                <p className="text-white font-medium">{editingTask.tittle}</p>
               </div>
 
               <div>
@@ -527,14 +549,14 @@ const OrderDetailsPage = () => {
                 <label className="block text-sm text-gray-300 mb-1">Статус</label>
                 <select
                   value={editingTaskStatus}
-                  onChange={(e) => setEditingTaskStatus(Number(e.target.value) as TaskStatus)}
+                  onChange={(e) => setEditingTaskStatus(e.target.value as TaskStatus)}
                   className="w-full px-4 py-2 bg-[#2a1042] text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500/50"
                 >
-                  {Object.entries(TaskStatus)
-                    .filter(([key]) => !isNaN(Number(key)))
-                    .map(([key, value]) => (
-                      <option key={key} value={key}>
-                        {value}
+                  {Object.values(TaskStatus)
+                    .filter(status => typeof status === 'string')
+                    .map((status) => (
+                      <option key={status} value={status}>
+                        {status}
                       </option>
                     ))}
                 </select>

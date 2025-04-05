@@ -23,7 +23,11 @@ export const NewDealChart: React.FC<NewDealChartProps> = ({ showCumulative, onTo
 
 
   const sortedOrders = [...orders].sort(
-    (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+    (a, b) => {
+      const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+      const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+      return dateA - dateB;
+    }
   );
 
 
@@ -34,8 +38,8 @@ export const NewDealChart: React.FC<NewDealChartProps> = ({ showCumulative, onTo
     return {
       name: `Deal ${index + 1}`,
       amount: showCumulative ? cumulativeAmount : amount,
-      date: format(new Date(order.createdAt), "MMM d"),
-      fullDate: format(new Date(order.createdAt), "yyyy-MM-dd"),
+      date: order.createdAt ? format(new Date(order.createdAt), "MMM d") : "-",
+      fullDate: order.createdAt ? format(new Date(order.createdAt), "yyyy-MM-dd") : "-",
     };
   });
 

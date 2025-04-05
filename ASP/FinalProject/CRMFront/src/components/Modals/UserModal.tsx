@@ -3,6 +3,8 @@ import { useDispatch } from "react-redux";
 import { deleteUser, fetchChangeUserData } from "../../features/user/userSlice";
 import { User } from '../../types/User';
 import { AppDispatch } from "../../store/store";
+import { OrderStatus } from "../../types/Order";
+import { TaskStatus } from "../../types/Task";
 
 interface UserModalProps {
   user: User;
@@ -18,6 +20,7 @@ interface FormData {
 const UserModal = ({ user, onClose }: UserModalProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const [isEditing, setIsEditing] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState<FormData>({
     username: user.username,
     email: user.email,
@@ -44,6 +47,7 @@ const UserModal = ({ user, onClose }: UserModalProps) => {
 
   const handleSave = async () => {
     try {
+      setError(null);
       await dispatch(fetchChangeUserData({
         username: formData.username,
         newEmail: formData.email,
@@ -52,31 +56,43 @@ const UserModal = ({ user, onClose }: UserModalProps) => {
       })).unwrap();
       setIsEditing(false);
     } catch (error) {
+      setError('Ошибка при обновлении пользователя. Пожалуйста, попробуйте снова.');
       console.error('Error updating user:', error);
     }
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (window.confirm("Вы уверены, что хотите удалить этого пользователя?")) {
-      dispatch(deleteUser(user.email));
-      onClose();
+      try {
+        setError(null);
+        await dispatch(deleteUser(user.email)).unwrap();
+        onClose();
+      } catch (error) {
+        setError('Ошибка при удалении пользователя. Пожалуйста, попробуйте снова.');
+        console.error('Ошибка при удалении пользователя:', error);
+      }
     }
   };
 
-  const getStatusColor = (status: string): string => {
+  const getStatusColor = (status: OrderStatus | TaskStatus): string => {
     switch (status) {
-      case "New":
+      case OrderStatus.New:
+      case TaskStatus.New:
         return 'bg-blue-500/20 text-blue-300';
-      case "InProgress":
+      case OrderStatus.InProgress:
+      case TaskStatus.InProgress:
         return 'bg-yellow-500/20 text-yellow-300';
-      case "Completed":
+      case OrderStatus.Completed:
+      case TaskStatus.Completed:
         return 'bg-green-500/20 text-green-300';
+      case OrderStatus.Cancelled:
+        return 'bg-red-500/20 text-red-300';
       default:
         return 'bg-gray-500/20 text-gray-300';
     }
   };
 
-  const getStatusText = (status: string): string => {
+  const getStatusText = (status: OrderStatus | TaskStatus): string => {
     return status || "Unknown";
   };
 
@@ -94,6 +110,12 @@ const UserModal = ({ user, onClose }: UserModalProps) => {
             ✕
           </button>
         </div>
+
+        {error && (
+          <div className="mb-4 p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-red-300">
+            {error}
+          </div>
+        )}
 
         <div className="space-y-4">
           <div>

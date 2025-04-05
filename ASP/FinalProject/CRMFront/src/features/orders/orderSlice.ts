@@ -40,17 +40,13 @@ export const deleteOrder = createAsyncThunk(
 
 export const fetchChangeOrderData = createAsyncThunk(
   "order/data/change",
-  async ({ totalAmount, status, orderId }: { 
-    totalAmount: string; 
-    status: OrderStatus; 
+  async (request: { 
+    totalAmount: number; 
+    status: number; 
     orderId: number;
   }, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.put(`/Order/change`, { 
-        totalAmount: parseFloat(totalAmount), 
-        status: status, 
-        orderId: orderId 
-      });
+      const response = await axiosInstance.put(`/Order/change`, request);
       toast.success('Данные заказа успешно обновлены');
       return response.data;
     } catch (error: unknown) {

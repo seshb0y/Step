@@ -23,13 +23,33 @@ const OrderEditModal = ({ order, onClose, onUpdate }: OrderEditModalProps) => {
     dispatch(fetchUsers({}));
   }, [dispatch]);
 
+  const getStatusNumber = (status: OrderStatus): number => {
+    switch (status) {
+      case OrderStatus.New:
+        return 0;
+      case OrderStatus.InProgress:
+        return 1;
+      case OrderStatus.Completed:
+        return 2;
+      default:
+        return 0;
+    }
+  };
+
   const handleSave = async () => {
+    if (!editedOrder.id) {
+      toast.error('ID заказа не определен');
+      return;
+    }
+
     try {
-      await dispatch(fetchChangeOrderData({
-        orderId: editedOrder.id,
-        status: editedOrder.status,
-        totalAmount: editedOrder.totalAmount.toString()
-      })).unwrap();
+      const request = {
+        totalAmount: Number(editedOrder.totalAmount),
+        status: getStatusNumber(editedOrder.status),
+        orderId: editedOrder.id
+      };
+
+      await dispatch(fetchChangeOrderData(request)).unwrap();
 
       if (selectedUserId) {
         await dispatch(fetchAssignUserToOrder({
@@ -41,7 +61,8 @@ const OrderEditModal = ({ order, onClose, onUpdate }: OrderEditModalProps) => {
       onUpdate(editedOrder);
       onClose();
       toast.success('Заказ успешно обновлен');
-    } catch {
+    } catch (error) {
+      console.error('Ошибка при обновлении заказа:', error);
       toast.error('Ошибка при обновлении заказа');
     }
   };
