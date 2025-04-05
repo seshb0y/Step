@@ -11,6 +11,8 @@ import LoadingScreen from "../components/LoadingScreen";
 export const DashboardKanban = () => {
   const dispatch = useDispatch();
   const { clients, loading, error } = useSelector((state: RootState) => state.clients);
+  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+  const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
 
   useEffect(() => {
@@ -55,9 +57,9 @@ export const DashboardKanban = () => {
   );
 
   return (
-    <div className="min-h-screen flex bg-dark-bg text-white overflow-hidden">
+    <div className="w-screen h-screen bg-gradient-to-br from-indigo-950 via-purple-950 to-slate-900 text-white overflow-hidden">
       <Sidebar isExpanded={isSidebarExpanded} setIsExpanded={setIsSidebarExpanded} />
-      <TopBox />
+      <TopBox isExpanded={isSidebarExpanded} />
       {loading ? <LoadingScreen title="Kanban Board" /> : renderContent()}
     </div>
   );

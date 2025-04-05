@@ -49,7 +49,8 @@ public class UserRep : Repository<User>, IUserRep
             orders = user.UserOrders.Select(uo => new FindUserOrdersResponse()
             {
                 orderId = uo.Order.Id.ToString(),
-                status = uo.Order.Status
+                totalAmount = uo.Order.TotalAmount,
+                status = uo.Order.Status.ToString()
             }).ToArray(),
 
             clients = user.ClientUsers.Select(uc => new FindUserClientsResponse()
@@ -60,7 +61,8 @@ public class UserRep : Repository<User>, IUserRep
             tasks = user.UserTasks.Select(ut => new FindUserTasksResponse()
             {
                 taskId = ut.Task.Id.ToString(),
-                status = (TaskStatus)ut.Task.Status
+                tittle = ut.Task.Title,
+                status = ut.Task.Status.ToString()
             }).ToArray()
         };
     }

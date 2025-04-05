@@ -57,13 +57,13 @@ public class UserProfile : Profile
                 .MapFrom(src => src.UserOrders.Select(o => new FindUserOrdersResponse
                 {
                     orderId = o.OrderId.ToString(),
-                    status = o.Order.Status,
+                    status = o.Order.Status.ToString(),
                 }).ToArray()))
             .ForMember(dest => dest.tasks, opt => opt
                 .MapFrom(src => src.UserTasks.Select(t => new FindUserTasksResponse
                 {
                     taskId = t.TaskId.ToString(),
-                    status = (TaskStatus)t.Task.Status
+                    status = t.Task.Status.ToString()
                 }).ToArray()));
             
             

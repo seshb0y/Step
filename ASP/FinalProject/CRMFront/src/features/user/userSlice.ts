@@ -187,7 +187,7 @@ const usersSlice = createSlice({
           state.users[userIndex] = {
             ...state.users[userIndex],
             orders: action.payload.orders || [],
-            //clients: action.payload.clients || []
+            tasks: action.payload.tasks || []
           };
         }
         state.userLoading = false;

@@ -36,17 +36,51 @@ const ClientModal = ({ client, onClose }: ClientModalProps) => {
     }
   }, [clients, client.id]);
 
+  const formatPhoneNumber = (value: string) => {
+    // Удаляем все нецифровые символы
+    const phoneNumber = value.replace(/\D/g, '');
+    
+    // Форматируем номер в виде +7 (XXX) XXX-XX-XX
+    if (phoneNumber.length >= 11) {
+      return `+7 (${phoneNumber.slice(1, 4)}) ${phoneNumber.slice(4, 7)}-${phoneNumber.slice(7, 9)}-${phoneNumber.slice(9, 11)}`;
+    } else if (phoneNumber.length > 4) {
+      return `+7 (${phoneNumber.slice(1, 4)}) ${phoneNumber.slice(4)}`;
+    } else if (phoneNumber.length > 1) {
+      return `+7 (${phoneNumber.slice(1)}`;
+    } else if (phoneNumber.length === 1) {
+      return `+7 (${phoneNumber}`;
+    }
+    return '+7 (';
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    
+    if (name === 'phone') {
+      // Для телефона применяем форматирование
+      setFormData(prev => ({
+        ...prev,
+        [name]: formatPhoneNumber(value)
+      }));
+    } else {
+      // Для остальных полей оставляем как есть
+      setFormData(prev => ({
+        ...prev,
+        [name]: value
+      }));
+    }
   };
 
   const handleSave = () => {
+    // Преобразуем номер телефона в формат для сервера (только цифры)
+    const phoneForServer = formData.phone.replace(/\D/g, '');
+    
     dispatch(
       fetchChangeClientData({
         name: formData.name,
         newEmail: formData.email,
         oldEmail: client.email,
-        phone: formData.phone,
+        phone: phoneForServer,
         address: formData.address,
       })
     );
@@ -93,85 +127,112 @@ const ClientModal = ({ client, onClose }: ClientModalProps) => {
   };
   
   return (
-    <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
-      <div className="bg-gray-800 p-6 rounded-lg w-[500px] max-h-[80vh] overflow-auto">
-        <h2 className="text-2xl text-primary-purple mb-4">
-          {isEditing ? "Edit Client" : "Client Details"}
+    <div className="fixed inset-0 flex justify-center items-center bg-black/50 backdrop-blur-sm">
+      <div className="bg-gradient-to-br from-[rgba(30,27,75,0.95)] to-[rgba(88,28,135,0.9)] p-8 rounded-xl w-[600px] max-h-[90vh] overflow-auto shadow-xl border border-purple-500/10">
+        <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-200 to-purple-400 mb-6">
+          {isEditing ? "Редактирование клиента" : "Информация о клиенте"}
         </h2>
 
-        {clientLoading && <p className="text-primary-purple">Loading data...</p>}
-        {clientError && <p className="text-red-500">{clientError}</p>}
+        {clientLoading && (
+          <div className="flex items-center gap-2 text-purple-300 mb-4">
+            <div className="w-5 h-5 border-2 border-purple-400/20 rounded-full animate-spin border-t-purple-400"></div>
+            Загрузка данных...
+          </div>
+        )}
+        
+        {clientError && (
+          <div className="bg-red-500/10 text-red-400 p-3 rounded-lg mb-4">
+            {clientError}
+          </div>
+        )}
 
-        {["name", "email", "phone", "address"].map((field) => (
-          <div key={field} className="mb-2">
-            <label className="block text-sm">{field.toUpperCase()}</label>
+        <div className="space-y-4">
+          {["name", "email", "phone", "address"].map((field) => (
+            <div key={field}>
+              <label className="block text-sm text-purple-200 mb-1 font-medium">
+                {field.charAt(0).toUpperCase() + field.slice(1)}
+              </label>
+              <input
+                type={field === "email" ? "email" : "text"}
+                name={field}
+                value={String(formData[field as keyof Client] ?? "")}
+                disabled={!isEditing}
+                onChange={handleChange}
+                className={`w-full px-4 py-2.5 rounded-lg border text-white transition-colors ${
+                  isEditing 
+                    ? "bg-[rgba(30,27,75,0.5)] border-purple-500/10 focus:outline-none focus:border-purple-500/30" 
+                    : "bg-[rgba(30,27,75,0.3)] border-transparent cursor-not-allowed"
+                }`}
+                placeholder={field === "phone" ? "+7 (___) ___-__-__" : `Введите ${field}`}
+              />
+            </div>
+          ))}
+        </div>
+
+        <div className="border-t border-purple-500/10 my-6"></div>
+
+        <div className="space-y-4 mb-6">
+          <h3 className="text-lg font-medium text-purple-200">Создать заказ</h3>
+          
+          <div>
+            <label className="block text-sm text-purple-200 mb-1 font-medium">Сумма заказа</label>
             <input
               type="text"
-              name={field}
-              value={String(formData[field as keyof Client] ?? "")}
-              disabled={!isEditing}
-              onChange={handleChange}
-              className="w-full px-3 py-2 rounded bg-gray-700 text-white"
+              name="totalAmount"
+              value={newOrderData.totalAmount}
+              onChange={(e) => setNewOrderData({ ...newOrderData, totalAmount: e.target.value })}
+              className="w-full px-4 py-2.5 rounded-lg bg-[rgba(30,27,75,0.5)] border border-purple-500/10 text-white placeholder-purple-300/30 focus:outline-none focus:border-purple-500/30 transition-colors"
+              placeholder="Введите сумму заказа"
             />
           </div>
-        ))}
 
-        {/* Поле ввода для суммы заказа */}
-        <div className="mb-2">
-          <label className="block text-sm">Total Amount</label>
-          <input
-            type="text"
-            name="totalAmount"
-            value={newOrderData.totalAmount}
-            onChange={(e) =>
-              setNewOrderData({ ...newOrderData, totalAmount: e.target.value })
-            }
-            className="w-full px-3 py-2 rounded bg-gray-700 text-white"
-          />
-        </div>
+          <div>
+            <label className="block text-sm text-purple-200 mb-1 font-medium">Ответственный</label>
+            <select
+              name="userId"
+              value={newOrderData.userId}
+              onChange={(e) => setNewOrderData({ ...newOrderData, userId: e.target.value })}
+              className="w-full px-4 py-2.5 rounded-lg bg-[rgba(30,27,75,0.5)] border border-purple-500/10 text-white focus:outline-none focus:border-purple-500/30 transition-colors"
+            >
+              <option value="">Выберите ответственного</option>
+              {users.map((user) => (
+                <option key={user.userId} value={user.userId} className="bg-[rgba(30,27,75,0.95)]">
+                  {user.username}
+                </option>
+              ))}
+            </select>
+          </div>
 
-        {/* Выбор ответственного */}
-        <div className="mb-2">
-          <label className="block text-sm">Ответственный</label>
-          <select
-            name="userId"
-            value={newOrderData.userId}
-            onChange={(e) =>
-              setNewOrderData({ ...newOrderData, userId: e.target.value })
-            }
-            className="w-full px-3 py-2 rounded bg-gray-700 text-white"
+          <button 
+            className="w-full bg-gradient-to-r from-purple-600 to-purple-800 hover:from-purple-700 hover:to-purple-900 px-6 py-2.5 rounded-lg text-white font-medium transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/20"
+            onClick={handleCreateOrder}
           >
-            <option value="">Выберите ответственного</option>
-            {users.map((user) => (
-              <option key={user.userId} value={user.userId}>
-                {user.username}
-              </option>
-            ))}
-          </select>
+            Создать заказ
+          </button>
         </div>
 
-        {/* Кнопка создания заказа */}
-        <button className="bg-primary-purple w-full py-2 rounded mt-4" onClick={handleCreateOrder}>
-          Create Order
-        </button>
+        <div className="flex flex-col gap-3">
+          <button
+            className="w-full bg-gradient-to-r from-purple-600 to-purple-800 hover:from-purple-700 hover:to-purple-900 px-6 py-2.5 rounded-lg text-white font-medium transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/20"
+            onClick={isEditing ? handleSave : () => setIsEditing(true)}
+          >
+            {isEditing ? "Сохранить" : "Редактировать"}
+          </button>
 
-        <button
-          className="bg-primary-purple w-full py-2 rounded mt-4"
-          onClick={isEditing ? handleSave : () => setIsEditing(true)}
-        >
-          {isEditing ? "Save" : "Edit"}
-        </button>
+          <button
+            className="w-full bg-gradient-to-r from-red-600 to-red-800 hover:from-red-700 hover:to-red-900 px-6 py-2.5 rounded-lg text-white font-medium transition-all duration-300 hover:shadow-lg hover:shadow-red-500/20"
+            onClick={handleDelete}
+          >
+            Удалить клиента
+          </button>
 
-        <button
-          className="bg-red-600 w-full py-2 rounded mt-4"
-          onClick={handleDelete}
-        >
-          Delete Client
-        </button>
-
-        <button className="bg-gray-600 w-full py-2 rounded mt-2" onClick={onClose}>
-          Close
-        </button>
+          <button 
+            className="w-full bg-[rgba(30,27,75,0.5)] hover:bg-[rgba(30,27,75,0.7)] px-6 py-2.5 rounded-lg text-white/80 font-medium transition-colors border border-purple-500/10 hover:border-purple-500/20"
+            onClick={onClose}
+          >
+            Закрыть
+          </button>
+        </div>
       </div>
     </div>
   );

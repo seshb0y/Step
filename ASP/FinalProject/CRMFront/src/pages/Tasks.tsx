@@ -8,6 +8,7 @@ import TopBox from "../components/StaticElements/TopBox";
 import LoadingScreen from "../components/LoadingScreen";
 import { useNavigate } from "react-router-dom";
 import { Task, TaskStatus } from "../types/Task";
+import { TaskSearch } from "../components/Search/TaskSearch";
 
 export const TasksPage = () => {
   const dispatch = useAppDispatch();
@@ -25,61 +26,129 @@ export const TasksPage = () => {
 
   const handleSort = (key: string) => {
     setSortTask((prev) => ({
-        sortBy: key,
-        descending: prev.sortBy === key ? !prev.descending : false,
+      sortBy: key,
+      descending: prev.sortBy === key ? !prev.descending : false,
     }));
     dispatch(fetchGetAllTasks({ sortBy: key, descending: sortTask.sortBy === key ? !sortTask.descending : false }));
-};
+  };
+
+  const handleTaskSelect = (task: Task) => {
+    navigate(`/orders/${task.orderId}`);
+  };
+
+  const getStatusColor = (status: number): string => {
+    switch (status) {
+      case TaskStatus.New:
+        return 'bg-blue-500/20 text-blue-300';
+      case TaskStatus.InProgress:
+        return 'bg-yellow-500/20 text-yellow-300';
+      case TaskStatus.Completed:
+        return 'bg-green-500/20 text-green-300';
+      default:
+        return 'bg-red-500/20 text-red-300';
+    }
+  };
+
+  const getStatusText = (status: number): string => {
+    switch (status) {
+      case TaskStatus.New:
+        return "New";
+      case TaskStatus.InProgress:
+        return "InProgress";
+      case TaskStatus.Completed:
+        return "Completed";
+      default:
+        return "Unknown";
+    }
+  };
 
   return (
-    <div className="min-h-screen w-full bg-dark-bg text-white overflow-hidden">
+    <div className="w-screen h-screen bg-gradient-to-br from-indigo-950 via-purple-950 to-slate-900 text-white overflow-hidden">
       <Sidebar isExpanded={isSidebarExpanded} setIsExpanded={setIsSidebarExpanded} />
-      <TopBox />
+      <TopBox isExpanded={isSidebarExpanded} />
 
-      <div className={`transition-all duration-300 p-6 mt-20 ${isSidebarExpanded ? "ml-[200px]" : "ml-[0px]"} w-screen`}>
-        <h1 className="text-2xl font-bold mb-4 ml-16">Tasks</h1>
-
-
-        <div className="flex gap-4 mb-4 ml-16 text-primary-purple">
-          <button className="bg-gray-900 px-4 py-2 rounded" onClick={() => handleSort("taskid")}>Sort by Id</button>
-          <button className="bg-gray-900 px-4 py-2 rounded" onClick={() => handleSort("title")}>Sort by Title</button>
-          <button className="bg-gray-900 px-4 py-2 rounded" onClick={() => handleSort("status")}>Sort by Status</button>
-          <button className="bg-gray-900 px-4 py-2 rounded" onClick={() => handleSort("duedate")}>Sort by expiration date</button>
-          <button className="bg-gray-900 px-4 py-2 rounded" onClick={() => handleSort("username")}>Sort by responsible</button>
-        </div>
-
-
-        <div className="overflow-x-auto ml-16">
-          {loading ? (
+      <div
+        className={`transition-all duration-300 mt-20 ${
+          isSidebarExpanded ? "ml-[280px] w-[calc(100%-280px)]" : "ml-[100px] w-[calc(100%-100px)]"
+        } h-[calc(100vh-80px)] overflow-y-auto`}
+      >
+        {loading ? (
+          <div className="flex justify-center items-center h-full">
             <LoadingScreen title="Tasks" subtitle="Loading tasks data..." />
-          ) : error ? (
-            <p className="text-red-500">{error}</p>
-          ) : (
-            <table className="min-w-full bg-gray-800 rounded-lg overflow-hidden">
-              <thead>
-                <tr className="bg-gray-900 text-primary-purple">
-                  <th className="py-2 px-4 text-center">ID</th>
-                  <th className="py-2 px-4 text-center">Title</th>
-                  <th className="py-2 px-4 text-center">Status</th>
-                  <th className="py-2 px-4 text-center">Expiration date</th>
-                  <th className="py-2 px-4 text-center">Responsible</th>
-                </tr>
-              </thead>
-              <tbody>
-                {tasks.map((task : Task) => (
-                  <tr key={task.taskId} className="border-b border-gray-700 bg-dark-bg hover:bg-gray-700 cursor-pointer"
-                      onClick={() => navigate(`/orders/${task.orderId}`)}>
-                    <td className="py-2 px-4 text-center">{task.taskId}</td>
-                    <td className="py-2 px-4 text-center">{task.title}</td>
-                    <td className="py-2 px-4 text-center">{TaskStatus[task.status]}</td>
-                    <td className="py-2 px-4 text-center">{new Date(task.dueDate).toLocaleDateString()}</td>
-                    <td className="py-2 px-4 text-center">{task.username}</td>
+          </div>
+        ) : error ? (
+          <div className="px-6">
+            <div className="bg-gradient-to-br from-red-900/50 to-purple-900/50 backdrop-blur-sm rounded-lg p-4 shadow-xl">
+              <p className="text-red-400">{error}</p>
+            </div>
+          </div>
+        ) : (
+          <div className="px-6">
+            <div className="flex justify-between items-center mb-4">
+              <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-200 to-purple-400">
+                Tasks
+              </h1>
+              <div className="flex items-center gap-4">
+                <div className="w-72">
+                  <TaskSearch onTaskSelect={handleTaskSelect} />
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-gradient-to-br from-[rgba(30,27,75,0.95)] to-[rgba(88,28,135,0.9)] backdrop-blur-sm rounded-lg overflow-hidden shadow-[4px_0_6px_-1px_rgba(0,0,0,0.1),2px_0_4px_-1px_rgba(0,0,0,0.06)] border-r border-purple-500/10">
+              <table className="w-full">
+                <thead>
+                  <tr>
+                    {[
+                      { key: "taskId", label: "ID", width: "100px" },
+                      { key: "title", label: "Title", width: "300px" },
+                      { key: "status", label: "Status", width: "150px" },
+                      { key: "dueDate", label: "Due Date", width: "150px" },
+                      { key: "username", label: "Responsible", width: "200px" }
+                    ].map(({ key, label, width }) => (
+                      <th 
+                        key={key}
+                        onClick={() => handleSort(key)}
+                        className="py-3 px-4 text-left text-white font-medium tracking-wide text-[0.95rem] cursor-pointer transition-all group sticky top-0 bg-[rgba(30,27,75,0.98)] border-b border-purple-500/20"
+                        style={{ width }}
+                      >
+                        <div className="flex items-center gap-2">
+                          {label}
+                          <span className="text-purple-400/70 group-hover:text-purple-300 transition-colors">
+                            {sortTask.sortBy === key && (
+                              sortTask.descending ? '↓' : '↑'
+                            )}
+                          </span>
+                        </div>
+                      </th>
+                    ))}
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
-        </div>
+                </thead>
+                <tbody>
+                  {tasks.map((task) => (
+                    <tr 
+                      key={task.taskId} 
+                      className="border-b border-purple-500/10 hover:bg-[rgba(139,92,246,0.1)] transition-all duration-200 cursor-pointer"
+                      onClick={() => handleTaskSelect(task)}
+                    >
+                      <td className="py-2 px-4 text-white/90 tracking-wide font-inter">#{task.taskId}</td>
+                      <td className="py-2 px-4 text-white/90 tracking-wide font-inter">{task.title}</td>
+                      <td className="py-2 px-4 text-white/90 tracking-wide font-inter">
+                        <span className={`px-2 py-1 rounded-full text-xs ${getStatusColor(task.status)}`}>
+                          {getStatusText(task.status)}
+                        </span>
+                      </td>
+                      <td className="py-2 px-4 text-white/90 tracking-wide font-inter whitespace-nowrap">
+                        {new Date(task.dueDate).toLocaleDateString()}
+                      </td>
+                      <td className="py-2 px-4 text-white/90 tracking-wide font-inter">{task.username}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -23,38 +23,100 @@ const UserCreateModal = ({ onClose }: UserCreateModalProps) => {
   };
 
   const handleSave = () => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     dispatch(createUser(formData) as any);
     onClose();
   };
 
   return (
-    <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
-      <div className="bg-gray-800 p-6 rounded-lg w-[400px]">
-        <h2 className="text-2xl text-primary-purple mb-4">Add New User</h2>
+    <div className="fixed inset-0 flex justify-center items-center bg-black/50 backdrop-blur-sm z-50">
+      <div className="bg-gradient-to-br from-[rgba(30,27,75,0.95)] to-[rgba(88,28,135,0.9)] p-8 rounded-lg w-[500px] max-h-[80vh] overflow-auto shadow-xl border border-purple-500/20">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-200 to-purple-400">
+            Создать пользователя
+          </h2>
+          <button
+            onClick={onClose}
+            className="text-gray-400 hover:text-white transition-colors"
+          >
+            ✕
+          </button>
+        </div>
 
-        {userCreating && <p className="text-primary-purple">Creating user...</p>}
-        {userCreateError && <p className="text-red-500">{userCreateError}</p>}
+        <div className="space-y-4">
+          {userCreating && (
+            <div className="bg-blue-500/20 text-blue-300 p-3 rounded-lg">
+              Создание пользователя...
+            </div>
+          )}
+          {userCreateError && (
+            <div className="bg-red-500/20 text-red-300 p-3 rounded-lg">
+              {userCreateError}
+            </div>
+          )}
 
-        {["username", "email", "password", "confirmPassword"].map((field) => (
-          <div key={field} className="mb-2">
-            <label className="block text-sm">{field.toUpperCase()}</label>
+          <div>
+            <label className="block text-sm text-gray-300 mb-1">Имя пользователя</label>
             <input
               type="text"
-              name={field}
-              value={formData[field as keyof typeof formData]}
+              name="username"
+              value={formData.username}
               onChange={handleChange}
-              className="w-full px-3 py-2 rounded bg-gray-700 text-white"
+              className="w-full px-4 py-2 bg-[#2a1042] text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500/50"
+              placeholder="Введите имя пользователя"
             />
           </div>
-        ))}
 
-        <button className="bg-primary-purple w-full py-2 rounded mt-4" onClick={handleSave}>
-          Save
-        </button>
-        <button className="bg-gray-600 w-full py-2 rounded mt-2" onClick={onClose}>
-          Close
-        </button>
+          <div>
+            <label className="block text-sm text-gray-300 mb-1">Email</label>
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              className="w-full px-4 py-2 bg-[#2a1042] text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500/50"
+              placeholder="Введите email"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm text-gray-300 mb-1">Пароль</label>
+            <input
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              className="w-full px-4 py-2 bg-[#2a1042] text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500/50"
+              placeholder="Введите пароль"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm text-gray-300 mb-1">Подтверждение пароля</label>
+            <input
+              type="password"
+              name="confirmPassword"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              className="w-full px-4 py-2 bg-[#2a1042] text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500/50"
+              placeholder="Подтвердите пароль"
+            />
+          </div>
+
+          <div className="flex gap-3 mt-6">
+            <button
+              onClick={handleSave}
+              className="flex-1 bg-gradient-to-r from-purple-600 to-purple-800 hover:from-purple-700 hover:to-purple-900 px-4 py-2 rounded-lg text-white transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/20"
+            >
+              Создать
+            </button>
+            <button
+              onClick={onClose}
+              className="flex-1 bg-gradient-to-r from-gray-600 to-gray-800 hover:from-gray-700 hover:to-gray-900 px-4 py-2 rounded-lg text-white transition-all duration-300"
+            >
+              Отмена
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );

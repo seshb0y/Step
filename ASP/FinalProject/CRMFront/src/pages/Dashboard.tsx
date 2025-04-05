@@ -31,10 +31,10 @@ export const Dashboard = () => {
   return (
     <div className="w-max h-screen bg-gradient-to-br from-indigo-950 via-purple-950 to-slate-900 text-white overflow-hidden">
       <Sidebar isExpanded={isSidebarExpanded} setIsExpanded={setIsSidebarExpanded} />
-      <TopBox />
+      <TopBox isExpanded={isSidebarExpanded} />
 
       <div
-        className={`transition-all duration-300 p-6 mt-20 ${
+        className={`transition-all duration-300 p-6 mt-20  ${
           isSidebarExpanded ? "ml-[200px]" : "ml-[0px]"
         } w-screen`}
       >

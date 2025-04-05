@@ -69,11 +69,6 @@ public class UserService : IUserService
     {
         _logger.LogInformation("Поиск юзера: {@Request}", request);
         FindUserReponse user = await _userRepository.UserRep.GetUsersTasksOrdersClientsAsync(request.email);
-        // if (user == null)
-        // {
-        //     _logger.LogWarning("Юзер с email {Email} не найден",request.email);
-        //     throw new KeyNotFoundException($"Client with email {request.email} not found");
-        // }
         _logger.LogInformation("Юзер найден: {ClientId}", request.email);
         return user;
     }

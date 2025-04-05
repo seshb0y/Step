@@ -62,6 +62,9 @@ export default {
 		  "accent-purple": "#D580FF", 
 		  "text-light": "#E0D6FF", 
 		},
+		fontFamily: {
+		  'inter': ['Inter', 'sans-serif'],
+		},
 	  },
 	},
   

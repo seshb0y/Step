@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { deleteUser, fetchChangeUserData } from "../../features/user/userSlice";
 import { User } from '../../types/User';
-import { TaskStatus } from "../../types/Task";
-import { OrderStatus } from "../../types/Order";
 import { AppDispatch } from "../../store/store";
 
 interface UserModalProps {
@@ -65,92 +63,133 @@ const UserModal = ({ user, onClose }: UserModalProps) => {
     }
   };
 
+  const getStatusColor = (status: string): string => {
+    switch (status) {
+      case "New":
+        return 'bg-blue-500/20 text-blue-300';
+      case "InProgress":
+        return 'bg-yellow-500/20 text-yellow-300';
+      case "Completed":
+        return 'bg-green-500/20 text-green-300';
+      default:
+        return 'bg-gray-500/20 text-gray-300';
+    }
+  };
+
+  const getStatusText = (status: string): string => {
+    return status || "Unknown";
+  };
+
   return (
-    <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
-      <div className="bg-gray-800 p-6 rounded-lg w-[500px] max-h-[80vh] overflow-auto">
-        <h2 className="text-2xl text-primary-purple mb-4">{isEditing ? "Редактировать пользователя" : "Информация о пользователе"}</h2>
+    <div className="fixed inset-0 flex justify-center items-center bg-black/50 backdrop-blur-sm z-50">
+      <div className="bg-gradient-to-br from-[rgba(30,27,75,0.95)] to-[rgba(88,28,135,0.9)] p-8 rounded-lg w-[500px] max-h-[80vh] overflow-auto shadow-xl border border-purple-500/20">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-200 to-purple-400">
+            {isEditing ? "Редактировать пользователя" : "Информация о пользователе"}
+          </h2>
+          <button
+            onClick={onClose}
+            className="text-gray-400 hover:text-white transition-colors"
+          >
+            ✕
+          </button>
+        </div>
 
-        {!isEditing ? (
-          <>
-            <div className="mb-2">
-              <label className="block text-sm">Имя пользователя</label>
-              <input
-                type="text"
-                name="username"
-                value={formData.username}
-                disabled={true}
-                className="w-full px-3 py-2 rounded bg-gray-700 text-white"
-              />
-            </div>
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm text-gray-300 mb-1">Имя пользователя</label>
+            <input
+              type="text"
+              name="username"
+              value={formData.username}
+              onChange={handleChange}
+              disabled={!isEditing}
+              className="w-full px-4 py-2 bg-[#2a1042] text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500/50 disabled:opacity-50"
+            />
+          </div>
 
-            <div className="mb-2">
-              <label className="block text-sm">Email</label>
-              <input
-                type="text"
-                name="email"
-                value={formData.email}
-                disabled={true}
-                className="w-full px-3 py-2 rounded bg-gray-700 text-white"
-              />
-            </div>
+          <div>
+            <label className="block text-sm text-gray-300 mb-1">Email</label>
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              disabled={!isEditing}
+              className="w-full px-4 py-2 bg-[#2a1042] text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500/50 disabled:opacity-50"
+            />
+          </div>
 
-            <div className="mb-2">
-              <label className="block text-sm">Роль</label>
-              <input
-                type="text"
-                value={formData.userRole === 0 ? 'Администратор' : 'Менеджер'}
-                disabled
-                className="w-full px-3 py-2 rounded bg-gray-700 text-white"
-              />
-            </div>
-          </>
-        ) : (
-          <form onSubmit={handleSave}>
-            <div className="mb-2">
-              <label className="block text-sm">Имя пользователя</label>
-              <input
-                type="text"
-                name="username"
-                value={formData.username}
-                onChange={handleChange}
-                className="w-full px-3 py-2 rounded bg-gray-700 text-white"
-              />
-            </div>
-
-            <div className="mb-2">
-              <label className="block text-sm">Email</label>
-              <input
-                type="text"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                className="w-full px-3 py-2 rounded bg-gray-700 text-white"
-              />
-            </div>
-
-            <div className="mb-2">
-              <label className="block text-sm">Роль</label>
+          <div>
+            <label className="block text-sm text-gray-300 mb-1">Роль</label>
+            {isEditing ? (
               <select
                 name="userRole"
                 value={formData.userRole}
                 onChange={handleChange}
-                className="w-full px-3 py-2 rounded bg-gray-700 text-white"
+                className="w-full px-4 py-2 bg-[#2a1042] text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500/50"
               >
                 <option value={0}>Администратор</option>
                 <option value={1}>Менеджер</option>
               </select>
-            </div>
-          </form>
-        )}
+            ) : (
+              <input
+                type="text"
+                value={formData.userRole === 0 ? 'Администратор' : 'Менеджер'}
+                disabled
+                className="w-full px-4 py-2 bg-[#2a1042] text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500/50 disabled:opacity-50"
+              />
+            )}
+          </div>
+
+          <div className="flex gap-3 mt-6">
+            {isEditing ? (
+              <>
+                <button
+                  onClick={handleSave}
+                  className="flex-1 bg-gradient-to-r from-purple-600 to-purple-800 hover:from-purple-700 hover:to-purple-900 px-4 py-2 rounded-lg text-white transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/20"
+                >
+                  Сохранить
+                </button>
+                <button
+                  onClick={() => setIsEditing(false)}
+                  className="flex-1 bg-gradient-to-r from-gray-600 to-gray-800 hover:from-gray-700 hover:to-gray-900 px-4 py-2 rounded-lg text-white transition-all duration-300"
+                >
+                  Отмена
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  onClick={() => setIsEditing(true)}
+                  className="flex-1 bg-gradient-to-r from-purple-600 to-purple-800 hover:from-purple-700 hover:to-purple-900 px-4 py-2 rounded-lg text-white transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/20"
+                >
+                  Редактировать
+                </button>
+                <button
+                  onClick={handleDelete}
+                  className="flex-1 bg-gradient-to-r from-red-600 to-red-800 hover:from-red-700 hover:to-red-900 px-4 py-2 rounded-lg text-white transition-all duration-300"
+                >
+                  Удалить
+                </button>
+              </>
+            )}
+          </div>
+        </div>
 
         <h3 className="text-xl font-semibold mt-4">Заказы</h3>
         {user.orders && user.orders.length > 0 ? (
-          <ul className="mt-2">
+          <ul className="mt-2 space-y-2">
             {user.orders.map(order => (
-              <li key={order.id} className="mb-2 p-2 bg-gray-700 rounded">
-                <p>ID: {order.orderId}</p>
-                <p>Бюджет: {order.totalAmount}</p>
-                <p>Статус: {OrderStatus[order.status]}</p>
+              <li key={order.orderId} className="p-3 bg-[rgba(30,27,75,0.95)] rounded-lg border border-purple-500/20">
+                <p className="text-gray-300">ID: <span className="text-white">#{order.orderId}</span></p>
+                <p className="text-gray-300">Бюджет: <span className="text-white">{order.totalAmount ? Number(order.totalAmount).toFixed(2) : '0.00'} $</span></p>
+                <p className="text-gray-300">
+                  Статус: 
+                  <span className={`ml-2 px-2 py-1 rounded-full text-xs ${getStatusColor(order.status)}`}>
+                    {getStatusText(order.status)}
+                  </span>
+                </p>
               </li>
             ))}
           </ul>
@@ -160,40 +199,23 @@ const UserModal = ({ user, onClose }: UserModalProps) => {
 
         <h3 className="text-xl font-semibold mt-4">Задачи</h3>
         {user.tasks && user.tasks.length > 0 ? (
-          <ul className="mt-2">
+          <ul className="mt-2 space-y-2">
             {user.tasks.map(task => (
-              <li key={task.taskId} className="mb-2 p-2 bg-gray-700 rounded">
-                <p>Название: {task.title}</p>
-                <p>Описание: {task.description}</p>
-                <p>Статус: {TaskStatus[task.status]}</p>
-                <p>Дедлайн: {new Date(task.dueDate).toLocaleDateString()}</p>
+              <li key={task.taskId} className="p-3 bg-[rgba(30,27,75,0.95)] rounded-lg border border-purple-500/20">
+                <p className="text-gray-300">ID: <span className="text-white">#{task.taskId}</span></p>
+                <p className="text-gray-300">Название: <span className="text-white">{task.tittle}</span></p>
+                <p className="text-gray-300">
+                  Статус: 
+                  <span className={`ml-2 px-2 py-1 rounded-full text-xs ${getStatusColor(task.status)}`}>
+                    {getStatusText(task.status)}
+                  </span>
+                </p>
               </li>
             ))}
           </ul>
         ) : (
           <p className="text-gray-400 mt-2">Нет доступных задач</p>
         )}
-
-        <button
-          className="bg-primary-purple w-full py-2 rounded mt-4"
-          onClick={isEditing ? handleSave : () => setIsEditing(true)}
-        >
-          {isEditing ? "Сохранить" : "Редактировать"}
-        </button>
-
-        <button
-          className="bg-red-600 w-full py-2 rounded mt-4"
-          onClick={handleDelete}
-        >
-          Удалить пользователя
-        </button>
-
-        <button
-          className="bg-gray-600 w-full py-2 rounded mt-4"
-          onClick={onClose}
-        >
-          Закрыть
-        </button>
       </div>
     </div>
   );

@@ -12,13 +12,15 @@ public class FindUserReponse
 public class FindUserOrdersResponse
 {
     public string orderId { get; set; }
-    public OrderStatus status { get; set; }
+    public decimal totalAmount { get; set; }
+    public string status { get; set; }
 }
 
 public class FindUserTasksResponse
 {
     public string taskId { get; set; }
-    public TaskStatus status { get; set; }
+    public string  tittle { get; set; }
+    public string status { get; set; }
 }
 
 public class FindUserClientsResponse

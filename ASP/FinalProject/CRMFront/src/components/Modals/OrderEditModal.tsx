@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Order, OrderStatus } from '../../types/Order';
 import { fetchChangeOrderData } from '../../features/orders/orderSlice';
 import { toast } from 'react-toastify';
-import Modal from '../ui/Modal';
 import { AppDispatch, RootState } from '../../store/store';
 import { fetchAssignUserToOrder } from '../../features/orders/orderSlice';
 import { fetchUsers } from '../../features/user/userSlice';
@@ -14,175 +13,113 @@ interface OrderEditModalProps {
   onUpdate: (updatedOrder: Order) => void;
 }
 
-interface FormData {
-  totalAmount: string;
-  status: OrderStatus;
-  userId: number;
-}
-
 const OrderEditModal = ({ order, onClose, onUpdate }: OrderEditModalProps) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { users, loading, error } = useSelector((state: RootState) => state.users);
-  
+  const { users } = useSelector((state: RootState) => state.users);
+  const [editedOrder, setEditedOrder] = useState<Order>(order);
+  const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
+
   useEffect(() => {
-    void dispatch(fetchUsers());
+    dispatch(fetchUsers({}));
   }, [dispatch]);
 
-  const [formData, setFormData] = useState<FormData>({
-    totalAmount: order.totalAmount.toString(),
-    status: order.status,
-    userId: Number(order.users[0]?.userId) || 0
-  });
-
-  useEffect(() => {
-    setFormData(prev => ({
-      ...prev,
-      userId: Number(order.users[0]?.userId) || 0
-    }));
-  }, [order.users]);
-
-  const handleTotalAmountChange = (value: string) => {
-    setFormData(prev => ({ ...prev, totalAmount: value }));
-  };
-
-  const handleStatusChange = (value: string) => {
-    const status = parseInt(value) as OrderStatus;
-    setFormData(prev => ({ ...prev, status }));
-  };
-
-  const handleUserChange = (value: string) => {
-    const userId = parseInt(value);
-    setFormData(prev => ({ ...prev, userId }));
-  };
-
-  const handleSubmit = async () => {
+  const handleSave = async () => {
     try {
-      const numericBudget = parseFloat(formData.totalAmount.replace(/[^\d.-]/g, ''));
-      
-      if (isNaN(numericBudget)) {
-        toast.error("Некорректное значение бюджета");
-        return;
-      }
-
-      const result = await dispatch(fetchChangeOrderData({
-        totalAmount: numericBudget.toString(),
-        status: formData.status,
-        orderId: order.id
+      await dispatch(fetchChangeOrderData({
+        orderId: editedOrder.id,
+        status: editedOrder.status,
+        totalAmount: editedOrder.totalAmount.toString()
       })).unwrap();
 
-      if (formData.userId !== Number(order.users[0]?.userId)) {
+      if (selectedUserId) {
         await dispatch(fetchAssignUserToOrder({
-          orderId: order.id,
-          userId: formData.userId
-        }));
+          orderId: editedOrder.id,
+          userId: Number(selectedUserId)
+        })).unwrap();
       }
 
-      if (result) {
-        const updatedUser = users.find(u => Number(u.userId) === formData.userId);
-        onUpdate({
-          ...order,
-          totalAmount: numericBudget,
-          status: formData.status,
-          users: updatedUser ? [updatedUser] : order.users
-        });
-        onClose();
-      }
+      onUpdate(editedOrder);
+      onClose();
+      toast.success('Заказ успешно обновлен');
     } catch {
-      console.error("Ошибка при обновлении заказа");
+      toast.error('Ошибка при обновлении заказа');
     }
   };
 
-  if (loading) {
-    return (
-      <Modal onClose={onClose}>
-        <div className="bg-gray-800 p-6 rounded-lg">
-          <h2 className="text-2xl text-primary-purple mb-4">Загрузка пользователей...</h2>
-        </div>
-      </Modal>
-    );
-  }
-
-  if (error) {
-    return (
-      <Modal onClose={onClose}>
-        <div className="bg-gray-800 p-6 rounded-lg">
-          <h2 className="text-2xl text-red-500 mb-4">Ошибка загрузки</h2>
-          <p className="text-white">{error}</p>
-        </div>
-      </Modal>
-    );
-  }
-
   return (
-    <Modal onClose={onClose}>
-      <div className="bg-gray-800 p-6 rounded-lg">
-        <h2 className="text-2xl text-primary-purple mb-4">Редактировать заказ</h2>
-
-        <div className="mb-4">
-          <label className="block text-sm font-medium mb-2">Бюджет</label>
-          <input
-            type="text"
-            name="totalAmount"
-            value={formData.totalAmount}
-            onChange={(e) => handleTotalAmountChange(e.target.value)}
-            className="w-full px-3 py-2 rounded bg-gray-700 text-white"
-          />
+    <div className="fixed inset-0 flex justify-center items-center bg-black/50 backdrop-blur-sm z-50">
+      <div className="bg-gradient-to-br from-[rgba(30,27,75,0.95)] to-[rgba(88,28,135,0.9)] p-8 rounded-lg w-[500px] max-h-[80vh] overflow-auto shadow-xl border border-purple-500/20">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-200 to-purple-400">
+            Редактировать заказ
+          </h2>
+          <button
+            onClick={onClose}
+            className="text-gray-400 hover:text-white transition-colors"
+          >
+            ✕
+          </button>
         </div>
 
-        <div className="mb-4">
-          <label className="block text-sm font-medium mb-2">Статус</label>
-          <select
-            name="status"
-            value={formData.status}
-            onChange={(e) => handleStatusChange(e.target.value)}
-            className="w-full px-3 py-2 rounded bg-gray-700 text-white"
-          >
-            {Object.entries(OrderStatus)
-              .filter(([key]) => !isNaN(Number(key)))
-              .map(([key, value]) => (
-                <option key={key} value={key}>
-                  {value}
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm text-gray-300 mb-1">Статус</label>
+            <select
+              value={editedOrder.status}
+              onChange={(e) => setEditedOrder({ ...editedOrder, status: e.target.value as OrderStatus })}
+              className="w-full px-4 py-2 bg-[#2a1042] text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500/50"
+            >
+              {Object.values(OrderStatus).map((status) => (
+                <option key={status} value={status}>
+                  {status}
                 </option>
               ))}
-          </select>
-        </div>
+            </select>
+          </div>
 
-        <div className="mb-4">
-          <label className="block text-sm font-medium mb-2">Ответственный</label>
-          <select
-            name="userId"
-            value={formData.userId}
-            onChange={(e) => handleUserChange(e.target.value)}
-            className="w-full px-3 py-2 rounded bg-gray-700 text-white"
-          >
-            {users && users.length > 0 ? (
-              users.map((user) => (
+          <div>
+            <label className="block text-sm text-gray-300 mb-1">Сумма</label>
+            <input
+              type="number"
+              value={editedOrder.totalAmount}
+              onChange={(e) => setEditedOrder({ ...editedOrder, totalAmount: Number(e.target.value) })}
+              className="w-full px-4 py-2 bg-[#2a1042] text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500/50"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm text-gray-300 mb-1">Назначить пользователя</label>
+            <select
+              value={selectedUserId || ''}
+              onChange={(e) => setSelectedUserId(e.target.value || null)}
+              className="w-full px-4 py-2 bg-[#2a1042] text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500/50"
+            >
+              <option value="">Выберите пользователя</option>
+              {users.map((user) => (
                 <option key={user.userId} value={user.userId}>
                   {user.username}
                 </option>
-              ))
-            ) : (
-              <option value="">Нет доступных пользователей</option>
-            )}
-          </select>
-        </div>
+              ))}
+            </select>
+          </div>
 
-        <div className="flex justify-end gap-2">
-          <button
-            onClick={onClose}
-            className="bg-gray-600 px-4 py-2 rounded text-white"
-          >
-            Отменить
-          </button>
-          <button
-            onClick={handleSubmit}
-            className="bg-primary-purple px-4 py-2 rounded text-white"
-          >
-            Сохранить
-          </button>
+          <div className="flex gap-3 mt-6">
+            <button
+              onClick={handleSave}
+              className="flex-1 bg-gradient-to-r from-purple-600 to-purple-800 hover:from-purple-700 hover:to-purple-900 px-4 py-2 rounded-lg text-white transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/20"
+            >
+              Сохранить
+            </button>
+            <button
+              onClick={onClose}
+              className="flex-1 bg-gradient-to-r from-gray-600 to-gray-800 hover:from-gray-700 hover:to-gray-900 px-4 py-2 rounded-lg text-white transition-all duration-300"
+            >
+              Отмена
+            </button>
+          </div>
         </div>
       </div>
-    </Modal>
+    </div>
   );
 };
 

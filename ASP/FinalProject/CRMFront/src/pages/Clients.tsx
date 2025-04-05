@@ -9,6 +9,7 @@ import LoadingScreen from "../components/LoadingScreen";
 import ClientModal from "../components/Modals/ClientModal";
 import ClientCreateModal from "../components/Modals/ClientCreateModal";
 import { Client } from "../types/Client";
+import { ClientSearch } from '../components/Search/ClientSearch';
 
 
 export const ClientsPage = () => {
@@ -24,8 +25,8 @@ export const ClientsPage = () => {
   });
   
   useEffect(() => {
-
-  }, [clients]);
+    dispatch(fetchClients(sortClients));
+  }, [dispatch, sortClients]);
 
   const openCreateClientModal = () => {
     setIsCreateModalOpen(true);
@@ -47,66 +48,117 @@ export const ClientsPage = () => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-dark-bg text-white overflow-hidden">
+    <div className="w-screen h-screen bg-gradient-to-br from-indigo-950 via-purple-950 to-slate-900 text-white overflow-hidden">
       <Sidebar isExpanded={isSidebarExpanded} setIsExpanded={setIsSidebarExpanded} />
-      <TopBox />
+      <TopBox isExpanded={isSidebarExpanded} />
 
-      <div className={`transition-all duration-300 p-6 mt-20 ${isSidebarExpanded ? "ml-[200px]" : "ml-[0px]"} w-screen`}>
-        <h1 className="text-2xl font-bold mb-4 ml-16">Clients</h1>
-
-        {/* Кнопка добавления нового клиента */}
-        <div className="flex gap-4 mb-4 ml-16">
-          <button className="bg-primary-purple px-4 py-2 rounded text-white" onClick={openCreateClientModal}>
-            + Add Client
-          </button>
-        </div>
-
-        {/* Кнопки сортировки */}
-        <div className="flex gap-4 mb-4 ml-16 text-primary-purple">
-          <button className="bg-gray-900 px-4 py-2 rounded" onClick={() => handleSort("id")}>Sort by Id</button>
-          <button className="bg-gray-900 px-4 py-2 rounded" onClick={() => handleSort("name")}>Sort by Name</button>
-          <button className="bg-gray-900 px-4 py-2 rounded" onClick={() => handleSort("email")}>Sort by Email</button>
-          <button className="bg-gray-900 px-4 py-2 rounded" onClick={() => handleSort("address")}>Sort by Address</button>
-          <button className="bg-gray-900 px-4 py-2 rounded" onClick={() => handleSort("createdAt")}>Sort by Created At</button>
-        </div>
-
-        {/* Таблица клиентов */}
-        <div className="overflow-x-auto ml-16">
-          {loading ? (
+      <div
+        className={`transition-all duration-300 mt-20 ${
+          isSidebarExpanded ? "ml-[280px] w-[calc(100%-280px)]" : "ml-[100px] w-[calc(100%-100px)]"
+        } h-[calc(100vh-80px)] overflow-y-auto`}
+      >
+        {loading ? (
+          <div className="flex justify-center items-center h-full">
             <LoadingScreen title="Clients" subtitle="Loading clients data..." />
-          ) : error ? (
-            <p className="text-red-500">{error}</p>
-          ) : (
-            <table className="min-w-full bg-gray-800 rounded-lg overflow-hidden">
-              <thead>
-                <tr className="bg-gray-900 text-primary-purple">
-                  <th className="py-2 px-4">ID</th>
-                  <th className="py-2 px-4">Name</th>
-                  <th className="py-2 px-4">Email</th>
-                  <th className="py-2 px-4">Phone</th>
-                  <th className="py-2 px-4">Address</th>
-                  <th className="py-2 px-4">Created At</th>
-                </tr>
-              </thead>
-              <tbody>
-                {clients.map((client) => (
-                  <tr key={client.id} className="border-b border-gray-700 bg-dark-bg hover:bg-gray-700 cursor-pointer"
-                      onClick={() => openClientModal(client)}>
-                    <td className="py-2 px-4 text-center">{client.id}</td>
-                    <td className="py-2 px-4 text-center">{client.name}</td>
-                    <td className="py-2 px-4 text-center">{client.email}</td>
-                    <td className="py-2 px-4 text-center">{client.phone}</td>
-                    <td className="py-2 px-4 text-center">{client.address}</td>
-                    <td className="py-2 px-4 text-center">{new Date(client.createdAt).toLocaleDateString()}</td>
+          </div>
+        ) : error ? (
+          <div className="px-6">
+            <div className="bg-gradient-to-br from-red-900/50 to-purple-900/50 backdrop-blur-sm rounded-lg p-4 shadow-xl">
+              <p className="text-red-400">{error}</p>
+            </div>
+          </div>
+        ) : (
+          <div className="px-6">
+            <div className="flex justify-between items-center mb-4">
+              <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-200 to-purple-400">
+                Clients
+              </h1>
+              <div className="flex items-center gap-4">
+                <div className="w-72">
+                  <ClientSearch onClientSelect={openClientModal} />
+                </div>
+                <button 
+                  className="bg-gradient-to-r from-purple-600 to-purple-800 hover:from-purple-700 hover:to-purple-900 px-4 py-2 rounded-lg text-white transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/20"
+                  onClick={openCreateClientModal}
+                >
+                  + Add Client
+                </button>
+              </div>
+            </div>
+
+            <div className="bg-gradient-to-br from-[rgba(30,27,75,0.95)] to-[rgba(88,28,135,0.9)] backdrop-blur-sm rounded-lg overflow-hidden shadow-[4px_0_6px_-1px_rgba(0,0,0,0.1),2px_0_4px_-1px_rgba(0,0,0,0.06)] border-r border-purple-500/10">
+              <table className="w-full">
+                <thead>
+                  <tr>
+                    {[
+                      { key: "id", label: "ID", width: "auto" },
+                      { key: "name", label: "Name", width: "auto" },
+                      { key: "email", label: "Email", width: "auto" },
+                      { key: "phone", label: "Phone", width: "auto" },
+                      { key: "address", label: "Address", width: "auto" },
+                      { key: "createdAt", label: "Created At", width: "auto" }
+                    ].map(({ key, label, width }) => (
+                      <th 
+                        key={key}
+                        onClick={() => handleSort(key)}
+                        className="py-3 px-4 text-left text-white font-medium tracking-wide text-[0.95rem] cursor-pointer transition-all group sticky top-0 bg-[rgba(30,27,75,0.98)] border-b border-purple-500/20"
+                        style={{ width }}
+                      >
+                        <div className="flex items-center gap-2">
+                          {label}
+                          <span className="text-purple-400/70 group-hover:text-purple-300 transition-colors">
+                            {sortClients.sortBy === key && (
+                              sortClients.descending ? '↓' : '↑'
+                            )}
+                          </span>
+                        </div>
+                      </th>
+                    ))}
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
-        </div>
+                </thead>
+                <tbody>
+                  {loading ? (
+                    <tr>
+                      <td colSpan={6} className="h-[400px]">
+                        <div className="flex justify-center items-center h-full">
+                          <div className="relative">
+                            <div className="w-12 h-12 border-4 border-purple-400/20 rounded-full animate-spin border-t-purple-400"></div>
+                            <div className="mt-4 text-purple-300 text-sm">Загрузка данных...</div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  ) : error ? (
+                    <tr>
+                      <td colSpan={6} className="h-[100px]">
+                        <div className="flex justify-center items-center h-full">
+                          <p className="text-red-400">{error}</p>
+                        </div>
+                      </td>
+                    </tr>
+                  ) : (
+                    clients.map((client) => (
+                      <tr 
+                        key={client.id} 
+                        className="border-b border-purple-500/10 hover:bg-[rgba(139,92,246,0.1)] transition-all duration-200 cursor-pointer"
+                        onClick={() => openClientModal(client)}
+                      >
+                        <td className="py-2 px-4 text-white/90 tracking-wide font-inter">{client.id}</td>
+                        <td className="py-2 px-4 text-white/90 tracking-wide font-inter">{client.name}</td>
+                        <td className="py-2 px-4 text-white/90 tracking-wide font-inter">{client.email}</td>
+                        <td className="py-2 px-4 text-white/90 tracking-wide font-inter">{client.phone}</td>
+                        <td className="py-2 px-4 text-white/90 tracking-wide font-inter">{client.address}</td>
+                        <td className="py-2 px-4 text-white/90 tracking-wide font-inter whitespace-nowrap">{new Date(client.createdAt).toLocaleDateString()}</td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
       </div>
 
-      {/* Модалки */}
       {isCreateModalOpen && <ClientCreateModal onClose={() => setIsCreateModalOpen(false)} />}
       {isClientModalOpen && selectedClient !== null && <ClientModal client={selectedClient} onClose={() => setIsClientModalOpen(false)} />}
     </div>

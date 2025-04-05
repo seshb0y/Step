@@ -256,12 +256,14 @@ const OrderDetailsPage = () => {
   }
 
   return (
-    <div className="min-h-screen flex bg-dark-bg text-white overflow-hidden">
+    <div className="w-screen h-screen bg-gradient-to-br from-indigo-950 via-purple-950 to-slate-900 text-white overflow-hidden">
       <Sidebar isExpanded={isSidebarExpanded} setIsExpanded={setIsSidebarExpanded} />
-      <div className="flex-1 flex flex-col">
-        <TopBox />
-        <div className={`transition-all duration-300 flex mt-20 ml-5 w-full`}>
-          <div className="min-w-96 bg-[#1a0b2e] p-6 rounded-lg shadow-md h-[calc(100vh-80px)]">
+      <TopBox isExpanded={isSidebarExpanded} />
+      <div className={`transition-all duration-300 p-6 mt-20 ${
+        isSidebarExpanded ? "ml-[280px] w-[calc(100%-280px)]" : "ml-[100px] w-[calc(100%-100px)]"
+      }`}>
+        <div className="flex gap-6">
+          <div className="min-w-[400px] max-w-[400px] bg-[#1a0b2e] p-6 rounded-lg shadow-md">
             <h2 className="text-lg font-semibold mb-4">
               Сделка #{order.id}
               <div className="flex justify-between items-center">
@@ -345,7 +347,7 @@ const OrderDetailsPage = () => {
             </button>
           </div>
 
-          <div className="flex-1 flex flex-col px-6 w-screen">
+          <div className="flex-1">
             <div className="bg-[#2a1042] p-6 rounded-lg shadow-md">
               <h2 className="text-lg font-semibold mb-4">Задачи</h2>
               <button
@@ -425,70 +427,136 @@ const OrderDetailsPage = () => {
       )}
 
       {isModalOpen && (
-        <Modal onClose={() => setIsModalOpen(false)}>
-          <h2 className="text-lg font-bold">Создать задачу</h2>
-          <input type="text" placeholder="Название задачи" className="w-full bg-gray-700 p-2 rounded-md text-white mt-2" value={taskTitle} onChange={(e) => setTaskTitle(e.target.value)} />
-          <textarea placeholder="Описание задачи" className="w-full bg-gray-700 p-2 rounded-md text-white mt-2" value={taskDescription} onChange={(e) => setTaskDescription(e.target.value)} />
-          <input type="date" className="w-full bg-gray-700 p-2 rounded-md text-white mt-2" value={taskDueDate} onChange={(e) => setTaskDueDate(e.target.value)} />
-          <div className="flex justify-end mt-4">
-            <button className="bg-gray-600 px-4 py-2 rounded text-white mr-2" onClick={() => setIsModalOpen(false)}>Отменить</button>
-            <button className="bg-primary-purple px-4 py-2 rounded text-white" onClick={handleCreateTask}>Добавить</button>
+        <div className="fixed inset-0 flex justify-center items-center bg-black/50 backdrop-blur-sm z-50">
+          <div className="bg-gradient-to-br from-[rgba(30,27,75,0.95)] to-[rgba(88,28,135,0.9)] p-8 rounded-lg w-[500px] max-h-[80vh] overflow-auto shadow-xl border border-purple-500/20">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-200 to-purple-400">
+                Создать задачу
+              </h2>
+              <button
+                onClick={() => setIsModalOpen(false)}
+                className="text-gray-400 hover:text-white transition-colors"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm text-gray-300 mb-1">Название задачи</label>
+                <input
+                  type="text"
+                  placeholder="Введите название задачи"
+                  value={taskTitle}
+                  onChange={(e) => setTaskTitle(e.target.value)}
+                  className="w-full px-4 py-2 bg-[#2a1042] text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500/50"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm text-gray-300 mb-1">Описание задачи</label>
+                <textarea
+                  placeholder="Введите описание задачи"
+                  value={taskDescription}
+                  onChange={(e) => setTaskDescription(e.target.value)}
+                  className="w-full px-4 py-2 bg-[#2a1042] text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500/50 min-h-[100px]"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm text-gray-300 mb-1">Дедлайн</label>
+                <input
+                  type="date"
+                  value={taskDueDate}
+                  onChange={(e) => setTaskDueDate(e.target.value)}
+                  className="w-full px-4 py-2 bg-[#2a1042] text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500/50"
+                />
+              </div>
+
+              <div className="flex gap-3 mt-6">
+                <button
+                  onClick={handleCreateTask}
+                  className="flex-1 bg-gradient-to-r from-purple-600 to-purple-800 hover:from-purple-700 hover:to-purple-900 px-4 py-2 rounded-lg text-white transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/20"
+                >
+                  Добавить
+                </button>
+                <button
+                  onClick={() => setIsModalOpen(false)}
+                  className="flex-1 bg-gradient-to-r from-gray-600 to-gray-800 hover:from-gray-700 hover:to-gray-900 px-4 py-2 rounded-lg text-white transition-all duration-300"
+                >
+                  Отмена
+                </button>
+              </div>
+            </div>
           </div>
-        </Modal>
+        </div>
       )}
 
       {isEditTaskModalOpen && editingTask && (
-        <Modal onClose={() => setIsEditTaskModalOpen(false)}>
-          <h2 className="text-lg font-bold mb-4">Редактировать задачу</h2>
-          <div className="mb-4">
-            <label className="block text-sm font-medium mb-2">Название</label>
-            <p className="text-gray-300">{editingTask.title}</p>
+        <div className="fixed inset-0 flex justify-center items-center bg-black/50 backdrop-blur-sm z-50">
+          <div className="bg-gradient-to-br from-[rgba(30,27,75,0.95)] to-[rgba(88,28,135,0.9)] p-8 rounded-lg w-[500px] max-h-[80vh] overflow-auto shadow-xl border border-purple-500/20">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-200 to-purple-400">
+                Редактировать задачу
+              </h2>
+              <button
+                onClick={() => setIsEditTaskModalOpen(false)}
+                className="text-gray-400 hover:text-white transition-colors"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm text-gray-300 mb-1">Название</label>
+                <p className="text-white font-medium">{editingTask.title}</p>
+              </div>
+
+              <div>
+                <label className="block text-sm text-gray-300 mb-1">Описание</label>
+                <textarea
+                  value={editingTaskDescription}
+                  onChange={(e) => setEditingTaskDescription(e.target.value)}
+                  className="w-full px-4 py-2 bg-[#2a1042] text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500/50 min-h-[100px]"
+                  rows={3}
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm text-gray-300 mb-1">Статус</label>
+                <select
+                  value={editingTaskStatus}
+                  onChange={(e) => setEditingTaskStatus(Number(e.target.value) as TaskStatus)}
+                  className="w-full px-4 py-2 bg-[#2a1042] text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500/50"
+                >
+                  {Object.entries(TaskStatus)
+                    .filter(([key]) => !isNaN(Number(key)))
+                    .map(([key, value]) => (
+                      <option key={key} value={key}>
+                        {value}
+                      </option>
+                    ))}
+                </select>
+              </div>
+
+              <div className="flex gap-3 mt-6">
+                <button
+                  onClick={handleEditTask}
+                  className="flex-1 bg-gradient-to-r from-purple-600 to-purple-800 hover:from-purple-700 hover:to-purple-900 px-4 py-2 rounded-lg text-white transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/20"
+                >
+                  Сохранить
+                </button>
+                <button
+                  onClick={() => setIsEditTaskModalOpen(false)}
+                  className="flex-1 bg-gradient-to-r from-gray-600 to-gray-800 hover:from-gray-700 hover:to-gray-900 px-4 py-2 rounded-lg text-white transition-all duration-300"
+                >
+                  Отмена
+                </button>
+              </div>
+            </div>
           </div>
-          <div className="mb-4">
-            <label className="block text-sm font-medium mb-2">Описание</label>
-            <textarea
-              value={editingTaskDescription}
-              onChange={(e) => setEditingTaskDescription(e.target.value)}
-              className="w-full bg-gray-700 p-2 rounded-md text-white"
-              rows={3}
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-sm font-medium mb-2">Статус</label>
-            <select
-              value={editingTaskStatus}
-              onChange={(e) => setEditingTaskStatus(Number(e.target.value) as TaskStatus)}
-              className="w-full bg-gray-700 p-2 rounded-md text-white"
-            >
-              {Object.entries(TaskStatus)
-                .filter(([key]) => !isNaN(Number(key)))
-                .map(([key, value]) => (
-                  <option key={key} value={key}>
-                    {value}
-                  </option>
-                ))}
-            </select>
-          </div>
-          <div className="flex justify-end gap-2">
-            <button
-              onClick={() => setIsEditTaskModalOpen(false)}
-              className="bg-gray-600 px-4 py-2 rounded text-white"
-            >
-              Отменить
-            </button>
-            <button
-              onClick={handleEditTask}
-              className="bg-primary-purple px-4 py-2 rounded text-white"
-              disabled={updatingTaskId !== null}
-            >
-              {updatingTaskId === editingTask.id ? (
-                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-              ) : (
-                "Сохранить"
-              )}
-            </button>
-          </div>
-        </Modal>
+        </div>
       )}
     </div>
   );

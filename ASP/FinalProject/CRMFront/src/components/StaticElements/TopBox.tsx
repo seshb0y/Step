@@ -5,13 +5,16 @@ import UserProfileModal from "../Modals/UserProfileModal";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
 import { logoutUser } from "../../features/auth/authSlice";
-import LogoAnimation from "../../assets/CRMLogoAnimation.json"
 import Lottie from "lottie-react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
+import LogoAnimation from "../../assets/CRMLogoAnimation.json";
 
-const TopBox = () => {
-  const [isSidebarExpanded] = useState(false);
+interface TopBoxProps {
+  isExpanded: boolean;
+}
+
+const TopBox = ({ isExpanded }: TopBoxProps) => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -30,7 +33,7 @@ const TopBox = () => {
   const handleLogOut = () => {
     dispatch(logoutUser());
     navigate("/");
-  }
+  };
 
   return (
     <Box
@@ -44,11 +47,12 @@ const TopBox = () => {
         borderBottom: "1px solid rgba(139, 92, 246, 0.1)",
         position: "fixed",
         top: 0,
-        left: isSidebarExpanded ? "240px" : "60px",
+        left: 0,
         right: 0,
         transition: "all 0.3s ease",
         zIndex: 10,
         boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
+        paddingLeft: isExpanded ? "250px" : "84px",
       }}
     >
       {user && <UserProfileModal open={isProfileOpen} onClose={() => setIsProfileOpen(false)} user={user} />}
@@ -71,9 +75,7 @@ const TopBox = () => {
         sx={{ 
           display: "flex", 
           alignItems: "center",
-          position: "absolute",
-          right: "-5px",
-          paddingRight: "24px",
+          marginLeft: "auto",
         }}
       >
         <Typography 
