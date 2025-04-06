@@ -40,17 +40,33 @@ const ClientModal = ({ client, onClose }: ClientModalProps) => {
     // Удаляем все нецифровые символы
     const phoneNumber = value.replace(/\D/g, '');
     
-    // Форматируем номер в виде +7 (XXX) XXX-XX-XX
-    if (phoneNumber.length >= 11) {
-      return `+7 (${phoneNumber.slice(1, 4)}) ${phoneNumber.slice(4, 7)}-${phoneNumber.slice(7, 9)}-${phoneNumber.slice(9, 11)}`;
-    } else if (phoneNumber.length > 4) {
-      return `+7 (${phoneNumber.slice(1, 4)}) ${phoneNumber.slice(4)}`;
-    } else if (phoneNumber.length > 1) {
-      return `+7 (${phoneNumber.slice(1)}`;
-    } else if (phoneNumber.length === 1) {
-      return `+7 (${phoneNumber}`;
+    // Если номер начинается с +, сохраняем его
+    const hasPlus = value.startsWith('+');
+    
+    // Определяем код страны (первые 1-3 цифры)
+    let countryCode = '';
+    let localNumber = '';
+    
+    if (phoneNumber.length > 0) {
+      // Пробуем определить код страны (обычно 1-3 цифры)
+      if (phoneNumber.length >= 3) {
+        countryCode = phoneNumber.slice(0, 3);
+        localNumber = phoneNumber.slice(3);
+      } else {
+        countryCode = phoneNumber;
+      }
     }
-    return '+7 (';
+    
+    // Форматируем номер
+    let formatted = hasPlus ? '+' : '';
+    if (countryCode) {
+      formatted += countryCode;
+      if (localNumber) {
+        formatted += ' ' + localNumber;
+      }
+    }
+    
+    return formatted;
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

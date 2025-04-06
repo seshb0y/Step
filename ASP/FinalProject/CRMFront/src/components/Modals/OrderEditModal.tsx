@@ -27,7 +27,7 @@ const OrderEditModal = ({ order, onClose, onUpdate }: OrderEditModalProps) => {
     switch (status) {
       case OrderStatus.New:
         return 0;
-      case OrderStatus.InProgress:
+      case OrderStatus.Processing:
         return 1;
       case OrderStatus.Completed:
         return 2;

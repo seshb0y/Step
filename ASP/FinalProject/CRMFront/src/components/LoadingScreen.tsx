@@ -8,7 +8,7 @@ interface LoadingScreenProps {
 
 const LoadingScreen: React.FC<LoadingScreenProps> = ({ title, subtitle }) => {
   return (
-    <div className="flex-1 flex flex-col items-center justify-center min-h-screen bg-dark-bg">
+    <div className="flex-1 flex flex-col items-center justify-center w-screen min-h-screen bg-dark-bg">
       <div className="relative">
         <div className="absolute inset-0 bg-primary-purple/20 blur-3xl rounded-full" />
         <div className="relative z-10 flex flex-col items-center">

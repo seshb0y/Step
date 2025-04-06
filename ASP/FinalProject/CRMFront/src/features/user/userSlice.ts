@@ -73,7 +73,6 @@ export const fetchUsers = createAsyncThunk(
     if (sortBy) params.append("sortBy", sortBy);
     if (descending !== undefined) params.append("Descending", descending.toString());
     const response = await axiosInstance.get(`/User/all?${params.toString()}`);
-    console.log(response.data)
     return response.data;
   }
 );
@@ -227,8 +226,7 @@ const usersSlice = createSlice({
         state.error = action.payload as string;
       })
 
-      .addCase(createUser.fulfilled, (state, action) => {
-        // Не добавляем пользователя здесь, так как он придет через SignalR
+      .addCase(createUser.fulfilled, (state) => {
         state.userCreating = false;
         state.userCreateError = null;
       })
@@ -242,3 +240,5 @@ const usersSlice = createSlice({
 export const { addUserRealtime, changeUserRealtime, deleteUserRealtime } = usersSlice.actions;
 export default usersSlice.reducer;
 
+export const selectUserById = (state: { users: UsersState }, id: number) => 
+  state.users.users.find(user => user.userId === String(id));

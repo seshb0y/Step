@@ -1,7 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "../../api/axiosInstance";
-import { CreateOrder, Order, OrderStatus } from "../../types/Order";
+import { CreateOrder, Order } from "../../types/Order";
 import { toast } from 'react-toastify';
+import { fetchClientsWithOrdersAndTasks } from "../clients/clientSlice";
 
 interface OrdersState {
   orders: Order[];
@@ -46,7 +47,9 @@ export const fetchChangeOrderData = createAsyncThunk(
     orderId: number;
   }, { rejectWithValue }) => {
     try {
+      console.log("🔄 Sending request to change order:", request);
       const response = await axiosInstance.put(`/Order/change`, request);
+      console.log("🔄 Server response:", response.data);
       toast.success('Данные заказа успешно обновлены');
       return response.data;
     } catch (error: unknown) {
@@ -54,6 +57,7 @@ export const fetchChangeOrderData = createAsyncThunk(
       const errorMessage = typeof err.response?.data === 'string' 
         ? err.response.data 
         : "Ошибка при обновлении данных заказа";
+      console.error("🔄 Error changing order:", err);
       toast.error(errorMessage);
       return rejectWithValue(errorMessage);
     }
@@ -118,6 +122,13 @@ const ordersSlice = createSlice({
         state.orders[index] = action.payload;
       }
     },
+    changeOrderResponsibleRealtime: (state, action) => {
+      const { orderId, users } = action.payload;
+      const index = state.orders.findIndex(order => Number(order.orderId) === Number(orderId));
+      if (index !== -1) {
+        state.orders[index].users = users;
+      }
+    },
     deleteOrderRealtime: (state, action) => {
       state.orders = state.orders.filter(order => order.orderId !== action.payload.orderId);
     }
@@ -142,10 +153,9 @@ const ordersSlice = createSlice({
         state.orderError = null;
       })
       .addCase(fetchChangeOrderData.fulfilled, (state, action) => {
-        const index = state.orders.findIndex(order => order.orderId === action.payload.id);
-        if (index !== -1) {
-          state.orders[index] = action.payload; 
-        }
+        console.log("🔄 Updating order in state:", action.payload);
+        const index = state.orders.findIndex(order => order.orderId === action.payload.orderId);
+        state.orders[index] = action.payload; 
         state.orderLoading = false;
       })
       .addCase(fetchChangeOrderData.rejected, (state, action) => {
@@ -167,7 +177,7 @@ const ordersSlice = createSlice({
       })
 
       .addCase(deleteOrder.fulfilled, (state, action) => {
-        state.orders = state.orders.filter(order => order.orderId !== action.payload);
+        state.orders = state.orders.filter(order => order.orderId !== action.payload.toString());
       })
       .addCase(deleteOrder.rejected, (state, action) => {
         state.error = action.payload as string;
@@ -187,10 +197,16 @@ const ordersSlice = createSlice({
       .addCase(fetchAssignUserToOrder.rejected, (state, action) => {
         state.orderLoading = false;
         state.orderError = action.payload as string;
+      })
+
+      .addCase(fetchClientsWithOrdersAndTasks.fulfilled, (state, action) => {
+        const allOrders = action.payload.flatMap((client: { orders?: Order[] }) => client.orders || []);
+        state.orders = allOrders;
+        state.loading = false;
       });
   },
 });
 
-export const { addOrderRealtime, changeOrderRealtime, deleteOrderRealtime } = ordersSlice.actions;
+export const { addOrderRealtime, changeOrderRealtime, deleteOrderRealtime, changeOrderResponsibleRealtime } = ordersSlice.actions;
 export default ordersSlice.reducer;
 

@@ -2,7 +2,7 @@ import { Order } from "./Order"
 import { User } from "./User"
 
 export interface Client {
-    id?: string,
+    id?: string | number,
     name: string,
     email: string,
     isEmailConfirmed?: boolean,

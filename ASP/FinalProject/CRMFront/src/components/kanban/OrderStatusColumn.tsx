@@ -1,9 +1,12 @@
+import { useState } from "react";
 import ClientPreviewCard from "../Card/ClientPreviewCard";
 import { Client } from "../../types/Client";
 import { OrderStatus } from "../../types/Order";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchChangeOrderData } from "../../features/orders/orderSlice";
+import { fetchClientsWithOrdersAndTasks } from "../../features/clients/clientSlice";
 import { AppDispatch, RootState } from "../../store/store";
+import LoadingSpinner from "../LoadingSpinner";
 
 interface Props {
   title: string;
@@ -15,6 +18,7 @@ interface Props {
 const OrderStatusColumn = ({ title, status, clients, columnColor }: Props) => {
   const dispatch = useDispatch<AppDispatch>();
   const allClients = useSelector((state: RootState) => state.clients.clients);
+  const [isUpdating, setIsUpdating] = useState(false);
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -33,24 +37,32 @@ const OrderStatusColumn = ({ title, status, clients, columnColor }: Props) => {
     const column = e.currentTarget;
     column.style.opacity = "1";
 
-    const orderId = parseInt(e.dataTransfer.getData("orderId"));
-    const currentStatus = parseInt(e.dataTransfer.getData("currentStatus"));
+    const orderId = e.dataTransfer.getData("orderId");
+    const currentStatus = e.dataTransfer.getData("currentStatus");
 
     if (currentStatus !== status) {
       try {
+        setIsUpdating(true);
         const currentOrder = allClients
           .flatMap(client => client.orders || [])
-          .find(order => order.orderId === orderId);
+          .find(order => order.orderId.toString() === orderId);
 
         if (currentOrder) {
+          const statusNumber = status === OrderStatus.New ? 0 : 
+                             status === OrderStatus.Processing ? 1 : 2;
+          
           await dispatch(fetchChangeOrderData({
-            orderId,
-            status,
-            totalAmount: currentOrder.totalAmount.toString()
+            orderId: Number(orderId),
+            status: statusNumber,
+            totalAmount: currentOrder.totalAmount
           }));
+          
+          await dispatch(fetchClientsWithOrdersAndTasks() as never);
         }
       } catch (error) {
         console.error("Error updating order status:", error);
+      } finally {
+        setIsUpdating(false);
       }
     }
   };
@@ -66,7 +78,7 @@ const OrderStatusColumn = ({ title, status, clients, columnColor }: Props) => {
 
   return (
     <div 
-      className={`w-[500px] min-w-[350px] bg-gradient-to-b ${columnColor} p-6 rounded-xl border border-gray-800/30 shadow-lg transition-all duration-300 ease-in-out hover:border-gray-700/50`}
+      className={`w-[500px] min-w-[350px] bg-gradient-to-b ${columnColor} p-6 rounded-xl border border-gray-800/30 shadow-lg transition-all duration-300 ease-in-out hover:border-gray-700/50 relative`}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
@@ -77,12 +89,17 @@ const OrderStatusColumn = ({ title, status, clients, columnColor }: Props) => {
           {filteredClients.reduce((acc, client) => acc + client.orders.length, 0)}
         </span>
       </div>
+      {isUpdating && (
+        <div className="absolute inset-0 bg-black/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
+          <LoadingSpinner />
+        </div>
+      )}
       <div className="space-y-4 overflow-y-auto max-h-[calc(100vh-250px)] pr-2 custom-scrollbar">
         {filteredClients.length > 0 ? (
           filteredClients.map(client => <ClientPreviewCard key={client.id} client={client} />)
         ) : (
           <div className="text-center py-8 px-4 bg-gray-800/30 rounded-lg border border-gray-700/30 backdrop-blur-sm">
-            <p className="text-gray-400">Нет заказов</p>
+            <p className="text-gray-400">No orders</p>
           </div>
         )}
       </div>

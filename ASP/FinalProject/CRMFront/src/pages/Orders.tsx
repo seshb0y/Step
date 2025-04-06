@@ -147,7 +147,7 @@ export const Orders = () => {
                         </span>
                       </td>
                       <td className="py-2 px-4 text-white/90 tracking-wide font-inter whitespace-nowrap">
-                        {new Date(order.createdAt).toLocaleDateString()}
+                        {order.createdAt ? new Date(order.createdAt).toLocaleDateString() : ''}
                       </td>
                       <td className="py-2 px-4 text-white/90 tracking-wide font-inter">{order.username}</td>
                     </tr>

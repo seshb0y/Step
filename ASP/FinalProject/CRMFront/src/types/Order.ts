@@ -4,17 +4,19 @@ import { User } from "./User";
 
 export enum OrderStatus {
     New = "New",
-    InProgress = "InProgress",
-    Completed = "Completed"
+    Processing = "Processing",
+    Completed = "Completed",
 }
 
 export interface Order {
     id?: number;
     orderId: string;
+    numOrderId: number;
     totalAmount: number;
     createdAt?: Date;
     tasks?: Task[];
     status: OrderStatus;
+    orderStatus: OrderStatus;
     users?: User[];
     client?: Client;
     callRecordingUrl?: string;

@@ -5,11 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { OrderStatus } from "../../types/Order";
 import { useState } from "react";
 
-const getOrderStatusText = (status: number) => {
-  return OrderStatus[status] || "Unknown";
-};
 
-const getOrderStatusClass = (status: number) => {
+const getOrderStatusClass = (status: string) => {
   switch (status) {
     case OrderStatus.New:
       return "bg-blue-500/80 text-white";
@@ -30,9 +27,9 @@ const ClientPreviewCard = ({ client }: CardProps) => {
   const navigate = useNavigate();
   const [isDragging, setIsDragging] = useState(false);
 
-  const handleDragStart = (e: React.DragEvent<HTMLDivElement>, orderId: number, currentStatus: OrderStatus) => {
-    e.dataTransfer.setData("orderId", orderId.toString());
-    e.dataTransfer.setData("currentStatus", currentStatus.toString());
+  const handleDragStart = (e: React.DragEvent<HTMLDivElement>, orderId: string, currentStatus: OrderStatus) => {
+    e.dataTransfer.setData("orderId", orderId);
+    e.dataTransfer.setData("currentStatus", currentStatus);
     setIsDragging(true);
   };
 
@@ -46,7 +43,7 @@ const ClientPreviewCard = ({ client }: CardProps) => {
         <CardTitle className="text-lg font-semibold flex items-center gap-2">
           {client.name}
           <Badge variant="outline" className="text-xs border-primary-purple text-primary-purple">
-            {client.orders?.length || 0} заказов
+            {client.orders?.length || 0} {client.orders?.length === 1 ? 'order' : 'orders'}
           </Badge>
         </CardTitle>
         <p className="text-gray-400 text-sm">{client.email}</p>
@@ -54,14 +51,14 @@ const ClientPreviewCard = ({ client }: CardProps) => {
       </CardHeader>
       <CardContent>
         <div className="space-y-2 text-sm">
-          <p className="text-gray-300 flex items-center gap-2">
-            <span className="text-primary-purple">Адрес:</span>
-            {client.address}
-          </p>
-          <p className="text-gray-300 flex items-center gap-2">
-            <span className="text-primary-purple">Регистрация:</span>
-            {new Date(client.createdAt).toLocaleDateString()}
-          </p>
+          <div className="text-gray-300 flex gap-2">
+            <span className="text-primary-purple min-w-[90px]">Адрес:</span>
+            <span className="break-words flex-1">{client.address}</span>
+          </div>
+          <div className="text-gray-300 flex gap-2">
+            <span className="text-primary-purple min-w-[90px]">Регистрация:</span>
+            <span>{new Date(client.createdAt).toLocaleDateString()}</span>
+          </div>
         </div>
 
         <div className="mt-4">
@@ -74,17 +71,17 @@ const ClientPreviewCard = ({ client }: CardProps) => {
                   className="p-3 bg-[#2a1042]/80 rounded-lg cursor-pointer hover:bg-[#3a1f5a] transition-all duration-300 backdrop-blur-sm border border-gray-800/50"
                   onClick={() => navigate(`/orders/${order.orderId}`)}
                   draggable
-                  onDragStart={(e) => handleDragStart(e, order.orderId, order.orderStatus)}
+                  onDragStart={(e) => handleDragStart(e, order.orderId.toString(), order.orderStatus)}
                   onDragEnd={handleDragEnd}
                 >
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-sm font-medium">ID: {order.orderId}</span>
                     <Badge className={`${getOrderStatusClass(order.orderStatus)}`}>
-                      {getOrderStatusText(order.orderStatus)}
+                      {order.orderStatus}
                     </Badge>
                   </div>
                   <div className="flex justify-between items-center text-sm text-gray-400">
-                    <span>{new Date(order.createdAt).toLocaleDateString()}</span>
+                    <span>{order.createdAt ? new Date(order.createdAt).toLocaleDateString() : ''}</span>
                     <span className="font-medium text-primary-purple">{order.totalAmount} ₽</span>
                   </div>
                 </div>

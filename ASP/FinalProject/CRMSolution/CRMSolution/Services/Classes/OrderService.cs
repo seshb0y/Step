@@ -149,5 +149,10 @@ public class OrderService : IOrderService
         
         _unitOfWork.OrderRep.Update(order);
         await _unitOfWork.SaveChangesAsync();
+        await _notificationHub.Clients.All.SendAsync("ResponsibleUpdated", new
+        {
+            userId =  user.Id,
+            orderId = order.Id,
+        });
     }
 }

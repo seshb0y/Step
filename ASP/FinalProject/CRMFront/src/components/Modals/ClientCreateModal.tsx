@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createClient } from "../../features/clients/clientSlice";
-import { RootState } from "../../store/store";
+import { RootState, AppDispatch } from "../../store/store";
 
 
 interface ClientCreateModalProps {
@@ -9,7 +9,7 @@ interface ClientCreateModalProps {
 }
 
 const ClientCreateModal = ({ onClose }: ClientCreateModalProps) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const { clientCreating, clientCreateError } = useSelector((state: RootState) => state.clients);
 
   const [formData, setFormData] = useState({
@@ -24,17 +24,33 @@ const ClientCreateModal = ({ onClose }: ClientCreateModalProps) => {
     // Удаляем все нецифровые символы
     const phoneNumber = value.replace(/\D/g, '');
     
-    // Форматируем номер в виде +7 (XXX) XXX-XX-XX
-    if (phoneNumber.length >= 11) {
-      return `+7 (${phoneNumber.slice(1, 4)}) ${phoneNumber.slice(4, 7)}-${phoneNumber.slice(7, 9)}-${phoneNumber.slice(9, 11)}`;
-    } else if (phoneNumber.length > 4) {
-      return `+7 (${phoneNumber.slice(1, 4)}) ${phoneNumber.slice(4)}`;
-    } else if (phoneNumber.length > 1) {
-      return `+7 (${phoneNumber.slice(1)}`;
-    } else if (phoneNumber.length === 1) {
-      return `+7 (${phoneNumber}`;
+    // Если номер начинается с +, сохраняем его
+    const hasPlus = value.startsWith('+');
+    
+    // Определяем код страны (первые 1-3 цифры)
+    let countryCode = '';
+    let localNumber = '';
+    
+    if (phoneNumber.length > 0) {
+      // Пробуем определить код страны (обычно 1-3 цифры)
+      if (phoneNumber.length >= 3) {
+        countryCode = phoneNumber.slice(0, 3);
+        localNumber = phoneNumber.slice(3);
+      } else {
+        countryCode = phoneNumber;
+      }
     }
-    return '+7 (';
+    
+    // Форматируем номер
+    let formatted = hasPlus ? '+' : '';
+    if (countryCode) {
+      formatted += countryCode;
+      if (localNumber) {
+        formatted += ' ' + localNumber;
+      }
+    }
+    
+    return formatted;
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -59,11 +75,10 @@ const ClientCreateModal = ({ onClose }: ClientCreateModalProps) => {
     // Преобразуем номер телефона в формат для сервера (только цифры)
     const phoneForServer = formData.phone.replace(/\D/g, '');
     
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     dispatch(createClient({
       ...formData,
       phone: phoneForServer
-    }) as any);
+    }));
     onClose();
   };
 

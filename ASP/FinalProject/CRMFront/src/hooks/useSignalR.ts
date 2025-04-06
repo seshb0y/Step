@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import { HubConnectionBuilder, HubConnection, LogLevel } from "@microsoft/signalr";
 import { useDispatch } from "react-redux";
-import { addClientRealtime, changeClientRealtime, deleteClientRealtime, updateOrderInClientRealtime, fetchClientsWithOrdersAndTasks } from "../features/clients/clientSlice";
+import { addClientRealtime, changeClientRealtime, deleteClientRealtime, fetchClientsWithOrdersAndTasks } from "../features/clients/clientSlice";
 import { addUserRealtime, changeUserRealtime, deleteUserRealtime } from "../features/user/userSlice";
-import { addOrderRealtime, changeOrderRealtime, deleteOrderRealtime } from "../features/orders/orderSlice";
-import { addTaskRealtime, changeTaskRealtime, deleteTaskRealtime } from "../features/tasks/tasksSlice";
+import { addOrderRealtime,  deleteOrderRealtime } from "../features/orders/orderSlice";
+import {  changeTaskRealtime, } from "../features/tasks/tasksSlice";
 import { toast } from "react-toastify";
 import { AppDispatch } from "../store/store";
 
@@ -77,7 +77,13 @@ export const useSignalR = () => {
 
         connection.on("OrderUpdated", (data) => {
           console.log("📡 Обновлен заказ:", data);
-          dispatch(changeOrderRealtime(data));
+          window.dispatchEvent(new CustomEvent('orderUpdated'));
+          dispatch(fetchClientsWithOrdersAndTasks());
+        });
+
+        connection.on("ResponsibleUpdated", (data: { userId: number; orderId: number }) => {
+          console.log("📡 Получены данные об обновлении ответственного:", data);
+          window.dispatchEvent(new CustomEvent('responsibleUpdated'));
           dispatch(fetchClientsWithOrdersAndTasks());
         });
 
@@ -89,7 +95,8 @@ export const useSignalR = () => {
         // Задачи
         connection.on("TaskCreated", (data) => {
           console.log("📡 Новая задача:", data);
-          dispatch(addTaskRealtime(data));
+          window.dispatchEvent(new CustomEvent('taskCreated'));
+          dispatch(fetchClientsWithOrdersAndTasks());
         });
 
         connection.on("TaskUpdated", (data) => {
@@ -99,7 +106,8 @@ export const useSignalR = () => {
 
         connection.on("TaskDeleted", (data) => {
           console.log("📡 Удалена задача:", data);
-          dispatch(deleteTaskRealtime(data));
+          window.dispatchEvent(new CustomEvent('taskDeleted'));
+          dispatch(fetchClientsWithOrdersAndTasks());
         });
 
         await connection.start();

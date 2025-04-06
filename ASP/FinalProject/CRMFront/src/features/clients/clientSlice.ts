@@ -2,7 +2,6 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "../../api/axiosInstance";
 import { Client } from "../../types/Client";
 import { toast } from 'react-toastify';
-import { Order } from "../../types/Order";
 
 interface ClientsState {
   clients: Client[];
@@ -103,16 +102,21 @@ export const fetchAddClientData = createAsyncThunk(
 
 export const createClient = createAsyncThunk(
   "clients/create",
-  async (clientData: { username: string; email: string }, { rejectWithValue }) => {
+  async (clientData: { 
+    name: string;
+    email: string;
+    phone: string;
+    address: string;
+    createdAt: string;
+  }, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.post("/Client/add", clientData);
       toast.success('Клиент успешно создан');
       return response.data;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      console.error('Error creating client:', error);
-      toast.error(error.response?.data || "Ошибка при создании клиента");
-      return rejectWithValue(error.response?.data || "Failed to create client");
+    } catch (error: unknown) {
+      const err = error as { response?: { data?: unknown } };
+      toast.error((err.response?.data as string) || "Ошибка при создании клиента");
+      return rejectWithValue(err.response?.data || "Failed to create client");
     }
   }
 );
@@ -149,35 +153,6 @@ const clientsSlice = createSlice({
     deleteClientRealtime: (state, action) => {
       state.clients = state.clients.filter(client => client.id !== action.payload.id);
     },
-    updateOrderInClientRealtime: (state, action: { payload: Order }) => {
-      console.log("🔄 Начало обновления заказа в clientSlice");
-      console.log("📦 Данные заказа:", action.payload);
-      console.log("👥 Текущие клиенты:", state.clients);
-
-      // Находим клиента с этим заказом
-      const clientIndex = state.clients.findIndex(client => {
-        const hasOrder = client.orders?.some(order => {
-          const match = order.orderId === action.payload.orderId;
-          return match;
-        });
-        return hasOrder;
-      });
-
-
-      if (clientIndex !== -1) {
-        // Находим индекс заказа у клиента
-        const orderIndex = state.clients[clientIndex].orders?.findIndex(
-          order => order.orderId === action.payload.orderId
-        );
-
-        // Если заказ найден, обновляем его
-        if (orderIndex !== undefined && orderIndex !== -1 && state.clients[clientIndex].orders) {
-          state.clients[clientIndex].orders[orderIndex] = action.payload;
-        }
-      } else {
-        console.log("❌ Клиент с заказом не найден");
-      }
-    }
   },
   extraReducers: (builder) => {
     builder
@@ -252,6 +227,6 @@ const clientsSlice = createSlice({
   },
 });
 
-export const { addClientRealtime, changeClientRealtime, deleteClientRealtime, updateOrderInClientRealtime } = clientsSlice.actions;
+export const { addClientRealtime, changeClientRealtime, deleteClientRealtime } = clientsSlice.actions;
 export default clientsSlice.reducer;
 

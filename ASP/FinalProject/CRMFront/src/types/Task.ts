@@ -2,9 +2,9 @@ import { Order } from "./Order"
 import { User } from "./User"
 
 export enum TaskStatus {
-    New = "New",
-    InProgress = "InProgress",
-    Completed = "Completed"
+    New = 0,
+    InProgress = 1,
+    Completed = 2
 }
 
 export interface Task {
