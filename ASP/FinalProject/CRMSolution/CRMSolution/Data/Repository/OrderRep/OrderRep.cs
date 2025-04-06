@@ -70,13 +70,16 @@ public class OrderRep : Repository<Order>, IOrderRep
         var query = _dbSet
             .Include(o => o.UserOrders)
             .ThenInclude(uo => uo.User)
+            .Include(co => co.ClientOrders)
+            .ThenInclude(co => co.Client)
             .Select(o => new OrderDTO()
             {
                 Id = o.Id,
                 TotalAmount = o.TotalAmount,
                 Status = o.Status,
                 CreatedAt = o.CreatedAt,
-                Username = o.UserOrders.Any() ? o.UserOrders.First().User.Username : "No user"
+                Username = o.UserOrders.Any() ? o.UserOrders.First().User.Username : "No user",
+                ClientName = o.ClientOrders.Any() ? o.ClientOrders.First().Client.Name : "No client",
             });
 
         query = sortOrdersRequest.sortBy?.ToLower() switch
@@ -86,6 +89,7 @@ public class OrderRep : Repository<Order>, IOrderRep
             "status" => sortOrdersRequest.Descending ? query.OrderByDescending(c => c.Status) : query.OrderBy(c => c.Status),
             "createdat" => sortOrdersRequest.Descending ? query.OrderByDescending(c => c.CreatedAt) : query.OrderBy(c => c.CreatedAt),
             "username" => sortOrdersRequest.Descending ? query.OrderByDescending(c => c.Username) : query.OrderBy(c => c.Username),
+            "clientName" => sortOrdersRequest.Descending ? query.OrderByDescending(c => c.ClientName) : query.OrderBy(c => c.ClientName),
             _ => query
         };
 

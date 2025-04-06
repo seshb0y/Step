@@ -21,6 +21,7 @@ export interface Order {
     client?: Client;
     callRecordingUrl?: string;
     username?: string;
+    clientName?: string;
     budget?: number;
     description?: string;
 }

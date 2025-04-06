@@ -37,9 +37,9 @@ export const Orders = () => {
   };
 
   const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('ru-RU', {
+    return new Intl.NumberFormat('en-US', {
       style: 'currency',
-      currency: 'RUB',
+      currency: 'USD',
       minimumFractionDigits: 2
     }).format(price);
   };
@@ -112,7 +112,8 @@ export const Orders = () => {
                       { key: "totalAmount", label: "Total Amount", width: "180px" },
                       { key: "status", label: "Status", width: "150px" },
                       { key: "createdAt", label: "Created At", width: "150px" },
-                      { key: "username", label: "Responsible", width: "200px" }
+                      { key: "username", label: "Responsible", width: "200px" },
+                      { key: "clientName", label: "Client", width: "250px" }
                     ].map(({ key, label, width }) => (
                       <th 
                         key={key}
@@ -150,6 +151,7 @@ export const Orders = () => {
                         {order.createdAt ? new Date(order.createdAt).toLocaleDateString() : ''}
                       </td>
                       <td className="py-2 px-4 text-white/90 tracking-wide font-inter">{order.username}</td>
+                      <td className="py-2 px-4 text-white/90 tracking-wide font-inter">{order.clientName || 'No client'}</td>
                     </tr>
                   ))}
                 </tbody>

@@ -14,4 +14,5 @@ public class OrderDTO
     public OrderStatus Status { get; set; }
     public DateTime CreatedAt { get; set; }
     public string Username { get; set; }
+    public string ClientName { get; set; }
 }
