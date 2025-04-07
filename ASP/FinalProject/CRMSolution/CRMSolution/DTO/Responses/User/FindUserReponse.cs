@@ -19,7 +19,7 @@ public class FindUserOrdersResponse
 public class FindUserTasksResponse
 {
     public string taskId { get; set; }
-    public string  tittle { get; set; }
+    public string  title { get; set; }
     public string status { get; set; }
 }
 

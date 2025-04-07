@@ -86,7 +86,7 @@ const UserModal = ({ user, onClose }: UserModalProps) => {
       case TaskStatus.Completed:
         return 'bg-green-500/20 text-green-300';
       default:
-        return 'bg-gray-500/20 text-gray-300';
+        return 'bg-yellow-500/20 text-yellow-300';
     }
   };
 

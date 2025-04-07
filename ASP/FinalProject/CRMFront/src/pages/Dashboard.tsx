@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { getDashboardData } from "../features/dashboard/dashboardSlice";
 import { TasksStatusTable } from "../components/Dashboard/TasksInfoTable";
 import Sidebar from "../components/StaticElements/Sidebar";
-import LoadingSpinner from "../components/LoadingSpinner";
+import LoadingScreen from "../components/LoadingScreen";
 import { fetchGetAllOrders } from "../features/orders/orderSlice";
 import { checkAuth } from "../features/auth/authSlice";
 import TopBox from "../components/StaticElements/TopBox";
@@ -39,9 +39,10 @@ export const Dashboard = () => {
         } w-screen`}
       >
         {loading ? (
-          <div className="flex justify-center items-center h-full">
-            <LoadingSpinner />
-          </div>
+          <LoadingScreen 
+            title="Loading Dashboard" 
+            subtitle="Please, wait while data is loading..." 
+          />
         ) : (
           <div className="px-16 pr-[calc(1rem*4-70px)]">
             <div className="grid grid-cols-2 gap-8">

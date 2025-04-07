@@ -61,7 +61,7 @@ public class UserRep : Repository<User>, IUserRep
             tasks = user.UserTasks.Select(ut => new FindUserTasksResponse()
             {
                 taskId = ut.Task.Id.ToString(),
-                tittle = ut.Task.Title,
+                title = ut.Task.Title,
                 status = ut.Task.Status.ToString()
             }).ToArray()
         };
