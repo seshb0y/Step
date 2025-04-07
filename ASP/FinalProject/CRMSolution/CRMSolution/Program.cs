@@ -34,7 +34,8 @@ builder.Services.AddCors(policy => {
             .WithOrigins("http://localhost:5173", "http://localhost:5241", "https://crm-solution-taupe.vercel.app/")
             .AllowAnyHeader()
             .AllowAnyMethod()
-            .AllowCredentials();
+            .AllowCredentials()
+            .SetIsOriginAllowed(_ => true);
     });
 });
 
