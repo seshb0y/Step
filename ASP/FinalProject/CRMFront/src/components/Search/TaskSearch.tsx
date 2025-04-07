@@ -25,7 +25,7 @@ export const TaskSearch = ({ onTaskSelect }: TaskSearchProps) => {
 
   const filteredTasks = searchTerm.trim() === '' ? [] : tasks.filter(task => 
     (task.taskId?.toString() || '').includes(searchTerm.toLowerCase()) ||
-    (task.tittle?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+    (task.title?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
     (task.status?.toString() || '').includes(searchTerm.toLowerCase()) ||
     (task.username?.toLowerCase() || '').includes(searchTerm.toLowerCase())
   );
@@ -87,7 +87,7 @@ export const TaskSearch = ({ onTaskSelect }: TaskSearchProps) => {
             >
               <div className="flex justify-between items-center">
                 <div>
-                  <div className="font-medium">#{task.taskId} {task.tittle}</div>
+                  <div className="font-medium">#{task.taskId} {task.title}</div>
                   <div className="text-sm text-gray-400">{task.username}</div>
                 </div>
                 <div className="text-right">

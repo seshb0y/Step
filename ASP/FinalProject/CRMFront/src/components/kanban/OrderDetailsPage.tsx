@@ -440,7 +440,7 @@ const OrderDetailsPage = () => {
                     <div key={task.id} className="bg-[#3a1a5e] p-4 rounded-md shadow-md">
                       <div className="flex justify-between items-start">
                         <div>
-                          <h3 className="text-lg font-semibold">{task.tittle}</h3>
+                          <h3 className="text-lg font-semibold">{task.title}</h3>
                           <p>{task.description}</p>
                           <p className="text-sm text-gray-400">Status: {getTaskStatusText(task.status)}</p>
                           <p className="text-sm text-gray-400">
@@ -451,7 +451,7 @@ const OrderDetailsPage = () => {
                           <button
                             onClick={() => task.id && openEditTaskModal({
                               id: task.id,
-                              tittle: task.tittle,
+                              tittle: task.title,
                               description: task.description || '',
                               status: task.status
                             })}

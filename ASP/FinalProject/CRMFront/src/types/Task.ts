@@ -10,7 +10,7 @@ export enum TaskStatus {
 export interface Task {
     taskId: string;
     id?: number;
-    tittle: string;
+    title: string;
     description?: string;
     status: TaskStatus;
     dueDate?: Date;

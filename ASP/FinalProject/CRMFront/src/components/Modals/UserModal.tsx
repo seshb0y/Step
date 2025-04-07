@@ -223,7 +223,7 @@ const UserModal = ({ user, onClose }: UserModalProps) => {
             {user.tasks.map(task => (
               <li key={task.taskId} className="p-3 bg-[rgba(30,27,75,0.95)] rounded-lg border border-purple-500/20">
                 <p className="text-gray-300">ID: <span className="text-white">#{task.taskId}</span></p>
-                <p className="text-gray-300">Название: <span className="text-white">{task.tittle}</span></p>
+                <p className="text-gray-300">Название: <span className="text-white">{task.title}</span></p>
                 <p className="text-gray-300">
                   Статус: 
                   <span className={`ml-2 px-2 py-1 rounded-full text-xs ${getStatusColor(task.status)}`}>

@@ -100,6 +100,7 @@ public class ClientRep : Repository<Client>, IClientRep
             "email" => sortClientsRequest.Descending ? query.OrderByDescending(c => c.Email) : query.OrderBy(c => c.Email),
             "id" => sortClientsRequest.Descending ? query.OrderByDescending(c => c.Id) : query.OrderBy(c => c.Id),
             "address" => sortClientsRequest.Descending ? query.OrderByDescending(c => c.Address) : query.OrderBy(c => c.Address),
+            "phone" => sortClientsRequest.Descending ? query.OrderByDescending(c => c.Phone) : query.OrderBy(c => c.Phone),
             "createdat" => sortClientsRequest.Descending ? query.OrderByDescending(c => c.CreatedAt) : query.OrderBy(c => c.CreatedAt),
             _ => query
         };
