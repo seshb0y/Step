@@ -31,11 +31,15 @@ builder.Services.AddLogging();
 builder.Services.AddCors(policy => {
     policy.AddPolicy("Default", builder => {
         builder
-            .WithOrigins("http://localhost:5173", "http://localhost:5241", "https://crm-solution-taupe.vercel.app/")
+            .WithOrigins(
+                "http://localhost:5173",
+                "http://localhost:5241",
+                "https://crm-solution-taupe.vercel.app"
+            )
             .AllowAnyHeader()
             .AllowAnyMethod()
             .AllowCredentials()
-            .SetIsOriginAllowed(_ => true);
+            .WithExposedHeaders("Content-Disposition");
     });
 });
 
@@ -62,8 +66,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateAudience = true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            ValidIssuer = builder.Configuration["JWT:Issuer"],
-            ValidAudience = builder.Configuration["JWT:Audience"],
+            ValidIssuers = builder.Configuration.GetSection("JWT:Issuer").Get<string[]>(),
+            ValidAudiences = builder.Configuration.GetSection("JWT:Audience").Get<string[]>(),
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"]))
         };
     });
