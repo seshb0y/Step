@@ -9,12 +9,15 @@ import DashboardKanban from "../pages/DashboardKanban";
 import OrderDetailsPage from "../components/kanban/OrderDetailsPage";
 import Users from "../pages/Users";
 import ChangePassword from "../pages/ChangePassword";
+import VerifyEmail from "../pages/VerifyEmail";
 
 const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<Login />} />
       <Route path="/change-password" element={<ChangePassword />} />
+      <Route path="/verify-email" element={<VerifyEmail />} />
+
       <Route element={<PrivateRoute/>}>
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/clients" element={<Clients />} />
@@ -24,6 +27,7 @@ const AppRoutes = () => {
         <Route path="/orders/:orderId" element={<OrderDetailsPage />} /> 
         <Route path="/users" element={<Users />} /> 
       </Route>
+      
     </Routes>
   );
 };

@@ -79,10 +79,23 @@ public class AccountService : IAccountService
             throw new Exception("User not found");
 
         string token = await _tokenService.CreateEmailTokenAsync(request.username);
-        string link = $"{context.Request.Scheme}://{context.Request.Host}/Account/VerifyEmail?token={token}";
+        string link = $"https://crm-solution-taupe.vercel.app/verify-email?token={token}";
 
-        string emailBody = $"<p>Привет, {request.username}! Подтвердите вашу почту, нажав <a href='{link}'>сюда</a>.</p>";
-        await SendEmailAsync(user.Email, "Подтверждение email", emailBody);
+        string emailBody = $@"
+            <div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;'>
+                <h2 style='color: #4F46E5;'>Email Confirmation</h2>
+                <p>Hello, {request.username}!</p>
+                <p>Please confirm your email address by clicking the button below:</p>
+                <div style='text-align: center; margin: 30px 0;'>
+                    <a href='{link}' style='background-color: #4F46E5; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; display: inline-block;'>
+                        Confirm Email
+                    </a>
+                </div>
+                <p style='color: #666; font-size: 14px;'>If the button doesn't work, you can copy and paste this link into your browser:</p>
+                <p style='color: #666; font-size: 14px;'>{link}</p>
+                <p style='color: #666; font-size: 12px; margin-top: 30px;'>This link will expire in 24 hours.</p>
+            </div>";
+        await SendEmailAsync(user.Email, "Email Confirmation", emailBody);
     }
 
     public async Task VerifyEmailAsync(string token)

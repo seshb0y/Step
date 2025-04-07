@@ -10,7 +10,6 @@ const PrivateRoute = () => {
     return <Navigate to="/" replace />;
   }
 
-  // Проверяем доступ к страницам в зависимости от роли
   const isAdminRoute = ['/clients', '/tasks', '/orders', '/users'].includes(location.pathname);
   
   if (isAdminRoute && user?.role !== 0) {
