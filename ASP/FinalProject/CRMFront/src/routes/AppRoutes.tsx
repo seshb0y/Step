@@ -1,33 +1,39 @@
-import { Route, Routes } from "react-router-dom";
-import Dashboard from "../pages/Dashboard";
+import { Routes, Route, Navigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "../store/store";
 import Login from "../pages/Login";
+import Dashboard from "../pages/Dashboard";
 import Clients from "../pages/Clients";
-import Tasks from "../pages/Tasks";
 import Orders from "../pages/Orders";
-import PrivateRoute from "./PrivateRoute";
+import Tasks from "../pages/Tasks";
+import Users from "../pages/Users";
+import VerifyEmail from "../pages/VerifyEmail";
 import DashboardKanban from "../pages/DashboardKanban";
 import OrderDetailsPage from "../components/kanban/OrderDetailsPage";
-import Users from "../pages/Users";
 import ChangePassword from "../pages/ChangePassword";
-import VerifyEmail from "../pages/VerifyEmail";
+import PrivateRoute from "./PrivateRoute";
 
 const AppRoutes = () => {
+  const isLogin = useSelector((state: RootState) => state.auth.isAuthenticated);
+
   return (
     <Routes>
-      <Route path="/" element={<Login />} />
-      <Route path="/change-password" element={<ChangePassword />} />
+      <Route path="/login" element={!isLogin ? <Login /> : <Navigate to="/" />} />
       <Route path="/verify-email" element={<VerifyEmail />} />
+      <Route path="/change-password" element={<ChangePassword />} />
 
-      <Route element={<PrivateRoute/>}>
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/clients" element={<Clients />} />
-        <Route path="/tasks" element={<Tasks />} />
-        <Route path="/orders" element={<Orders />} />
-        <Route path="/kanban" element={<DashboardKanban />} />
-        <Route path="/orders/:orderId" element={<OrderDetailsPage />} /> 
-        <Route path="/users" element={<Users />} /> 
+      <Route element={<PrivateRoute />}>
+        <Route path="/" element={isLogin ? <Dashboard /> : <Navigate to="/login" />} />
+        <Route path="/dashboard" element={isLogin ? <Dashboard /> : <Navigate to="/login" />} />
+        <Route path="/clients" element={isLogin ? <Clients /> : <Navigate to="/login" />} />
+        <Route path="/tasks" element={isLogin ? <Tasks /> : <Navigate to="/login" />} />
+        <Route path="/orders" element={isLogin ? <Orders /> : <Navigate to="/login" />} />
+        <Route path="/kanban" element={isLogin ? <DashboardKanban /> : <Navigate to="/login" />} />
+        <Route path="/orders/:orderId" element={isLogin ? <OrderDetailsPage /> : <Navigate to="/login" />} />
+        <Route path="/users" element={isLogin ? <Users /> : <Navigate to="/login" />} />
       </Route>
-      
+
+      <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   );
 };
