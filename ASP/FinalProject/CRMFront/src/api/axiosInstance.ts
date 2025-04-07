@@ -26,6 +26,20 @@ const axiosInstance = axios.create({
   }
 });
 
+let isRefreshing = false;
+let failedQueue: { resolve: (value?: unknown) => void; reject: (reason?: unknown) => void; }[] = [];
+
+const processQueue = (error: Error | null) => {
+  failedQueue.forEach(prom => {
+    if (error) {
+      prom.reject(error);
+    } else {
+      prom.resolve();
+    }
+  });
+  failedQueue = [];
+};
+
 axiosInstance.interceptors.request.use(
   (config) => {
     if (config.method === 'get') {
@@ -38,7 +52,7 @@ axiosInstance.interceptors.request.use(
   },
   (error) => {
     console.error("Request error:", error);
-    toast.error('Ошибка при отправке запроса');
+    toast.error('Error when sending request');
     return Promise.reject(error);
   }
 );
@@ -47,11 +61,41 @@ axiosInstance.interceptors.response.use(
   (response) => {
     return response;
   },
-  (error) => {
-    console.error("Response error:", error);
+  async (error) => {
+    const originalRequest = error.config;
+
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      if (isRefreshing) {
+        return new Promise((resolve, reject) => {
+          failedQueue.push({ resolve, reject });
+        })
+          .then(() => {
+            return axiosInstance(originalRequest);
+          })
+          .catch(err => {
+            return Promise.reject(err);
+          });
+      }
+
+      originalRequest._retry = true;
+      isRefreshing = true;
+
+      try {
+        await axiosInstance.post('/Auth/Refresh');
+        processQueue(null);
+        return axiosInstance(originalRequest);
+      } catch (refreshError) {
+        processQueue(refreshError as Error);
+        localStorage.removeItem('isLogin');
+        window.location.href = "/login";
+        return Promise.reject(refreshError);
+      } finally {
+        isRefreshing = false;
+      }
+    }
 
     if (!error.response) {
-      toast.error('Сервер недоступен. Пожалуйста, проверьте подключение к интернету');
+      toast.error('Server is not available. Please check your internet connection');
       return Promise.reject(error);
     }
 
@@ -70,24 +114,20 @@ axiosInstance.interceptors.response.use(
             });
           });
         } else {
-          toast.error((errorData as ErrorResponse).message || 'Ошибка валидации данных');
+          toast.error((errorData as ErrorResponse).message || 'Validation error');
         }
         break;
-      case 401:
-        localStorage.removeItem('isLogin');
-        window.location.href = "/login";
-        break;
       case 403:
-        toast.error('У вас нет прав для выполнения этого действия');
+        toast.error('You do not have permission to perform this action');
         break;
       case 404:
-        toast.error('Запрашиваемый ресурс не найден');
+        toast.error('Requested resource not found');
         break;
       case 500:
-        toast.error('Внутренняя ошибка сервера');
+        toast.error('Internal server error');
         break;
       default:
-        toast.error(error.response.data?.message || 'Произошла ошибка');
+        toast.error(error.response.data?.message || 'An error occurred');
     }
 
     return Promise.reject(error);
