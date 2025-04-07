@@ -16,6 +16,7 @@ using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.CookiePolicy;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,7 +40,8 @@ builder.Services.AddCors(policy => {
             .AllowAnyHeader()
             .AllowAnyMethod()
             .AllowCredentials()
-            .WithExposedHeaders("Content-Disposition");
+            .WithExposedHeaders("Content-Disposition", "Set-Cookie")
+            .SetIsOriginAllowedToAllowWildcardSubdomains();
     });
 });
 
@@ -72,6 +74,20 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+// Добавляем настройки для куки
+builder.Services.Configure<CookiePolicyOptions>(options =>
+{
+    options.MinimumSameSitePolicy = SameSiteMode.None;
+    options.Secure = CookieSecurePolicy.Always;
+});
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.Cookie.SameSite = SameSiteMode.None;
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+    options.Cookie.Domain = null; // Это позволит куки работать на всех поддоменах
+    options.Cookie.HttpOnly = true;
+});
 
 builder.Services.AddAuthorization(options => {
     options.AddPolicy("AdminPolicy", policy =>
@@ -128,9 +144,8 @@ app.UseMiddleware<CRMSolution.Middlewares.ExceptionHandlerMiddleware>();
 
 
 app.UseRouting();
-
 app.UseCors("Default");
-
+app.UseCookiePolicy();
 app.UseAuthentication();
 app.UseAuthorization();
 
