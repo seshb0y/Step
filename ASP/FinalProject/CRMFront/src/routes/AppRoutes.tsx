@@ -18,22 +18,25 @@ const AppRoutes = () => {
 
   return (
     <Routes>
-      <Route path="/login" element={!isLogin ? <Login /> : <Navigate to="/" />} />
+      {/* Public routes - доступны всегда */}
+      <Route path="/login" element={!isLogin ? <Login /> : <Navigate to="/dashboard" />} />
       <Route path="/verify-email" element={<VerifyEmail />} />
       <Route path="/change-password" element={<ChangePassword />} />
 
+      {/* Protected routes - требуют авторизации */}
       <Route element={<PrivateRoute />}>
-        <Route path="/" element={isLogin ? <Dashboard /> : <Navigate to="/login" />} />
-        <Route path="/dashboard" element={isLogin ? <Dashboard /> : <Navigate to="/login" />} />
-        <Route path="/clients" element={isLogin ? <Clients /> : <Navigate to="/login" />} />
-        <Route path="/tasks" element={isLogin ? <Tasks /> : <Navigate to="/login" />} />
-        <Route path="/orders" element={isLogin ? <Orders /> : <Navigate to="/login" />} />
-        <Route path="/kanban" element={isLogin ? <DashboardKanban /> : <Navigate to="/login" />} />
-        <Route path="/orders/:orderId" element={isLogin ? <OrderDetailsPage /> : <Navigate to="/login" />} />
-        <Route path="/users" element={isLogin ? <Users /> : <Navigate to="/login" />} />
+        <Route path="/" element={<Navigate to="/dashboard" replace />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/clients" element={<Clients />} />
+        <Route path="/tasks" element={<Tasks />} />
+        <Route path="/orders" element={<Orders />} />
+        <Route path="/kanban" element={<DashboardKanban />} />
+        <Route path="/orders/:orderId" element={<OrderDetailsPage />} />
+        <Route path="/users" element={<Users />} />
       </Route>
 
-      <Route path="*" element={<Navigate to="/" />} />
+      {/* Redirect all unknown routes to login if not authenticated, or to dashboard if authenticated */}
+      <Route path="*" element={isLogin ? <Navigate to="/dashboard" /> : <Navigate to="/login" />} />
     </Routes>
   );
 };

@@ -22,6 +22,7 @@ const VerifyEmail = () => {
                 await axiosInstance.get(`/Account/VerifyEmail?token=${token}`);
                 toast.success('Email verified successfully! You can now log in.');
                 navigate('/login');
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             } catch (error: any) {
                 if (error.response?.data?.message) {
                     toast.error(error.response.data.message);
