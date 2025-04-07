@@ -12,6 +12,7 @@ import { fetchChangeClientData } from "../../features/clients/clientSlice";
 import OrderEditModal from "../Modals/OrderEditModal";
 import { fetchUsers } from "../../features/user/userSlice";
 import LoadingScreen from "../LoadingScreen";
+import { toast } from 'react-toastify';
 
 interface EditingTask {
   id: number;
@@ -158,7 +159,15 @@ const OrderDetailsPage = () => {
   };
 
   const handleCreateTask = async () => {
-    if (!taskTitle.trim() || !taskDescription.trim() || !taskDueDate || !order?.id || !order?.users?.[0]?.username) return;
+    if (!taskTitle.trim() || !taskDescription.trim() || !taskDueDate || !order?.id) {
+      toast.error('Please fill in all required fields');
+      return;
+    }
+
+    if (!order.users || order.users.length === 0 || !order.users[0].username) {
+      toast.error('No responsible user assigned to this order');
+      return;
+    }
 
     const taskData = {
       title: taskTitle,
@@ -168,11 +177,17 @@ const OrderDetailsPage = () => {
       orderId: order.id
     };
 
-    await dispatch(createTask(taskData));
-    setIsModalOpen(false);
-    setTaskTitle("");
-    setTaskDescription("");
-    setTaskDueDate("");
+    try {
+      await dispatch(createTask(taskData));
+      setIsModalOpen(false);
+      setTaskTitle("");
+      setTaskDescription("");
+      setTaskDueDate("");
+      toast.success('Task created successfully');
+    } catch (error) {
+      toast.error('Failed to create task');
+      console.error("Error creating task:", error);
+    }
   };
 
   const handleDeleteTask = async (taskId: number) => {
