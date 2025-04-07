@@ -76,8 +76,8 @@ public class TokenService : ITokenService
         var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
         var securityToken = new JwtSecurityToken(
-            issuer: _config["JWT:Issuer"],
-            audience: _config["JWT:Audience"],
+            issuer: _config.GetSection("JWT:Issuer").Get<string[]>()[0],
+            audience: _config.GetSection("JWT:Audience").Get<string[]>()[0],
             claims: claims,
             expires: DateTime.UtcNow.AddMinutes(1),
             signingCredentials: signingCredentials
@@ -147,8 +147,8 @@ public class TokenService : ITokenService
         var securityToken = new JwtSecurityToken(
             claims: claims,
             expires: DateTime.UtcNow.AddMinutes(5),
-            issuer: _config["JWT:Issuer"],
-            audience: _config["JWT:Audience"],
+            issuer: _config.GetSection("JWT:Issuer").Get<string[]>()[0],
+            audience: _config.GetSection("JWT:Audience").Get<string[]>()[0],
             signingCredentials: signingCred
         );
 
@@ -169,8 +169,8 @@ public class TokenService : ITokenService
             ValidateAudience = true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            ValidIssuer = _config["JWT:Issuer"],
-            ValidAudience = _config["JWT:Audience"],
+            ValidIssuer = _config.GetSection("JWT:Issuer").Get<string[]>()[0],
+            ValidAudience = _config.GetSection("JWT:Audience").Get<string[]>()[0],
             IssuerSigningKey = securityKey,
             ClockSkew = TimeSpan.Zero
         };
