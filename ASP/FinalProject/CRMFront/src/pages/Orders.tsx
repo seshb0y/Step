@@ -137,7 +137,7 @@ export const Orders = () => {
                 <tbody>
                   {orders.map((order) => (
                     <tr 
-                      key={order.id} 
+                      key={order.orderId} 
                       className="border-b border-purple-500/10 hover:bg-[rgba(139,92,246,0.1)] transition-all duration-200 cursor-pointer"
                       onClick={() => handleOrderSelect(order)}
                     >

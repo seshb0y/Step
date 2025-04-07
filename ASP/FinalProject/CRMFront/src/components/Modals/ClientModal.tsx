@@ -19,6 +19,7 @@ const ClientModal = ({ client, onClose }: ClientModalProps) => {
   const { users } = useSelector((state: RootState) => state.users);
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState<Client>(client);
+  const [currentClient, setCurrentClient] = useState<Client>(client);
 
   const [newOrderData, setNewOrderData] = useState({
     totalAmount: "",
@@ -33,22 +34,22 @@ const ClientModal = ({ client, onClose }: ClientModalProps) => {
     const updatedClient = clients.find((c) => c.id === client.id);
     if (updatedClient) {
       setFormData(updatedClient);
+      setCurrentClient(updatedClient);
+      if (isEditing) {
+        setIsEditing(false);
+      }
     }
   }, [clients, client.id]);
 
   const formatPhoneNumber = (value: string) => {
-    // Удаляем все нецифровые символы
     const phoneNumber = value.replace(/\D/g, '');
     
-    // Если номер начинается с +, сохраняем его
     const hasPlus = value.startsWith('+');
     
-    // Определяем код страны (первые 1-3 цифры)
     let countryCode = '';
     let localNumber = '';
     
     if (phoneNumber.length > 0) {
-      // Пробуем определить код страны (обычно 1-3 цифры)
       if (phoneNumber.length >= 3) {
         countryCode = phoneNumber.slice(0, 3);
         localNumber = phoneNumber.slice(3);
@@ -57,7 +58,6 @@ const ClientModal = ({ client, onClose }: ClientModalProps) => {
       }
     }
     
-    // Форматируем номер
     let formatted = hasPlus ? '+' : '';
     if (countryCode) {
       formatted += countryCode;
@@ -73,13 +73,11 @@ const ClientModal = ({ client, onClose }: ClientModalProps) => {
     const { name, value } = e.target;
     
     if (name === 'phone') {
-      // Для телефона применяем форматирование
       setFormData(prev => ({
         ...prev,
         [name]: formatPhoneNumber(value)
       }));
     } else {
-      // Для остальных полей оставляем как есть
       setFormData(prev => ({
         ...prev,
         [name]: value
@@ -87,20 +85,26 @@ const ClientModal = ({ client, onClose }: ClientModalProps) => {
     }
   };
 
-  const handleSave = () => {
-    // Преобразуем номер телефона в формат для сервера (только цифры)
+  const handleSave = async () => {
     const phoneForServer = formData.phone.replace(/\D/g, '');
     
-    dispatch(
-      fetchChangeClientData({
-        name: formData.name,
-        newEmail: formData.email,
-        oldEmail: client.email,
-        phone: phoneForServer,
-        address: formData.address,
-      })
-    );
-    setIsEditing(false);
+    try {
+      const result = await dispatch(
+        fetchChangeClientData({
+          name: formData.name,
+          newEmail: formData.email,
+          oldEmail: currentClient.email,
+          phone: phoneForServer,
+          address: formData.address,
+        })
+      ).unwrap();
+      
+      setFormData(result);
+      setCurrentClient(result);
+      setIsEditing(false);
+    } catch (error) {
+      console.error('Error updating client:', error);
+    }
   };
 
   const handleDelete = () => {

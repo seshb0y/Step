@@ -11,6 +11,8 @@ using CRMSolution.DTO.Requests.Orders;
 using CRMSolution.Data.Models;
 using ControllerFirst.DTO.Responses;
 using CRMSolution.Data.Repository;
+using CRMSolution.Hubs;
+using Microsoft.AspNetCore.SignalR;
 
 public class OrderServiceTests
 {
@@ -18,17 +20,21 @@ public class OrderServiceTests
     private readonly Mock<IMapper> _mapperMock;
     private readonly Mock<ILogger<OrderService>> _loggerMock;
     private readonly OrderService _orderService;
+    private readonly Mock<IHubContext<NotificationHub>> _hubContextMock;
+
 
     public OrderServiceTests()
     {
         _unitOfWorkMock = new Mock<IUnitOfWork>();
         _mapperMock = new Mock<IMapper>();
         _loggerMock = new Mock<ILogger<OrderService>>();
+        _hubContextMock = new Mock<IHubContext<NotificationHub>>();
 
         _orderService = new OrderService(
             _unitOfWorkMock.Object,
             _mapperMock.Object,
-            _loggerMock.Object);
+            _loggerMock.Object,
+            _hubContextMock.Object);
     }
 
     // [Fact]
@@ -79,6 +85,19 @@ public class OrderServiceTests
         _unitOfWorkMock.Setup(x => x.OrderRep.GetById(request.orderId)).ReturnsAsync(order);
         _mapperMock.Setup(x => x.Map(request, order)).Returns(order);
 
+        var mockClients = new Mock<IHubClients>();
+        var mockClientProxy = new Mock<IClientProxy>();
+
+        mockClients.Setup(c => c.All).Returns(mockClientProxy.Object);
+        mockClientProxy
+            .Setup(proxy => proxy.SendCoreAsync(
+                It.IsAny<string>(),
+                It.IsAny<object[]>(),
+                It.IsAny<CancellationToken>()))
+            .Returns(Task.CompletedTask);
+
+        _hubContextMock.Setup(h => h.Clients).Returns(mockClients.Object);
+        
         await _orderService.ChangeDataOrder(request);
 
         _unitOfWorkMock.Verify(x => x.OrderRep.Update(order), Times.Once);
@@ -93,6 +112,19 @@ public class OrderServiceTests
 
         _unitOfWorkMock.Setup(x => x.OrderRep.GetById(request.orderId)).ReturnsAsync(order);
 
+        var mockClients = new Mock<IHubClients>();
+        var mockClientProxy = new Mock<IClientProxy>();
+
+        mockClients.Setup(c => c.All).Returns(mockClientProxy.Object);
+        mockClientProxy
+            .Setup(proxy => proxy.SendCoreAsync(
+                It.IsAny<string>(),
+                It.IsAny<object[]>(),
+                It.IsAny<CancellationToken>()))
+            .Returns(Task.CompletedTask);
+
+        _hubContextMock.Setup(h => h.Clients).Returns(mockClients.Object);
+        
         await _orderService.DeleteOrder(request);
 
         _unitOfWorkMock.Verify(x => x.OrderRep.Delete(order), Times.Once);
@@ -150,6 +182,19 @@ public class OrderServiceTests
         _unitOfWorkMock.Setup(x => x.OrderRep.GetOrderWithClientAndTasks(order.Id)).ReturnsAsync(order);
         _unitOfWorkMock.Setup(x => x.UserRep.GetById(request.userId)).ReturnsAsync(user);
 
+        var mockClients = new Mock<IHubClients>();
+        var mockClientProxy = new Mock<IClientProxy>();
+
+        mockClients.Setup(c => c.All).Returns(mockClientProxy.Object);
+        mockClientProxy
+            .Setup(proxy => proxy.SendCoreAsync(
+                It.IsAny<string>(),
+                It.IsAny<object[]>(),
+                It.IsAny<CancellationToken>()))
+            .Returns(Task.CompletedTask);
+
+        _hubContextMock.Setup(h => h.Clients).Returns(mockClients.Object);
+        
         await _orderService.ChangeResponsible(order.Id, request);
 
         Assert.Single(order.UserOrders);

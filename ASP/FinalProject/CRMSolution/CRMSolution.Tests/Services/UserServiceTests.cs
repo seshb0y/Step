@@ -10,6 +10,8 @@ using ControllerFirst.DTO.Responses.User;
 using ControllerFirst.DTO.Responses;
 using System.Threading.Tasks;
 using CRMSolution.Data.Repository;
+using CRMSolution.Hubs;
+using Microsoft.AspNetCore.SignalR;
 
 public class UserServiceTests
 {
@@ -17,17 +19,21 @@ public class UserServiceTests
     private readonly Mock<IMapper> _mapperMock;
     private readonly Mock<ILogger<UserService>> _loggerMock;
     private readonly UserService _userService;
+    private readonly Mock<IHubContext<NotificationHub>> _hubContextMock;
+
 
     public UserServiceTests()
     {
         _unitOfWorkMock = new Mock<IUnitOfWork>();
         _mapperMock = new Mock<IMapper>();
         _loggerMock = new Mock<ILogger<UserService>>();
+        _hubContextMock = new Mock<IHubContext<NotificationHub>>();
 
         _userService = new UserService(
             _unitOfWorkMock.Object,
             _mapperMock.Object,
-            _loggerMock.Object);
+            _loggerMock.Object,
+            _hubContextMock.Object);
     }
 
     [Fact]
@@ -40,6 +46,19 @@ public class UserServiceTests
         _mapperMock.Setup(x => x.Map(request, user)).Returns(user);
         _unitOfWorkMock.Setup(x => x.UserRep.FindByEmailAsync(request.newEmail)).ReturnsAsync(user);
 
+        var mockClients = new Mock<IHubClients>();
+        var mockClientProxy = new Mock<IClientProxy>();
+
+        mockClients.Setup(c => c.All).Returns(mockClientProxy.Object);
+        mockClientProxy
+            .Setup(proxy => proxy.SendCoreAsync(
+                It.IsAny<string>(),
+                It.IsAny<object[]>(),
+                It.IsAny<CancellationToken>()))
+            .Returns(Task.CompletedTask);
+
+        _hubContextMock.Setup(h => h.Clients).Returns(mockClients.Object);
+        
         var result = await _userService.ChangeUserData(request);
 
         Assert.NotNull(result);
@@ -55,6 +74,19 @@ public class UserServiceTests
 
         _unitOfWorkMock.Setup(x => x.UserRep.FindByEmailAsync(request.email)).ReturnsAsync(user);
 
+        var mockClients = new Mock<IHubClients>();
+        var mockClientProxy = new Mock<IClientProxy>();
+
+        mockClients.Setup(c => c.All).Returns(mockClientProxy.Object);
+        mockClientProxy
+            .Setup(proxy => proxy.SendCoreAsync(
+                It.IsAny<string>(),
+                It.IsAny<object[]>(),
+                It.IsAny<CancellationToken>()))
+            .Returns(Task.CompletedTask);
+
+        _hubContextMock.Setup(h => h.Clients).Returns(mockClients.Object);
+        
         await _userService.DeleteUser(request);
 
         _unitOfWorkMock.Verify(x => x.UserRep.Delete(user), Times.Once);

@@ -37,7 +37,7 @@ export const useSignalR = () => {
           }
         });
 
-        // Клиенты
+        
         connection.on("ClientCreated", (data) => {
           console.log("📡 Новый клиент:", data);
           dispatch(addClientRealtime(data));
@@ -53,7 +53,7 @@ export const useSignalR = () => {
           dispatch(changeClientRealtime(data));
         });
 
-        // Пользователи
+        
         connection.on("NewUserRegistered", (data) => {
           console.log("📡 Новый пользователь:", data);
           dispatch(addUserRealtime(data));
@@ -69,7 +69,7 @@ export const useSignalR = () => {
           dispatch(deleteUserRealtime(data));
         });
 
-        // Заказы
+        
         connection.on("OrderCreated", (data) => {
           console.log("📡 Новый заказ:", data);
           dispatch(addOrderRealtime(data));
@@ -92,7 +92,7 @@ export const useSignalR = () => {
           dispatch(deleteOrderRealtime(data));
         });
 
-        // Задачи
+        
         connection.on("TaskCreated", (data) => {
           console.log("📡 Новая задача:", data);
           window.dispatchEvent(new CustomEvent('taskCreated'));

@@ -89,7 +89,7 @@ public class OrderRep : Repository<Order>, IOrderRep
             "status" => sortOrdersRequest.Descending ? query.OrderByDescending(c => c.Status) : query.OrderBy(c => c.Status),
             "createdat" => sortOrdersRequest.Descending ? query.OrderByDescending(c => c.CreatedAt) : query.OrderBy(c => c.CreatedAt),
             "username" => sortOrdersRequest.Descending ? query.OrderByDescending(c => c.Username) : query.OrderBy(c => c.Username),
-            "clientName" => sortOrdersRequest.Descending ? query.OrderByDescending(c => c.ClientName) : query.OrderBy(c => c.ClientName),
+            "clientname" => sortOrdersRequest.Descending ? query.OrderByDescending(c => c.ClientName) : query.OrderBy(c => c.ClientName),
             _ => query
         };
 

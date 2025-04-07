@@ -1,6 +1,15 @@
 import axios from "axios";
 import { toast } from 'react-toastify';
 
+interface ValidationErrors {
+  [key: string]: string[];
+}
+
+interface ErrorResponse {
+  message?: string;
+  errors?: ValidationErrors;
+}
+
 const isDevelopment = import.meta.env.DEV;
 const apiUrl = isDevelopment 
   ? import.meta.env.VITE_API_URL 
@@ -46,7 +55,24 @@ axiosInstance.interceptors.response.use(
       return Promise.reject(error);
     }
 
+    const errorData = error.response.data as ErrorResponse | string[];
+
     switch (error.response.status) {
+      case 400:
+        if (Array.isArray(errorData)) {
+          errorData.forEach((errorMessage: string) => {
+            toast.error(errorMessage);
+          });
+        } else if (typeof errorData === 'object' && errorData.errors) {
+          Object.values(errorData.errors).forEach((errorMessages: string[]) => {
+            errorMessages.forEach((message: string) => {
+              toast.error(message);
+            });
+          });
+        } else {
+          toast.error((errorData as ErrorResponse).message || 'Ошибка валидации данных');
+        }
+        break;
       case 401:
         localStorage.removeItem('isLogin');
         window.location.href = "/login";

@@ -52,7 +52,7 @@ public class OrderProfile : Profile
             .ForMember(dest => dest.Client, opt => opt
                 .MapFrom(src => src.ClientOrders.FirstOrDefault().Client))
             .ForMember(dest => dest.CallRecordingUrl, opt => opt
-                .MapFrom(src => src.CallRecordings != null ? src.CallRecordings.Select(cr => cr.Url).ToList() : new List<string>()))
+                .MapFrom(src => src.CallRecordings.Select(cr => cr.Url).ToList()))
             .ForMember(dest => dest.Users, opt => opt
                 .MapFrom(src => src.UserOrders.Select(uo => uo.User)));
 

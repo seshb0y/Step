@@ -26,6 +26,7 @@ export const OrderSearch = ({ onOrderSelect }: OrderSearchProps) => {
   const filteredOrders = searchTerm.trim() === '' ? [] : orders.filter(order => 
     (order.id?.toString() || '').includes(searchTerm.toLowerCase()) ||
     (order.username || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (order.clientName || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
     order.status.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
     order.totalAmount.toString().includes(searchTerm)
   );
@@ -84,6 +85,7 @@ export const OrderSearch = ({ onOrderSelect }: OrderSearchProps) => {
                 <div>
                   <div className="font-medium">Заказ #{order.id}</div>
                   <div className="text-sm text-gray-400">{order.username}</div>
+                  <div className="text-sm text-purple-400">{order.clientName || 'Нет клиента'}</div>
                 </div>
                 <div className="text-right">
                   <div className="font-medium text-purple-400">{formatPrice(order.totalAmount)}</div>

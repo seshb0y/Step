@@ -9,8 +9,10 @@ using CRMSolution.DTO.Requests.Client;
 using CRMSolution.Data.Models;
 using ControllerFirst.DTO.Responses;
 using CRMSolution.Data.Repository;
+using CRMSolution.Hubs;
 using CRMSolution.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.SignalR;
 
 public class ClientServiceTests
 {
@@ -19,6 +21,8 @@ public class ClientServiceTests
     private readonly Mock<ILogger<ClientService>> _loggerMock;
     private readonly Mock<ITokenService> _tokenServiceMock;
     private readonly ClientService _clientService;
+    private readonly Mock<IHubContext<NotificationHub>> _hubContextMock;
+
 
     public ClientServiceTests()
     {
@@ -26,12 +30,15 @@ public class ClientServiceTests
         _mapperMock = new Mock<IMapper>();
         _loggerMock = new Mock<ILogger<ClientService>>();
         _tokenServiceMock = new Mock<ITokenService>();
+        _hubContextMock = new Mock<IHubContext<NotificationHub>>();
+
 
         _clientService = new ClientService(
             _unitOfWorkMock.Object,
             _mapperMock.Object,
             _loggerMock.Object,
-            _tokenServiceMock.Object);
+            _tokenServiceMock.Object,
+            _hubContextMock.Object);
     }
 
     [Fact]
@@ -45,6 +52,19 @@ public class ClientServiceTests
         _unitOfWorkMock.Setup(u => u.SaveChangesAsync()).ReturnsAsync(1);
         _unitOfWorkMock.Setup(u => u.ClientRep.GetClientByName("John")).ReturnsAsync(client);
 
+        var mockClients = new Mock<IHubClients>();
+        var mockClientProxy = new Mock<IClientProxy>();
+
+        mockClients.Setup(c => c.All).Returns(mockClientProxy.Object);
+        mockClientProxy
+            .Setup(proxy => proxy.SendCoreAsync(
+                It.IsAny<string>(),
+                It.IsAny<object[]>(),
+                It.IsAny<CancellationToken>()))
+            .Returns(Task.CompletedTask);
+
+        _hubContextMock.Setup(h => h.Clients).Returns(mockClients.Object);
+        
         var result = await _clientService.CreateClient(request);
 
         Assert.Equal(client, result);
@@ -61,6 +81,19 @@ public class ClientServiceTests
         _unitOfWorkMock.Setup(u => u.SaveChangesAsync()).ReturnsAsync(1);
         _unitOfWorkMock.Setup(u => u.ClientRep.GetClientByEmail("new@mail.com")).ReturnsAsync(client);
 
+        var mockClients = new Mock<IHubClients>();
+        var mockClientProxy = new Mock<IClientProxy>();
+
+        mockClients.Setup(c => c.All).Returns(mockClientProxy.Object);
+        mockClientProxy
+            .Setup(proxy => proxy.SendCoreAsync(
+                It.IsAny<string>(),
+                It.IsAny<object[]>(),
+                It.IsAny<CancellationToken>()))
+            .Returns(Task.CompletedTask);
+
+        _hubContextMock.Setup(h => h.Clients).Returns(mockClients.Object);
+        
         var result = await _clientService.ChangeDataClient(request);
 
         Assert.Equal(client, result);
@@ -75,6 +108,19 @@ public class ClientServiceTests
         _unitOfWorkMock.Setup(u => u.ClientRep.GetClientByEmail("delete@mail.com")).ReturnsAsync(client);
         _unitOfWorkMock.Setup(u => u.SaveChangesAsync()).ReturnsAsync(1);
 
+        var mockClients = new Mock<IHubClients>();
+        var mockClientProxy = new Mock<IClientProxy>();
+
+        mockClients.Setup(c => c.All).Returns(mockClientProxy.Object);
+        mockClientProxy
+            .Setup(proxy => proxy.SendCoreAsync(
+                It.IsAny<string>(),
+                It.IsAny<object[]>(),
+                It.IsAny<CancellationToken>()))
+            .Returns(Task.CompletedTask);
+
+        _hubContextMock.Setup(h => h.Clients).Returns(mockClients.Object);
+        
         await _clientService.DeleteClient(request);
 
         _unitOfWorkMock.Verify(u => u.ClientRep.Delete(client), Times.Once);

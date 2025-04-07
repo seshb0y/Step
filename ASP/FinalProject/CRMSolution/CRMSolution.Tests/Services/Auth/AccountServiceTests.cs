@@ -11,7 +11,9 @@ using System.Threading.Tasks;
 using ControllerFirst.DTO.Requests;
 using ControllerFirst.DTO.Responses;
 using CRMSolution.Data.Repository;
+using CRMSolution.Hubs;
 using CRMSolution.Services.Interfaces;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Configuration;
 
 public class AccountServiceTests
@@ -22,6 +24,8 @@ public class AccountServiceTests
     private readonly Mock<ILogger<AccountService>> _loggerMock;
     private readonly Mock<IHttpContextAccessor> _httpContextAccessorMock;
     private readonly AccountService _accountService;
+    private readonly Mock<IHubContext<NotificationHub>> _hubContextMock;
+
 
     public AccountServiceTests()
     {
@@ -30,6 +34,8 @@ public class AccountServiceTests
         _tokenServiceMock = new Mock<ITokenService>();
         _loggerMock = new Mock<ILogger<AccountService>>();
         _httpContextAccessorMock = new Mock<IHttpContextAccessor>();
+        _hubContextMock = new Mock<IHubContext<NotificationHub>>();
+
 
         _accountService = new AccountService(
             _mapperMock.Object,
@@ -37,7 +43,9 @@ public class AccountServiceTests
             new Mock<IConfiguration>().Object,
             _tokenServiceMock.Object,
             _loggerMock.Object,
-            _httpContextAccessorMock.Object);
+            _httpContextAccessorMock.Object,
+            _hubContextMock.Object);    
+        
     }
 
     [Fact]
@@ -51,6 +59,19 @@ public class AccountServiceTests
         _mapperMock.Setup(x => x.Map<User>(request)).Returns(user);
         _unitOfWorkMock.Setup(x => x.UserRep.AddAsync(user)).Returns(Task.CompletedTask);
 
+        var mockClients = new Mock<IHubClients>();
+        var mockClientProxy = new Mock<IClientProxy>();
+
+        mockClients.Setup(c => c.All).Returns(mockClientProxy.Object);
+        mockClientProxy
+            .Setup(proxy => proxy.SendCoreAsync(
+                It.IsAny<string>(),
+                It.IsAny<object[]>(),
+                It.IsAny<CancellationToken>()))
+            .Returns(Task.CompletedTask);
+
+        _hubContextMock.Setup(h => h.Clients).Returns(mockClients.Object);
+        
         await _accountService.RegisterAsync(request);
 
         _unitOfWorkMock.Verify(x => x.UserRep.AddAsync(user), Times.Once);
@@ -77,14 +98,29 @@ public class AccountServiceTests
     public async Task ChangePasswordAsync_Should_Update_Password()
     {
         var request = new ChangePasswordRequest("newPassword123", "validToken");
-        var user = new User { Email = "user@mail.com" };
+        var user = new User { Username = "testuser" };
 
         _tokenServiceMock.Setup(x => x.ValidateChangePasswordTokenAsync(request.token)).ReturnsAsync(true);
-        _tokenServiceMock.Setup(x => x.GetNameFromToken(request.token)).ReturnsAsync(user.Email);
-        _unitOfWorkMock.Setup(x => x.UserRep.FindByEmailAsync(user.Email)).ReturnsAsync(user);
+        _tokenServiceMock.Setup(x => x.GetNameFromToken(request.token)).ReturnsAsync(user.Username);
+        _unitOfWorkMock.Setup(x => x.UserRep.FindByNameAsync(user.Username)).ReturnsAsync(user);
+
+        var mockClients = new Mock<IHubClients>();
+        var mockClientProxy = new Mock<IClientProxy>();
+
+        mockClients.Setup(c => c.All).Returns(mockClientProxy.Object);
+        mockClientProxy
+            .Setup(proxy => proxy.SendCoreAsync(
+                It.IsAny<string>(),
+                It.IsAny<object[]>(),
+                It.IsAny<CancellationToken>()))
+            .Returns(Task.CompletedTask);
+
+        _hubContextMock.Setup(h => h.Clients).Returns(mockClients.Object);
 
         await _accountService.ChangePasswordAsync(request);
 
         _unitOfWorkMock.Verify(x => x.SaveChangesAsync(), Times.Once);
     }
+
+
 } 
