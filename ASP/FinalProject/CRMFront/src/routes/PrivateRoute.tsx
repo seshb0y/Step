@@ -7,7 +7,7 @@ const PrivateRoute = () => {
   const location = useLocation();
   
   if (!isAuthenticated) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/login" replace />;
   }
 
   const isAdminRoute = ['/clients', '/tasks', '/orders', '/users'].includes(location.pathname);
