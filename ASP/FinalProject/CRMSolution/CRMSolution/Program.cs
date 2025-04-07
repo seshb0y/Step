@@ -31,7 +31,7 @@ builder.Services.AddLogging();
 builder.Services.AddCors(policy => {
     policy.AddPolicy("Default", builder => {
         builder
-            .WithOrigins("http://localhost:5173", "http://localhost:5241")
+            .WithOrigins("http://localhost:5173", "http://localhost:5241", "https://crm-solution-taupe.vercel.app/")
             .AllowAnyHeader()
             .AllowAnyMethod()
             .AllowCredentials();
