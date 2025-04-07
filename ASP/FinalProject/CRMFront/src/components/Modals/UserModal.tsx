@@ -79,21 +79,19 @@ const UserModal = ({ user, onClose }: UserModalProps) => {
       case OrderStatus.New:
       case TaskStatus.New:
         return 'bg-blue-500/20 text-blue-300';
-      case OrderStatus.InProgress:
+      case OrderStatus.Processing:
       case TaskStatus.InProgress:
         return 'bg-yellow-500/20 text-yellow-300';
       case OrderStatus.Completed:
       case TaskStatus.Completed:
         return 'bg-green-500/20 text-green-300';
-      case OrderStatus.Cancelled:
-        return 'bg-red-500/20 text-red-300';
       default:
         return 'bg-gray-500/20 text-gray-300';
     }
   };
 
   const getStatusText = (status: OrderStatus | TaskStatus): string => {
-    return status || "Unknown";
+    return String(status) || "Unknown";
   };
 
   return (

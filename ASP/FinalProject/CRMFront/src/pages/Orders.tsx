@@ -25,11 +25,12 @@ export const Orders = () => {
   }, [dispatch, sortOrders]);
 
   const handleSort = (key: string) => {
-    setSortOrders((prev) => ({
+    const newDescending = sortOrders.sortBy === key ? !sortOrders.descending : false;
+    setSortOrders({
       sortBy: key,
-      descending: prev.sortBy === key ? !prev.descending : false,
-    }));
-    dispatch(fetchGetAllOrders({ sortBy: key, descending: sortOrders.sortBy === key ? !sortOrders.descending : false }));
+      descending: newDescending
+    });
+    dispatch(fetchGetAllOrders({ sortBy: key, descending: newDescending }));
   };
 
   const handleOrderSelect = (order: Order) => {

@@ -132,14 +132,14 @@ export const TasksPage = () => {
                       onClick={() => handleTaskSelect(task)}
                     >
                       <td className="py-2 px-4 text-white/90 tracking-wide font-inter">#{task.taskId}</td>
-                      <td className="py-2 px-4 text-white/90 tracking-wide font-inter">{task.title}</td>
+                      <td className="py-2 px-4 text-white/90 tracking-wide font-inter">{task.tittle}</td>
                       <td className="py-2 px-4 text-white/90 tracking-wide font-inter">
                         <span className={`px-2 py-1 rounded-full text-xs ${getStatusColor(task.status)}`}>
                           {getStatusText(task.status)}
                         </span>
                       </td>
                       <td className="py-2 px-4 text-white/90 tracking-wide font-inter whitespace-nowrap">
-                        {new Date(task.dueDate).toLocaleDateString()}
+                        {new Date(task.dueDate || '').toLocaleDateString()}
                       </td>
                       <td className="py-2 px-4 text-white/90 tracking-wide font-inter">{task.username}</td>
                     </tr>

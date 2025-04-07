@@ -24,8 +24,8 @@ export const OrderSearch = ({ onOrderSelect }: OrderSearchProps) => {
   }, []);
 
   const filteredOrders = searchTerm.trim() === '' ? [] : orders.filter(order => 
-    order.id.toString().includes(searchTerm.toLowerCase()) ||
-    order.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (order.id?.toString() || '').includes(searchTerm.toLowerCase()) ||
+    (order.username || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
     order.status.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
     order.totalAmount.toString().includes(searchTerm)
   );
