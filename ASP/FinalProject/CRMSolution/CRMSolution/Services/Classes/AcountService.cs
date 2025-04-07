@@ -79,7 +79,7 @@ public class AccountService : IAccountService
             throw new Exception("User not found");
 
         string token = await _tokenService.CreateEmailTokenAsync(request.username);
-        string link = $"https://crm-solution-taupe.vercel.app/verify-email?token={token}";
+        string link = $"https://crm-solution-delta.vercel.app/verify-email?token={token}";
 
         string emailBody = $@"
             <div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;'>

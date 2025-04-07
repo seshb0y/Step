@@ -35,7 +35,7 @@ builder.Services.AddCors(policy => {
             .WithOrigins(
                 "http://localhost:5173",
                 "http://localhost:5241",
-                "https://crm-solution-delta.vercel.app/login"
+                "https://crm-solution-delta.vercel.app"
             )
             .AllowAnyHeader()
             .AllowAnyMethod()

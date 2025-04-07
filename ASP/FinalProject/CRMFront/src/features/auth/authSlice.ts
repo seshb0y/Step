@@ -43,11 +43,10 @@ export const resetPassword = createAsyncThunk(
   }
 );
 
-localStorage.setItem("isLogin", JSON.stringify("false"));
 const initialState: AuthState = {
   user: null,
-  isAuthenticated: !!localStorage.getItem("isLogin"),
-  loading: false,
+  isAuthenticated: localStorage.getItem("isLogin") === "true",
+  loading: true,
 };
 
 
@@ -66,24 +65,35 @@ const authSlice = createSlice({
       .addCase(checkAuth.fulfilled, (state, action) => {
         state.isAuthenticated = true;
         state.user = action.payload;
-        localStorage.setItem("isLogin", JSON.stringify("true"));
         state.loading = false;
+        localStorage.setItem("isLogin", "true");
       })
       .addCase(checkAuth.rejected, (state) => {
         state.isAuthenticated = false;
         state.user = null;
-        localStorage.removeItem("isLogin");
         state.loading = false;
+        localStorage.removeItem("isLogin");
+      })
+      .addCase(loginUser.pending, (state) => {
+        state.loading = true;
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.isAuthenticated = true;
         state.user = action.payload;
-        localStorage.setItem("isLogin", JSON.stringify("true"));
+        state.loading = false;
+        localStorage.setItem("isLogin", "true");
+      })
+      .addCase(loginUser.rejected, (state) => {
+        state.isAuthenticated = false;
+        state.user = null;
+        state.loading = false;
+        localStorage.removeItem("isLogin");
       })
       .addCase(logoutUser.fulfilled, (state) => {
         state.isAuthenticated = false;
         state.user = null;
-        localStorage.clear();
+        state.loading = false;
+        localStorage.removeItem("isLogin");
       });
   },
 });
