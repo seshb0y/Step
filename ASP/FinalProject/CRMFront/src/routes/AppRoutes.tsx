@@ -19,13 +19,13 @@ const AppRoutes = () => {
   return (
     <Routes>
       {/* Public routes - доступны всегда */}
-      <Route path="/login" element={!isLogin ? <Login /> : <Navigate to="/dashboard" />} />
+      <Route path="/" element={isLogin ? <Navigate to="/dashboard" /> : <Navigate to="/login" />} />
+      <Route path="/login" element={isLogin ? <Navigate to="/dashboard" /> : <Login />} />
       <Route path="/verify-email" element={<VerifyEmail />} />
       <Route path="/change-password" element={<ChangePassword />} />
 
       {/* Protected routes - требуют авторизации */}
       <Route element={<PrivateRoute />}>
-        <Route path="/" element={<Navigate to="/dashboard" replace />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/clients" element={<Clients />} />
         <Route path="/tasks" element={<Tasks />} />
