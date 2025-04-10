@@ -4,7 +4,6 @@ import { RootState } from "../store/store";
 import { lazy, Suspense } from "react";
 import LoadingPage from "../components/LoadingPage";
 import PrivateRoute from "./PrivateRoute";
-\
 const Login = lazy(() => import("../pages/Login"));
 const Dashboard = lazy(() => import("../pages/Dashboard"));
 const Clients = lazy(() => import("../pages/Clients"));
