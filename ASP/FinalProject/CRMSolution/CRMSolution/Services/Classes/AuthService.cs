@@ -31,7 +31,14 @@ public class AuthService : IAuthService
     public async Task<LoginResponse> LoginAsync(LoginRequest request, HttpContext context)
     {
         _logger.LogInformation("Вход в аккаунт: {@Request}", request);
+        
         var user = await _unitOfWork.UserRep.FindByNameAsync(request.username);
+
+        
+        user.RefreshToken = Guid.NewGuid();
+        user.RefreshTokenExpiration = DateTime.UtcNow.AddDays(7);
+        await _unitOfWork.SaveChangesAsync();
+        
         var accessToken = await _tokenService.CreateTokenAsync(user.Username);
         var refreshToken = user.RefreshToken.ToString();
         
@@ -77,7 +84,7 @@ public class AuthService : IAuthService
         user.RefreshTokenExpiration = DateTime.UtcNow.AddDays(7);
         await _unitOfWork.SaveChangesAsync();
 
-        var newAccessToken = await _tokenService.CreateTokenAsync(user.Email);
+        var newAccessToken = await _tokenService.CreateTokenAsync(user.Username);
         var newRefreshToken = user.RefreshToken.ToString();
         
         context.Response.Cookies.Append("accessToken", newAccessToken, new CookieOptions

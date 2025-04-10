@@ -1,17 +1,20 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
-import Login from "../pages/Login";
-import Dashboard from "../pages/Dashboard";
-import Clients from "../pages/Clients";
-import Orders from "../pages/Orders";
-import Tasks from "../pages/Tasks";
-import Users from "../pages/Users";
-import VerifyEmail from "../pages/VerifyEmail";
-import DashboardKanban from "../pages/DashboardKanban";
-import OrderDetailsPage from "../components/kanban/OrderDetailsPage";
-import ChangePassword from "../pages/ChangePassword";
+import { lazy, Suspense } from "react";
+import LoadingPage from "../components/LoadingPage";
 import PrivateRoute from "./PrivateRoute";
+\
+const Login = lazy(() => import("../pages/Login"));
+const Dashboard = lazy(() => import("../pages/Dashboard"));
+const Clients = lazy(() => import("../pages/Clients"));
+const Orders = lazy(() => import("../pages/Orders"));
+const Tasks = lazy(() => import("../pages/Tasks"));
+const Users = lazy(() => import("../pages/Users"));
+const VerifyEmail = lazy(() => import("../pages/VerifyEmail"));
+const DashboardKanban = lazy(() => import("../pages/DashboardKanban"));
+const OrderDetailsPage = lazy(() => import("../components/kanban/OrderDetailsPage"));
+const ChangePassword = lazy(() => import("../pages/ChangePassword"));
 
 const AppRoutes = () => {
   const isLogin = useSelector((state: RootState) => state.auth.isAuthenticated);
@@ -20,22 +23,91 @@ const AppRoutes = () => {
     <Routes>
       {/* Public routes - доступны всегда */}
       <Route path="/" element={isLogin ? <Navigate to="/dashboard" /> : <Navigate to="/login" />} />
-      <Route path="/login" element={isLogin ? <Navigate to="/dashboard" /> : <Login />} />
-      <Route path="/verify-email" element={<VerifyEmail />} />
-      <Route path="/change-password" element={<ChangePassword />} />
+      <Route 
+        path="/login" 
+        element={
+          <Suspense fallback={<LoadingPage />}>
+            {isLogin ? <Navigate to="/dashboard" /> : <Login />}
+          </Suspense>
+        } 
+      />
+      <Route 
+        path="/verify-email" 
+        element={
+          <Suspense fallback={<LoadingPage />}>
+            <VerifyEmail />
+          </Suspense>
+        } 
+      />
+      <Route 
+        path="/change-password" 
+        element={
+          <Suspense fallback={<LoadingPage />}>
+            <ChangePassword />
+          </Suspense>
+        } 
+      />
 
       {/* Protected routes - требуют авторизации */}
       <Route element={<PrivateRoute />}>
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/clients" element={<Clients />} />
-        <Route path="/tasks" element={<Tasks />} />
-        <Route path="/orders" element={<Orders />} />
-        <Route path="/kanban" element={<DashboardKanban />} />
-        <Route path="/orders/:orderId" element={<OrderDetailsPage />} />
-        <Route path="/users" element={<Users />} />
+        <Route 
+          path="/dashboard" 
+          element={
+            <Suspense fallback={<LoadingPage />}>
+              <Dashboard />
+            </Suspense>
+          } 
+        />
+        <Route 
+          path="/clients" 
+          element={
+            <Suspense fallback={<LoadingPage />}>
+              <Clients />
+            </Suspense>
+          } 
+        />
+        <Route 
+          path="/tasks" 
+          element={
+            <Suspense fallback={<LoadingPage />}>
+              <Tasks />
+            </Suspense>
+          } 
+        />
+        <Route 
+          path="/orders" 
+          element={
+            <Suspense fallback={<LoadingPage />}>
+              <Orders />
+            </Suspense>
+          } 
+        />
+        <Route 
+          path="/kanban" 
+          element={
+            <Suspense fallback={<LoadingPage />}>
+              <DashboardKanban />
+            </Suspense>
+          } 
+        />
+        <Route 
+          path="/orders/:orderId" 
+          element={
+            <Suspense fallback={<LoadingPage />}>
+              <OrderDetailsPage />
+            </Suspense>
+          } 
+        />
+        <Route 
+          path="/users" 
+          element={
+            <Suspense fallback={<LoadingPage />}>
+              <Users />
+            </Suspense>
+          } 
+        />
       </Route>
 
-      {/* Redirect all unknown routes to login if not authenticated, or to dashboard if authenticated */}
       <Route path="*" element={isLogin ? <Navigate to="/dashboard" /> : <Navigate to="/login" />} />
     </Routes>
   );

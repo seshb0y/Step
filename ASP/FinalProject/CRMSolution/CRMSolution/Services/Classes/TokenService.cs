@@ -100,9 +100,9 @@ public class TokenService : ITokenService
 
         var securityToken = new JwtSecurityToken(
             claims: claims,
-            expires: DateTime.UtcNow.AddMinutes(3),
-            issuer: _config.GetSection("JWT:Issuer").Value,
-            audience: _config.GetSection("JWT:Audience").Value,
+            expires: DateTime.UtcNow.AddMinutes(5),
+            issuer: _config.GetSection("JWT:Issuer").Get<string[]>()[0],
+            audience: _config.GetSection("JWT:Audience").Get<string[]>()[0],
             signingCredentials: signingCred);
 
         string tokenString = new JwtSecurityTokenHandler().WriteToken(securityToken);
@@ -121,8 +121,8 @@ public class TokenService : ITokenService
             ValidateAudience = true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            ValidIssuer = _config.GetSection("JWT:Issuer").Value,
-            ValidAudience = _config.GetSection("JWT:Audience").Value,
+            ValidIssuer = _config.GetSection("JWT:Issuer").Get<string[]>()[0],
+            ValidAudience = _config.GetSection("JWT:Audience").Get<string[]>()[0],
             IssuerSigningKey = securityKey,
             ClockSkew = TimeSpan.Zero
         };
