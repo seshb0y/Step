@@ -64,7 +64,7 @@ public class AuthServiceTests
 
         _tokenServiceMock.Setup(x => x.GetNameFromToken("oldAccessToken")).ReturnsAsync(user.Username);
         _unitOfWorkMock.Setup(x => x.UserRep.FindByNameAsync(user.Username)).ReturnsAsync(user);
-        _tokenServiceMock.Setup(x => x.CreateTokenAsync(user.Email)).ReturnsAsync("newAccessToken");
+        _tokenServiceMock.Setup(x => x.CreateTokenAsync(user.Username)).ReturnsAsync("newAccessToken");
 
         var result = await _authService.RefreshTokenAsync(httpContext);
 

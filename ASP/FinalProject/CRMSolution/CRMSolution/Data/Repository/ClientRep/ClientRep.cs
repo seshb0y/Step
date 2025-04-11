@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using ControllerFirst.DTO.Responses;
 using CRMSolution.Contexts;
 using CRMSolution.Data.Models;
@@ -9,9 +10,11 @@ namespace CRMSolution.Data.Repository.SpecialRepClass.ClientRep;
 
 public class ClientRep : Repository<Client>, IClientRep
 {
+    
+    private readonly Stopwatch _stopwatch;
     public ClientRep(CRMContext context) : base(context)
     {
-        
+        _stopwatch = new Stopwatch();
     }
 
     public async Task<IEnumerable<Client>> GetClientsByManagerIdAsync(int managerId)
@@ -38,21 +41,24 @@ public class ClientRep : Repository<Client>, IClientRep
 
         if (client == null) return null;
 
+        var orders = client.ClientOrders.Select(co => new OrderDto
+        {
+            Id = co.Order.Id,
+            Amount = co.Order.TotalAmount,
+            Status = co.Order.Status
+        }).ToArray();
+
+        var users = client.ClientUsers.Select(cu => new UserDto
+        {
+            Id = cu.User.Id,
+            Name = cu.User.Username,
+            Email = cu.User.Email
+        }).ToArray();
+        
         return new FindClientResponse
         {
-            Orders = client.ClientOrders.Select(co => new OrderDto
-            {
-                Id = co.Order.Id,
-                Amount = co.Order.TotalAmount,
-                Status = co.Order.Status
-            }).ToArray(),
-
-            Users = client.ClientUsers.Select(cu => new UserDto
-            {
-                Id = cu.User.Id,
-                Name = cu.User.Username,
-                Email = cu.User.Email
-            }).ToArray()
+            Orders = orders,
+            Users = users
         };
     }
     
