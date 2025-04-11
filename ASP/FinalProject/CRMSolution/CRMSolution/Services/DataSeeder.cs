@@ -66,10 +66,10 @@ public class DataSeeder
         _context.SaveChanges();
 
         var clientUsers = new List<ClientUser>();
-        foreach (var user in users)
+        foreach (var client in clients)
         {
-            var randomClient = clients[new Random().Next(clients.Count)];
-            clientUsers.Add(new ClientUser { ClientId = randomClient.Id, UserId = user.Id });
+            var randomUser = users[new Random().Next(users.Count)];
+            clientUsers.Add(new ClientUser { ClientId = client.Id, UserId = randomUser.Id });
         }
 
         var clientOrders = new List<ClientOrder>();
