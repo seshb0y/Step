@@ -56,7 +56,7 @@ const OrderDetailsPage = () => {
     if (!orderId) return;
     
     try {
-      const response = await axiosInstance.get(`/Order/${orderId}`);
+      const response = await axiosInstance.get(`/orders/${orderId}`);
       console.log("🔍 Received order:", response.data);
       setOrder(response.data);
     } catch (err) {
@@ -129,19 +129,19 @@ const OrderDetailsPage = () => {
     if (!order?.client?.phone) return;
   
     try {
-      const response = await axiosInstance.post("/api/twilio/call", { to: order.client.phone });
+      const response = await axiosInstance.post("twilio/calls", { to: order.client.phone });
       const callSid = response.data.callSid;
   
       console.log("Call initiated, CallSid:", callSid);
   
       setTimeout(async () => {
         try {
-          const recordingRes = await axiosInstance.get(`/api/twilio/recording/${callSid}`);
+          const recordingRes = await axiosInstance.get(`twilio/recordings/${callSid}`);
           const mediaUrl = recordingRes.data.mediaUrl;
   
           console.log("Recording URL received:", mediaUrl);
           
-          await axiosInstance.post("/api/twilio/call/save-recording", {
+          await axiosInstance.post("twilio/recordings", {
             orderId: order.id,
             callSid: callSid,
           });
@@ -219,7 +219,7 @@ const OrderDetailsPage = () => {
         description: editingTaskDescription
       };
 
-      await axiosInstance.put("/Task/change", request);
+      await axiosInstance.put("/tasks/", request);
 
       setOrder({
         ...order,

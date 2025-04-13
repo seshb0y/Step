@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CRMSolution.Controllers;
 
 [ApiController]
-[Route("[controller]/")]
+[Route("api/v1/auth/")]
 public class AuthController : ControllerBase
 {
     private readonly IAuthService _authService;
@@ -19,7 +19,7 @@ public class AuthController : ControllerBase
         _authService = authService;
     }
 
-    [HttpPost("Login")]
+    [HttpPost("login")]
     public async  Task<IActionResult> Login([FromBody] LoginRequest request)
     {
         var response = await _authService.LoginAsync(request, HttpContext);
@@ -31,7 +31,7 @@ public class AuthController : ControllerBase
         return Ok(new Result<LoginResponse>(true, response, "Successfully logged in"));
     }
 
-    [HttpPost("Refresh")]
+    [HttpPost("refresh")]
     public async Task<IActionResult> Refresh()
     {
         var response = await _authService.RefreshTokenAsync(HttpContext);
@@ -39,7 +39,7 @@ public class AuthController : ControllerBase
     }
 
     
-    [HttpPost("Logout")]
+    [HttpPost("logout")]
     public async Task<IActionResult> Logout()
     {
         await _authService.LogoutAsync(HttpContext);

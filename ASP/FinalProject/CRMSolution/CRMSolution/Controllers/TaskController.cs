@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CRMSolution.Controllers;
 
 [ApiController]
-[Route("[controller]/")]
+[Route("api/v1/tasks/")]
 public class TaskController : ControllerBase
 {
     private readonly ITasksService _tasksService;
@@ -18,7 +18,7 @@ public class TaskController : ControllerBase
     }
 
 
-    [HttpPost("add")]
+    [HttpPost]
     // [Authorize(Policy = "ManagerPolicy")]
     public async Task<IActionResult> AddTask([FromBody] CreateTaskRequest request)
     {
@@ -26,7 +26,7 @@ public class TaskController : ControllerBase
         return Ok("Task created");
     }
     
-    [HttpPut("change")]
+    [HttpPut]
     // [Authorize(Policy = "ManagerPolicy")]
     public async Task<IActionResult> ChangeTask([FromBody] UpdateTaskRequest request)
     {
@@ -34,7 +34,7 @@ public class TaskController : ControllerBase
         return Ok("Task updated");
     }
     
-    [HttpDelete("delete")]
+    [HttpDelete]
     // [Authorize(Policy = "ManagerPolicy")]
     public async Task<IActionResult> DeleteTask([FromBody] DeleteTaskRequest request)
     {
@@ -42,14 +42,14 @@ public class TaskController : ControllerBase
         return Ok("Task deleted");
     }
     
-    [HttpGet("find")]
+    [HttpGet("search")]
     // [Authorize(Policy = "ManagerPolicy")]
     public async Task<IActionResult> FindTask([FromQuery] FindTaskRequest request)
     {
         return Ok(await _tasksService.FindTaskByIdAsync(request));
     }
     
-    [HttpGet("all/sorted")]
+    [HttpGet]
     public async Task<IActionResult> GetAllTasks([FromQuery] SortTasksRequest sortTasksRequest)
     {
         var orders = await _tasksService.GetAllTasks(sortTasksRequest);

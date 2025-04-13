@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CRMSolution.Controllers;
 
 [ApiController]
-[Route("[controller]/")]
+[Route("api/v1/dashboard")]
 public class DashboardController : ControllerBase
 {
     private readonly IUnitOfWork _unitOfWork;
@@ -17,7 +17,7 @@ public class DashboardController : ControllerBase
         _dashboardService = dashboardService;
     }
 
-    [HttpGet("getDashboardData")]
+    [HttpGet]
     public async Task<IActionResult> GetDashboardData()
     {
         return Ok(await _dashboardService.GetDashboard());

@@ -28,7 +28,7 @@ export const deleteOrder = createAsyncThunk(
   "Order/delete",
   async (orderId: number, { rejectWithValue }) => {
     try {
-      await axiosInstance.delete(`/Order/delete/`, {data: {orderId: orderId} });
+      await axiosInstance.delete(`/orders/`, {data: {orderId: orderId} });
       toast.success('Заказ успешно удален');
       return orderId;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -48,7 +48,7 @@ export const fetchChangeOrderData = createAsyncThunk(
   }, { rejectWithValue }) => {
     try {
       console.log("🔄 Sending request to change order:", request);
-      const response = await axiosInstance.put(`/Order/change`, request);
+      const response = await axiosInstance.put(`/orders/`, request);
       console.log("🔄 Server response:", response.data);
       toast.success('Данные заказа успешно обновлены');
       return response.data;
@@ -71,7 +71,7 @@ export const fetchGetAllOrders = createAsyncThunk(
     if (sortBy) params.append("sortBy", sortBy);
     if (descending !== undefined) params.append("Descending", descending.toString());
 
-    const response = await axiosInstance.get(`/Order/all/sorted?${params.toString()}`);
+    const response = await axiosInstance.get(`/orders/?${params.toString()}`);
     return response.data;
   }
 );
@@ -80,7 +80,7 @@ export const createOrder = createAsyncThunk(
   "orders/createOrder",
   async (orderData: Omit<CreateOrder, "id">, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.post("/Order/add", orderData);
+      const response = await axiosInstance.post("/orders", orderData);
       toast.success('Заказ успешно создан');
       return response.data;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -95,7 +95,7 @@ export const fetchAssignUserToOrder = createAsyncThunk(
   "order/assign-user",
   async ({ orderId, userId }: { orderId: number; userId: number }, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.put(`/Order/${orderId}/assign-user`, { userId });
+      const response = await axiosInstance.put(`/orders/${orderId}/user`, { userId });
       toast.success('Пользователь успешно назначен');
       return response.data;
     } catch (error: unknown) {

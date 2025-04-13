@@ -32,7 +32,7 @@ const ChangePassword = () => {
 
     try {
       setIsLoading(true);
-      await axiosInstance.post("/Account/ChangePassword", {
+      await axiosInstance.post("/account/password/change", {
         newPassword,
         token
       });

@@ -15,7 +15,7 @@ interface DashboardState {
 }
 
 export const getDashboardData = createAsyncThunk("dashboardState", async () => {
-  const response = await axiosInstance.get("/Dashboard/getDashboardData");
+  const response = await axiosInstance.get("/dashboard");
   return response.data
 })
 

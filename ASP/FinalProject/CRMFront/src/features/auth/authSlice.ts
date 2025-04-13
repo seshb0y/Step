@@ -16,7 +16,7 @@ interface AuthState {
 // };
 
 export const checkAuth = createAsyncThunk("auth/checkAuth", async () => {
-  const response = await axiosInstance.get("/Account/me");
+  const response = await axiosInstance.get("/account/me");
   return response.data;
 });
 
@@ -24,21 +24,21 @@ export const checkAuth = createAsyncThunk("auth/checkAuth", async () => {
 export const loginUser = createAsyncThunk<User,{ username: string; password: string }>(
   "auth/login",
   async ({ username, password }) => {
-    const response = await axiosInstance.post("/Auth/Login", { username, password });
+    const response = await axiosInstance.post("/auth/login", { username, password });
 
     return response.data;
   }
 );
 
 
-export const logoutUser = createAsyncThunk("Auth/Logout", async () => {
-  await axiosInstance.post("/Auth/Logout");
+export const logoutUser = createAsyncThunk("auth/logout", async () => {
+  await axiosInstance.post("/auth/logout");
 });
 
 export const resetPassword = createAsyncThunk(
   "auth/resetPassword",
   async (request: ResetPasswordRequest) => {
-    const response = await axiosInstance.post("/Account/ResetPassword", request);
+    const response = await axiosInstance.post("/account/password/reset", request);
     return response.data;
   }
 );

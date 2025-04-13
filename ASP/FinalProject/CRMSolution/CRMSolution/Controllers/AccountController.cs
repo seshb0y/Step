@@ -9,7 +9,7 @@ namespace CRMSolution.Controllers;
 
 
 [ApiController]
-[Route("[controller]/")]
+[Route("api/v1/account/")]
 public class AccountController : ControllerBase
 {
     private readonly IAccountService _accountService;
@@ -20,7 +20,7 @@ public class AccountController : ControllerBase
     }
 
 
-    [HttpPost("Register")]
+    [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterRequest request)
     {
         var validator = new RegisterValidator();
@@ -37,7 +37,7 @@ public class AccountController : ControllerBase
     }
 
     // [Authorize(Policy = "AdminPolicy")]
-    [HttpGet("VerifyEmail")]
+    [HttpGet("email/verify")]
     public async Task<IActionResult> VerifyEmailAsync([FromQuery] string token)
     {
         await _accountService.VerifyEmailAsync(token);
@@ -45,7 +45,7 @@ public class AccountController : ControllerBase
         return Ok(new Result<string>(true, "Email confirmed", "Email confirmed"));
     }
     // [Authorize(Policy = "AdminPolicy")]
-    [HttpPost("ConfirmEmail")]
+    [HttpPost("email/confirm")]
     public async Task<IActionResult> ConfirmEmailAsync([FromBody] ConfirmRequest request)
     {
         await _accountService.ConfirmEmailAsync(request, HttpContext);
@@ -53,7 +53,7 @@ public class AccountController : ControllerBase
         return Ok(new Result<string>(true, request.username, "Email sent"));
     }
 
-    [HttpPost("ResetPassword")]
+    [HttpPost("password/reset")]
     public async Task<IActionResult> ResetPasswordAsync([FromBody] ResetPasswordRequest request)
     {
         await _accountService.ResetPasswordAsync(request, HttpContext);
@@ -61,7 +61,7 @@ public class AccountController : ControllerBase
         return Ok(new Result<string>(true, request.username, "Reset password mail sent"));
     }
 
-    [HttpPost("ChangePassword")]
+    [HttpPost("password/change")]
     public async Task<IActionResult> ChangePasswordAsync([FromBody] ChangePasswordRequest request)
     {
         await _accountService.ChangePasswordAsync(request);

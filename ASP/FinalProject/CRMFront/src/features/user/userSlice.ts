@@ -27,7 +27,7 @@ export const deleteUser = createAsyncThunk(
   "users/delete",
   async (email: string, { rejectWithValue }) => {
     try {
-      await axiosInstance.delete(`/User/delete/`, {data: {email: email} });
+      await axiosInstance.delete(`/users/`, {data: {email: email} });
       toast.success('Пользователь успешно удален');
       return email;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -47,7 +47,7 @@ export const fetchChangeUserData = createAsyncThunk(
     role: typeof UserRole[keyof typeof UserRole] 
   }, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.put(`/User/change/`, { 
+      const response = await axiosInstance.put(`/users/`, { 
         username, 
         newEmail, 
         oldEmail, 
@@ -72,7 +72,7 @@ export const fetchUsers = createAsyncThunk(
     const params = new URLSearchParams();
     if (sortBy) params.append("sortBy", sortBy);
     if (descending !== undefined) params.append("Descending", descending.toString());
-    const response = await axiosInstance.get(`/User/all?${params.toString()}`);
+    const response = await axiosInstance.get(`/users?${params.toString()}`);
     return response.data;
   }
 );
@@ -81,7 +81,7 @@ export const fetchAddUserData = createAsyncThunk(
   "user/load/client/data",
   async ({ email }: { email: string }, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.get(`User/load/data?email=${encodeURIComponent(email)}`);
+      const response = await axiosInstance.get(`users/search?email=${encodeURIComponent(email)}`);
       return response.data;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
@@ -94,7 +94,7 @@ export const createUser = createAsyncThunk(
   "users/create",
   async (userData: { username: string; password: string; email: string; confirmPassword: string }, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.post("/Account/Register", userData);
+      const response = await axiosInstance.post("/account/register", userData);
       toast.success('Пользователь успешно создан');
       return response.data;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

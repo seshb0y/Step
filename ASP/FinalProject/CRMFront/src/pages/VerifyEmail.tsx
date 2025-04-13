@@ -19,7 +19,7 @@ const VerifyEmail = () => {
             }
 
             try {
-                await axiosInstance.get(`/Account/VerifyEmail?token=${token}`);
+                await axiosInstance.get(`/account/email/verify?token=${token}`);
                 toast.success('Email verified successfully! You can now log in.');
                 navigate('/login');
             // eslint-disable-next-line @typescript-eslint/no-explicit-any

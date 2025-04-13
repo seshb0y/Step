@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 const UserProfileModal = ({ open, onClose, user }: { open: boolean; onClose: () => void; user: User }) => {
     const handleConfirmEmail = async () => {
         try {
-            await axiosInstance.post("/Account/ConfirmEmail", { username: user.username });
+            await axiosInstance.post("/account/email/confirm", { username: user.username });
             toast.success("Confirmation email has been sent successfully! Please check your inbox.", {
                 position: "top-right",
                 autoClose: 5000,

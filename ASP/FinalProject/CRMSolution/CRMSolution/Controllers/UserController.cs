@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CRMSolution.Controllers;
 
 [ApiController]
-[Route("[controller]/")]
+[Route("api/v1/users")]
 public class UserController : ControllerBase
 {
     private readonly IUserService _userService;
@@ -29,7 +29,7 @@ public class UserController : ControllerBase
     //     return Ok(await _userService.CreateUser(request));
     // }
     
-    [HttpPut("change")]
+    [HttpPut]
     // [Authorize(Policy = "ManagerPolicy")]
     public async Task<IActionResult> ChangeUser([FromBody] ChangeUserDataRequest request, 
         [FromServices] IValidator<ChangeUserDataRequest> validator)
@@ -44,7 +44,7 @@ public class UserController : ControllerBase
         return Ok(await _userService.ChangeUserData(request));
     }
     
-    [HttpDelete("delete")]
+    [HttpDelete]
     // [Authorize(Policy = "ManagerPolicy")]
     public async Task<IActionResult> DeleteUser([FromBody] DeleteUserRequest request)
     {
@@ -52,14 +52,14 @@ public class UserController : ControllerBase
         return Ok("User deleted");
     }
     
-    [HttpGet("load/data")]
+    [HttpGet("search")]
     // [Authorize(Policy = "ManagerPolicy")]
     public async Task<IActionResult> LoadUserData([FromQuery] FindUserRequest request)
     {
         return Ok(await _userService.FindUser(request));
     }
 
-    [HttpGet("all")]
+    [HttpGet]
     public async Task<IActionResult> GetAllUsers([FromQuery] SortUsersRequest sortUsersRequest)
     {
         var users = await _userService.GetAllUsers(sortUsersRequest);

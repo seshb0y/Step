@@ -82,7 +82,7 @@ axiosInstance.interceptors.response.use(
 
       try {
         console.log('Refreshing token');
-        await axiosInstance.post('/Auth/Refresh');
+        await axiosInstance.post('/auth/refresh');
         processQueue(null);
         return axiosInstance(originalRequest);
       } catch (refreshError) {

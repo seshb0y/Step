@@ -26,7 +26,7 @@ export const deleteTask = createAsyncThunk(
   "Task/delete",
   async (taskId: number, { rejectWithValue }) => {
     try {
-      await axiosInstance.delete(`/Task/delete`, {data: {taskId: taskId} });
+      await axiosInstance.delete(`/tasks/`, {data: {taskId: taskId} });
       return taskId;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
@@ -41,7 +41,7 @@ export const fetchChangeTaskData = createAsyncThunk(
   "Task/data/change",
   async ({ title, description, status, taskId }: { title: string; status: TaskStatus; taskId: number; description: string }, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.put(`/Task/change`, { title, status, taskId, description });
+      const response = await axiosInstance.put(`/tasks/`, { title, status, taskId, description });
       return response.data; 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
@@ -52,7 +52,7 @@ export const fetchChangeTaskData = createAsyncThunk(
 
 
 export const fetchGetAllTasks = createAsyncThunk("tasks/fetchAll", async (sort: { sortBy: string; descending: boolean }) => {
-  const response = await axiosInstance.get("/Task/all/sorted", { params: sort });
+  const response = await axiosInstance.get("/tasks", { params: sort });
   return response.data;
 });
 
@@ -61,7 +61,7 @@ export const createTask = createAsyncThunk(
   "tasks/createTask",
   async (taskData: Omit<CreateTask, "id">, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.post("/Task/add", taskData);
+      const response = await axiosInstance.post("/tasks/", taskData);
       return response.data;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {

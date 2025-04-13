@@ -8,7 +8,7 @@ using Twilio.TwiML.Voice;
 namespace CRMSolution.Controllers;
 
 [ApiController]
-[Route("api/twilio")]
+[Route("api/v1/twilio")]
 public class TwilioController : ControllerBase
 {
     private readonly ITwilioService _twilioService;
@@ -18,21 +18,21 @@ public class TwilioController : ControllerBase
         _twilioService = twilioService;
     }
 
-    [HttpPost("call")]
+    [HttpPost("calls")]
     public IActionResult MakeCall([FromBody] CallRequest request)
     {
         var callSid = _twilioService.MakeCall(request.To);
         return Ok(new { CallSid = callSid });
     }
 
-    [HttpGet("recording/{callSid}")]
+    [HttpGet("recordings/{callSid}")]
     public IActionResult GetRecordingUrl(string callSid)
     {
         var url = _twilioService.GetRecordingUrl(callSid);
         return url != null ? Ok(new { MediaUrl = url }) : NotFound();
     }
     
-    [HttpPost("call/save-recording")]
+    [HttpPost("recordings")]
     public IActionResult SaveRecording([FromBody] SaveRecordRequest request)
     {
         _twilioService.SaveCallRecording(request.orderId, request.callSid);

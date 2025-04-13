@@ -27,7 +27,7 @@ export const deleteClient = createAsyncThunk(
   "clients/delete",
   async (email: string, { rejectWithValue }) => {
     try {
-      await axiosInstance.delete(`/Client/delete/`, {data: {email: email} });
+      await axiosInstance.delete(`/clients/`, {data: {email: email} });
       toast.success('Клиент успешно удален');
       return email;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -55,7 +55,7 @@ export const fetchChangeClientData = createAsyncThunk(
     address: string;
   }, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.put(`/Client/change/`, { 
+      const response = await axiosInstance.put(`/clients/`, { 
         name,
         newEmail,
         oldEmail,
@@ -82,7 +82,7 @@ export const fetchClients = createAsyncThunk(
     if (sortBy) params.append("sortBy", sortBy);
     if (descending !== undefined) params.append("Descending", descending.toString());
 
-    const response = await axiosInstance.get(`/Client/GetAllClients?${params.toString()}`);
+    const response = await axiosInstance.get(`/clients/?${params.toString()}`);
     return response.data;
   }
 );
@@ -91,7 +91,7 @@ export const fetchAddClientData = createAsyncThunk(
   "clients/load/client/data",
   async ({ email }: { email: string }, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.get(`Client/Load/Client/Data?email=${encodeURIComponent(email)}`);
+      const response = await axiosInstance.get(`clients/search?email=${encodeURIComponent(email)}`);
       return response.data;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
@@ -110,7 +110,7 @@ export const createClient = createAsyncThunk(
     createdAt: string;
   }, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.post("/Client/add", clientData);
+      const response = await axiosInstance.post("/clients/", clientData);
       toast.success('Клиент успешно создан');
       return response.data;
     } catch (error: unknown) {
@@ -125,7 +125,7 @@ export const fetchClientsWithOrdersAndTasks = createAsyncThunk(
   "clients/fetchClientsWithOrdersAndTasks",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.get("/Client/Get/Clients/With/Orders/And/Tasks");
+      const response = await axiosInstance.get("/clients/relations");
       return response.data;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {

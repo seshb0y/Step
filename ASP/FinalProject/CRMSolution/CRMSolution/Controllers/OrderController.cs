@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CRMSolution.Controllers;
 
 [ApiController]
-[Route("[controller]/")]
+[Route("api/v1/orders/")]
 public class OrderController : ControllerBase
 {
     private readonly IOrderService _orderService;
@@ -21,7 +21,7 @@ public class OrderController : ControllerBase
     }
 
 
-    [HttpPost("add")]
+    [HttpPost]
     // [Authorize(Policy = "ManagerPolicy")]
     public async Task<IActionResult> AddOrder([FromBody] CreateOrderRequest request)
     {
@@ -29,7 +29,7 @@ public class OrderController : ControllerBase
         return Ok("Order created");
     }
     
-    [HttpPut("change")]
+    [HttpPut]
     // [Authorize(Policy = "ManagerPolicy")]
     public async Task<IActionResult> ChangeOrder([FromBody] ChangeOrderDataRequest request)
     {
@@ -37,7 +37,7 @@ public class OrderController : ControllerBase
         return Ok("Order changed");
     }
     
-    [HttpDelete("delete")]
+    [HttpDelete]
     // [Authorize(Policy = "ManagerPolicy")]
     public async Task<IActionResult> DeleteOrder([FromBody] DeleteOrderRequest request)
     {
@@ -60,7 +60,7 @@ public class OrderController : ControllerBase
         return Ok(orderDetails);
     }
     
-    [HttpPut("{orderId}/assign-user")]
+    [HttpPut("{orderId}/user")]
     public async Task<IActionResult> ChangeResponsible(int orderId, ChangeResponsibleRequest request)
     {
         await _orderService.ChangeResponsible(orderId, request);
@@ -69,7 +69,7 @@ public class OrderController : ControllerBase
     
     
     
-    [HttpGet("all/sorted")]
+    [HttpGet]
     public async Task<IActionResult> GetAllOrders([FromQuery] SortOrdersRequest sortOrdersRequest)
     {
         var orders = await _orderService.GetAllOrders(sortOrdersRequest);

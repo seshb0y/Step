@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CRMSolution.Controllers;
 
 [ApiController]
-[Route("[controller]/")]
+[Route("api/v1/clients/")]
 public class ClientController : ControllerBase
 {
     private readonly IClientService _clientService;
@@ -20,7 +20,7 @@ public class ClientController : ControllerBase
     }
 
 
-    [HttpPost("Add")]
+    [HttpPost]
     // [Authorize(Policy = "ManagerPolicy")]
     public async Task<IActionResult> AddClient([FromBody] CreateClientRequest request)
     {
@@ -28,7 +28,7 @@ public class ClientController : ControllerBase
         return Ok(await _clientService.CreateClient(request));
     }
     
-    [HttpPut("Change")]
+    [HttpPut]
     // [Authorize(Policy = "ManagerPolicy")]
     public async Task<IActionResult> ChangeClient([FromBody] ChangeDataClientRequest request, 
         [FromServices] IValidator<ChangeDataClientRequest> validator)
@@ -43,7 +43,7 @@ public class ClientController : ControllerBase
         return Ok(await _clientService.ChangeDataClient(request));
     }
     
-    [HttpDelete("Delete")]
+    [HttpDelete]
     // [Authorize(Policy = "ManagerPolicy")]
     public async Task<IActionResult> DeleteClient([FromBody] DeleteClientRequest request)
     {
@@ -51,21 +51,21 @@ public class ClientController : ControllerBase
         return Ok("Client deleted");
     }
     
-    [HttpGet("Load/Client/Data")]
+    [HttpGet("search")]
     // [Authorize(Policy = "ManagerPolicy")]
     public async Task<IActionResult> LoadClientData([FromQuery] FindClientRequest request)
     {
         return Ok(await _clientService.FindClient(request));
     }
 
-    [HttpGet("GetAllClients")]
+    [HttpGet]
     public async Task<IActionResult> GetAllClients([FromQuery] SortClientsRequest sortClientsRequest)
     {
         var clients = await _clientService.GetAllClients(sortClientsRequest);
         return Ok(clients);
     }
     
-    [HttpGet("Get/Clients/With/Orders/And/Tasks")]
+    [HttpGet("relations")]
     public async Task<IActionResult> GetClientsWithOrdersAndTasks()
     {
         var clients = await _clientService.GetClientsWithOrdersAndTasks(HttpContext);
