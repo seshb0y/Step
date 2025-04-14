@@ -71,7 +71,7 @@ export const DashboardKanban = () => {
               title="Completed"
               status={OrderStatus.Completed}
               clients={filterClientsByOrderStatus(OrderStatus.Completed)}
-              columnColor="from-green-900/40 to-green-900/10"
+              columnColor="from-green-500/40 to-green-500/10"
             />
           </div>
         )}

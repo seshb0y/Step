@@ -78,7 +78,7 @@ const OrderStatusColumn = ({ title, status, clients, columnColor }: Props) => {
 
   return (
     <div 
-      className={`w-[500px] min-w-[350px] bg-gradient-to-b ${columnColor} p-6 rounded-xl border border-gray-800/30 shadow-lg transition-all duration-300 ease-in-out hover:border-gray-700/50 relative`}
+      className={`w-[500px] min-w-[350px] ml-20 bg-gradient-to-b ${columnColor} p-6 rounded-xl border border-gray-800/30 shadow-lg transition-all duration-300 ease-in-out hover:border-gray-700/50 relative`}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
