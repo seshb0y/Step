@@ -24,7 +24,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddSignalR();
 
 builder.Services.AddDbContext<AuthDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<IAuthService, CRMSolution.Services.Classes.AuthService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
