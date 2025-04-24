@@ -1,11 +1,12 @@
-﻿// using System.Runtime.InteropServices.JavaScript;
-// using CRMSolution.Data.Models;
-//
-// public class GetAllUsersResponse
-// {
-//     public List<GetAllUsersUserResponse> Users { get; set; }
-// }
-//
+﻿using System.Runtime.InteropServices.JavaScript;
+using ControllerFirst.DTO.Responses.User;
+using CRMSolution.Data.Models;
+
+public class GetAllUsersResponse
+{
+     public List<FindUserReponse> Users { get; set; }
+}
+
 // public class GetAllUsersUserResponse
 // {
 //     public string UserId { get; set; }

@@ -49,24 +49,17 @@ public class UserProfile : Profile
             .ForMember(dest => dest.Role, opt => opt
                 .MapFrom(src => src.role));
 
-        // CreateMap<User, FindUserReponse>()
-        //     .ForMember(dest => dest.clients, opt => opt
-        //         .MapFrom(src => src.ClientUsers.Select(c => new FindUserClientsResponse
-        //         {
-        //             clientName = c.Client.Name
-        //         }).ToArray()))
-        //     .ForMember(dest => dest.orders, opt => opt
-        //         .MapFrom(src => src.UserOrders.Select(o => new FindUserOrdersResponse
-        //         {
-        //             orderId = o.OrderId.ToString(),
-        //             status = o.Order.Status.ToString(),
-        //         }).ToArray()))
-        //     .ForMember(dest => dest.tasks, opt => opt
-        //         .MapFrom(src => src.UserTasks.Select(t => new FindUserTasksResponse
-        //         {
-        //             taskId = t.TaskId.ToString(),
-        //             status = t.Task.Status.ToString()
-        //         }).ToArray()));
+        CreateMap<User, FindUserReponse>()
+            .ForMember(dest => dest.Id, opt => opt
+                .MapFrom(src => src.Id))
+            .ForMember(dest => dest.Username, opt => opt
+                .MapFrom(src => src.Username))
+            .ForMember(dest => dest.IsEmailConfirmed, opt => opt
+                .MapFrom(src => src.IsEmailConfirmed))
+            .ForMember(dest => dest.Role, opt => opt
+                .MapFrom(src => src.Role))
+            .ForMember(dest => dest.Email, opt => opt
+                .MapFrom(src => src.Email));
         //     
         //     
         // CreateMap<User, GetAllUsersUserResponse>()
