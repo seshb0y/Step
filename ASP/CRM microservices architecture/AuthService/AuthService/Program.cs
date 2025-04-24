@@ -4,6 +4,7 @@ using CRMSolution.Data.Repository;
 using CRMSolution.Data.Repository.Interface;
 using CRMSolution.Data.Repository.UserRep;
 using CRMSolution.Hubs;
+using CRMSolution.Services;
 using CRMSolution.Services.Classes;
 using CRMSolution.Services.Interfaces;
 using FluentValidation;
@@ -17,6 +18,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddTransient<DataSeeder>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 builder.Services.AddHttpContextAccessor();
@@ -62,6 +64,15 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<AuthDbContext>();
+    context.Database.Migrate();
+    var seeder = services.GetRequiredService<DataSeeder>();
+    seeder.Seed();
+}
 
 app.UseSwagger();
 app.UseSwaggerUI();

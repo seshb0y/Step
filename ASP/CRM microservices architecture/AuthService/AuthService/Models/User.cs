@@ -10,14 +10,7 @@ public class User
     public UserRole Role { get; set; } = UserRole.Manager;
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public Guid RefreshToken { get; set; } = Guid.NewGuid();
-    public DateTime RefreshTokenExpiration { get; set; } = DateTime.Now.AddDays(7);
-    //
-    // public ICollection<ClientUser> ClientUsers { get; set; } = new List<ClientUser>();
-    //
-    // public ICollection<UserTask> UserTasks { get; set; } = new List<UserTask>();
-    //
-    // public ICollection<UserOrders> UserOrders { get; set; } = new List<UserOrders>();
-    
+    public DateTime RefreshTokenExpiration { get; set; } = DateTime.UtcNow.AddDays(7);
     
 }
 
