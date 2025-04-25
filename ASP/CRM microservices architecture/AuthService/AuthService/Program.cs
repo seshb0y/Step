@@ -11,6 +11,11 @@ using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using CRMSolution.Grpc.Tasks;
+using CRMSolution.Grpc.Orders;
+using CRMSolution.Grpc.Clients;
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -62,8 +67,26 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 builder.Services.AddAuthorization();
+builder.Services.AddGrpc();
+
+builder.Services.AddGrpcClient<TaskService.TaskServiceClient>(o =>
+{
+    o.Address = new Uri("http://taskservice:5003");
+});
+builder.Services.AddGrpcClient<OrderService.OrderServiceClient>(o =>
+{
+    o.Address = new Uri("http://orderservice:5002");
+});
+builder.Services.AddGrpcClient<ClientService.ClientServiceClient>(o =>
+{
+    o.Address = new Uri("http://clientservice:5004");
+});
+
 
 var app = builder.Build();
+
+app.MapGrpcService<UserGrpcService>();
+app.MapControllers();
 
 using (var scope = app.Services.CreateScope())
 {

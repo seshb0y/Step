@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+option csharp_namespace = "CRMSolution.Grpc.Tasks";
+
+package task;
+
+service TaskService {
+  rpc GetTasksByUser (GetTasksByUserRequest) returns (TasksResponse);
+  rpc GetTasksByOrder (GetTasksByOrderRequest) returns (TasksResponse);
+}
+
+message GetTasksByUserRequest {
+  string userId = 1;
+}
+
+message GetTasksByOrderRequest {
+  string orderId = 1;
+}
+
+message TasksResponse {
+  repeated TaskDto tasks = 1;
+}
+
+message TaskDto {
+  string id = 1;
+  string title = 2;
+  string status = 3;
+  string orderId = 4;
+  string assignedUserId = 5;
+}
