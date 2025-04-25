@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+option csharp_namespace = "CRMSolution.Grpc.Users";
+
+package user;
+
+service UserService {
+  rpc GetUserById (GetUserByIdRequest) returns (UserResponse);
+}
+
+message GetUserByIdRequest {
+  string id = 1;
+}
+
+message UserResponse {
+  string id = 1;
+  string username = 2;
+  string email = 3;
+  string role = 4;
+}
