@@ -32,13 +32,13 @@
 
     <ItemGroup>
         <Protobuf Include="Protos/user.proto" GrpcServices="Both" />
+        <Protobuf Include="Protos\order.proto" GrpcServices="Both" />
     </ItemGroup>
 
     
     <ItemGroup>
       <Folder Include="Data\Repository\" />
       <Folder Include="Data\Validators\" />
-      <Folder Include="DTO\Requests\" />
       <Folder Include="DTO\Respones\" />
     </ItemGroup>
 

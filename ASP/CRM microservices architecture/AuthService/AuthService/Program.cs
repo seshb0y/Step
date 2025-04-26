@@ -3,12 +3,14 @@ using AuthService.Data;
 using CRMSolution.Data.Repository;
 using CRMSolution.Data.Repository.Interface;
 using CRMSolution.Data.Repository.UserRep;
+using CRMSolution.Grpc.Orders;
 using CRMSolution.Hubs;
 using CRMSolution.Services;
 using CRMSolution.Services.Classes;
 using CRMSolution.Services.Interfaces;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 // using CRMSolution.Grpc.Tasks;
@@ -73,12 +75,25 @@ builder.Services.AddGrpc();
 // });
 // builder.Services.AddGrpcClient<OrderService.OrderServiceClient>(o =>
 // {
-//     o.Address = new Uri("http://orderservice:5002");
+//     o.Address = new Uri("http://localhost:5234");
+// })
+// .ConfigureChannel(o =>
+// {
+//     o.Credentials = Grpc.Core.ChannelCredentials.Insecure;
 // });
 // builder.Services.AddGrpcClient<ClientService.ClientServiceClient>(o =>
 // {
 //     o.Address = new Uri("http://clientservice:5004");
 // });
+
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenLocalhost(5171, listenOptions =>
+    {
+        listenOptions.Protocols = HttpProtocols.Http1AndHttp2;
+        // listenOptions.UseHttps();
+    });
+});
 
 
 var app = builder.Build();

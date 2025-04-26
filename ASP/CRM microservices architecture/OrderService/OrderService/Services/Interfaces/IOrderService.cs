@@ -1,4 +1,5 @@
-﻿using OrderService.DTO.Requests;
+﻿using OrderService.Data.Models;
+using OrderService.DTO.Requests;
 using OrderService.DTO.Requests.Order;
 using OrderService.DTO.Requests.Orders;
 using OrderService.DTO.Responses;
@@ -14,4 +15,6 @@ public interface IOrderService
     Task<OrderDetailsResponse> GetOrderDetailsAsync(int orderId);
     public Task<GetAllOrdersResponse> GetAllOrders(SortOrdersRequest sortOrdersRequest);
     public Task ChangeResponsible(int orderId, ChangeResponsibleRequest request);
+    Task<Order> GetByIdAsync(int orderId);
+
 }

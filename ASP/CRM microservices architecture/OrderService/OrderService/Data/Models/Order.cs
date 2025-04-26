@@ -9,6 +9,9 @@ public class Order
     public OrderStatus Status { get; set; } = OrderStatus.New;
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     
+    public int UserId { get; set; }
+    public int ClientId { get; set; }
+    
     // public List<CallRecording> CallRecordings { get; set; } = new();
     //
     //

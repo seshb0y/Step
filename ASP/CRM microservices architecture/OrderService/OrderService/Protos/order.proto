@@ -1,0 +1,21 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "CRMSolution.Grpc.Orders"; 
+
+package order;
+
+service OrderGrpcService {
+  rpc GetOrderById (GetOrderByIdRequest) returns (OrderDto);
+}
+
+message GetOrderByIdRequest {
+  int32 orderId = 1;
+}
+
+message OrderDto {
+  string id = 1;
+  double totalAmount = 2;
+  string status = 3;
+  int32 userId = 4;
+  int32 clientId = 5;
+}

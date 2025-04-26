@@ -2,15 +2,17 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using CRMSolution.Grpc.Users; // gRPC UserService клиент
+using CRMSolution.Grpc; // gRPC UserService клиент
 using FluentValidation;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Microsoft.OpenApi.Models;
 using OrderService.Data;
 using OrderService.Data.Repository.Interface;
 using OrderService.Data.Repository.OrderResp;
 using OrderService.Hubs;
-using OrderService.Services.Interfaces; // Убедись, что тут именно твой DbContext для ордеров!
+using OrderService.Services.Interfaces;
+using Users; // Убедись, что тут именно твой DbContext для ордеров!
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -63,8 +65,12 @@ builder.Services.AddSignalR();
 builder.Services.AddGrpc();
 builder.Services.AddGrpcClient<UserService.UserServiceClient>(o =>
 {
-    o.Address = new Uri("http://userservice:5001"); // Укажи правильный адрес UserService
+    o.Address = new Uri("http://localhost:5171"); // <-- тут HTTPS!
 });
+
+
+
+
 
 // AutoMapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -76,6 +82,15 @@ builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 builder.Services.AddScoped<IOrderService, OrderService.Services.Classes.OrderService>();
 builder.Services.AddScoped<IOrderRep, OrderRep>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenLocalhost(5234, listenOptions =>
+    {
+        listenOptions.Protocols = HttpProtocols.Http1AndHttp2;
+        // listenOptions.UseHttps();
+    });
+});
 
 var app = builder.Build();
 
@@ -94,7 +109,7 @@ app.UseHttpsRedirection();
 // Map Controllers and gRPC Services
 app.MapControllers();
 // app.MapGrpcService<OrderGrpcService>(); // (если ты будешь делать gRPC сервер для OrderService)
-app.MapHub<NotificationHub>("/notificationHub"); // если нужны real-time уведомления
+app.MapHub<NotificationHub>("/notificationHub");
 
 // Автоматическое применение миграций
 using (var scope = app.Services.CreateScope())
