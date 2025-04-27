@@ -12,7 +12,8 @@ using OrderService.Data.Repository.Interface;
 using OrderService.Data.Repository.OrderResp;
 using OrderService.Hubs;
 using OrderService.Services.Interfaces;
-using Users; // Убедись, что тут именно твой DbContext для ордеров!
+using CRMSolution.Grpc.Users;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -64,9 +65,14 @@ builder.Services.AddSignalR();
 // gRPC сервер и клиент
 builder.Services.AddGrpc();
 builder.Services.AddGrpcClient<UserService.UserServiceClient>(o =>
-{
-    o.Address = new Uri("http://localhost:5171"); // <-- тут HTTPS!
-});
+    {
+        o.Address = new Uri("http://localhost:5171");
+    })
+    .ConfigureChannel(options =>
+    {
+        options.Credentials = Grpc.Core.ChannelCredentials.Insecure;
+    });
+
 
 
 

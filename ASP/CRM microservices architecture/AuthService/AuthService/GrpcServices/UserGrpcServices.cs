@@ -1,9 +1,7 @@
 ﻿using Grpc.Core;
-using CRMSolution.Grpc; 
 using CRMSolution.Data.Repository.UserRep;
-using CRMSolution.DTO.Requests;
+using CRMSolution.Grpc.Users; // только это подключение
 using Microsoft.Extensions.Logging;
-using FindUserRequest = CRMSolution.Grpc.FindUserRequest;
 
 public class UserGrpcService : UserService.UserServiceBase
 {
@@ -16,27 +14,27 @@ public class UserGrpcService : UserService.UserServiceBase
         _logger = logger;
     }
 
-    public override async Task<UserResponse> GetUserById(GetUserByIdRequest request, ServerCallContext context)
+    public override async Task<GetUserByIdResponse> GetUserById(GetUserByIdRequest request, ServerCallContext context)
     {
         _logger.LogInformation("gRPC запрос на поиск пользователя по ID: {UserId}", request.Id);
 
-        var user = await _userRepository.GetById(int.Parse(request.Id)); // string -> int
+        var user = await _userRepository.GetById(request.Id);
 
         if (user == null)
         {
             _logger.LogWarning("Пользователь с ID {UserId} не найден.", request.Id);
-            return new UserResponse(); // Возвращаем пустой объект
+            return new GetUserByIdResponse();
         }
 
-        return new UserResponse
+        return new GetUserByIdResponse
         {
-            Id = user.Id.ToString(),
+            Id = user.Id,
             Username = user.Username,
             Email = user.Email,
-            Role = user.Role.ToString()
+            Role = (int)user.Role
         };
     }
-    
+
     public override async Task<FindUserResponse> FindUser(FindUserRequest request, ServerCallContext context)
     {
         _logger.LogInformation("gRPC запрос на поиск пользователя по Email: {Email}", request.Email);
@@ -46,16 +44,15 @@ public class UserGrpcService : UserService.UserServiceBase
         if (user == null)
         {
             _logger.LogWarning("Пользователь с email {Email} не найден.", request.Email);
-            return new FindUserResponse(); // Пустой объект если пользователь не найден
+            return new FindUserResponse();
         }
 
         return new FindUserResponse
         {
-            Id = user.Id.ToString(),
+            Id = user.Id,
             Username = user.Username,
             Email = user.Email,
-            Role = user.Role.ToString()
+            Role = (int)user.Role
         };
     }
-
 }

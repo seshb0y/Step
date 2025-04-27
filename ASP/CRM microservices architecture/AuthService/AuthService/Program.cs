@@ -88,12 +88,19 @@ builder.Services.AddGrpc();
 
 builder.WebHost.ConfigureKestrel(options =>
 {
+    // Порт для gRPC (только HTTP/2)
     options.ListenLocalhost(5171, listenOptions =>
     {
-        listenOptions.Protocols = HttpProtocols.Http1AndHttp2;
-        // listenOptions.UseHttps();
+        listenOptions.Protocols = HttpProtocols.Http2;
+    });
+
+    // Порт для обычных HTTP-запросов (Swagger, браузер и т.д.)
+    options.ListenLocalhost(5172, listenOptions =>
+    {
+        listenOptions.Protocols = HttpProtocols.Http1;
     });
 });
+
 
 
 var app = builder.Build();

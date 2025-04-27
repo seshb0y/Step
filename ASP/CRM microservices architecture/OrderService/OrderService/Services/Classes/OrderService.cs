@@ -8,7 +8,8 @@ using OrderService.DTO.Requests.Orders;
 using OrderService.DTO.Responses;
 using OrderService.Hubs;
 using OrderService.Services.Interfaces;
-using Users;
+using CRMSolution.Grpc.Users;
+
 
 namespace OrderService.Services.Classes;
 
