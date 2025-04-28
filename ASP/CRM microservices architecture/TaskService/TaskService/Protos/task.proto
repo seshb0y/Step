@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+option csharp_namespace = "CRMSolution.Grpc.Tasks";
+
+package task;
+
+service TaskGrpcService {
+  rpc GetTaskById (GetTaskByIdRequest) returns (GetTaskByIdResponse);
+}
+
+message GetTaskByIdRequest {
+  int32 id = 1;
+}
+
+message GetTaskByIdResponse {
+  int32 id = 1;
+  string title = 2;
+  string description = 3;
+  int32 status = 4;
+}

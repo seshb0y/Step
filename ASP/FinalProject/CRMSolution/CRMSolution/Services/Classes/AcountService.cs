@@ -79,7 +79,8 @@ public class AccountService : IAccountService
             throw new Exception("User not found");
 
         string token = await _tokenService.CreateEmailTokenAsync(request.username);
-        string link = $"http://localhost:5241/api/v1/account//email/confirm?token={token}";
+        string link = $"http://localhost:5241/api/v1/account/email/verify?token={token}";
+
 
         string emailBody = $@"
             <div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;'>
@@ -126,7 +127,7 @@ public class AccountService : IAccountService
             throw new Exception("User not found");
 
         string token = await _tokenService.CreateResetPasswordTokenAsync(request.username);
-        string link = $"http://localhost:5173/api/v1/account/password/change?token={token}";
+        string link = $"http://localhost:5173/change-password?token={token}";
 
         string emailBody = $"<p>Привет, {request.username}! Чтобы сбросить пароль, перейдите <a href='{link}'>сюда</a>.</p>";
         await SendEmailAsync(user.Email, "Сброс пароля", emailBody);

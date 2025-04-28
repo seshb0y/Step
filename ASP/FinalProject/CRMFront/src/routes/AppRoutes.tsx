@@ -20,7 +20,6 @@ const AppRoutes = () => {
 
   return (
     <Routes>
-      {/* Public routes - доступны всегда */}
       <Route path="/" element={isLogin ? <Navigate to="/dashboard" /> : <Navigate to="/login" />} />
       <Route 
         path="/login" 
@@ -46,8 +45,6 @@ const AppRoutes = () => {
           </Suspense>
         } 
       />
-
-      {/* Protected routes - требуют авторизации */}
       <Route element={<PrivateRoute />}>
         <Route 
           path="/dashboard" 
