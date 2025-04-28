@@ -12,6 +12,7 @@ using TaskService.Data.Repository.Interface;
 using TaskService.Data.Repository.TasksRep;
 using TaskService.GrpcServices;
 using TaskService.Hubs;
+using TaskService.Services;
 using TaskService.Services.Interfaces;
 
 
@@ -29,6 +30,7 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddDbContext<TaskDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddTransient<DataSeeder>();
 // Authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -122,8 +124,12 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<TaskDbContext>();
+    var seeder = services.GetRequiredService<DataSeeder>();
+
     context.Database.Migrate();
+    seeder.Seed();
 }
+
 app.MapGrpcService<TaskGrpcService>();
 
 app.Run();
