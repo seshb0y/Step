@@ -31,14 +31,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Protobuf Include="Protos\task.proto" GrpcServices="Both" />
+        <Protobuf Include="Protos\client.proto" GrpcServices="Both" />
         <Protobuf Include="Protos\order.proto" GrpcServices="Both" />
     </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Data\Repository\" />
-      <Folder Include="DTO\Requests\" />
-      <Folder Include="DTO\Responses\" />
-    </ItemGroup>
-
+    
 </Project>

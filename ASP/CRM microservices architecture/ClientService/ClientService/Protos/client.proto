@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+option csharp_namespace = "CRMSolution.Grpc.Client";
+
+package client;
+
+service ClientGrpcService {
+  rpc GetClientById (GetClientByIdRequest) returns (GetClientByIdResponse);
+}
+
+message GetClientByIdRequest {
+  int32 id = 1;
+}
+
+message GetClientByIdResponse {
+  int32 id = 1;
+  string name = 2;
+  string email = 3;
+  string phone = 4;
+  string address = 5;
+  string createdAt = 6;
+}
+
