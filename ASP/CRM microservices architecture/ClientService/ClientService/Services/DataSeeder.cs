@@ -15,7 +15,8 @@ public class DataSeeder
 
     public void Seed()
     {
-
+        if (_context.Tasks.Any()) return; 
+        
         var clientFaker = new Faker<Client>()
             // .RuleFor(c => c.Id, f => clientId++)
             .RuleFor(c => c.Name, f => f.Company.CompanyName())

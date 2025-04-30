@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CRMSolution.Grpc.Client;
 using Microsoft.AspNetCore.SignalR;
 using OrderService.Data.Models;
 using OrderService.Data.Repository.OrderResp;
@@ -9,6 +10,8 @@ using OrderService.DTO.Responses;
 using OrderService.Hubs;
 using OrderService.Services.Interfaces;
 using CRMSolution.Grpc.Users;
+using CRMSolution.Grpc.Client;
+using CRMSolution.Grpc.Tasks;
 
 
 namespace OrderService.Services.Classes;
@@ -20,15 +23,20 @@ public class OrderService : IOrderService
     private readonly ILogger<OrderService> _logger;
     private readonly IHubContext<NotificationHub> _notificationHub;
     private readonly UserService.UserServiceClient _userGrpcClient;
+    private readonly ClientGrpcService.ClientGrpcServiceClient _clientGrpcClient;
+    private readonly TaskGrpcService.TaskGrpcServiceClient _taskGrpcService;
     
     public OrderService(IOrderRep orderRep, IMapper mapper, ILogger<OrderService> logger, 
-        IHubContext<NotificationHub> notificationHub, UserService.UserServiceClient userGrpcClient)
+        IHubContext<NotificationHub> notificationHub, UserService.UserServiceClient userGrpcClient,
+        ClientGrpcService.ClientGrpcServiceClient clientGrpcClient, TaskGrpcService.TaskGrpcServiceClient taskGrpcService)
     {
         _orderRep = orderRep;
         _mapper = mapper;
         _logger = logger;
         _notificationHub = notificationHub;
         _userGrpcClient = userGrpcClient;
+        _clientGrpcClient = clientGrpcClient;
+        _taskGrpcService = taskGrpcService;
     }
     
     public async Task<Order> GetByIdAsync(int orderId)
@@ -57,6 +65,26 @@ public class OrderService : IOrderService
 
         _logger.LogInformation("Пользователь найден через gRPC: {UserId} - {Email}", grpcUserResponse.Id, grpcUserResponse.Email);
 
+        var grpcClientRequest = new GetClientByEmailRequest
+        {
+            Email = request.clientEmail
+        };
+
+        var grpcClientResponse = await _clientGrpcClient.GetClientByEmailAsync(grpcClientRequest);
+            
+        _logger.LogInformation("Клиент найден через gRPC: {ClientId} - {Email}", grpcClientResponse.Id, grpcClientResponse.Email);
+
+        Order order = _mapper.Map<Order>(request);
+
+        var grpcTaskRequest = new CreateTaskRequest
+        {
+            OrderId = order.Id,
+        };
+        var grpcTaskReponse = await _taskGrpcService.CreateFirstTaskAsync(grpcTaskRequest);
+        _logger.LogInformation("Задача создана через gRPC: ", grpcTaskReponse.Success, grpcTaskReponse.Message);
+        
+        await _orderRep.AddAsync(order);
+        await _orderRep.SaveChangesAsync();
         // Здесь могла бы быть логика создания ордера, но она убрана по твоему запросу
     }
 

@@ -92,9 +92,18 @@ public class TasksService : ITasksService
     //         Tasks = _mapper.Map<List<TaskDto>>(tasks)
     //     };
     // }
-    public Task CreateTaskAsync(CreateTaskRequest request)
+    public Task CreateTaskAsync(int orderId)
     {
-        throw new NotImplementedException();
+        TaskEntity task = new TaskEntity
+        {
+            Title = "First contact",
+            Description = "Connect the client",
+            DueDate = DateTime.UtcNow.Date,
+            OrderId = orderId
+        };
+        _tasksRep.AddAsync(task);
+        _tasksRep.SaveChangesAsync();
+        return Task.CompletedTask;
     }
 
     public Task UpdateTaskAsync(UpdateTaskRequest request)

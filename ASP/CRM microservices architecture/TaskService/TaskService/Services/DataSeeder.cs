@@ -15,7 +15,8 @@ public class DataSeeder
 
     public void Seed()
     {
-
+        if (_context.Tasks.Any()) return; 
+        
         var taskFaker = new Faker<TaskEntity>()
             .RuleFor(t => t.Title, f => f.Lorem.Sentence(3))
             .RuleFor(t => t.Description, f => f.Lorem.Paragraph())

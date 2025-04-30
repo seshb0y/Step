@@ -93,9 +93,13 @@ builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
 builder.WebHost.ConfigureKestrel(options =>
 {
+    options.ListenLocalhost(5111, listenOptions =>
+    {
+        listenOptions.Protocols = HttpProtocols.Http2;
+    });
     options.ListenLocalhost(5110, listenOptions =>
     {
-        listenOptions.Protocols = HttpProtocols.Http1AndHttp2;
+        listenOptions.Protocols = HttpProtocols.Http1;
         // listenOptions.UseHttps();
     });
 });
@@ -106,7 +110,7 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", "OrderService API v1");
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "ClientService API v1");
 });
 
 app.UseRouting();

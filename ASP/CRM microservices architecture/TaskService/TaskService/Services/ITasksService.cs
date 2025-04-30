@@ -6,7 +6,7 @@ namespace TaskService.Services.Interfaces;
 
 public interface ITasksService
 {
-    public Task CreateTaskAsync(CreateTaskRequest request);
+    public Task CreateTaskAsync(int orderId);
     public Task UpdateTaskAsync(UpdateTaskRequest request);
     public Task DeleteTaskAsync(DeleteTaskRequest request);
     public Task<TaskResponse> FindTaskByIdAsync(FindTaskRequest request);

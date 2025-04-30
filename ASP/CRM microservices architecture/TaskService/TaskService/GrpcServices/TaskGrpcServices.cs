@@ -1,5 +1,6 @@
 ﻿using Grpc.Core;
-using CRMSolution.Grpc.Tasks; // <-- Правильный namespace
+using CRMSolution.Grpc.Tasks;
+using TaskService.Data.Models; // <-- Правильный namespace
 using TaskService.Services.Interfaces;
 
 namespace TaskService.GrpcServices;
@@ -25,4 +26,17 @@ public class TaskGrpcService : CRMSolution.Grpc.Tasks.TaskGrpcService.TaskGrpcSe
             Status = (int)task.Status
         };
     }
+    
+public override async Task<CreateTaskResponse> CreateFirstTask(CreateTaskRequest request, ServerCallContext context)
+{
+    _tasksService.CreateTaskAsync(request.OrderId);
+    
+    return new CreateTaskResponse
+    {
+        Success = true,
+        Message = "Task created"
+    };
+}
+
+
 }

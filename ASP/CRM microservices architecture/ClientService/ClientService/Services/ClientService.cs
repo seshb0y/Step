@@ -123,9 +123,9 @@ public class ClientService : IClientService
     //     return _mapper.Map<List<ClientWithOrdersAndTasksResponse>>(clients);
     // }
 
-    public async Task<Client> GetByIdAsync(int id)
+    public async Task<Client> GetByEmailAsync(string email)
     {
-        return await _clientRepository.GetById(id);
+        return await _clientRepository.GetClientByEmail(email);
     }
 
 }

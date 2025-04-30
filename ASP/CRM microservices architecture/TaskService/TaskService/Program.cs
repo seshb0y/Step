@@ -93,9 +93,13 @@ builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
 builder.WebHost.ConfigureKestrel(options =>
 {
+    options.ListenLocalhost(5296, listenOptions =>
+    {
+        listenOptions.Protocols = HttpProtocols.Http2;
+    });
     options.ListenLocalhost(5295, listenOptions =>
     {
-        listenOptions.Protocols = HttpProtocols.Http1AndHttp2;
+        listenOptions.Protocols = HttpProtocols.Http1;
         // listenOptions.UseHttps();
     });
 });

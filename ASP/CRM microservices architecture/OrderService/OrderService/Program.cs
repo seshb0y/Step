@@ -2,7 +2,9 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using CRMSolution.Grpc; // gRPC UserService клиент
+using CRMSolution.Grpc;
+using CRMSolution.Grpc.Client;
+using CRMSolution.Grpc.Tasks; // gRPC UserService клиент
 using FluentValidation;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -72,6 +74,22 @@ builder.Services.AddGrpcClient<UserService.UserServiceClient>(o =>
     {
         options.Credentials = Grpc.Core.ChannelCredentials.Insecure;
     });
+builder.Services.AddGrpcClient<ClientGrpcService.ClientGrpcServiceClient>(o =>
+    {
+        o.Address = new Uri("http://localhost:5111"); 
+    })
+    .ConfigureChannel(options =>
+    {
+        options.Credentials = Grpc.Core.ChannelCredentials.Insecure;
+    });
+builder.Services.AddGrpcClient<TaskGrpcService.TaskGrpcServiceClient>(o =>
+    {
+        o.Address = new Uri("http://localhost:5296");
+    })
+    .ConfigureChannel(options =>
+    {
+        options.Credentials = Grpc.Core.ChannelCredentials.Insecure;
+    });
 
 
 
@@ -91,9 +109,13 @@ builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
 builder.WebHost.ConfigureKestrel(options =>
 {
+    options.ListenLocalhost(5235, listenOptions =>
+    {
+        listenOptions.Protocols = HttpProtocols.Http2;
+    });
     options.ListenLocalhost(5234, listenOptions =>
     {
-        listenOptions.Protocols = HttpProtocols.Http1AndHttp2;
+        listenOptions.Protocols = HttpProtocols.Http1;
         // listenOptions.UseHttps();
     });
 });
