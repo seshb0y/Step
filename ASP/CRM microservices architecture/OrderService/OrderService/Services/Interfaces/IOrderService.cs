@@ -1,4 +1,5 @@
-﻿using OrderService.Data.Models;
+﻿using CRMSolution.Grpc.Orders;
+using OrderService.Data.Models;
 using OrderService.DTO.Requests;
 using OrderService.DTO.Requests.Order;
 using OrderService.DTO.Requests.Orders;

@@ -11,6 +11,7 @@ using OrderService.Hubs;
 using OrderService.Services.Interfaces;
 using CRMSolution.Grpc.Users;
 using CRMSolution.Grpc.Client;
+using CRMSolution.Grpc.Orders;
 using CRMSolution.Grpc.Tasks;
 using Google.Protobuf.WellKnownTypes;
 
@@ -54,22 +55,22 @@ public class OrderService : IOrderService
         // gRPC-запрос на получение пользователя по Email
         var grpcUserRequest = new FindUserRequest
         {
-            Email = request.userEmail
+            Email = request.UserEmail
         };
 
         var grpcUserResponse = await _userGrpcClient.FindUserAsync(grpcUserRequest);
 
         if (grpcUserResponse == null || grpcUserResponse.Id == 0)
         {
-            _logger.LogWarning("Пользователь с email {Email} не найден.", request.userEmail);
-            throw new KeyNotFoundException($"User with email {request.userEmail} not found.");
+            _logger.LogWarning("Пользователь с email {Email} не найден.", request.UserEmail);
+            throw new KeyNotFoundException($"User with email {request.UserEmail} not found.");
         }
 
         _logger.LogInformation("Пользователь найден через gRPC: {UserId} - {Email}", grpcUserResponse.Id, grpcUserResponse.Email);
 
         var grpcClientRequest = new GetClientByEmailRequest
         {
-            Email = request.clientEmail
+            Email = request.ClientEmail
         };
 
         var grpcClientResponse = await _clientGrpcClient.GetClientByEmailAsync(grpcClientRequest);
@@ -92,11 +93,31 @@ public class OrderService : IOrderService
         };
         var grpcTaskReponse = await _taskGrpcService.CreateFirstTaskAsync(grpcTaskRequest);
         _logger.LogInformation("Задача создана через gRPC: ", grpcTaskReponse.Success, grpcTaskReponse.Message);
+        
+        await _notificationHub.Clients.All.SendAsync("OrderCreated", new
+        {
+            order.Id,
+            order.CreatedAt,
+            order.TotalAmount,
+            order.Status,
+        });
     }
 
-    public Task ChangeDataOrder(ChangeOrderDataRequest request)
+    public async Task ChangeDataOrder(ChangeOrderDataRequest request)
     {
-        throw new NotImplementedException();
+        _logger.LogInformation("Изменяем заказ: {@Request}", request);
+        Order order = await _orderRep.GetById(request.OrderId);
+        
+        order = _mapper.Map(request, order);
+        _orderRep.Update(order);
+        await _orderRep.SaveChangesAsync();
+        await _notificationHub.Clients.All.SendAsync("OrderUpdated", new
+        {
+            order.Id,
+            order.CreatedAt,
+            order.TotalAmount,
+            order.Status,
+        });
     }
 
     public Task DeleteOrder(DeleteOrderRequest request)

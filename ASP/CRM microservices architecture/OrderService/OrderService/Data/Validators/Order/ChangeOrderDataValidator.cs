@@ -5,7 +5,7 @@ using OrderService.DTO.Requests;
 
 namespace OrderService.Data.Validators.Order;
 
-public class ChangeOrderDataValidator : AbstractValidator<ChangeOrderDataRequest>
+public class ChangeOrderDataValidator : AbstractValidator<HttpChangeOrderDataRequest>
 {
     
     IRepository<Models.Order> _orderRepository;

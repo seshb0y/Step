@@ -1,21 +1,48 @@
 ﻿syntax = "proto3";
 
-option csharp_namespace = "CRMSolution.Grpc.Orders"; 
+option csharp_namespace = "CRMSolution.Grpc.Orders";
 
 package order;
 
+enum OrderStatus {
+  NEW = 0;
+  PROCESSING = 1;
+  COMPLETED = 2;
+}
+
 service OrderGrpcService {
   rpc GetOrderById (GetOrderByIdRequest) returns (OrderDto);
+  rpc CreateOrder (CreateOrderRequest) returns (CreateOrderResponse);
+  rpc ChangeOrderData (ChangeOrderDataRequest) returns (ChangeOrderDataResponse);
 }
 
 message GetOrderByIdRequest {
   int32 orderId = 1;
 }
-
 message OrderDto {
   string id = 1;
   double totalAmount = 2;
   string status = 3;
   int32 userId = 4;
   int32 clientId = 5;
+}
+
+message ChangeOrderDataRequest {
+  double totalAmount = 1;
+  OrderStatus status = 2;
+  int32 orderId = 3;
+}
+message ChangeOrderDataResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message CreateOrderRequest{
+  double totalAmount = 1;
+  string clientEmail = 2;
+  string userEmail = 3;
+}
+message CreateOrderResponse{
+  bool success = 1;
+  string message = 2;
 }

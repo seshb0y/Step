@@ -9,13 +9,13 @@ public class OrderProfile : Profile
 {
     public OrderProfile()
     {
-        CreateMap<CreateOrderRequest, Order>()
+        CreateMap<HttpCreateOrderRequest, Order>()
             .ForMember(dest => dest.TotalAmount, opt =>
                 opt.MapFrom(src => src.totalAmount))
             .ForMember(dest => dest.UserId, opt => opt.Ignore())
             .ForMember(dest => dest.ClientId, opt => opt.Ignore());
         
-        CreateMap<ChangeOrderDataRequest, Order>()
+        CreateMap<HttpChangeOrderDataRequest, Order>()
             .ForMember(dest => dest.Status, opt => opt
                 .MapFrom(src => src.status))
             .ForMember(dest => dest.TotalAmount, opt =>

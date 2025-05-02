@@ -22,17 +22,17 @@ public class OrderController : ControllerBase
 
     [HttpPost]
     // [Authorize(Policy = "ManagerPolicy")]
-    public async Task<IActionResult> AddOrder([FromBody] CreateOrderRequest request)
+    public async Task<IActionResult> AddOrder([FromBody] HttpCreateOrderRequest request)
     {
-        await _orderService.CreateOrder(request);
+        // await _orderService.CreateOrder(request);
         return Ok("Order created");
     }
     
     [HttpPut]
     // [Authorize(Policy = "ManagerPolicy")]
-    public async Task<IActionResult> ChangeOrder([FromBody] ChangeOrderDataRequest request)
+    public async Task<IActionResult> ChangeOrder([FromBody] HttpChangeOrderDataRequest request)
     {
-        await _orderService.ChangeDataOrder(request);
+        // await _orderService.ChangeDataOrder(request);
         return Ok("Order changed");
     }
     

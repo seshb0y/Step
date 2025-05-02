@@ -1,11 +1,12 @@
 ﻿using Grpc.Core;
-using CRMSolution.Grpc.Orders; // <-- Только этот using правильный!
+using CRMSolution.Grpc.Orders;
+using OrderService.DTO.Requests; // <-- Только этот using правильный!
 using OrderService.Services.Interfaces;
 using OrderService.DTO.Requests.Order;
 
 namespace OrderService.GrpcServices;
 
-public class OrderGrpcService : CRMSolution.Grpc.Orders.OrderGrpcService.OrderGrpcServiceBase 
+public class OrderGrpcService : CRMSolution.Grpc.Orders.OrderGrpcService.OrderGrpcServiceBase
 {
     private readonly IOrderService _orderService;
 
@@ -25,6 +26,29 @@ public class OrderGrpcService : CRMSolution.Grpc.Orders.OrderGrpcService.OrderGr
             Status = order.Status.ToString(),
             UserId = order.UserId,
             ClientId = order.ClientId
+        };
+    }
+
+    public override async Task<CreateOrderResponse> CreateOrder(CreateOrderRequest request,
+        ServerCallContext context)
+    {
+        _orderService.CreateOrder(request);
+        return new CreateOrderResponse
+        {
+            Success = true,
+            Message = "Order created successfully!"
+        };
+    }
+
+    public override async Task<ChangeOrderDataResponse> ChangeOrderData(ChangeOrderDataRequest request,
+        ServerCallContext context)
+    {
+        await _orderService.ChangeDataOrder(request);
+
+        return new ChangeOrderDataResponse
+        {
+            Success = true,
+            Message = "Order updated"
         };
     }
 }
