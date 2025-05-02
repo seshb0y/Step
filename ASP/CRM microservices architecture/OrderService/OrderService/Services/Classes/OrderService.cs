@@ -12,6 +12,8 @@ using OrderService.Services.Interfaces;
 using CRMSolution.Grpc.Users;
 using CRMSolution.Grpc.Client;
 using CRMSolution.Grpc.Tasks;
+using Google.Protobuf.WellKnownTypes;
+
 
 
 namespace OrderService.Services.Classes;
@@ -75,9 +77,14 @@ public class OrderService : IOrderService
         _logger.LogInformation("Клиент найден через gRPC: {ClientId} - {Email}", grpcClientResponse.Id, grpcClientResponse.Email);
 
         Order order = _mapper.Map<Order>(request);
+        order.UserId = grpcUserResponse.Id;
+        order.ClientId = grpcClientResponse.Id;
 
         var grpcTaskRequest = new CreateTaskRequest
         {
+            Title = "First contact",
+            Description = "Connect the client",
+            DueDate = Timestamp.FromDateTime(DateTime.UtcNow),
             OrderId = order.Id,
         };
         var grpcTaskReponse = await _taskGrpcService.CreateFirstTaskAsync(grpcTaskRequest);

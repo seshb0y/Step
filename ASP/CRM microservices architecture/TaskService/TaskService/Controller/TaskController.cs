@@ -20,7 +20,7 @@ public class TaskController : ControllerBase
 
     [HttpPost]
     // [Authorize(Policy = "ManagerPolicy")]
-    public async Task<IActionResult> AddTask([FromBody] CreateTaskRequest request)
+    public async Task<IActionResult> AddTask([FromBody] HTTPCreateTaskRequest request)
     {
         // await _tasksService.CreateTaskAsync(request);
         return Ok("Task created");

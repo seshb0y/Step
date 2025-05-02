@@ -29,7 +29,7 @@ public class TaskGrpcService : CRMSolution.Grpc.Tasks.TaskGrpcService.TaskGrpcSe
     
 public override async Task<CreateTaskResponse> CreateFirstTask(CreateTaskRequest request, ServerCallContext context)
 {
-    _tasksService.CreateTaskAsync(request.OrderId);
+    _tasksService.CreateTaskAsync(request.OrderId, request.Description, request.DueDate.ToDateTime(), request.Title);
     
     return new CreateTaskResponse
     {

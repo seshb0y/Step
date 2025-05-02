@@ -92,13 +92,13 @@ public class TasksService : ITasksService
     //         Tasks = _mapper.Map<List<TaskDto>>(tasks)
     //     };
     // }
-    public Task CreateTaskAsync(int orderId)
+    public Task CreateTaskAsync(int orderId, string description, DateTime dueDate, string title)
     {
         TaskEntity task = new TaskEntity
         {
-            Title = "First contact",
-            Description = "Connect the client",
-            DueDate = DateTime.UtcNow.Date,
+            Title = title,
+            Description = description,
+            DueDate = dueDate,
             OrderId = orderId
         };
         _tasksRep.AddAsync(task);
