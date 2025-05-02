@@ -79,6 +79,9 @@ public class OrderService : IOrderService
         Order order = _mapper.Map<Order>(request);
         order.UserId = grpcUserResponse.Id;
         order.ClientId = grpcClientResponse.Id;
+        
+        await _orderRep.AddAsync(order);
+        await _orderRep.SaveChangesAsync();
 
         var grpcTaskRequest = new CreateTaskRequest
         {
@@ -89,10 +92,6 @@ public class OrderService : IOrderService
         };
         var grpcTaskReponse = await _taskGrpcService.CreateFirstTaskAsync(grpcTaskRequest);
         _logger.LogInformation("Задача создана через gRPC: ", grpcTaskReponse.Success, grpcTaskReponse.Message);
-        
-        await _orderRep.AddAsync(order);
-        await _orderRep.SaveChangesAsync();
-        // Здесь могла бы быть логика создания ордера, но она убрана по твоему запросу
     }
 
     public Task ChangeDataOrder(ChangeOrderDataRequest request)
