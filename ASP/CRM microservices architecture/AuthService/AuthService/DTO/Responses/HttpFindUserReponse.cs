@@ -2,7 +2,7 @@
 
 namespace ControllerFirst.DTO.Responses.User;
 
-public class FindUserReponse
+public class HttpFindUserReponse
 {
     // public FindUserClientsResponse[]? clients { get; set; }
     // public FindUserOrdersResponse[]? orders { get; set; }

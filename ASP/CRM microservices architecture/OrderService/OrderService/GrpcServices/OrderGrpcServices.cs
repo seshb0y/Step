@@ -24,8 +24,8 @@ public class OrderGrpcService : CRMSolution.Grpc.Orders.OrderGrpcService.OrderGr
             Id = order.Id.ToString(),
             TotalAmount = (double)order.TotalAmount,
             Status = order.Status.ToString(),
-            UserId = order.UserId,
-            ClientId = order.ClientId
+            UserId = order.UserId ?? 0,
+            ClientId = order.ClientId ?? 0,
         };
     }
 
@@ -50,5 +50,16 @@ public class OrderGrpcService : CRMSolution.Grpc.Orders.OrderGrpcService.OrderGr
             Success = true,
             Message = "Order updated"
         };
+    }
+
+    public override async Task<DeleteOrderResponse> DeleteOrder(DeleteOrderRequest request, ServerCallContext context)
+    {
+        await _orderService.DeleteOrder(request);
+        
+        return new DeleteOrderResponse
+        {
+            Success = true,
+            Message = "Order updated"
+        }; 
     }
 }

@@ -6,6 +6,7 @@ using ClientService.DTO.Responses;
 using ClientService.Hubs;
 using ClientService.Services.Interfaces;
 using CRMSolution.DTO.Requests.Client;
+using CRMSolution.Grpc.Client;
 using Microsoft.AspNetCore.SignalR;
 
 namespace ClientService.Services.Classes;
@@ -123,9 +124,12 @@ public class ClientService : IClientService
     //     return _mapper.Map<List<ClientWithOrdersAndTasksResponse>>(clients);
     // }
 
-    public async Task<Client> GetByEmailAsync(string email)
+    public async Task<Client> GetByEmailAsync(GetClientByEmailRequest request)
     {
-        return await _clientRepository.GetClientByEmail(email);
+        Client client = await _clientRepository.GetClientByEmail(request.Email);
+        client.OrderId = request.OrderId;
+        await _clientRepository.SaveChangesAsync();
+        return client;
     }
 
 }

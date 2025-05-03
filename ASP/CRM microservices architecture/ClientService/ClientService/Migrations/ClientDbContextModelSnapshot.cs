@@ -45,6 +45,9 @@ namespace ClientService.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int?>("OrderId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Phone")
                         .IsRequired()
                         .HasColumnType("text");

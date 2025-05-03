@@ -3,6 +3,7 @@ using ControllerFirst.DTO.Responses.User;
 using CRMSolution.Data.Models;
 using CRMSolution.Data.Repository.UserRep;
 using CRMSolution.DTO.Requests;
+using CRMSolution.Grpc.Users;
 using CRMSolution.Hubs;
 using CRMSolution.Services.Interfaces;
 using Microsoft.AspNetCore.SignalR;
@@ -63,12 +64,14 @@ public class UserService : IUserService
         });
     }
 
-    public async Task<FindUserReponse> FindUser(FindUserRequest request)
+    public async Task<FindUserResponse> FindUser(FindUserRequest request)
     {
         _logger.LogInformation("Поиск юзера: {@Request}", request);
-        var userEntity = await _userRepository.FindByEmailAsync(request.email);
-        FindUserReponse user =  _mapper.Map<FindUserReponse>(userEntity);
-        _logger.LogInformation("Юзер найден: {ClientId}", request.email);
+        var userEntity = await _userRepository.FindByEmailAsync(request.Email);
+        userEntity.OrderId = request.OrderId;
+        await _userRepository.SaveChangesAsync();
+        FindUserResponse user =  _mapper.Map<FindUserResponse>(userEntity);
+        _logger.LogInformation("Юзер найден: {ClientId}", request.Email);
         return user;
     }
 
@@ -77,7 +80,12 @@ public class UserService : IUserService
         var users = await _userRepository.GetAllAsync();
         return _mapper.Map<GetAllUsersResponse>(users);
     }
-    
+
+    public async Task<User> GetByIdAsync(int userId)
+    {
+        return await _userRepository.GetById(userId);
+    }
+
     // public async Task<List<ClientWithOrdersAndTasksResponse>> GetClientsWithOrdersAndTasks(HttpContext httpContext)
     // {
     //     var username = await _tokenService.GetNameFromCookies(httpContext);

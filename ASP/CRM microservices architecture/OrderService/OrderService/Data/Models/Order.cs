@@ -8,9 +8,10 @@ public class Order
     public decimal TotalAmount { get; set; }
     public OrderStatus Status { get; set; } = OrderStatus.New;
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public bool IsDeleted { get; set; } = false;
     
-    public int UserId { get; set; }
-    public int ClientId { get; set; }
+    public int? UserId { get; set; }
+    public int? ClientId { get; set; }
     
     // public List<CallRecording> CallRecordings { get; set; } = new();
     //

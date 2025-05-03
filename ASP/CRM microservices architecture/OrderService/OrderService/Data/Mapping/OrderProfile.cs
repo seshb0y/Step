@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CRMSolution.Grpc.Orders;
 using OrderService.Data.Models;
 using OrderService.DTO.Requests;
 using OrderService.DTO.Responses;
@@ -9,11 +10,12 @@ public class OrderProfile : Profile
 {
     public OrderProfile()
     {
-        CreateMap<HttpCreateOrderRequest, Order>()
-            .ForMember(dest => dest.TotalAmount, opt =>
-                opt.MapFrom(src => src.totalAmount))
+        CreateMap<CreateOrderRequest, Order>()
+            .ForMember(dest => dest.TotalAmount, opt => opt.MapFrom(src => (decimal)src.TotalAmount))
+            .ForMember(dest => dest.Status, opt => opt.Ignore())
             .ForMember(dest => dest.UserId, opt => opt.Ignore())
-            .ForMember(dest => dest.ClientId, opt => opt.Ignore());
+            .ForMember(dest => dest.ClientId, opt => opt.Ignore())
+            .ForMember(dest => dest.CreatedAt, opt => opt.Ignore());
         
         CreateMap<HttpChangeOrderDataRequest, Order>()
             .ForMember(dest => dest.Status, opt => opt
@@ -26,7 +28,7 @@ public class OrderProfile : Profile
         
         CreateMap<DeleteOrderRequest, Order>()
             .ForMember(dest => dest.Id, opt => opt
-                .MapFrom(src => src.orderId));
+                .MapFrom(src => src.OrderId));
         
         CreateMap<FindOrderRequest, Order>()
             .ForMember(dest => dest.Id, opt => opt

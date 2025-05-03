@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CRMSolution.Grpc.Orders;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OrderService.DTO.Requests;
@@ -22,9 +23,9 @@ public class OrderController : ControllerBase
 
     [HttpPost]
     // [Authorize(Policy = "ManagerPolicy")]
-    public async Task<IActionResult> AddOrder([FromBody] HttpCreateOrderRequest request)
+    public async Task<IActionResult> AddOrder([FromBody] CreateOrderRequest request)
     {
-        // await _orderService.CreateOrder(request);
+        await _orderService.CreateOrder(request);
         return Ok("Order created");
     }
     
@@ -38,9 +39,9 @@ public class OrderController : ControllerBase
     
     [HttpDelete]
     // [Authorize(Policy = "ManagerPolicy")]
-    public async Task<IActionResult> DeleteOrder([FromBody] DeleteOrderRequest request)
+    public async Task<IActionResult> DeleteOrder([FromBody] HttpDeleteOrderRequest request)
     {
-        await _orderService.DeleteOrder(request);
+        // await _orderService.DeleteOrder(request);
         return Ok("Order deleted");
     }
     

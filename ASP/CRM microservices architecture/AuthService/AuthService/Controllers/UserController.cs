@@ -1,6 +1,7 @@
 ﻿using ControllerFirst.DTO.Responses;
 using CRMSolution.Data.Models;
 using CRMSolution.DTO.Requests;
+using CRMSolution.Grpc.Users;
 using CRMSolution.Services.Interfaces;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;

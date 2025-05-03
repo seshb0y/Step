@@ -10,6 +10,7 @@ service ClientGrpcService {
 
 message GetClientByEmailRequest {
   string email = 1;
+  int32 orderId = 2;
 }
 
 message GetClientByEmailResponse {

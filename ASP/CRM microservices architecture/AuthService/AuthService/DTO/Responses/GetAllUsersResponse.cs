@@ -4,7 +4,7 @@ using CRMSolution.Data.Models;
 
 public class GetAllUsersResponse
 {
-     public List<FindUserReponse> Users { get; set; }
+     public List<HttpFindUserReponse> Users { get; set; }
 }
 
 // public class GetAllUsersUserResponse

@@ -53,37 +53,34 @@ public class OrderService : IOrderService
         _logger.LogInformation("Создаем заказ. Проверка пользователя через gRPC: {@Request}", request);
 
         // gRPC-запрос на получение пользователя по Email
-        var grpcUserRequest = new FindUserRequest
-        {
-            Email = request.UserEmail
-        };
-
-        var grpcUserResponse = await _userGrpcClient.FindUserAsync(grpcUserRequest);
-
-        if (grpcUserResponse == null || grpcUserResponse.Id == 0)
-        {
-            _logger.LogWarning("Пользователь с email {Email} не найден.", request.UserEmail);
-            throw new KeyNotFoundException($"User with email {request.UserEmail} not found.");
-        }
-
-        _logger.LogInformation("Пользователь найден через gRPC: {UserId} - {Email}", grpcUserResponse.Id, grpcUserResponse.Email);
-
-        var grpcClientRequest = new GetClientByEmailRequest
-        {
-            Email = request.ClientEmail
-        };
-
-        var grpcClientResponse = await _clientGrpcClient.GetClientByEmailAsync(grpcClientRequest);
-            
-        _logger.LogInformation("Клиент найден через gRPC: {ClientId} - {Email}", grpcClientResponse.Id, grpcClientResponse.Email);
+        
 
         Order order = _mapper.Map<Order>(request);
-        order.UserId = grpcUserResponse.Id;
-        order.ClientId = grpcClientResponse.Id;
         
         await _orderRep.AddAsync(order);
         await _orderRep.SaveChangesAsync();
 
+        var grpcUserRequest = new FindUserRequest
+        {
+            OrderId = order.Id,
+            Email = request.UserEmail
+        };
+
+        var grpcUserResponse = await _userGrpcClient.FindUserAsync(grpcUserRequest);
+        
+        var lastOrder = _orderRep.GetAllAsync();
+        var grpcClientRequest = new GetClientByEmailRequest
+        {
+            OrderId = order.Id,
+            Email = request.ClientEmail
+        }; 
+        var grpcClientResponse = await _clientGrpcClient.GetClientByEmailAsync(grpcClientRequest);
+        
+        order.UserId = grpcUserResponse.Id;
+        order.ClientId = grpcClientResponse.Id;
+        
+        await _orderRep.SaveChangesAsync();
+        
         var grpcTaskRequest = new CreateTaskRequest
         {
             Title = "First contact",
@@ -120,9 +117,11 @@ public class OrderService : IOrderService
         });
     }
 
-    public Task DeleteOrder(DeleteOrderRequest request)
+    public async Task DeleteOrder(DeleteOrderRequest request)
     {
-        throw new NotImplementedException();
+        Order order = await _orderRep.GetByIdAsync(request.OrderId);
+        order.IsDeleted = true;
+        await _orderRep.SaveChangesAsync();
     }
 
     public Task<OrderDetailsResponse> GetOrderDetailsAsync(int orderId)
@@ -134,79 +133,6 @@ public class OrderService : IOrderService
     {
         throw new NotImplementedException();
     }
-
-
-    // public async Task ChangeDataOrder(ChangeOrderDataRequest request)
-    // {
-    //     _logger.LogInformation("Изменяем заказ: {@Request}", request);
-    //     Order order = await _unitOfWork.OrderRep.GetById(request.orderId);
-    //     
-    //     order = _mapper.Map(request, order);
-    //     _unitOfWork.OrderRep.Update(order);
-    //     await _unitOfWork.SaveChangesAsync();
-    //     await _notificationHub.Clients.All.SendAsync("OrderUpdated", new
-    //     {
-    //         order.Id,
-    //         order.CreatedAt,
-    //         order.TotalAmount,
-    //         order.Status,
-    //     });
-    // }
-    
-    // public async Task DeleteOrder(DeleteOrderRequest request)
-    // {
-    //     _logger.LogInformation("Удаляем заказ: {@Request}", request);
-    //     Order order = await _unitOfWork.OrderRep.GetById(request.orderId);
-    //     
-    //     if (order == null)
-    //     {
-    //         throw new KeyNotFoundException($"Client with id {request.orderId} not found");
-    //     }
-    //     
-    //     _unitOfWork.OrderRep.Delete(order);
-    //     await _unitOfWork.SaveChangesAsync();
-    //     await _notificationHub.Clients.All.SendAsync("OrderDeleted", new
-    //     {
-    //         order.Id,
-    //     });
-    // }
-    
-    // public async Task<OrderResponse> FindOrder(FindOrderRequest request)
-    // {
-    //     _logger.LogInformation("Поиск клиента: {@Request}", request);
-    //     Order order = await _unitOfWork.OrderRep.GetOrderInclude(request.orderId);
-    //     return _mapper.Map<OrderResponse>(order);
-    // }
-    
-    // public async Task<OrderDetailsResponse> GetOrderDetailsAsync(int orderId)
-    // {
-    //     _logger.LogInformation("Получение деталей заказа: {OrderId}", orderId);
-    //
-    //     var order = await _unitOfWork.OrderRep.GetOrderWithClientAndTasks(orderId);
-    //     if (order == null)
-    //     {
-    //         _logger.LogWarning("Заказ с ID {OrderId} не найден", orderId);
-    //         return null;
-    //     }
-    //
-    //     var response = _mapper.Map<OrderDetailsResponse>(order);
-    //     
-    //     if (order.ClientOrders.Any())
-    //     {
-    //         response.Client = _mapper.Map<ClientResponse>(order.ClientOrders.First().Client);
-    //     }
-    //
-    //     return response;
-    // }
-    
-    // public async Task<GetAllOrdersResponse> GetAllOrders(SortOrdersRequest sortOrdersRequest)
-    // {
-    //     var orders = await _unitOfWork.OrderRep.GetLowInfoOrdersList(sortOrdersRequest);
-    //     return new GetAllOrdersResponse()
-    //     {
-    //         Orders = _mapper.Map<List<OrderDTO>>(orders)
-    //     };
-    // }
     
     public async Task ChangeResponsible(int orderId, ChangeResponsibleRequest request)
     {

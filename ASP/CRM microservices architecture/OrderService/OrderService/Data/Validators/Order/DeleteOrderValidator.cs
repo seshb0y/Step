@@ -4,7 +4,7 @@ using OrderService.DTO.Requests;
 
 namespace OrderService.Data.Validators.Order;
 
-public class DeleteOrderValidator : AbstractValidator<DeleteOrderRequest>
+public class DeleteOrderValidator : AbstractValidator<HttpDeleteOrderRequest>
 {
     IRepository<Models.Order> _orderRepository;
 

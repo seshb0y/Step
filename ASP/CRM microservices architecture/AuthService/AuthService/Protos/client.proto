@@ -1,19 +1,30 @@
 syntax = "proto3";
 
-option csharp_namespace = "CRMSolution.Grpc.Clients";
+option csharp_namespace = "CRMSolution.Grpc.Client";
 
 package client;
 
-service ClientService {
-  rpc GetClientById (GetClientByIdRequest) returns (ClientDto);
+service ClientGrpcService {
+  rpc GetClientByEmail (GetClientByEmailRequest) returns (GetClientByEmailResponse);
+  rpc AddOrderToClient (AddOrderToClientRequest) returns (AddOrderToClientResponse);
 }
 
-message GetClientByIdRequest {
-  string id = 1;
+message GetClientByEmailRequest {
+  int32 orderId = 2;
 }
-
-message ClientDto {
-  string id = 1;
+message GetClientByEmailResponse {
+  int32 id = 1;
   string name = 2;
-  string contactEmail = 3;
+  string email = 3;
+  string phone = 4;
+  string address = 5;
+  string createdAt = 6;
+}
+
+message AddOrderToClientRequest{
+  int32 OrderId = 1;
+}
+message AddOrderToClientResponse{
+  bool success = 1;
+  string message = 2;
 }

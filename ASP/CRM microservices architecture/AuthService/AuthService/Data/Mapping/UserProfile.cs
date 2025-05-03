@@ -4,6 +4,7 @@ using ControllerFirst.DTO.Responses;
 using ControllerFirst.DTO.Responses.User;
 using CRMSolution.Data.Models;
 using CRMSolution.DTO.Requests;
+using CRMSolution.Grpc.Users;
 using Microsoft.AspNetCore.Identity.Data;
 using RegisterRequest = ControllerFirst.DTO.Requests.RegisterRequest;
 
@@ -49,7 +50,7 @@ public class UserProfile : Profile
             .ForMember(dest => dest.Role, opt => opt
                 .MapFrom(src => src.role));
 
-        CreateMap<User, FindUserReponse>()
+        CreateMap<User, FindUserResponse>()
             .ForMember(dest => dest.Id, opt => opt
                 .MapFrom(src => src.Id))
             .ForMember(dest => dest.Username, opt => opt

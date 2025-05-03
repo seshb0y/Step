@@ -36,6 +36,7 @@ builder.Services.AddDbContext<AuthDbContext>(options =>
 builder.Services.AddScoped<IAuthService, CRMSolution.Services.Classes.AuthService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRep, UserRep>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
