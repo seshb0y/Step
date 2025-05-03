@@ -5,15 +5,19 @@ option csharp_namespace = "CRMSolution.Grpc.Client";
 package client;
 
 service ClientGrpcService {
-  rpc GetClientByEmail (GetClientByEmailRequest) returns (GetClientByEmailResponse);
+  rpc GetClientByEmail (GetClientByEmailRequest) returns (GetClientResponse);
+  rpc GetClientById (GetClientByIdRequest) returns (GetClientResponse);
 }
 
 message GetClientByEmailRequest {
   string email = 1;
   int32 orderId = 2;
 }
+message GetClientByIdRequest{
+  int32 clientId = 1;
+}
 
-message GetClientByEmailResponse {
+message GetClientResponse {
   int32 id = 1;
   string name = 2;
   string email = 3;

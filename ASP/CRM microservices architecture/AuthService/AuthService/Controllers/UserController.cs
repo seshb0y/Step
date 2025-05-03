@@ -54,7 +54,7 @@ public class UserController : ControllerBase
     
     [HttpGet("search")]
     // [Authorize(Policy = "ManagerPolicy")]
-    public async Task<IActionResult> LoadUserData([FromQuery] FindUserRequest request)
+    public async Task<IActionResult> LoadUserData([FromQuery] GetUserByEmailRequest request)
     {
         return Ok(await _userService.FindUser(request));
     }

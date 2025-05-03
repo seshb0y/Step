@@ -15,12 +15,12 @@ public class ClientGrpcService : CRMSolution.Grpc.Client.ClientGrpcService.Clien
         _logger = logger;
     }
 
-    public override async Task<GetClientByEmailResponse> GetClientByEmail(GetClientByEmailRequest request, ServerCallContext context)
+    public override async Task<GetClientResponse> GetClientByEmail(GetClientByEmailRequest request, ServerCallContext context)
     {
         _logger.LogInformation("gRPC запрос на поиск клиента по Email: {Email}", request.Email);
         var client = await _clientService.GetByEmailAsync(request);
 
-        return new GetClientByEmailResponse
+        return new GetClientResponse
         {
             Id = client.Id,
             Name = client.Name,

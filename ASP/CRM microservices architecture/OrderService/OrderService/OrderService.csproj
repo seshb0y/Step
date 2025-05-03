@@ -30,11 +30,13 @@
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
     </ItemGroup>
 
+
     <ItemGroup>
-        <Protobuf Include="Protos\user.proto" GrpcServices="Both" />
-        <Protobuf Include="Protos\order.proto" GrpcServices="Both" />
-        <Protobuf Include="Protos\client.proto" GrpcServices="Both" />
-        <Protobuf Include="Protos\task.proto" GrpcServices="Both" />
+        <ProjectReference Include="..\..\Crm.Grpc.Contracts\Crm.Grpc.Contracts\Crm.Grpc.Contracts.csproj" />
+        <Protobuf Include="..\..\Crm.Grpc.Contracts\Crm.Grpc.Contracts\Protos\user.proto" GrpcServices="Both" />
+        <Protobuf Include="..\..\Crm.Grpc.Contracts\Crm.Grpc.Contracts\Protos\order.proto" GrpcServices="Both" />
+        <Protobuf Include="..\..\Crm.Grpc.Contracts\Crm.Grpc.Contracts\Protos\client.proto" GrpcServices="Both" />
+        <Protobuf Include="..\..\Crm.Grpc.Contracts\Crm.Grpc.Contracts\Protos\task.proto" GrpcServices="Both" />
     </ItemGroup>
 
     

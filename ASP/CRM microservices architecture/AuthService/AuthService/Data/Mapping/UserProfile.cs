@@ -50,7 +50,7 @@ public class UserProfile : Profile
             .ForMember(dest => dest.Role, opt => opt
                 .MapFrom(src => src.role));
 
-        CreateMap<User, FindUserResponse>()
+        CreateMap<User, GetUserResponse>()
             .ForMember(dest => dest.Id, opt => opt
                 .MapFrom(src => src.Id))
             .ForMember(dest => dest.Username, opt => opt

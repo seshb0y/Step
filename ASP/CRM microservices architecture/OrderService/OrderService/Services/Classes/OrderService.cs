@@ -60,7 +60,7 @@ public class OrderService : IOrderService
         await _orderRep.AddAsync(order);
         await _orderRep.SaveChangesAsync();
 
-        var grpcUserRequest = new FindUserRequest
+        var grpcUserRequest = new GetUserByEmailRequest
         {
             OrderId = order.Id,
             Email = request.UserEmail
@@ -124,9 +124,9 @@ public class OrderService : IOrderService
         await _orderRep.SaveChangesAsync();
     }
 
-    public Task<OrderDetailsResponse> GetOrderDetailsAsync(int orderId)
-    {
-        throw new NotImplementedException();
+    public async Task<Order> GetOrderAsync(int orderId)
+    {        
+        return await _orderRep.GetById(orderId);
     }
 
     public Task<GetAllOrdersResponse> GetAllOrders(SortOrdersRequest sortOrdersRequest)

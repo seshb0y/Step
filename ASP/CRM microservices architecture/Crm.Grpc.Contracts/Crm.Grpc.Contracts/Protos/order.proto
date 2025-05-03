@@ -1,6 +1,6 @@
 ﻿syntax = "proto3";
 
-option csharp_namespace = "CRMSolution.Grpc.Orders";
+option csharp_namespace = "CRMSolution.Grpc.Orders"; 
 
 package order;
 
@@ -61,5 +61,25 @@ message GetOrderFullInfoRequest{
   int32 orderId = 1;
 }
 message GetOrderFullInfoResponse{
+  int32 ClientId = 1;
+  string ClientName = 2;
+  string ClientEmail = 3;
+  string ClientPhone = 4;
+  string ClientAddress = 5;
+  string ClientCreatedAt = 6;
 
+  int32 OrderId = 7;
+  double OrderTotalAmount = 8;
+  OrderStatus OrderStatus = 9;
+
+  int32 TaskId = 10;
+  string TaskTitle = 11;
+  string TaskDescription = 12;
+  int32 TaskStatus = 13;
+
+  int32 UserId = 14;
+  string UserName = 15;
+  string UserEmail = 16;
+  int32 UserRole = 17;
+  bool IsUserEmailConfirmed = 18;
 }

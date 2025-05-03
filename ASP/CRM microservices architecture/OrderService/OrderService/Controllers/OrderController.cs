@@ -55,7 +55,7 @@ public class OrderController : ControllerBase
     [HttpGet("{orderId}")]
     public async Task<IActionResult> GetOrderDetails(int orderId)
     {
-        var orderDetails = await _orderService.GetOrderDetailsAsync(orderId);
+        var orderDetails = await _orderService.GetOrderAsync(orderId);
 
         return Ok(orderDetails);
     }

@@ -11,7 +11,7 @@ public interface IUserService
     // public Task<User> CreateUser(CreateUserRequest request);
     public Task<User> ChangeUserData(ChangeUserDataRequest request);
     public Task DeleteUser(DeleteUserRequest request);
-    public Task<FindUserResponse> FindUser(FindUserRequest request);
+    public Task<GetUserResponse> FindUser(GetUserByEmailRequest request);
     public Task<GetAllUsersResponse> GetAllUsers(SortUsersRequest sortUsersRequest);
     // Task<List<UsersWithOrdersAndTasksResponse>> GetUsersWithOrdersAndTasks(HttpContext httpContext);
     public Task<User> GetByIdAsync(int userId);

@@ -16,13 +16,13 @@ public class UserGrpcService : UserService.UserServiceBase
         _logger = logger;
     }
 
-    public override async Task<GetUserByIdResponse> GetUserById(GetUserByIdRequest request, ServerCallContext context)
+    public override async Task<GetUserResponse> GetUserById(GetUserByIdRequest request, ServerCallContext context)
     {
         _logger.LogInformation("gRPC запрос на поиск пользователя по ID: {UserId}", request.Id);
 
         var user = await _userService.GetByIdAsync(request.Id);
         
-        return new GetUserByIdResponse
+        return new GetUserResponse
         {
             Id = user.Id,
             Username = user.Username,
@@ -31,13 +31,13 @@ public class UserGrpcService : UserService.UserServiceBase
         };
     }
 
-    public override async Task<FindUserResponse> FindUser(FindUserRequest request, ServerCallContext context)
+    public override async Task<GetUserResponse> FindUser(GetUserByEmailRequest request, ServerCallContext context)
     {
         _logger.LogInformation("gRPC запрос на поиск пользователя по Email: {Email}", request.Email);
         
         var user = await _userService.FindUser(request);
     
-        return new FindUserResponse
+        return new GetUserResponse
         {
             Id = user.Id,
             Username = user.Username,

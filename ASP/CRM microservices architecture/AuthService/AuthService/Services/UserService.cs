@@ -64,13 +64,16 @@ public class UserService : IUserService
         });
     }
 
-    public async Task<FindUserResponse> FindUser(FindUserRequest request)
+    public async Task<GetUserResponse> FindUser(GetUserByEmailRequest request)
     {
         _logger.LogInformation("Поиск юзера: {@Request}", request);
         var userEntity = await _userRepository.FindByEmailAsync(request.Email);
-        userEntity.OrderId = request.OrderId;
-        await _userRepository.SaveChangesAsync();
-        FindUserResponse user =  _mapper.Map<FindUserResponse>(userEntity);
+        if (request.OrderId != 0)
+        {
+            userEntity.OrderId = request.OrderId;
+            await _userRepository.SaveChangesAsync();
+        }
+        GetUserResponse user =  _mapper.Map<GetUserResponse>(userEntity);
         _logger.LogInformation("Юзер найден: {ClientId}", request.Email);
         return user;
     }

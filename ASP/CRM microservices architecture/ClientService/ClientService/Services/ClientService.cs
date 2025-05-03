@@ -127,7 +127,10 @@ public class ClientService : IClientService
     public async Task<Client> GetByEmailAsync(GetClientByEmailRequest request)
     {
         Client client = await _clientRepository.GetClientByEmail(request.Email);
-        client.OrderId = request.OrderId;
+        if (request.OrderId != 0)
+        {
+            client.OrderId = request.OrderId;
+        }
         await _clientRepository.SaveChangesAsync();
         return client;
     }
