@@ -1,4 +1,4 @@
-﻿using CRMSolution.Data.Models;
+﻿using CRMSolution.Grpc.Users;
 
 namespace ApiGateway.DTO.Responses;
 

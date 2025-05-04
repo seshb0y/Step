@@ -14,7 +14,7 @@ using CRMSolution.Grpc.Client;
 using CRMSolution.Grpc.Orders;
 using CRMSolution.Grpc.Tasks;
 using Google.Protobuf.WellKnownTypes;
-
+using OrderStatus = CRMSolution.Grpc.Orders.OrderStatus;
 
 
 namespace OrderService.Services.Classes;
@@ -47,7 +47,59 @@ public class OrderService : IOrderService
         return await _orderRep.GetByIdAsync(orderId);
     }
 
-    
+    public async Task<GetOrderFullInfoResponse> GetOrderInfo(GetOrderFullInfoRequest request)
+    {
+        Order order =  await _orderRep.GetByIdAsync(request.OrderId);
+        var grpcTaskRequest = new GetTaskByIdRequest
+        {
+            Id = order.Id
+        };
+        var grpcClientRequest = new GetClientByIdRequest
+        {
+            ClientId = order.ClientId.Value
+        };
+        var grpcUserRequest = new GetUserByIdRequest
+        {
+            Id = order.UserId.Value
+        };
+        
+        var grpcTaskResponse = await _taskGrpcService.GetTaskByOrderIdAsync(grpcTaskRequest);
+        var grpcClientResponse = await _clientGrpcClient.GetClientByIdAsync(grpcClientRequest);
+        var grpcUserResponse = await _userGrpcClient.GetUserByIdAsync(grpcUserRequest);
+
+        var response = new GetOrderFullInfoResponse
+        {
+            OrderId = order.Id,
+            OrderTotalAmount = (double)order.TotalAmount,
+            OrderStatus = (OrderStatus)order.Status,
+
+            Client = new ClientDto
+            {
+                Id = grpcClientResponse.Id,
+                Name = grpcClientResponse.Name,
+                Email = grpcClientResponse.Email,
+                Phone = grpcClientResponse.Phone,
+                Address = grpcClientResponse.Address,
+                ClientCreatedAt = grpcClientResponse.CreatedAt
+            }
+        };
+
+        response.Users.Add(new UserDto
+        {
+            Id = grpcUserResponse.Id,
+            Username = grpcUserResponse.Username,
+            Email = grpcUserResponse.Email,
+            Role = grpcUserResponse.Role,
+            IsEmailConfirmed = grpcUserResponse.IsEmailConfirmed
+        });
+        
+        response.Tasks.AddRange(_mapper.Map<List<TaskDto>>(grpcTaskResponse.Tasks));
+
+
+        return response;
+    }
+
+
     public async Task CreateOrder(CreateOrderRequest request)
     {
         _logger.LogInformation("Создаем заказ. Проверка пользователя через gRPC: {@Request}", request);

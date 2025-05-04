@@ -15,4 +15,5 @@ public interface IClientService
     public Task<GetAllClientsResponse> GetAllClients(SortClientsRequest sortClientsRequest);
     // Task<List<ClientWithOrdersAndTasksResponse>> GetClientsWithOrdersAndTasks(HttpContext httpContext);
     Task<Client> GetByEmailAsync(GetClientByEmailRequest request);
+    Task<Client> GetByIdAsync(GetClientByIdRequest request);
 }

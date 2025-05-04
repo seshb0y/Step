@@ -1,5 +1,6 @@
 ﻿using ClientService.Services.Interfaces;
 using CRMSolution.Grpc.Client;
+using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 
 namespace ClientService.GrpcServices;
@@ -15,6 +16,19 @@ public class ClientGrpcService : CRMSolution.Grpc.Client.ClientGrpcService.Clien
         _logger = logger;
     }
 
+    public override async Task<GetClientResponse> GetClientById(GetClientByIdRequest request, ServerCallContext context)
+    {
+        var client = await _clientService.GetByIdAsync(request);
+        return new GetClientResponse
+        {
+            Id = client.Id,
+            Name = client.Name,
+            Email = client.Email,
+            Phone = client.Phone,
+            Address = client.Address,
+            CreatedAt = Timestamp.FromDateTime(client.CreatedAt.ToUniversalTime())
+        };
+    }
     public override async Task<GetClientResponse> GetClientByEmail(GetClientByEmailRequest request, ServerCallContext context)
     {
         _logger.LogInformation("gRPC запрос на поиск клиента по Email: {Email}", request.Email);
@@ -27,7 +41,7 @@ public class ClientGrpcService : CRMSolution.Grpc.Client.ClientGrpcService.Clien
             Email = client.Email,
             Phone = client.Phone,
             Address = client.Address,
-            CreatedAt = client.CreatedAt.ToString(),
+            CreatedAt = Timestamp.FromDateTime(client.CreatedAt.ToUniversalTime())
         };
 
     }

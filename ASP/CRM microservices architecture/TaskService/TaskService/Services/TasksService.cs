@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using CRMSolution.Grpc.Tasks;
+using Google.Protobuf.WellKnownTypes;
 using Microsoft.AspNetCore.SignalR;
 using TaskService.Data.Models;
 using TaskService.Data.Repository.TasksRep;
@@ -129,6 +131,24 @@ public class TasksService : ITasksService
     public async Task<TaskEntity> GetByIdAsync(int id)
     {
         return await _tasksRep.GetById(id);
+    }
+
+    public async Task<GetTaskByOrderIdResponse> GetTasksByOrderIdAsync(int orderId)
+    {
+        var tasks = await _tasksRep.GetTasksByOrderId(orderId);
+
+        var response = new GetTaskByOrderIdResponse();
+        response.Tasks.AddRange(tasks.Select(t => new GetTaskByIdResponse
+        {
+            Id = t.Id,
+            Title = t.Title,
+            Description = t.Description,
+            Status = (int)t.Status,
+            DueDate = Timestamp.FromDateTime(t.DueDate),
+            OrderId = t.OrderId
+        }));
+
+        return response;
     }
 
 }

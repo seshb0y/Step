@@ -1,5 +1,5 @@
 syntax = "proto3";
-
+import "google/protobuf/timestamp.proto";
 option csharp_namespace = "CRMSolution.Grpc.Client";
 
 package client;
@@ -23,6 +23,6 @@ message GetClientResponse {
   string email = 3;
   string phone = 4;
   string address = 5;
-  string createdAt = 6;
+  google.protobuf.Timestamp CreatedAt = 6;
 }
 

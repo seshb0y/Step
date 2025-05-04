@@ -24,6 +24,7 @@ var loggerFactory = LoggerFactory.Create(builder => {
 var logger = loggerFactory.CreateLogger<Program>();
 builder.Services.AddSingleton(loggerFactory);
 builder.Services.AddLogging();
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 
 builder.Services.AddCors(policy => {

@@ -135,4 +135,8 @@ public class ClientService : IClientService
         return client;
     }
 
+    public async Task<Client> GetByIdAsync(GetClientByIdRequest request)
+    {
+        return await _clientRepository.GetById(request.ClientId);
+    }
 }

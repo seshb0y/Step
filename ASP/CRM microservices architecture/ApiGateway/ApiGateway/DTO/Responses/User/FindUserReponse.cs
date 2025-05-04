@@ -1,6 +1,4 @@
-﻿using CRMSolution.Data.Models;
-
-namespace ApiGateway.DTO.Responses.User;
+﻿namespace ApiGateway.DTO.Responses.User;
 
 public class FindUserReponse
 {

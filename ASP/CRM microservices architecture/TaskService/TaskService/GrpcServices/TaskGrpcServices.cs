@@ -27,16 +27,22 @@ public class TaskGrpcService : CRMSolution.Grpc.Tasks.TaskGrpcService.TaskGrpcSe
         };
     }
     
-public override async Task<CreateTaskResponse> CreateFirstTask(CreateTaskRequest request, ServerCallContext context)
-{
-    _tasksService.CreateTaskAsync(request.OrderId, request.Description, request.DueDate.ToDateTime(), request.Title);
-    
-    return new CreateTaskResponse
+    public override async Task<CreateTaskResponse> CreateFirstTask(CreateTaskRequest request, ServerCallContext context)
     {
-        Success = true,
-        Message = "Task created"
-    };
-}
+        await _tasksService.CreateTaskAsync(request.OrderId, request.Description, request.DueDate.ToDateTime(), request.Title);
+        
+        return new CreateTaskResponse
+        {
+            Success = true,
+            Message = "Task created"
+        };
+    }
+
+    public override async Task<GetTaskByOrderIdResponse> GetTaskByOrderId(GetTaskByIdRequest request,
+        ServerCallContext context)
+    {
+        return await _tasksService.GetTasksByOrderIdAsync(request.Id);
+    }
 
 
 }

@@ -15,6 +15,7 @@ using OrderService.Data.Repository.OrderResp;
 using OrderService.Hubs;
 using OrderService.Services.Interfaces;
 using CRMSolution.Grpc.Users;
+using OrderService.GrpcServices;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -136,7 +137,7 @@ app.UseHttpsRedirection();
 
 // Map Controllers and gRPC Services
 app.MapControllers();
-// app.MapGrpcService<OrderGrpcService>(); // (если ты будешь делать gRPC сервер для OrderService)
+app.MapGrpcService<OrderGrpcService>(); // (если ты будешь делать gRPC сервер для OrderService)
 app.MapHub<NotificationHub>("/notificationHub");
 
 // Автоматическое применение миграций

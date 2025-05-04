@@ -1,8 +1,8 @@
-﻿using CRMSolution.Data.Models;
+﻿using CRMSolution.Grpc.Orders;
 
 namespace ApiGateway.DTO.Responses;
 
 public class GetAllClientsResponse
 {
-    public List<Client> Clients { get; set; }
+    public List<ClientDto> Clients { get; set; }
 }

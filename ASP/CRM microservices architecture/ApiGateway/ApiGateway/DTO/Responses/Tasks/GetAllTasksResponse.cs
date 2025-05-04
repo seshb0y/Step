@@ -1,4 +1,4 @@
-﻿using CRMSolution.Data.Models;
+﻿using CRMSolution.Grpc.Tasks;
 
 namespace ApiGateway.DTO.Responses;
 

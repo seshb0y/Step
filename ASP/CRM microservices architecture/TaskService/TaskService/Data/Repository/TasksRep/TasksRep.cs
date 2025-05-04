@@ -1,4 +1,5 @@
-﻿using TaskService.DTO.Responses;
+﻿using CRMSolution.Grpc.Tasks;
+using TaskService.DTO.Responses;
 using TaskService.Data.Models;
 using TaskService.Data.Repository.Interface;
 using TaskService.DTO.Requests.Task;
@@ -79,4 +80,12 @@ public class TasksRep : Repository<TaskEntity>, ITasksRep
     {
         throw new NotImplementedException();
     }
+
+    public async Task<List<TaskEntity>> GetTasksByOrderId(int orderId)
+    {
+        return await _context.Tasks
+            .Where(t => t.OrderId == orderId)
+            .ToListAsync();
+    }
+
 }

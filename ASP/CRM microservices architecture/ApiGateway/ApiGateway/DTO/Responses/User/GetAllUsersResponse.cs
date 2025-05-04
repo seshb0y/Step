@@ -1,5 +1,6 @@
 ﻿using System.Runtime.InteropServices.JavaScript;
-using CRMSolution.Data.Models;
+using CRMSolution.Grpc.Orders;
+using CRMSolution.Grpc.Users;
 
 public class GetAllUsersResponse
 {

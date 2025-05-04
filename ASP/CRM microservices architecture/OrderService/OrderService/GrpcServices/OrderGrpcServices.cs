@@ -1,4 +1,5 @@
-﻿using CRMSolution.Grpc.Client;
+﻿using AutoMapper;
+using CRMSolution.Grpc.Client;
 using CRMSolution.Grpc.Orders;
 using CRMSolution.Grpc.Tasks;
 using CRMSolution.Grpc.Users;
@@ -18,11 +19,18 @@ public class OrderGrpcService : CRMSolution.Grpc.Orders.OrderGrpcService.OrderGr
     private readonly UserService.UserServiceClient _userGrpcClient;
     private readonly ClientGrpcService.ClientGrpcServiceClient _clientGrpcClient;
     private readonly TaskGrpcService.TaskGrpcServiceClient _taskGrpcService;
+    private readonly IMapper _mapper;
 
-    public OrderGrpcService(IOrderService orderService)
+    public OrderGrpcService(IOrderService orderService,  ILogger<OrderGrpcService> logger, UserService.UserServiceClient userGrpcClient,
+        ClientGrpcService.ClientGrpcServiceClient clientGrpcClient,  TaskGrpcService.TaskGrpcServiceClient taskGrpcService,
+        IMapper mapper)
     {
         _orderService = orderService;
-        
+        _logger = logger;
+        _userGrpcClient = userGrpcClient;
+        _clientGrpcClient = clientGrpcClient;
+        _taskGrpcService = taskGrpcService;
+        _mapper = mapper;
     }
 
     public override async Task<OrderDto> GetOrderById(GetOrderByIdRequest request, ServerCallContext context)
@@ -76,47 +84,6 @@ public class OrderGrpcService : CRMSolution.Grpc.Orders.OrderGrpcService.OrderGr
     public override async Task<GetOrderFullInfoResponse> GetOrderFullInfo(GetOrderFullInfoRequest request,
         ServerCallContext context)
     {
-        Order order =  await _orderService.GetOrderAsync(request.OrderId);
-        var grpcTaskRequest = new GetTaskByIdRequest
-        {
-            Id = order.Id
-        };
-        var grpcClientRequest = new GetClientByIdRequest
-        {
-            ClientId = order.ClientId.Value
-        };
-        var grpcUserRequest = new GetUserByIdRequest
-        {
-            Id = order.UserId.Value
-        };
-        
-        var grpcTaskResponse = await _taskGrpcService.GetTaskByIdAsync(grpcTaskRequest);
-        var grpcClientResponse = await _clientGrpcClient.GetClientByIdAsync(grpcClientRequest);
-        var grpcUserResponse = await _userGrpcClient.GetUserByIdAsync(grpcUserRequest);
-
-        return new GetOrderFullInfoResponse
-        {
-            ClientId = grpcClientResponse.Id,
-            ClientName = grpcClientResponse.Name,
-            ClientEmail = grpcClientResponse.Email,
-            ClientPhone = grpcClientResponse.Phone,
-            ClientAddress = grpcClientResponse.Address,
-            ClientCreatedAt = grpcClientResponse.CreatedAt,
-
-            OrderId = order.Id,
-            OrderTotalAmount = (double)order.TotalAmount,
-            OrderStatus = (OrderStatus)order.Status,
-
-            TaskId = grpcTaskResponse.Id,
-            TaskTitle = grpcTaskResponse.Title,
-            TaskDescription = grpcTaskResponse.Description,
-            TaskStatus = grpcTaskResponse.Status,
-
-            UserId = grpcUserResponse.Id,
-            UserName = grpcUserResponse.Username,
-            UserEmail = grpcUserResponse.Email,
-            UserRole = grpcUserResponse.Role,
-            IsUserEmailConfirmed = grpcUserResponse.IsEmailConfirmed,
-        };
+        return await _orderService.GetOrderInfo(request);
     }
 }

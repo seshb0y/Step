@@ -4,6 +4,12 @@ option csharp_namespace = "CRMSolution.Grpc.Users";
 
 package users;
 
+enum UserRole
+{
+    Admin = 0;
+    Manager = 1;
+}
+
 service UserService {
   rpc FindUser (GetUserByEmailRequest) returns (GetUserResponse);
   rpc GetUserById (GetUserByIdRequest) returns (GetUserResponse);

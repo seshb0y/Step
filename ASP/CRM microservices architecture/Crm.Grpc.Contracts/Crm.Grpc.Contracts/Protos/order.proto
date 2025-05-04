@@ -1,6 +1,8 @@
 ﻿syntax = "proto3";
 
-option csharp_namespace = "CRMSolution.Grpc.Orders"; 
+option csharp_namespace = "CRMSolution.Grpc.Orders";
+
+import "google/protobuf/timestamp.proto";
 
 package order;
 
@@ -60,26 +62,39 @@ message DeleteOrderResponse{
 message GetOrderFullInfoRequest{
   int32 orderId = 1;
 }
+
+message TaskDto{
+  int32 id = 1;
+  string title = 2;
+  string description = 3;
+  int32 status = 4;
+  google.protobuf.Timestamp dueDate = 5;
+  int32 orderId = 6;
+}
+message UserDto{
+  int32 id = 1;
+  string username = 2;
+  string email = 3;
+  int32 role = 4;
+  bool IsEmailConfirmed = 5;
+}
+message ClientDto{
+  int32 id = 1;
+  string name = 2;
+  string email = 3;
+  string phone = 4;
+  string address = 5;
+  google.protobuf.Timestamp ClientCreatedAt = 6;
+}
+
 message GetOrderFullInfoResponse{
-  int32 ClientId = 1;
-  string ClientName = 2;
-  string ClientEmail = 3;
-  string ClientPhone = 4;
-  string ClientAddress = 5;
-  string ClientCreatedAt = 6;
 
-  int32 OrderId = 7;
-  double OrderTotalAmount = 8;
-  OrderStatus OrderStatus = 9;
+  ClientDto client = 1;
 
-  int32 TaskId = 10;
-  string TaskTitle = 11;
-  string TaskDescription = 12;
-  int32 TaskStatus = 13;
-
-  int32 UserId = 14;
-  string UserName = 15;
-  string UserEmail = 16;
-  int32 UserRole = 17;
-  bool IsUserEmailConfirmed = 18;
+  int32 OrderId = 2;
+  double OrderTotalAmount = 3;
+  OrderStatus OrderStatus = 4;
+  
+  repeated TaskDto tasks = 5;
+  repeated UserDto users = 6;
 }

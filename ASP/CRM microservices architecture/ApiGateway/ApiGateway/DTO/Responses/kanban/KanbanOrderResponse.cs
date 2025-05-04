@@ -1,6 +1,4 @@
-﻿using ApiGateway.Data.Models;
-
-namespace ApiGateway.DTO.Responses;
+﻿namespace ApiGateway.DTO.Responses;
 
 public class KanbanOrderResponse
 {

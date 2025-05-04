@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CRMSolution.Grpc.Orders;
+using CRMSolution.Grpc.Tasks;
 using OrderService.Data.Models;
 using OrderService.DTO.Requests;
 using OrderService.DTO.Responses;
@@ -33,7 +34,9 @@ public class OrderProfile : Profile
         CreateMap<FindOrderRequest, Order>()
             .ForMember(dest => dest.Id, opt => opt
                 .MapFrom(src => src.orderId));
-        
+
+        CreateMap<GetTaskByIdResponse, TaskDto>();
+
         // CreateMap<Order, OrderResponse>()
         //     .ForMember(dest => dest.ClientOrders, opt => opt
         //         .MapFrom(src => src.ClientOrders));
