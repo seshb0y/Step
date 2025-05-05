@@ -13,8 +13,7 @@ public interface IOrderService
     public Task ChangeDataOrder(ChangeOrderDataRequest request);
     public Task DeleteOrder(DeleteOrderRequest request);
     // public Task<OrderResponse> FindOrder(FindOrderRequest request);
-    Task<Order> GetOrderAsync(int orderId);
-    public Task<GetAllOrdersResponse> GetAllOrders(SortOrdersRequest sortOrdersRequest);
+    public Task<GetLowInfoOrdersListResponse> GetLowInfoOrdersAsync(SortOrdersRequest sortRequest);
     public Task ChangeResponsible(int orderId, ChangeResponsibleRequest request);
     Task<Order> GetByIdAsync(int orderId);
     Task<GetOrderFullInfoResponse> GetOrderInfo(GetOrderFullInfoRequest request);

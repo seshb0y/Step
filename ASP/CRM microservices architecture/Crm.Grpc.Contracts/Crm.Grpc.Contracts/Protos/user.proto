@@ -13,6 +13,15 @@ enum UserRole
 service UserService {
   rpc FindUser (GetUserByEmailRequest) returns (GetUserResponse);
   rpc GetUserById (GetUserByIdRequest) returns (GetUserResponse);
+  rpc GetUsersByIds (GetUsersByIdsRequest) returns (GetUsersByIdsResponse);
+}
+
+message GetUsersByIdsRequest {
+  repeated int32 ids = 1;
+}
+
+message GetUsersByIdsResponse {
+  repeated string Usernames = 1;
 }
 
 message GetUserByEmailRequest {

@@ -41,11 +41,11 @@ public class OrderService : IOrderService
         _clientGrpcClient = clientGrpcClient;
         _taskGrpcService = taskGrpcService;
     }
-    
     public async Task<Order> GetByIdAsync(int orderId)
     {
         return await _orderRep.GetByIdAsync(orderId);
     }
+    
 
     public async Task<GetOrderFullInfoResponse> GetOrderInfo(GetOrderFullInfoRequest request)
     {
@@ -175,15 +175,63 @@ public class OrderService : IOrderService
         order.IsDeleted = true;
         await _orderRep.SaveChangesAsync();
     }
-
-    public async Task<Order> GetOrderAsync(int orderId)
-    {        
-        return await _orderRep.GetById(orderId);
-    }
-
-    public Task<GetAllOrdersResponse> GetAllOrders(SortOrdersRequest sortOrdersRequest)
+    
+    public async Task<GetLowInfoOrdersListResponse> GetLowInfoOrdersAsync(SortOrdersRequest sortRequest)
     {
-        throw new NotImplementedException();
+        var orders = await _orderRep.GetAllAsync();
+        
+        var userIds = orders.Where(o => o.UserId.HasValue).Select(o => o.UserId.Value).Distinct().ToList();
+        var grpcUserRequest = new GetUsersByIdsRequest
+        {
+            Ids = { userIds }
+        };
+        var grpcUserResponse = await _userGrpcClient.GetUsersByIdsAsync(grpcUserRequest);
+        
+        var clientIds = orders.Where(o => o.ClientId.HasValue).Select(o => o.ClientId.Value).Distinct().ToList();
+        var grpcClientRequest = new GetClientsByIdsRequest
+        {
+            Ids = { clientIds }
+        };
+        var grpcClientResponse = await _clientGrpcClient.GetClientsByIdsAsync(grpcClientRequest);
+        
+        var userMap = userIds
+            .Select((id, index) => new { id, username = grpcUserResponse.Usernames.ElementAtOrDefault(index) ?? "Unknown" })
+            .ToDictionary(x => x.id, x => x.username);
+
+        var clientMap = clientIds
+            .Select((id, index) => new { id, name = grpcClientResponse.ClientName.ElementAtOrDefault(index) ?? "Unknown" })
+            .ToDictionary(x => x.id, x => x.name);
+
+        
+        var orderList = orders.Select(o => new LowInfoOrder
+        {
+            Id = o.Id,
+            TotalAmount = (double)o.TotalAmount,
+            Status = (int)o.Status,
+            CreatedAt = Timestamp.FromDateTime(o.CreatedAt.ToUniversalTime()),
+            Username = o.UserId.HasValue && userMap.ContainsKey(o.UserId.Value)
+                ? userMap[o.UserId.Value]
+                : "Unknown",
+            ClientName = o.ClientId.HasValue && clientMap.ContainsKey(o.ClientId.Value) 
+                ? clientMap[o.ClientId.Value] 
+                : "Unknown"
+        }).ToList();
+        
+        orderList = sortRequest.SortBy.ToLower() switch
+        {
+            "id" => sortRequest.Descending ? orderList.OrderByDescending(x => x.Id).ToList() : orderList.OrderBy(x => x.Id).ToList(),
+            "totalamount" => sortRequest.Descending ? orderList.OrderByDescending(x => x.TotalAmount).ToList() : orderList.OrderBy(x => x.TotalAmount).ToList(),
+            "status" => sortRequest.Descending ? orderList.OrderByDescending(x => x.Status).ToList() : orderList.OrderBy(x => x.Status).ToList(),
+            "createdat" => sortRequest.Descending ? orderList.OrderByDescending(x => x.CreatedAt.Seconds).ToList() : orderList.OrderBy(x => x.CreatedAt.Seconds).ToList(),
+            "username" => sortRequest.Descending ? orderList.OrderByDescending(x => x.Username).ToList() : orderList.OrderBy(x => x.Username).ToList(),
+            "clientname" => sortRequest.Descending ? orderList.OrderByDescending(x => x.ClientName).ToList() : orderList.OrderBy(x => x.ClientName).ToList(),
+            _ => orderList
+        };
+
+        return new GetLowInfoOrdersListResponse
+        {
+            Orders = { orderList }
+        };
     }
     
     public async Task ChangeResponsible(int orderId, ChangeResponsibleRequest request)

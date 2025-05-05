@@ -55,9 +55,9 @@ public class OrderController : ControllerBase
     [HttpGet("{orderId}")]
     public async Task<IActionResult> GetOrderDetails(int orderId)
     {
-        var orderDetails = await _orderService.GetOrderAsync(orderId);
+        // var orderDetails = await _orderService.GetOrderAsync(orderId);
 
-        return Ok(orderDetails);
+        return Ok("orderDetails");
     }
     
     [HttpPut("{orderId}/user")]
@@ -72,8 +72,8 @@ public class OrderController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAllOrders([FromQuery] SortOrdersRequest sortOrdersRequest)
     {
-        var orders = await _orderService.GetAllOrders(sortOrdersRequest);
-        return Ok(orders);
+        // var orders = await _orderService.GetAllOrders(sortOrdersRequest);
+        return Ok("orders");
     }
     
     // [HttpGet("load/data")]

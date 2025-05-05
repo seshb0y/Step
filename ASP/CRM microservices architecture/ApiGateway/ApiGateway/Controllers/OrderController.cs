@@ -91,17 +91,35 @@ public class OrderController : ControllerBase
     [HttpPut("{orderId}/user")]
     public async Task<IActionResult> ChangeResponsible(int orderId, ChangeResponsibleRequest request)
     {
-        // await _orderService.ChangeResponsible(orderId, request);
-        return Ok("Responsible changed");
+        var grpcRequest = new ChangeOrderDataRequest
+        {
+            OrderId = orderId,
+        };
+        var grpcResponse = await _orderGrpcService.ChangeOrderDataAsync(grpcRequest);
+        return Ok(grpcResponse);
     }
     
     
     
     [HttpGet]
-    public async Task<IActionResult> GetAllOrders([FromQuery] SortOrdersRequest sortOrdersRequest)
+    public async Task<IActionResult> GetAllOrders([FromQuery] HttpSortOrdersRequest sortOrdersRequest)
     {
-        // var orders = await _orderService.GetAllOrders(sortOrdersRequest);
-        return Ok("orders");
+        var grpcRequest = new GetLowInfoOrdersListRequest
+        {
+            Sort = new SortOrdersRequest
+            {
+                SortBy = sortOrdersRequest.sortBy,
+                Descending = sortOrdersRequest.Descending,
+            }
+        };
+        
+        var grpcResponse = await _orderGrpcService.GetLowInfoOrdersListAsync(grpcRequest);
+
+        var response = new GetAllOrdersResponse
+        {
+            Orders = _mapper.Map<List<OrderDTO>>(grpcResponse.Orders)
+        };
+        return Ok(response);
     }
     
     // [HttpGet("load/data")]

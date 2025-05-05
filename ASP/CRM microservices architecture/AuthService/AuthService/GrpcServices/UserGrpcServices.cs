@@ -46,4 +46,10 @@ public class UserGrpcService : UserService.UserServiceBase
             IsEmailConfirmed = user.IsEmailConfirmed,
         };
     }
+
+    public override async Task<GetUsersByIdsResponse> GetUsersByIds(GetUsersByIdsRequest request,
+        ServerCallContext context)
+    {
+        return await _userService.GetUsersByIds(request);
+    }
 }

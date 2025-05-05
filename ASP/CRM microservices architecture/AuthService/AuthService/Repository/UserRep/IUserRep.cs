@@ -10,6 +10,9 @@ public interface IUserRep : IRepository<User>
     public Task<User?> FindByNameAsync(string name);
     public Task<User?> FindByEmailAsync(string name);
     
+    Task<List<User>> GetUsersByIdsAsync(List<int> ids);
+
+    
     public Task SaveChangesAsync();
 
     // public Task<FindUserReponse> GetUsersTasksOrdersClientsAsync(string email);

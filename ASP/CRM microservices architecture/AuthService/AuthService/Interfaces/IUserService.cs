@@ -15,4 +15,5 @@ public interface IUserService
     public Task<GetAllUsersResponse> GetAllUsers(SortUsersRequest sortUsersRequest);
     // Task<List<UsersWithOrdersAndTasksResponse>> GetUsersWithOrdersAndTasks(HttpContext httpContext);
     public Task<User> GetByIdAsync(int userId);
+    public Task<GetUsersByIdsResponse> GetUsersByIds(GetUsersByIdsRequest request);
 }

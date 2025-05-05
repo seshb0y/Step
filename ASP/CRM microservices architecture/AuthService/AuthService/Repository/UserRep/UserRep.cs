@@ -25,6 +25,14 @@ public class UserRep : Repository<User>, IUserRep
         return await _dbSet.FirstOrDefaultAsync(u => u.Email == email);
     }
     
+    public Task<List<User>> GetUsersByIdsAsync(List<int> ids)
+    {
+        return _context.Users
+            .Where(u => ids.Contains(u.Id))
+            .ToListAsync();
+    }
+
+    
     public async Task SaveChangesAsync()
     {
         await _context.SaveChangesAsync();

@@ -139,4 +139,17 @@ public class ClientService : IClientService
     {
         return await _clientRepository.GetById(request.ClientId);
     }
+
+    public async Task<GetClientsByIdsResponse> GetClientsByIds(GetClientsByIdsRequest request)
+    {
+        var ids = request.Ids.ToList();
+        
+        var clients = await _clientRepository.GetClientsByIdsAsync(ids);
+        var names = clients.Select(u => u.Name).ToList();
+
+        return new GetClientsByIdsResponse
+        {
+            ClientName = { names }
+        };
+    }
 }

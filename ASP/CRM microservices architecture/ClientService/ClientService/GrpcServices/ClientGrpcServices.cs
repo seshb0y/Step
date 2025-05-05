@@ -45,4 +45,10 @@ public class ClientGrpcService : CRMSolution.Grpc.Client.ClientGrpcService.Clien
         };
 
     }
+
+    public override async Task<GetClientsByIdsResponse> GetClientsByIds(GetClientsByIdsRequest request,
+        ServerCallContext context)
+    {
+        return await _clientService.GetClientsByIds(request);
+    }
 }

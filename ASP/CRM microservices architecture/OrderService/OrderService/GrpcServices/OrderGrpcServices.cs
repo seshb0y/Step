@@ -86,4 +86,9 @@ public class OrderGrpcService : CRMSolution.Grpc.Orders.OrderGrpcService.OrderGr
     {
         return await _orderService.GetOrderInfo(request);
     }
+    
+    public override async Task<GetLowInfoOrdersListResponse> GetLowInfoOrdersList(GetLowInfoOrdersListRequest request, ServerCallContext context)
+    {
+        return await _orderService.GetLowInfoOrdersAsync(request.Sort);
+    }
 }

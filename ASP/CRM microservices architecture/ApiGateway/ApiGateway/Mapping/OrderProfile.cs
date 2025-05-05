@@ -50,6 +50,20 @@ public class OrderProfile : Profile
         //     .ForMember(dest => dest.ClientAddress, opt => opt
         //         .MapFrom(src => src.Client.Address));
 
+        CreateMap<LowInfoOrder, OrderDTO>()
+            .ForMember(dest => dest.TotalAmount, opt => opt.
+                MapFrom(src => (decimal)src.TotalAmount))
+            .ForMember(dest => dest.ClientName, opt => opt.
+                MapFrom(src => src.ClientName))
+            .ForMember(dest => dest.Username, opt => opt.
+                MapFrom(src => src.Username))
+            .ForMember(dest => dest.Status, opt => opt.
+                MapFrom(src => src.Status))
+            .ForMember(dest => dest.Id,  opt => opt.
+                MapFrom(src => src.Id))
+            .ForMember(dest => dest.CreatedAt, opt => opt.
+                MapFrom(src => src.CreatedAt.ToDateTime()));
+        
         CreateMap<GetOrderFullInfoResponse, OrderDetailsResponse>()
             .ForMember(dest => dest.Id, opt => opt.
                 MapFrom(src => src.OrderId))

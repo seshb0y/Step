@@ -26,6 +26,13 @@ public class ClientRep : Repository<Client>, IClientRep
     //         .ToListAsync();
     // }
 
+    public Task<List<Client>> GetClientsByIdsAsync(List<int> ids)
+    {
+        return _context.Tasks
+            .Where(u => ids.Contains(u.Id))
+            .ToListAsync();
+    }
+    
     public Task<IEnumerable<Client?>> GetClientsByManagerIdAsync(int managerId)
     {
         throw new NotImplementedException();

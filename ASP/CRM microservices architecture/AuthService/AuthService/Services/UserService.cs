@@ -3,6 +3,7 @@ using ControllerFirst.DTO.Responses.User;
 using CRMSolution.Data.Models;
 using CRMSolution.Data.Repository.UserRep;
 using CRMSolution.DTO.Requests;
+using CRMSolution.Grpc.Orders;
 using CRMSolution.Grpc.Users;
 using CRMSolution.Hubs;
 using CRMSolution.Services.Interfaces;
@@ -87,6 +88,19 @@ public class UserService : IUserService
     public async Task<User> GetByIdAsync(int userId)
     {
         return await _userRepository.GetById(userId);
+    }
+
+    public async Task<GetUsersByIdsResponse> GetUsersByIds(GetUsersByIdsRequest request)
+    {
+        var ids = request.Ids.ToList();
+        
+        var users = await _userRepository.GetUsersByIdsAsync(ids);
+        var usernames = users.Select(u => u.Username).ToList();
+
+        return new GetUsersByIdsResponse
+        {
+            Usernames = { usernames } 
+        };
     }
 
     // public async Task<List<ClientWithOrdersAndTasksResponse>> GetClientsWithOrdersAndTasks(HttpContext httpContext)

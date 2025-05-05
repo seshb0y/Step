@@ -16,6 +16,7 @@ service TaskGrpcService {
   rpc GetTaskById (GetTaskByIdRequest) returns (GetTaskByIdResponse);
   rpc CreateFirstTask (CreateTaskRequest) returns (CreateTaskResponse);
   rpc GetTaskByOrderId (GetTaskByIdRequest) returns (GetTaskByOrderIdResponse);
+  rpc GetTasksByOrderIds (GetTasksByOrderIdsRequest) returns (GetTasksByOrderIdsResponse);
 }
 
 message GetTaskByIdRequest {
@@ -44,5 +45,13 @@ message CreateTaskResponse {
 }
 
 message GetTaskByOrderIdResponse{
+  repeated GetTaskByIdResponse tasks = 1;
+}
+
+message GetTasksByOrderIdsRequest {
+  repeated int32 orderIds = 1;
+}
+
+message GetTasksByOrderIdsResponse {
   repeated GetTaskByIdResponse tasks = 1;
 }
