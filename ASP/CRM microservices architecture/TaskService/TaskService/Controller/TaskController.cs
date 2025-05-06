@@ -30,29 +30,29 @@ public class TaskController : ControllerBase
     // [Authorize(Policy = "ManagerPolicy")]
     public async Task<IActionResult> ChangeTask([FromBody] UpdateTaskRequest request)
     {
-        await _tasksService.UpdateTaskAsync(request);
+        // await _tasksService.UpdateTaskAsync(request);
         return Ok("Task updated");
     }
     
     [HttpDelete]
     // [Authorize(Policy = "ManagerPolicy")]
-    public async Task<IActionResult> DeleteTask([FromBody] DeleteTaskRequest request)
+    public async Task<IActionResult> DeleteTask([FromBody] HttpDeleteTaskRequest request)
     {
-        await _tasksService.DeleteTaskAsync(request);
+        // await _tasksService.DeleteTaskAsync(request);
         return Ok("Task deleted");
     }
     
     [HttpGet("search")]
     // [Authorize(Policy = "ManagerPolicy")]
-    public async Task<IActionResult> FindTask([FromQuery] FindTaskRequest request)
+    public async Task<IActionResult> FindTask([FromQuery] HttpFindTaskRequest request)
     {
-        return Ok(await _tasksService.FindTaskByIdAsync(request));
+        return Ok("await _tasksService.FindTaskByIdAsync(request)");
     }
     
     [HttpGet]
-    public async Task<IActionResult> GetAllTasks([FromQuery] SortTasksRequest sortTasksRequest)
+    public async Task<IActionResult> GetAllTasks([FromQuery] HttpSortTasksRequest httpSortTasksRequest)
     {
-        var orders = await _tasksService.GetAllTasks(sortTasksRequest);
-        return Ok(orders);
+        // var orders = await _tasksService.GetAllTasks(sortTasksRequest);
+        return Ok("orders");
     }
 }

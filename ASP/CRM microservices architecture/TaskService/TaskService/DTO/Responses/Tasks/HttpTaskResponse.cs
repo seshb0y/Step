@@ -1,7 +1,7 @@
 ﻿namespace TaskService.DTO.Responses;
 
 
-public class TaskResponse
+public class HttpTaskResponse
 {
     public int Id { get; set; }
     public string Title { get; set; }

@@ -22,11 +22,11 @@ public class TaskProfile : Profile
                 .MapFrom(src => src.endDate))
             .ForMember(dest => dest.OrderId, opt => opt.Ignore());
 
-        CreateMap<DeleteTaskRequest, TaskEntity>()
+        CreateMap<HttpDeleteTaskRequest, TaskEntity>()
             .ForMember(dest => dest.Id, opt => opt
                 .MapFrom(src => src.taskId));
         
-        CreateMap<FindTaskRequest, TaskEntity>()
+        CreateMap<HttpFindTaskRequest, TaskEntity>()
             .ForMember(dest => dest.Id, opt => opt
                 .MapFrom(src => src.taskId));
 

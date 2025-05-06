@@ -8,6 +8,8 @@ using TaskService.DTO.Requests.Task;
 using TaskService.DTO.Responses;
 using TaskService.Hubs;
 using TaskService.Services.Interfaces;
+using TasksStatus = CRMSolution.Grpc.Tasks.TasksStatus;
+using UpdateTaskRequest = CRMSolution.Grpc.Tasks.UpdateTaskRequest;
 
 namespace TaskService.Services.Classes;
 
@@ -108,25 +110,65 @@ public class TasksService : ITasksService
         return Task.CompletedTask;
     }
 
-    public Task UpdateTaskAsync(UpdateTaskRequest request)
+    public async Task UpdateTaskAsync(UpdateTaskRequest request)
     {
-        throw new NotImplementedException();
+        TaskEntity task = await _tasksRep.GetById(request.TaskId);
+        _mapper.Map(request, task); 
+        _tasksRep.Update(task);
+        await _tasksRep.SaveChangesAsync();
     }
 
-    public Task DeleteTaskAsync(DeleteTaskRequest request)
+    public async Task DeleteTaskAsync(DeleteTaskRequest request)
     {
-        throw new NotImplementedException();
+        TaskEntity task = await _tasksRep.GetById(request.Id);
+        _tasksRep.Delete(task);
+        await _tasksRep.SaveChangesAsync();
     }
 
-    public Task<TaskResponse> FindTaskByIdAsync(FindTaskRequest request)
+    public async Task<GetAllTasksResponse> GetAllTasks(SortTasksRequest sortTasksRequest)
     {
-        throw new NotImplementedException();
+        var tasks = (await _tasksRep.GetAllAsync()).ToList();
+        
+        var grpcTasks = tasks.Select(t => new TaskInfo
+        {
+            Id = t.Id,
+            Title = t.Title,
+            Description = t.Description,
+            Status = (TasksStatus)t.Status,
+            DueDate = Timestamp.FromDateTime(t.DueDate.ToUniversalTime())
+        }).ToList();
+        
+        grpcTasks = sortTasksRequest.SortBy.ToLower() switch
+        {
+            "id" => sortTasksRequest.Descending
+                ? grpcTasks.OrderByDescending(x => x.Id).ToList()
+                : grpcTasks.OrderBy(x => x.Id).ToList(),
+
+            "title" => sortTasksRequest.Descending
+                ? grpcTasks.OrderByDescending(x => x.Title).ToList()
+                : grpcTasks.OrderBy(x => x.Title).ToList(),
+
+            "status" => sortTasksRequest.Descending
+                ? grpcTasks.OrderByDescending(x => x.Status).ToList()
+                : grpcTasks.OrderBy(x => x.Status).ToList(),
+            
+            "description" => sortTasksRequest.Descending
+                ? grpcTasks.OrderByDescending(x => x.Description).ToList()
+                : grpcTasks.OrderBy(x => x.Description).ToList(),
+
+            "duedate" => sortTasksRequest.Descending
+                ? grpcTasks.OrderByDescending(x => x.DueDate.Seconds).ToList()
+                : grpcTasks.OrderBy(x => x.DueDate.Seconds).ToList(),
+
+            _ => grpcTasks
+        };
+        
+        return new GetAllTasksResponse
+        {
+            Tasks = { grpcTasks }
+        };
     }
 
-    public Task<GetAllTasksResponse> GetAllTasks(SortTasksRequest sortTasksRequest)
-    {
-        throw new NotImplementedException();
-    }
     
     public async Task<TaskEntity> GetByIdAsync(int id)
     {

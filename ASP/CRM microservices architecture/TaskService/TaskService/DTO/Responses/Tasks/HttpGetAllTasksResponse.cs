@@ -3,7 +3,7 @@ using TaskService.Data.Models;
 
 namespace TaskService.DTO.Responses;
 
-public class GetAllTasksResponse
+public class HttpGetAllTasksResponse
 {
     public List<TaskDto> Tasks { get; set; }
 }
