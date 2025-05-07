@@ -8,7 +8,7 @@ using TaskService.DTO.Requests.Task;
 using TaskService.DTO.Responses;
 using TaskService.Hubs;
 using TaskService.Services.Interfaces;
-using TasksStatus = CRMSolution.Grpc.Tasks.TasksStatus;
+using TasksStatus = CRMSolution.Grpc.Tasks.GrpcTaskStatus;
 using UpdateTaskRequest = CRMSolution.Grpc.Tasks.UpdateTaskRequest;
 
 namespace TaskService.Services.Classes;

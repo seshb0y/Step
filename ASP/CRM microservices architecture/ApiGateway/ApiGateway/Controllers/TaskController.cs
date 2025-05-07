@@ -3,7 +3,7 @@ using AutoMapper;
 using CRMSolution.DTO.Requests;
 using CRMSolution.DTO.Requests.Task;
 using CRMSolution.Grpc.Tasks;
-using CRMSolution.Services.Interfaces;
+// using CRMSolution.Services.Interfaces;
 using Google.Protobuf.WellKnownTypes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -49,7 +49,7 @@ public class TaskController : ControllerBase
         var grpcRequest = new UpdateTaskRequest
         {
             Description = request.description,
-            Status = request.status,
+            Status = (GrpcTaskStatus)(int)request.status,
             TaskId = request.taskId,
         };
         var grpcResponse = await _tasksService.UpdateTaskAsync(grpcRequest);

@@ -71,9 +71,9 @@ public class TasksRep : Repository<TaskEntity>, ITasksRep
     //     return await query.ToListAsync();
     // }
 
-    public Task<TaskEntity> GetById(int taskId)
+    public async Task<TaskEntity> GetById(int taskId)
     {
-        throw new NotImplementedException();
+        return await _context.Tasks.AsNoTracking().FirstOrDefaultAsync(t => t.Id == taskId);
     }
 
     public Task<List<TaskDto>> GetLowInfoTasksList(SortTasksRequest sortTasksRequest)

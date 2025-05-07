@@ -1,4 +1,5 @@
 ﻿using CRMSolution.Grpc.Tasks;
+using TaskStatus = CRMSolution.Grpc.Tasks.GrpcTaskStatus;
 
 namespace ApiGateway.DTO.Responses;
 
@@ -10,7 +11,7 @@ public class DashboardResponse
     public List<DateTime> OrdersCreatedDates { get; set; }
     public int ClientsAmount { get; set; }
     
-    public List<TasksStatus> TasksStatuses { get; set; }
+    public List<TaskStatus> TasksStatuses { get; set; }
     public int TasksCount { get; set; }
     
 }

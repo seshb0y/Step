@@ -6,8 +6,11 @@ using TaskService.Data.Models;
 using TaskService.DTO.Requests.Task;
 using TaskService.DTO.Responses;
 using CreateTaskRequest = CRMSolution.Grpc.Tasks.CreateTaskRequest;
+using CRMSolution.Grpc.Tasks;
+using UpdateTaskRequest = CRMSolution.Grpc.Tasks.UpdateTaskRequest;
 
-namespace CRMSolution.Data.Mapping;
+
+namespace TaskService.Data.Mapping;
 
 public class TaskProfile : Profile
 {
@@ -32,11 +35,12 @@ public class TaskProfile : Profile
 
         CreateMap<UpdateTaskRequest, TaskEntity>()
             .ForMember(dest => dest.Id, opt => opt
-                .MapFrom(src => src.taskId))
+                .MapFrom(src => src.TaskId))
             .ForMember(dest => dest.Description, opt => opt
-                .MapFrom(src => src.description))
-            .ForMember(dest => dest.Status, opt => opt
-                .MapFrom(src => src.status));
+                .MapFrom(src => src.Description))
+            .ForMember(dest => dest.Status, opt => opt.
+                MapFrom(src => src.Status));
+
 
         // CreateMap<TaskEntity, TaskResponse>()
         //     .ForMember(dest => dest.Id, opt => opt
@@ -49,7 +53,7 @@ public class TaskProfile : Profile
         //         .MapFrom(src => src.UserTasks))
         //     .ForMember(dest => dest.Order, opt => opt
         //         .MapFrom(src => src.Order));
-        
-        
+
+
     }
 }

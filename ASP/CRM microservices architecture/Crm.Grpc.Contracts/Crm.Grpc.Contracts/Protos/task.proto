@@ -5,7 +5,7 @@ option csharp_namespace = "CRMSolution.Grpc.Tasks";
 
 package task;
 
-enum TasksStatus
+enum GrpcTaskStatus
 {
     New = 0;
     InProgress = 1;
@@ -62,7 +62,7 @@ message GetTasksByOrderIdsResponse {
   repeated GetTaskByIdResponse tasks = 1;
 }
 message UpdateTaskRequest{
-  string status = 1;
+  GrpcTaskStatus status = 1;
   string description = 2;
   int32 taskId = 3;
 }
@@ -76,7 +76,7 @@ message TaskInfo {
   int32 id = 1;
   string title = 2;
   string description = 3;
-  TasksStatus status = 4;
+  GrpcTaskStatus status = 4;
   google.protobuf.Timestamp dueDate = 5;
   
 }
