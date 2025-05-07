@@ -23,7 +23,7 @@ public class ClientController : ControllerBase
 
     [HttpPost]
     // [Authorize(Policy = "ManagerPolicy")]
-    public async Task<IActionResult> AddClient([FromBody] CreateClientRequest request)
+    public async Task<IActionResult> AddClient([FromBody] HttpCreateClientRequest request)
     {
         
         return Ok(await _clientService.CreateClient(request));
@@ -31,8 +31,8 @@ public class ClientController : ControllerBase
     
     [HttpPut]
     // [Authorize(Policy = "ManagerPolicy")]
-    public async Task<IActionResult> ChangeClient([FromBody] ChangeDataClientRequest request, 
-        [FromServices] IValidator<ChangeDataClientRequest> validator)
+    public async Task<IActionResult> ChangeClient([FromBody] HttpChangeDataClientRequest request, 
+        [FromServices] IValidator<HttpChangeDataClientRequest> validator)
     {
         var validationResult = await validator.ValidateAsync(request);
         if (!validationResult.IsValid)
@@ -46,7 +46,7 @@ public class ClientController : ControllerBase
     
     [HttpDelete]
     // [Authorize(Policy = "ManagerPolicy")]
-    public async Task<IActionResult> DeleteClient([FromBody] DeleteClientRequest request)
+    public async Task<IActionResult> DeleteClient([FromBody] HttpDeleteClientRequest request)
     {
         await _clientService.DeleteClient(request);
         return Ok("Client deleted");
@@ -54,15 +54,15 @@ public class ClientController : ControllerBase
     
     [HttpGet("search")]
     // [Authorize(Policy = "ManagerPolicy")]
-    public async Task<IActionResult> LoadClientData([FromQuery] FindClientRequest request)
+    public async Task<IActionResult> LoadClientData([FromQuery] HttpFindClientRequest request)
     {
         return Ok(await _clientService.FindClient(request));
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAllClients([FromQuery] SortClientsRequest sortClientsRequest)
+    public async Task<IActionResult> GetAllClients([FromQuery] HttpSortClientsRequest httpSortClientsRequest)
     {
-        var clients = await _clientService.GetAllClients(sortClientsRequest);
+        var clients = await _clientService.GetAllClients(httpSortClientsRequest);
         return Ok(clients);
     }
     

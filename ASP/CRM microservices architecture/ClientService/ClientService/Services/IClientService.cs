@@ -8,11 +8,11 @@ namespace ClientService.Services.Interfaces;
 
 public interface IClientService
 {
-    public Task<Client> CreateClient(CreateClientRequest request);
-    public Task<Client> ChangeDataClient(ChangeDataClientRequest request);
+    public Task<DefaultClientResponse> CreateClient(CreateClientRequest request);
+    public Task<DefaultClientResponse> ChangeDataClient(ChangeDataClientRequest request);
     public Task DeleteClient(DeleteClientRequest request);
-    public Task<FindClientResponse> FindClient(FindClientRequest request);
-    public Task<GetAllClientsResponse> GetAllClients(SortClientsRequest sortClientsRequest);
+    public Task<GetClientResponse> FindClient(GetClientByEmailRequest request);
+    public Task<GetAllClientsResponse> GetAllClients(GetAllClientsRequest getAllClientsRequest);
     // Task<List<ClientWithOrdersAndTasksResponse>> GetClientsWithOrdersAndTasks(HttpContext httpContext);
     Task<Client> GetByEmailAsync(GetClientByEmailRequest request);
     Task<Client> GetByIdAsync(GetClientByIdRequest request);

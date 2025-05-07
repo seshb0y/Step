@@ -28,7 +28,7 @@ public class ClientRep : Repository<Client>, IClientRep
 
     public Task<List<Client>> GetClientsByIdsAsync(List<int> ids)
     {
-        return _context.Tasks
+        return _context.Clients
             .Where(u => ids.Contains(u.Id))
             .ToListAsync();
     }
@@ -43,7 +43,7 @@ public class ClientRep : Repository<Client>, IClientRep
         return await _dbSet.FirstOrDefaultAsync(c => c.Email == email);
     }
 
-    public Task<FindClientResponse> GetClientsOrdersAndUsersAsync(string email)
+    public Task<HttpFindClientResponse> GetClientsOrdersAndUsersAsync(string email)
     {
         throw new NotImplementedException();
     }
@@ -107,7 +107,7 @@ public class ClientRep : Repository<Client>, IClientRep
         return await _dbSet.FirstOrDefaultAsync(c => c.Name == name);
     }
 
-    public async Task<List<Client>> GetLowInfoClientsList(SortClientsRequest sortClientsRequest)
+    public async Task<List<Client>> GetLowInfoClientsList(HttpSortClientsRequest httpSortClientsRequest)
     {
         var query = _dbSet.Select(c => new Client
         {
@@ -119,14 +119,14 @@ public class ClientRep : Repository<Client>, IClientRep
             CreatedAt = c.CreatedAt,
         });
         
-        query = sortClientsRequest.sortBy?.ToLower() switch
+        query = httpSortClientsRequest.sortBy?.ToLower() switch
         {
-            "name" => sortClientsRequest.Descending ? query.OrderByDescending(c => c.Name) : query.OrderBy(c => c.Name),
-            "email" => sortClientsRequest.Descending ? query.OrderByDescending(c => c.Email) : query.OrderBy(c => c.Email),
-            "id" => sortClientsRequest.Descending ? query.OrderByDescending(c => c.Id) : query.OrderBy(c => c.Id),
-            "address" => sortClientsRequest.Descending ? query.OrderByDescending(c => c.Address) : query.OrderBy(c => c.Address),
-            "phone" => sortClientsRequest.Descending ? query.OrderByDescending(c => c.Phone) : query.OrderBy(c => c.Phone),
-            "createdat" => sortClientsRequest.Descending ? query.OrderByDescending(c => c.CreatedAt) : query.OrderBy(c => c.CreatedAt),
+            "name" => httpSortClientsRequest.Descending ? query.OrderByDescending(c => c.Name) : query.OrderBy(c => c.Name),
+            "email" => httpSortClientsRequest.Descending ? query.OrderByDescending(c => c.Email) : query.OrderBy(c => c.Email),
+            "id" => httpSortClientsRequest.Descending ? query.OrderByDescending(c => c.Id) : query.OrderBy(c => c.Id),
+            "address" => httpSortClientsRequest.Descending ? query.OrderByDescending(c => c.Address) : query.OrderBy(c => c.Address),
+            "phone" => httpSortClientsRequest.Descending ? query.OrderByDescending(c => c.Phone) : query.OrderBy(c => c.Phone),
+            "createdat" => httpSortClientsRequest.Descending ? query.OrderByDescending(c => c.CreatedAt) : query.OrderBy(c => c.CreatedAt),
             _ => query
         };
 

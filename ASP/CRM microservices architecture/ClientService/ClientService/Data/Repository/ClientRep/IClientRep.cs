@@ -14,10 +14,10 @@ public interface IClientRep : IRepository<Client>
     Task <IEnumerable<Client?>> GetClientsByManagerIdAsync(int managerId);
     Task<Client?> GetClientByEmail(String email);
     
-    Task<FindClientResponse> GetClientsOrdersAndUsersAsync(string email);
+    Task<HttpFindClientResponse> GetClientsOrdersAndUsersAsync(string email);
     
     Task<Client?> GetClientByName(string name);
-    Task<List<Client>> GetLowInfoClientsList(SortClientsRequest sortClientsRequest);
+    Task<List<Client>> GetLowInfoClientsList(HttpSortClientsRequest httpSortClientsRequest);
     Task<List<Client>> GetClientsByIdsAsync(List<int> ids);
     
     

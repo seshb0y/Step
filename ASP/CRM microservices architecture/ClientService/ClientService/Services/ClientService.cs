@@ -7,6 +7,8 @@ using ClientService.Hubs;
 using ClientService.Services.Interfaces;
 using CRMSolution.DTO.Requests.Client;
 using CRMSolution.Grpc.Client;
+using CRMSolution.Grpc.Tasks;
+using Google.Protobuf.WellKnownTypes;
 using Microsoft.AspNetCore.SignalR;
 
 namespace ClientService.Services.Classes;
@@ -26,7 +28,7 @@ public class ClientService : IClientService
         _hubContext = hubContext;
     }
     
-    public async Task<Client> CreateClient(CreateClientRequest request)
+    public async Task<DefaultClientResponse> CreateClient(CreateClientRequest request)
     {
         _logger.LogInformation("Создаем нового клиента: {@Request}", request);
         Client client = _mapper.Map<Client>(request);
@@ -41,16 +43,20 @@ public class ClientService : IClientService
             client.Phone,
             client.Address
         });
-        return await _clientRepository.GetClientByName(request.name);
+        return new DefaultClientResponse
+        {
+            Success = true,
+            Message = "Client created"
+        };
     }
 
-    public async Task<Client> ChangeDataClient(ChangeDataClientRequest request)
+    public async Task<DefaultClientResponse> ChangeDataClient(ChangeDataClientRequest request)
     {
         _logger.LogInformation("Изменяем данные клиента: {@Request}", request);
-        Client client = await _clientRepository.GetClientByEmail(request.oldEmail);
+        Client client = await _clientRepository.GetClientByEmail(request.OldEmail);
         if (client == null)
         {
-            throw new KeyNotFoundException($"Client with email {request.oldEmail} not found");
+            throw new KeyNotFoundException($"Client with email {request.OldEmail} not found");
         }
         client = _mapper.Map(request, client);
         _clientRepository.Update(client);
@@ -63,16 +69,20 @@ public class ClientService : IClientService
             client.Phone,
             client.Address
         });
-        return await _clientRepository.GetClientByEmail(request.newEmail);
+        return new DefaultClientResponse
+        {
+            Success = true,
+            Message = "Client updated"
+        };
     }
     
     public async Task DeleteClient(DeleteClientRequest request)
     {
         _logger.LogInformation("Удаляем клиента: {@Request}", request);
-        Client client = await _clientRepository.GetClientByEmail(request.email);
+        Client client = await _clientRepository.GetClientByEmail(request.Email);
         if (client == null)
         {
-            throw new KeyNotFoundException($"Client with email {request.email} not found");
+            throw new KeyNotFoundException($"Client with email {request.Email} not found");
         }
         _clientRepository.Delete(client);
         await _hubContext.Clients.All.SendAsync("ClientDeleted", new
@@ -82,25 +92,62 @@ public class ClientService : IClientService
         await _clientRepository.SaveChangesAsync();
     }
 
-    public async Task<FindClientResponse> FindClient(FindClientRequest request)
+    public async Task<GetClientResponse> FindClient(GetClientByEmailRequest request)
     {
         _logger.LogInformation("Поиск клиента: {@Request}", request);
-        FindClientResponse? client = await _clientRepository.GetClientsOrdersAndUsersAsync(request.email);
+        HttpFindClientResponse? client = await _clientRepository.GetClientsOrdersAndUsersAsync(request.Email);
         if (client == null)
         {
-            _logger.LogWarning("Клиент с email {Email} не найден",request.email);
-            throw new KeyNotFoundException($"Client with email {request.email} not found");
+            _logger.LogWarning("Клиент с email {Email} не найден",request.Email);
+            throw new KeyNotFoundException($"Client with email {request.Email} not found");
         }
-        _logger.LogInformation("Клиент найден: {ClientId}", request.email);
-        return client;
+        _logger.LogInformation("Клиент найден: {ClientId}", request.Email);
+        return _mapper.Map<GetClientResponse>(client);
     }
 
-    public async Task<GetAllClientsResponse> GetAllClients(SortClientsRequest sortClientsRequest)
+    public async Task<GetAllClientsResponse> GetAllClients(GetAllClientsRequest getAllClientsRequest)
     {
-        var clients = await _clientRepository.GetLowInfoClientsList(sortClientsRequest);
+        var tasks = (await _clientRepository.GetAllAsync()).ToList();
+        
+        var grpcClient = tasks.Select(t => new ClientInfo
+        {
+            Id = t.Id,
+            Name = t.Name,
+            Email = t.Email,
+            Phone = t.Phone,
+            Address = t.Address,
+            CreatedAt = Timestamp.FromDateTime(t.CreatedAt.ToUniversalTime()),
+            OrderId = t.OrderId.Value
+        }).ToList();
+        
+        grpcClient = getAllClientsRequest.Sort.SortBy.ToLower() switch
+        {
+            "id" => getAllClientsRequest.Sort.Descending
+                ? grpcClient.OrderByDescending(x => x.Id).ToList()
+                : grpcClient.OrderBy(x => x.Id).ToList(),
+
+            "title" => getAllClientsRequest.Sort.Descending
+                ? grpcClient.OrderByDescending(x => x.Name).ToList()
+                : grpcClient.OrderBy(x => x.Name).ToList(),
+
+            "status" => getAllClientsRequest.Sort.Descending
+                ? grpcClient.OrderByDescending(x => x.Email).ToList()
+                : grpcClient.OrderBy(x => x.Email).ToList(),
+            
+            "description" => getAllClientsRequest.Sort.Descending
+                ? grpcClient.OrderByDescending(x => x.Address).ToList()
+                : grpcClient.OrderBy(x => x.Address).ToList(),
+
+            "duedate" => getAllClientsRequest.Sort.Descending
+                ? grpcClient.OrderByDescending(x => x.CreatedAt.Seconds).ToList()
+                : grpcClient.OrderBy(x => x.CreatedAt.Seconds).ToList(),
+
+            _ => grpcClient
+        };
+        
         return new GetAllClientsResponse
         {
-            Clients = _mapper.Map<List<Client>>(clients)
+            Clients = { grpcClient }
         };
     }
     

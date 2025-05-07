@@ -94,6 +94,7 @@ export const createUser = createAsyncThunk(
   "users/create",
   async (userData: { username: string; password: string; email: string; confirmPassword: string }, { rejectWithValue }) => {
     try {
+      console.log(userData)
       const response = await axiosInstance.post("/account/register", userData);
       toast.success('Пользователь успешно создан');
       return response.data;

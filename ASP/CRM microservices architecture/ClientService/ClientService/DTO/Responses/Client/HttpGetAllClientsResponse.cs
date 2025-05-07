@@ -2,7 +2,7 @@
 
 namespace ClientService.DTO.Responses;
 
-public class GetAllClientsResponse
+public class HttpGetAllClientsResponse
 {
     public List<Client> Clients { get; set; }
 }
