@@ -4,12 +4,25 @@ option csharp_namespace = "CRMSolution.Grpc.Orders";
 
 import "google/protobuf/timestamp.proto";
 
+
+
 package order;
 
 enum OrderStatus {
   NEW = 0;
   PROCESSING = 1;
   COMPLETED = 2;
+}
+enum UserRole
+{
+  Admin = 0;
+  Manager = 1;
+}
+enum GrpcTaskStatus
+{
+  New = 0;
+  InProgress = 1;
+  Completed = 2;
 }
 
 service OrderGrpcService {
@@ -19,7 +32,22 @@ service OrderGrpcService {
   rpc DeleteOrder(DeleteOrderRequest) returns (DeleteOrderResponse);
   rpc GetOrderFullInfo(GetOrderFullInfoRequest) returns (GetOrderFullInfoResponse);
   rpc GetLowInfoOrdersList(GetLowInfoOrdersListRequest) returns (GetLowInfoOrdersListResponse);
+  rpc GetOrdersByUserIds (GetOrdersByUserIdsRequest) returns (GetOrdersByUserIdsResponse);
 }
+
+message GetOrdersByUserIdsRequest {
+  repeated int32 userIds = 1;
+}
+message OrderWithUserId {
+  int32 userId = 1;
+  int32 id = 2;
+  double totalAmount = 3;
+  OrderStatus status = 4;
+}
+message GetOrdersByUserIdsResponse {
+  repeated OrderWithUserId orders = 1;
+}
+
 
 message GetOrderByIdRequest {
   int32 orderId = 1;
@@ -68,7 +96,7 @@ message TaskDto{
   int32 id = 1;
   string title = 2;
   string description = 3;
-  int32 status = 4;
+  GrpcTaskStatus status = 4;
   google.protobuf.Timestamp dueDate = 5;
   int32 orderId = 6;
 }
@@ -76,7 +104,7 @@ message UserDto{
   int32 id = 1;
   string username = 2;
   string email = 3;
-  int32 role = 4;
+  UserRole role = 4;
   bool IsEmailConfirmed = 5;
 }
 message ClientDto{

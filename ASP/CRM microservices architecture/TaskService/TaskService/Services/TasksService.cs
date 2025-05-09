@@ -193,4 +193,22 @@ public class TasksService : ITasksService
         return response;
     }
 
+    public async Task<GetTasksByUserIdsResponse> GetTasksByUserIdsAsync(GetTasksByUserIdsRequest request)
+    {
+        var tasks = await _tasksRep.GetTasksByUserId(request.UserIds.ToList());
+        var response = new GetTasksByUserIdsResponse();
+        foreach (var task in tasks)
+        {
+            response.Tasks.Add(new TaskWithUserId
+            {
+                UserId = task.UserId,
+                Id = task.Id,
+                Title = task.Title,
+                Description = task.Description,
+                Status = (GrpcTaskStatus)task.Status,
+                DueDate = Timestamp.FromDateTime(task.DueDate.ToUniversalTime())
+            });
+        }
+        return response;
+    }
 }

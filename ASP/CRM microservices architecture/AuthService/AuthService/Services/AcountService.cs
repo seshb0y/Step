@@ -1,23 +1,17 @@
 ﻿using System.Text;
 using AutoMapper;
 using CRMSolution.Data.Models;
-using CRMSolution.Data.Repository.Interface;
-using CRMSolution.DTO.Requests;
 using CRMSolution.Services.Interfaces;
-using Microsoft.AspNetCore.Http;
-using System;
-using System.Threading.Tasks;
 using ControllerFirst.DTO.Requests;
 using ControllerFirst.DTO.Responses;
-using CRMSolution.Data.Repository;
 using CRMSolution.Data.Repository.UserRep;
+using CRMSolution.Grpc.Users;
 using CRMSolution.Hubs;
-using Microsoft.AspNetCore.Mvc;
 using MimeKit;
-using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.AspNetCore.SignalR;
-
+using RegisterRequest = CRMSolution.Grpc.Users.RegisterRequest;
+using UserRole = CRMSolution.Data.Models.UserRole;
 
 namespace CRMSolution.Services.Classes;
 
@@ -71,20 +65,20 @@ public class AccountService : IAccountService
         });
     }
 
-    public async Task ConfirmEmailAsync(ConfirmRequest request, HttpContext context)
+    public async Task ConfirmEmailAsync(ConfirmRequest request)
     {
         _logger.LogInformation("Отправка письма для подтверждения мыла: {@Request}", request);
-        var user = await _userRep.FindByNameAsync(request.username);
+        var user = await _userRep.FindByNameAsync(request.Username);
         if (user == null)
             throw new Exception("User not found");
 
-        string token = await _tokenService.CreateEmailTokenAsync(request.username);
+        string token = await _tokenService.CreateEmailTokenAsync(request.Username);
         string link = $"http://localhost:5234/api/v1/account/email/verify?token={token}";
 
         string emailBody = $@"
             <div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;'>
                 <h2 style='color: #4F46E5;'>Email Confirmation</h2>
-                <p>Hello, {request.username}!</p>
+                <p>Hello, {request.Username}!</p>
                 <p>Please confirm your email address by clicking the button below:</p>
                 <div style='text-align: center; margin: 30px 0;'>
                     <a href='{link}' style='background-color: #4F46E5; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; display: inline-block;'>
@@ -118,37 +112,37 @@ public class AccountService : IAccountService
     }
     
 
-    public async Task ResetPasswordAsync(ResetPasswordRequest request, HttpContext context)
+    public async Task ResetPasswordAsync(ResetPasswordRequest request)
     {
         _logger.LogInformation("Отправка письма для сброса пароля: {@Request}", request);
-        var user = await _userRep.FindByNameAsync(request.username);
+        var user = await _userRep.FindByNameAsync(request.Username);
         if (user == null)
             throw new Exception("User not found");
 
-        string token = await _tokenService.CreateResetPasswordTokenAsync(request.username);
+        string token = await _tokenService.CreateResetPasswordTokenAsync(request.Username);
         string link = $"http://localhost:5173/api/v1/account/password/change?token={token}";
 
-        string emailBody = $"<p>Привет, {request.username}! Чтобы сбросить пароль, перейдите <a href='{link}'>сюда</a>.</p>";
+        string emailBody = $"<p>Привет, {request.Username}! Чтобы сбросить пароль, перейдите <a href='{link}'>сюда</a>.</p>";
         await SendEmailAsync(user.Email, "Сброс пароля", emailBody);
     }
 
     public async Task ChangePasswordAsync(ChangePasswordRequest request)
     {
         _logger.LogInformation("Изменение пароля: {@Request}", request);
-        bool isValid = await _tokenService.ValidateChangePasswordTokenAsync(request.token);
+        bool isValid = await _tokenService.ValidateChangePasswordTokenAsync(request.Token);
         if (!isValid)
             throw new Exception("Invalid or expired token");
 
-        var username = await _tokenService.GetNameFromToken(request.token);
+        var username = await _tokenService.GetNameFromToken(request.Token);
         var user = await _userRep.FindByNameAsync(username);
         if (user == null)
             throw new Exception("User not found");
 
-        user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.newPassword);
+        user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
         await _userRep.SaveChangesAsync();
     }
     
-    public async Task<GetCurrentUserResponse> GetCurrentUserAsync()
+    public async Task<CurrentUserResponse> GetCurrentUserAsync()
     {
         var httpContext = _httpContextAccessor.HttpContext;
         if (httpContext == null)
@@ -171,7 +165,7 @@ public class AccountService : IAccountService
         var user = await _userRep.FindByNameAsync(username);
         
         
-        return _mapper.Map<GetCurrentUserResponse>(user);
+        return _mapper.Map<CurrentUserResponse>(user);
     }
     
     public async Task SendEmailAsync(string to, string subject, string html)

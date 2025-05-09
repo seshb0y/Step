@@ -4,7 +4,7 @@ using FluentValidation;
 
 namespace CRMSolution.Data.Validators.Auth;
 
-public class ChangePasswordValidator : AbstractValidator<ChangePasswordRequest>
+public class ChangePasswordValidator : AbstractValidator<HttpChangePasswordRequest>
 {
     public ChangePasswordValidator()
     {

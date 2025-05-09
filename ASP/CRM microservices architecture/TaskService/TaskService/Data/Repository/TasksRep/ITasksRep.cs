@@ -15,4 +15,5 @@ public interface ITasksRep : IRepository<TaskEntity>
     
     Task<List<TaskDto>> GetLowInfoTasksList(SortTasksRequest sortTasksRequest);
     Task<List<TaskEntity>> GetTasksByOrderId(int orderId);
+    Task<List<TaskEntity>> GetTasksByUserId(List<int> userIds);
 }

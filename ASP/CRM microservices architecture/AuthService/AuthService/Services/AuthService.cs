@@ -10,6 +10,10 @@ using ControllerFirst.DTO.Requests;
 using ControllerFirst.DTO.Responses;
 using CRMSolution.Data.Repository;
 using CRMSolution.Data.Repository.UserRep;
+using CRMSolution.Grpc.Users;
+using Grpc.Core;
+using RefreshTokenResponse = CRMSolution.Grpc.Users.RefreshTokenResponse;
+
 
 namespace CRMSolution.Services.Classes;
 
@@ -28,12 +32,11 @@ public class AuthService : IAuthService
         _logger = logger;
     }
 
-    public async Task<LoginResponse> LoginAsync(LoginRequest request, HttpContext context)
+    public async Task<LoginResponse> LoginAsync(LoginRequest request)
     {
         _logger.LogInformation("Вход в аккаунт: {@Request}", request);
         
-        var user = await _userRep.FindByNameAsync(request.username);
-
+        var user = await _userRep.FindByNameAsync(request.Username);
         
         user.RefreshToken = Guid.NewGuid();
         user.RefreshTokenExpiration = DateTime.UtcNow.AddDays(7);
@@ -42,75 +45,65 @@ public class AuthService : IAuthService
         var accessToken = await _tokenService.CreateTokenAsync(user.Username);
         var refreshToken = user.RefreshToken.ToString();
         
-        context.Response.Cookies.Append("accessToken", accessToken, new CookieOptions
-        {
-            HttpOnly = true,
-            Secure = true,
-            SameSite = SameSiteMode.Strict,
-            Expires = DateTime.UtcNow.AddMinutes(15)
-        });
+        // context.Response.Cookies.Append("accessToken", accessToken, new CookieOptions
+        // {
+        //     HttpOnly = true,
+        //     Secure = true,
+        //     SameSite = SameSiteMode.Strict,
+        //     Expires = DateTime.UtcNow.AddMinutes(15)
+        // });
+        //
+        // context.Response.Cookies.Append("refreshToken", refreshToken, new CookieOptions
+        // {
+        //     HttpOnly = true,
+        //     Secure = true,
+        //     SameSite = SameSiteMode.Strict,
+        //     Expires = DateTime.UtcNow.AddDays(7)
+        // });
 
-        context.Response.Cookies.Append("refreshToken", refreshToken, new CookieOptions
+        return new LoginResponse
         {
-            HttpOnly = true,
-            Secure = true,
-            SameSite = SameSiteMode.Strict,
-            Expires = DateTime.UtcNow.AddDays(7)
-        });
-
-        return new LoginResponse(accessToken, refreshToken);
+            AccessToken = accessToken,
+            RefreshToken = refreshToken
+        };
 
     }
 
-    public async Task<RefreshTokenResponse> RefreshTokenAsync(HttpContext context)
+    public async Task<RefreshTokenResponse> RefreshTokenAsync(RefreshTokenRequest request)
     {
-        _logger.LogInformation("Обновление токена через cookies");
+        _logger.LogInformation("Обновление токена через gRPC");
 
-        var accessToken = context.Request.Cookies["accessToken"];
-        var refreshToken = context.Request.Cookies["refreshToken"];
+        var accessToken = request.AccessToken;
+        var refreshToken = request.RefreshToken;
 
-
-        Console.WriteLine(refreshToken);
         if (string.IsNullOrEmpty(refreshToken) || string.IsNullOrEmpty(accessToken))
-            throw new Exception("Tokens are missing");
+            throw new RpcException(new Status(StatusCode.InvalidArgument, "Tokens are missing"));
 
         var username = await _tokenService.GetNameFromToken(accessToken);
         var user = await _userRep.FindByNameAsync(username);
 
         if (user == null || user.RefreshToken.ToString() != refreshToken || user.RefreshTokenExpiration < DateTime.UtcNow)
-            throw new Exception("Invalid refresh token");
-        
+            throw new RpcException(new Status(StatusCode.PermissionDenied, "Invalid refresh token"));
+
         user.RefreshToken = Guid.NewGuid();
         user.RefreshTokenExpiration = DateTime.UtcNow.AddDays(7);
         await _userRep.SaveChangesAsync();
 
         var newAccessToken = await _tokenService.CreateTokenAsync(user.Username);
         var newRefreshToken = user.RefreshToken.ToString();
-        
-        context.Response.Cookies.Append("accessToken", newAccessToken, new CookieOptions
-        {
-            HttpOnly = true,
-            Secure = true,
-            SameSite = SameSiteMode.Strict,
-            Expires = DateTime.UtcNow.AddMinutes(15)
-        });
 
-        context.Response.Cookies.Append("refreshToken", newRefreshToken, new CookieOptions
+        return new RefreshTokenResponse
         {
-            HttpOnly = true,
-            Secure = true,
-            SameSite = SameSiteMode.Strict,
-            Expires = DateTime.UtcNow.AddDays(7)
-        });
-
-        return new RefreshTokenResponse(newAccessToken, newRefreshToken);
+            AccessToken = newAccessToken,
+            RefreshToken = newRefreshToken
+        };
     }
 
     
-    public Task LogoutAsync(HttpContext context)
-    {
-        context.Response.Cookies.Delete("accessToken");
-        context.Response.Cookies.Delete("refreshToken");
-        return Task.CompletedTask;
-    }
+    // public Task LogoutAsync(HttpContext context)
+    // {
+    //     context.Response.Cookies.Delete("accessToken");
+    //     context.Response.Cookies.Delete("refreshToken");
+    //     return Task.CompletedTask;
+    // }
 }

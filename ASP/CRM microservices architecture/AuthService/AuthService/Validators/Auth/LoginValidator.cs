@@ -7,7 +7,7 @@ using FluentValidation;
 
 namespace CRMSolution.Data.Validators.Auth;
 
-public class LoginValidator : AbstractValidator<LoginRequest>
+public class LoginValidator : AbstractValidator<HttpLoginRequest>
 {
     IUserRep _userRep;
     public LoginValidator(IUserRep userRep)

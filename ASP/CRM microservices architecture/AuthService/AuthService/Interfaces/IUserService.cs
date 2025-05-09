@@ -9,7 +9,7 @@ namespace CRMSolution.Services.Interfaces;
 public interface IUserService
 {
     // public Task<User> CreateUser(CreateUserRequest request);
-    public Task<User> ChangeUserData(ChangeUserDataRequest request);
+    public Task<ChangeUserDataResponse> ChangeUserData(ChangeUserDataRequest request);
     public Task DeleteUser(DeleteUserRequest request);
     public Task<GetUserResponse> FindUser(GetUserByEmailRequest request);
     public Task<GetAllUsersResponse> GetAllUsers(SortUsersRequest sortUsersRequest);

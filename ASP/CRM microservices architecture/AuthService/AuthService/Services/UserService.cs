@@ -4,10 +4,14 @@ using CRMSolution.Data.Models;
 using CRMSolution.Data.Repository.UserRep;
 using CRMSolution.DTO.Requests;
 using CRMSolution.Grpc.Orders;
+using CRMSolution.Grpc.Tasks;
 using CRMSolution.Grpc.Users;
 using CRMSolution.Hubs;
 using CRMSolution.Services.Interfaces;
 using Microsoft.AspNetCore.SignalR;
+using GrpcTaskStatus = CRMSolution.Grpc.Users.GrpcTaskStatus;
+using TaskInfo = CRMSolution.Grpc.Users.TaskInfo;
+using OrderStatus = CRMSolution.Grpc.Users.OrderStatus;
 
 namespace CRMSolution.Services.Classes;
 
@@ -17,13 +21,18 @@ public class UserService : IUserService
     private readonly IMapper _mapper;
     private readonly ILogger<UserService> _logger;
     private readonly IHubContext<NotificationHub> _notificationHub;
+    private readonly OrderGrpcService.OrderGrpcServiceClient _orderGrpcService;
+    private readonly TaskGrpcService.TaskGrpcServiceClient _taskGrpcService;
     
-    public UserService(IUserRep userRepository, IMapper mapper, ILogger<UserService> logger, IHubContext<NotificationHub> notificationHub)
+    public UserService(IUserRep userRepository, IMapper mapper, ILogger<UserService> logger, IHubContext<NotificationHub> notificationHub
+    , OrderGrpcService.OrderGrpcServiceClient orderGrpcService,  TaskGrpcService.TaskGrpcServiceClient taskGrpcService)
     {
         _userRepository = userRepository;
         _mapper = mapper;
         _logger = logger;
         _notificationHub = notificationHub;
+        _orderGrpcService = orderGrpcService;
+        _taskGrpcService = taskGrpcService;
     }
     
     // public async Task<User> CreateUser(CreateUserRequest request)
@@ -35,10 +44,10 @@ public class UserService : IUserService
     //     return await _userRepository.UserRep.FindByEmailAsync(request.email);
     // }
 
-    public async Task<User> ChangeUserData(ChangeUserDataRequest request)
+    public async Task<ChangeUserDataResponse> ChangeUserData(ChangeUserDataRequest request)
     {
         _logger.LogInformation("Изменяем данные юзера: {@Request}", request);
-        User user = await _userRepository.FindByEmailAsync(request.oldEmail);
+        User user = await _userRepository.FindByEmailAsync(request.OldEmail);
         user = _mapper.Map(request, user);
         _userRepository.Update(user);
         await _userRepository.SaveChangesAsync();
@@ -50,13 +59,13 @@ public class UserService : IUserService
             user.CreatedAt,
             user.Role,
         });
-        return await _userRepository.FindByEmailAsync(request.newEmail);
+        return _mapper.Map<ChangeUserDataResponse>(user);
     }
     
     public async Task DeleteUser(DeleteUserRequest request)
     {
         _logger.LogInformation("Удаляем юзера: {@Request}", request);
-        User user = await _userRepository.FindByEmailAsync(request.email);
+        User user = await _userRepository.FindByEmailAsync(request.Email);
         _userRepository.Delete(user);
         await _userRepository.SaveChangesAsync();
         await _notificationHub.Clients.All.SendAsync("UserDeleted", new
@@ -82,7 +91,69 @@ public class UserService : IUserService
     public async Task<GetAllUsersResponse> GetAllUsers(SortUsersRequest sortUsersRequest)
     {
         var users = await _userRepository.GetAllAsync();
-        return _mapper.Map<GetAllUsersResponse>(users);
+        users = sortUsersRequest.SortBy?.ToLower() switch
+        {
+            "id" => sortUsersRequest.Descending ? users.OrderByDescending(u => u.Id).ToList() : users.OrderBy(u => u.Id).ToList(),
+            "username" => sortUsersRequest.Descending ? users.OrderByDescending(u => u.Username).ToList() : users.OrderBy(u => u.Username).ToList(),
+            "email" => sortUsersRequest.Descending ? users.OrderByDescending(u => u.Email).ToList() : users.OrderBy(u => u.Email).ToList(),
+            "role" => sortUsersRequest.Descending ? users.OrderByDescending(u => u.Role).ToList() : users.OrderBy(u => u.Role).ToList(),
+            "isemailconfirmed" => sortUsersRequest.Descending ? users.OrderByDescending(u => u.IsEmailConfirmed).ToList() : users.OrderBy(u => u.IsEmailConfirmed).ToList(),
+            "createdat" => sortUsersRequest.Descending ? users.OrderByDescending(u => u.CreatedAt).ToList() : users.OrderBy(u => u.CreatedAt).ToList(),
+            _ => users
+        };
+
+        var userIds = users.Select(u => u.Id).ToList();
+
+        var taskResponse = await _taskGrpcService.GetTasksByUserIdsAsync(new GetTasksByUserIdsRequest { UserIds = { userIds } });
+        var orderResponse = await _orderGrpcService.GetOrdersByUserIdsAsync(new GetOrdersByUserIdsRequest { UserIds = { userIds } });
+        
+        var tasksByUser = taskResponse.Tasks.GroupBy(t => t.UserId)
+            .ToDictionary(g => g.Key, g => g.ToList());
+        var ordersByUser = orderResponse.Orders.GroupBy(o => o.UserId)
+            .ToDictionary(g => g.Key, g => g.ToList());
+        
+        var response = new GetAllUsersResponse();
+
+        foreach (var user in users)
+        {
+            var userInfo = new UserInfo
+            {
+                Id = user.Id,
+                Username = user.Username,
+                Email = user.Email,
+                Role = (CRMSolution.Grpc.Users.UserRole)user.Role,
+                IsEmailConfirmed = user.IsEmailConfirmed,
+            };
+
+            if (tasksByUser.TryGetValue(user.Id, out var userTasks))
+            {
+                userInfo.Tasks.AddRange(userTasks.Select<TaskWithUserId, TaskInfo>(t => new TaskInfo
+                {
+                    Id = t.Id,
+                    Title = t.Title,
+                    Description = t.Description,
+                    Status = (GrpcTaskStatus)t.Status,
+                    DueDate = t.DueDate
+                }));
+
+            }
+
+            // добавь заказы
+            if (ordersByUser.TryGetValue(user.Id, out var userOrders))
+            {
+                userInfo.Orders.AddRange(userOrders.Select(o => new OrderInfo
+                {
+                    Id = o.Id,
+                    TotalAmount = o.TotalAmount,
+                    Status = (OrderStatus)o.Status
+                }));
+            }
+
+            response.Users.Add(userInfo);
+        }
+        
+
+        return response;
     }
 
     public async Task<User> GetByIdAsync(int userId)

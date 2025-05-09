@@ -17,6 +17,12 @@ public class OrderRep : Repository<Order>, IOrderRep
         return order;
     }
 
+    public async Task<List<Order>> GetOrdersByUserIds(List<int> userIds)
+    {
+        var orders = await _context.Orders.Where(o => userIds.Contains(o.Id)).ToListAsync();
+        return orders;
+    }
+
     // public async Task AddOrderToClientAndUser(Client client, Order order, User user)
     // {
     //     order.ClientOrders.Add(

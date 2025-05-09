@@ -2,7 +2,7 @@
 using ControllerFirst.DTO.Responses.User;
 using CRMSolution.Data.Models;
 
-public class GetAllUsersResponse
+public class HttpGetAllUsersResponse
 {
      public List<HttpFindUserReponse> Users { get; set; }
 }

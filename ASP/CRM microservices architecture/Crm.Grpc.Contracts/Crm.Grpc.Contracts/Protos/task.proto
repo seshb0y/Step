@@ -17,10 +17,27 @@ service TaskGrpcService {
   rpc CreateTask (CreateTaskRequest) returns (DefaultTaskResponse);
   rpc GetTaskByOrderId (GetTaskByIdRequest) returns (GetTaskByOrderIdResponse);
   rpc GetTasksByOrderIds (GetTasksByOrderIdsRequest) returns (GetTasksByOrderIdsResponse);
+  rpc GetTasksByUserIds (GetTasksByUserIdsRequest) returns (GetTasksByUserIdsResponse);
   rpc UpdateTask(UpdateTaskRequest) returns (DefaultTaskResponse);
   rpc DeleteTask(DeleteTaskRequest) returns (DefaultTaskResponse);
   rpc GetAllTasks(GetAllTasksRequest) returns (GetAllTasksResponse);
 }
+
+message GetTasksByUserIdsRequest {
+  repeated int32 userIds = 1;
+}
+message TaskWithUserId {
+  int32 userId = 1;
+  int32 id = 2;
+  string title = 3;
+  string description = 4;
+  GrpcTaskStatus status = 5;
+  google.protobuf.Timestamp dueDate = 6;
+}
+message GetTasksByUserIdsResponse {
+  repeated TaskWithUserId tasks = 1;
+}
+
 
 message GetTaskByIdRequest {
   int32 id = 1;

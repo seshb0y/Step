@@ -4,7 +4,7 @@ using FluentValidation;
 
 namespace CRMSolution.Data.Validators.Auth;
 
-public class RegisterValidator : AbstractValidator<RegisterRequest>
+public class RegisterValidator : AbstractValidator<HttpRegisterRequest>
 {
     public RegisterValidator()
     {

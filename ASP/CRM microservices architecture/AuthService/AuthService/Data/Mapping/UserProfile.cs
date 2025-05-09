@@ -6,8 +6,7 @@ using CRMSolution.Data.Models;
 using CRMSolution.DTO.Requests;
 using CRMSolution.Grpc.Users;
 using Microsoft.AspNetCore.Identity.Data;
-using RegisterRequest = ControllerFirst.DTO.Requests.RegisterRequest;
-
+using RegisterRequest =  CRMSolution.Grpc.Users.RegisterRequest;
 namespace CRMSolution.Data.Mapping;
 
 public class UserProfile : Profile
@@ -22,19 +21,23 @@ public class UserProfile : Profile
             .ForMember(dest => dest.PasswordHash, opt =>
                 opt.MapFrom(src => src.Password));
 
-        CreateMap<User, GetCurrentUserResponse>()
+        CreateMap<User, CurrentUserResponse>()
             .ForMember(dest => dest.Id, opt => opt
                 .MapFrom(src => src.Id))
             .ForMember(dest => dest.Username, opt => opt
                 .MapFrom(src => src.Username))
             .ForMember(dest => dest.Role, opt => opt
-                .MapFrom(src => src.Role));
+                .MapFrom(src => src.Role))
+            .ForMember(dest => dest.IsEmailConfirmed, opt => opt
+                .MapFrom(src => src.IsEmailConfirmed))
+            .ForMember(dest => dest.Email, opt => opt
+                .MapFrom(src => src.Email));
         //
         // CreateMap<User, OrderDetailsUserResponse>()
         //     .ForMember(dest => dest.Username, opt => opt.
         //         MapFrom(src => src.Username));
 
-        CreateMap<CreateUserRequest, User>()
+        CreateMap<HttpCreateUserRequest, User>()
             .ForMember(dest => dest.Username, opt => opt
                 .MapFrom(src => src.username))
             .ForMember(dest => dest.Email, opt => opt
@@ -44,11 +47,23 @@ public class UserProfile : Profile
 
         CreateMap<ChangeUserDataRequest, User>()
             .ForMember(dest => dest.Username, opt => opt
-                .MapFrom(src => src.username))
+                .MapFrom(src => src.Username))
             .ForMember(dest => dest.Email, opt => opt
-                .MapFrom(src => src.newEmail))
+                .MapFrom(src => src.NewEmail))
             .ForMember(dest => dest.Role, opt => opt
-                .MapFrom(src => src.role));
+                .MapFrom(src => src.Role));
+
+        CreateMap<User, ChangeUserDataResponse>()
+            .ForMember(dest => dest.Username, opt => opt
+                .MapFrom(src => src.Username))
+            .ForMember(dest => dest.Email, opt => opt
+                .MapFrom(src => src.Email))
+            .ForMember(dest => dest.Role, opt => opt
+                .MapFrom(src => src.Role))
+            .ForMember(dest => dest.IsEmailConfirmed, opt => opt
+                .MapFrom(src => src.IsEmailConfirmed))
+            .ForMember(dest => dest.Id, opt => opt
+                .MapFrom(src => src.Id));
 
         CreateMap<User, GetUserResponse>()
             .ForMember(dest => dest.Id, opt => opt
@@ -63,7 +78,7 @@ public class UserProfile : Profile
                 .MapFrom(src => src.Email));
         //     
         //     
-        // CreateMap<User, GetAllUsersUserResponse>()
+        // CreateMap<User, GetAllUsersResponse>()
         //     .ForMember(dest => dest.UserId, opt => opt
         //         .MapFrom(src => src.Id))
         //     .ForMember(dest => dest.IsEmailConfirmed, opt => opt

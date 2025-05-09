@@ -9,6 +9,7 @@ public class TaskEntity
     public DateTime DueDate { get; set; }
 
     public int OrderId { get; set; }
+    public int UserId { get; set; }
 }
 
 public enum TasksStatus

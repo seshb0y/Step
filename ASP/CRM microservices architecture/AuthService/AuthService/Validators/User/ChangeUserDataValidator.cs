@@ -5,7 +5,7 @@ using FluentValidation;
 
 namespace CRMSolution.Data.Validators.User;
 
-public class ChangeUserDataValidator : AbstractValidator<ChangeUserDataRequest>
+public class ChangeUserDataValidator : AbstractValidator<HttpChangeUserDataRequest>
 {
     IUserRep _userRep;
     

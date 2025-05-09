@@ -3,6 +3,7 @@ using CRMSolution.Data.Repository.UserRep;
 using CRMSolution.Grpc.Users;
 using CRMSolution.Services.Interfaces;
 using Microsoft.Extensions.Logging;
+using UserRole = CRMSolution.Grpc.Users.UserRole;
 
 public class UserGrpcService : UserService.UserServiceBase
 {
@@ -27,7 +28,7 @@ public class UserGrpcService : UserService.UserServiceBase
             Id = user.Id,
             Username = user.Username,
             Email = user.Email,
-            Role = (int)user.Role
+            Role = (UserRole)user.Role
         };
     }
 
@@ -42,7 +43,7 @@ public class UserGrpcService : UserService.UserServiceBase
             Id = user.Id,
             Username = user.Username,
             Email = user.Email,
-            Role = (int)user.Role,
+            Role = user.Role,
             IsEmailConfirmed = user.IsEmailConfirmed,
         };
     }
@@ -51,5 +52,10 @@ public class UserGrpcService : UserService.UserServiceBase
         ServerCallContext context)
     {
         return await _userService.GetUsersByIds(request);
+    }
+
+    public override async Task<GetAllUsersResponse> GetAllUsers(GetAllUsersRequest request, ServerCallContext context)
+    {
+        return await _userService.GetAllUsers(request.Sort);
     }
 }

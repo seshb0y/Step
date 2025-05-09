@@ -14,6 +14,11 @@ public class TaskGrpcService : CRMSolution.Grpc.Tasks.TaskGrpcService.TaskGrpcSe
         _tasksService = tasksService;
     }
 
+    public override async Task<GetTasksByUserIdsResponse> GetTasksByUserIds(GetTasksByUserIdsRequest request,
+        ServerCallContext context)
+    {
+        return await _tasksService.GetTasksByUserIdsAsync(request);
+    }
     public override async Task<GetTaskByIdResponse> GetTaskById(GetTaskByIdRequest request, ServerCallContext context)
     {
         var task = await _tasksService.GetByIdAsync(request.Id);

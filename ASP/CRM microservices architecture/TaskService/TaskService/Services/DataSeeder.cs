@@ -15,14 +15,15 @@ public class DataSeeder
 
     public void Seed()
     {
-        if (_context.Tasks.Any()) return; 
-        
+        if (_context.Tasks.Any()) return;
+
         var taskFaker = new Faker<TaskEntity>()
             .RuleFor(t => t.Title, f => f.Lorem.Sentence(3))
             .RuleFor(t => t.Description, f => f.Lorem.Paragraph())
             .RuleFor(t => t.Status, f => f.Random.Enum<TasksStatus>())
             .RuleFor(t => t.DueDate, f => f.Date.Future(2).ToUniversalTime())
-            .RuleFor(t => t.OrderId, f => f.Random.Int(1, 30));
+            .RuleFor(t => t.OrderId, f => f.Random.Int(1, 30))
+            .RuleFor(t => t.UserId, f => f.Random.Int(1, 5));
 
         var tasks = taskFaker.Generate(60);
         _context.Tasks.AddRange(tasks);

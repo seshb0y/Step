@@ -4,7 +4,7 @@ using FluentValidation;
 
 namespace CRMSolution.Data.Validators.User;
 
-public class CreateUserValidator : AbstractValidator<CreateUserRequest>
+public class CreateUserValidator : AbstractValidator<HttpCreateUserRequest>
 {
     public CreateUserValidator()
     {

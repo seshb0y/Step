@@ -88,4 +88,10 @@ public class TasksRep : Repository<TaskEntity>, ITasksRep
             .ToListAsync();
     }
 
+    public async Task<List<TaskEntity>> GetTasksByUserId(List<int> userIds)
+    {
+        return await _context.Tasks
+            .Where(t => userIds.Contains(t.UserId))
+            .ToListAsync();
+    }
 }

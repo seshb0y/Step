@@ -20,7 +20,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("login")]
-    public async  Task<IActionResult> Login([FromBody] LoginRequest request)
+    public async  Task<IActionResult> Login([FromBody] HttpLoginRequest request)
     {
         var response = await _authService.LoginAsync(request, HttpContext);
         
@@ -28,14 +28,14 @@ public class AuthController : ControllerBase
         Response.Cookies.Append("refreshToken", response.refreshToken);
         
         
-        return Ok(new Result<LoginResponse>(true, response, "Successfully logged in"));
+        return Ok(new HttpResult<HttpLoginResponse>(true, response, "Successfully logged in"));
     }
 
     [HttpPost("refresh")]
     public async Task<IActionResult> Refresh()
     {
         var response = await _authService.RefreshTokenAsync(HttpContext);
-        return Ok(new Result<RefreshTokenResponse>(true, response, "Successfully refreshed token"));
+        return Ok(new HttpResult<RefreshTokenResponse>(true, response, "Successfully refreshed token"));
     }
 
     

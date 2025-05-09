@@ -91,4 +91,10 @@ public class OrderGrpcService : CRMSolution.Grpc.Orders.OrderGrpcService.OrderGr
     {
         return await _orderService.GetLowInfoOrdersAsync(request.Sort);
     }
+
+    public override async Task<GetOrdersByUserIdsResponse> GetOrdersByUserIds(GetOrdersByUserIdsRequest request,
+        ServerCallContext context)
+    {
+        return await _orderService.GetOrdersByUserIds(request);
+    }
 }

@@ -17,5 +17,6 @@ public interface IOrderService
     public Task ChangeResponsible(int orderId, ChangeResponsibleRequest request);
     Task<Order> GetByIdAsync(int orderId);
     Task<GetOrderFullInfoResponse> GetOrderInfo(GetOrderFullInfoRequest request);
+    Task<GetOrdersByUserIdsResponse>  GetOrdersByUserIds(GetOrdersByUserIdsRequest request);
 
 }

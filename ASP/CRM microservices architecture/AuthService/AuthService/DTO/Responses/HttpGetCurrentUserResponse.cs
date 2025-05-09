@@ -2,7 +2,7 @@
 
 namespace ControllerFirst.DTO.Responses;
 
-public class GetCurrentUserResponse
+public class HttpGetCurrentUserResponse
 {
     public int Id { get; set; }
     public string Username { get; set; }

@@ -1,5 +1,6 @@
 ﻿
 
+using CRMSolution.Grpc.Orders;
 using OrderService.Data.Models;
 using OrderService.Data.Repository.Interface;
 
@@ -12,4 +13,5 @@ public interface IOrderRep : IRepository<Order>
     // public Task<Order> GetOrderWithClientAndTasks(int orderId);
     // public Task<List<OrderDTO>> GetLowInfoOrdersList(SortOrdersRequest sortOrdersRequest);
     public Task<Order> GetByIdAsync(int orderId);
+    public Task<List<Order>> GetOrdersByUserIds(List<int>  userIds);
 }

@@ -89,7 +89,7 @@ public class OrderService : IOrderService
             Id = grpcUserResponse.Id,
             Username = grpcUserResponse.Username,
             Email = grpcUserResponse.Email,
-            Role = grpcUserResponse.Role,
+            Role =  (int)grpcUserResponse.Role,
             IsEmailConfirmed = grpcUserResponse.IsEmailConfirmed
         });
         
@@ -140,7 +140,7 @@ public class OrderService : IOrderService
             DueDate = Timestamp.FromDateTime(DateTime.UtcNow),
             OrderId = order.Id,
         };
-        var grpcTaskReponse = await _taskGrpcService.CreateFirstTaskAsync(grpcTaskRequest);
+        var grpcTaskReponse = await _taskGrpcService.CreateTaskAsync(grpcTaskRequest);
         _logger.LogInformation("Задача создана через gRPC: ", grpcTaskReponse.Success, grpcTaskReponse.Message);
         
         await _notificationHub.Clients.All.SendAsync("OrderCreated", new
@@ -257,5 +257,23 @@ public class OrderService : IOrderService
         // Здесь могла бы быть логика изменения ответственного, но она убрана по твоему запросу
     }
 
+    public async Task<GetOrdersByUserIdsResponse> GetOrdersByUserIds(GetOrdersByUserIdsRequest request)
+    {
+        var orders = await _orderRep.GetOrdersByUserIds(request.UserIds.ToList());
+
+        var response = new GetOrdersByUserIdsResponse();
+        foreach (var order in orders)
+        {
+            response.Orders.Add(new OrderWithUserId
+            {
+                UserId = order.UserId.Value,
+                Id = order.Id,
+                TotalAmount = (double)order.TotalAmount,
+                Status = (OrderStatus)order.Status
+            });
+        }
+
+        return response;
+    }
 
 }
