@@ -19,9 +19,11 @@ public class DataSeeder
         var orderFaker = new Faker<Order>()
             .RuleFor(o => o.TotalAmount, f => f.Finance.Amount(500, 10000))
             .RuleFor(o => o.Status, f => f.PickRandom<OrderStatus>())
-            .RuleFor(o => o.CreatedAt, f => f.Date.Past(1));
+            .RuleFor(o => o.CreatedAt, f => f.Date.Past(1))
+            .RuleFor(o => o.ClientId, f => f.Random.Int(1, 50))
+            .RuleFor(o => o.UserId, f => f.Random.Int(1, 10));
 
-        var orders = orderFaker.Generate(30);
+        var orders = orderFaker.Generate(50);
         
         _context.Orders.AddRange(orders);
         _context.SaveChanges(); 

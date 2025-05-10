@@ -27,7 +27,7 @@ public class DataSeeder
             .RuleFor(u => u.Role, f => f.PickRandom<UserRole>())
             .RuleFor(u => u.CreatedAt, f => f.Date.Past(1).ToUniversalTime());
 
-        var users = userFaker.Generate(5);
+        var users = userFaker.Generate(10);
 
         _context.Users.AddRange(users);
         _context.SaveChanges();

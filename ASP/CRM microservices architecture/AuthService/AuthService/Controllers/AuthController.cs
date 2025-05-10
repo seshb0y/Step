@@ -22,28 +22,28 @@ public class AuthController : ControllerBase
     [HttpPost("login")]
     public async  Task<IActionResult> Login([FromBody] HttpLoginRequest request)
     {
-        var response = await _authService.LoginAsync(request, HttpContext);
+        // var response = await _authService.LoginAsync(request, HttpContext);
+        //
+        // Response.Cookies.Append("accessToken", response.accessToken);
+        // Response.Cookies.Append("refreshToken", response.refreshToken);
         
-        Response.Cookies.Append("accessToken", response.accessToken);
-        Response.Cookies.Append("refreshToken", response.refreshToken);
         
-        
-        return Ok(new HttpResult<HttpLoginResponse>(true, response, "Successfully logged in"));
+        return Ok("new HttpResult<HttpLoginResponse>(true, response, \"Successfully logged in\")");
     }
 
     [HttpPost("refresh")]
     public async Task<IActionResult> Refresh()
     {
-        var response = await _authService.RefreshTokenAsync(HttpContext);
-        return Ok(new HttpResult<RefreshTokenResponse>(true, response, "Successfully refreshed token"));
+        // var response = await _authService.RefreshTokenAsync(HttpContext);
+        return Ok("new HttpResult<RefreshTokenResponse>(true, response, \"Successfully refreshed token\")");
     }
 
     
     [HttpPost("logout")]
     public async Task<IActionResult> Logout()
     {
-        await _authService.LogoutAsync(HttpContext);
-        return Ok(new { message = "Logged out successfully" });
+        // await _authService.LogoutAsync(HttpContext);
+        return Ok("new { message = \"Logged out successfully\" }");
     }
 
 }

@@ -47,9 +47,9 @@ public class TokenService : ITokenService
         }
     }
     
-    public async Task<string> GetNameFromCookies(HttpContext context)
+    public async Task<string> GetNameFromCookies(string token)
     {
-        var accessToken = context.Request.Cookies["accessToken"];
+        var accessToken = token;
         if (string.IsNullOrEmpty(accessToken))
             throw new SecurityTokenException("Access token is missing");
 

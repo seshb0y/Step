@@ -26,7 +26,7 @@ public class ClientController : ControllerBase
     public async Task<IActionResult> AddClient([FromBody] HttpCreateClientRequest request)
     {
         
-        return Ok(await _clientService.CreateClient(request));
+        return Ok("await _clientService.CreateClient(request)");
     }
     
     [HttpPut]
@@ -41,14 +41,14 @@ public class ClientController : ControllerBase
         }
 
         
-        return Ok(await _clientService.ChangeDataClient(request));
+        return Ok("await _clientService.ChangeDataClient(request)");
     }
     
     [HttpDelete]
     // [Authorize(Policy = "ManagerPolicy")]
     public async Task<IActionResult> DeleteClient([FromBody] HttpDeleteClientRequest request)
     {
-        await _clientService.DeleteClient(request);
+        // await _clientService.DeleteClient(request);
         return Ok("Client deleted");
     }
     
@@ -56,14 +56,14 @@ public class ClientController : ControllerBase
     // [Authorize(Policy = "ManagerPolicy")]
     public async Task<IActionResult> LoadClientData([FromQuery] HttpFindClientRequest request)
     {
-        return Ok(await _clientService.FindClient(request));
+        return Ok("await _clientService.FindClient(request)");
     }
 
     [HttpGet]
     public async Task<IActionResult> GetAllClients([FromQuery] HttpSortClientsRequest httpSortClientsRequest)
     {
-        var clients = await _clientService.GetAllClients(httpSortClientsRequest);
-        return Ok(clients);
+        // var clients = await _clientService.GetAllClients(httpSortClientsRequest);
+        return Ok("clients");
     }
     
     [HttpGet("relations")]

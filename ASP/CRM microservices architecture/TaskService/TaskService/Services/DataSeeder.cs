@@ -22,10 +22,10 @@ public class DataSeeder
             .RuleFor(t => t.Description, f => f.Lorem.Paragraph())
             .RuleFor(t => t.Status, f => f.Random.Enum<TasksStatus>())
             .RuleFor(t => t.DueDate, f => f.Date.Future(2).ToUniversalTime())
-            .RuleFor(t => t.OrderId, f => f.Random.Int(1, 30))
-            .RuleFor(t => t.UserId, f => f.Random.Int(1, 5));
+            .RuleFor(t => t.OrderId, f => f.Random.Int(1, 50))
+            .RuleFor(t => t.UserId, f => f.Random.Int(1, 10));
 
-        var tasks = taskFaker.Generate(60);
+        var tasks = taskFaker.Generate(100);
         _context.Tasks.AddRange(tasks);
         _context.SaveChanges();
     }

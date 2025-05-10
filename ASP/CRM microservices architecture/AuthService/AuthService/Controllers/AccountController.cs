@@ -22,17 +22,17 @@ public class AccountController : ControllerBase
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] HttpRegisterRequest request)
     {
-        var validator = new RegisterValidator();
-        var result = validator.Validate(request);
+        // var validator = new RegisterValidator();
+        // var result = validator.Validate(request);
+        //
+        // if (!result.IsValid)
+        // {
+        //     return BadRequest(result.Errors);
+        // }
+        //
+        // await _accountService.RegisterAsync(request);
 
-        if (!result.IsValid)
-        {
-            return BadRequest(result.Errors);
-        }
-
-        await _accountService.RegisterAsync(request);
-
-        return Ok(new HttpResult<string>(true, request.Username, "Successfully registered"));
+        return Ok("new HttpResult<string>(true, request.Username, \"Successfully registered\")");
     }
 
     // [Authorize(Policy = "AdminPolicy")]
@@ -47,25 +47,25 @@ public class AccountController : ControllerBase
     [HttpPost("email/confirm")]
     public async Task<IActionResult> ConfirmEmailAsync([FromBody] HttpConfirmRequest request)
     {
-        await _accountService.ConfirmEmailAsync(request, HttpContext);
+        // await _accountService.ConfirmEmailAsync(request, HttpContext);
 
-        return Ok(new HttpResult<string>(true, request.username, "Email sent"));
+        return Ok("new HttpResult<string>(true, request.username, \"Email sent\")");
     }
 
     [HttpPost("password/reset")]
     public async Task<IActionResult> ResetPasswordAsync([FromBody] HttpResetPasswordRequest request)
     {
-        await _accountService.ResetPasswordAsync(request, HttpContext);
+        // await _accountService.ResetPasswordAsync(request, HttpContext);
 
-        return Ok(new HttpResult<string>(true, request.username, "Reset password mail sent"));
+        return Ok("new HttpResult<string>(true, request.username, \"Reset password mail sent\")");
     }
 
     [HttpPost("password/change")]
     public async Task<IActionResult> ChangePasswordAsync([FromBody] HttpChangePasswordRequest request)
     {
-        await _accountService.ChangePasswordAsync(request);
+        // await _accountService.ChangePasswordAsync(request);
 
-        return Ok(new HttpResult<string>(true, "Password changed", "Password changed"));
+        return Ok("new HttpResult<string>(true, \"Password changed\", \"Password changed\")");
     }
 
     [HttpGet("me")]

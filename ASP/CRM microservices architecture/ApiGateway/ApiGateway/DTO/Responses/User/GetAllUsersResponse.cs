@@ -1,6 +1,8 @@
 ﻿using System.Runtime.InteropServices.JavaScript;
 using CRMSolution.Grpc.Orders;
 using CRMSolution.Grpc.Users;
+using OrderStatus = CRMSolution.Grpc.Users.OrderStatus;
+using UserRole = CRMSolution.Grpc.Orders.UserRole;
 
 public class GetAllUsersResponse
 {
