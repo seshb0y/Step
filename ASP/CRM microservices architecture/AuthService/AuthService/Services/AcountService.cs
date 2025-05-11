@@ -46,8 +46,6 @@ public class AccountService : IAccountService
             throw new Exception("User with this email or username already exists");
         }
 
-        if (request.Password != request.ConfirmPassword)
-            throw new Exception("Passwords do not match");
 
         var user = _mapper.Map<User>(request);
         user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password);

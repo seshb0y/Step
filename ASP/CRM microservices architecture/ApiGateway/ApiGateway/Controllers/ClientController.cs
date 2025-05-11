@@ -36,8 +36,7 @@ public class ClientController : ControllerBase
     
     [HttpPut]
     // [Authorize(Policy = "ManagerPolicy")]
-    public async Task<IActionResult> ChangeClient([FromBody] HttpChangeDataClientRequest request, 
-        [FromServices] IValidator<ChangeDataClientRequest> validator)
+    public async Task<IActionResult> ChangeClient([FromBody] HttpChangeDataClientRequest request)
     {
         // var validationResult = await validator.ValidateAsync(request);
         // if (!validationResult.IsValid)

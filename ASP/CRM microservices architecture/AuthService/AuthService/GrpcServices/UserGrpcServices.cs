@@ -136,7 +136,9 @@ public class UserGrpcService : UserService.UserServiceBase
     public override async Task<RefreshTokenResponse> RefreshToken(RefreshTokenRequest request,
         ServerCallContext context)
     {
-        return await _authService.RefreshTokenAsync(request);
+        var accessToken = context.RequestHeaders.FirstOrDefault(h => h.Key == "accessToken").Value;
+        var refreshToken = context.RequestHeaders.FirstOrDefault(h => h.Key == "refreshToken").Value;
+        return await _authService.RefreshTokenAsync(accessToken, refreshToken);
     }
 
     public override async Task<GetNameFromTokenResponse> GetNameFromToken(GetNameFromTokenRequest request,

@@ -4,7 +4,7 @@ using CRMSolution.Grpc.Users;
 using OrderStatus = CRMSolution.Grpc.Users.OrderStatus;
 using UserRole = CRMSolution.Grpc.Orders.UserRole;
 
-public class GetAllUsersResponse
+public class HttpGetAllUsersResponse
 {
     public List<GetAllUsersUserResponse> Users { get; set; }
 }

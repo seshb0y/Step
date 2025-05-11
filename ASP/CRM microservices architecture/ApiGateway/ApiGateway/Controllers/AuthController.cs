@@ -1,7 +1,11 @@
 ﻿using CRMSolution.Grpc.Users;
+using MailKit;
+using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
+using LoginRequest = CRMSolution.Grpc.Users.LoginRequest;
+using Metadata = Grpc.Core.Metadata;
 
- namespace ApiGateway.Controllers;
+namespace ApiGateway.Controllers;
 
  [ApiController]
  [Route("api/v1/auth/")]
@@ -46,8 +50,13 @@ using Microsoft.AspNetCore.Mvc;
      [HttpPost("refresh")]
      public async Task<IActionResult> Refresh()
      {
-         // var response = await _authService.RefreshTokenAsync(HttpContext);
-         return Ok("new Result<RefreshTokenResponse>(true, response, \"Successfully refreshed token\")");
+         string accessToken =  Request.Cookies["accessToken"];
+         string  refreshToken = Request.Cookies["refreshToken"];
+         var metadata = new Metadata();
+         metadata.Add("accessToken", accessToken);
+         metadata.Add("refreshToken", refreshToken);
+         var grpcResponse = await _authService.RefreshTokenAsync(new RefreshTokenRequest(), metadata);
+         return Ok(grpcResponse);
      }
 
      

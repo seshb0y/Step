@@ -9,7 +9,7 @@ public interface IAuthService
 {
     public Task<LoginResponse> LoginAsync(LoginRequest request);
     
-    public Task<RefreshTokenResponse> RefreshTokenAsync(RefreshTokenRequest request);
+    public Task<RefreshTokenResponse> RefreshTokenAsync(string accessToken, string refreshToken);
 
     // public Task LogoutAsync(HttpContext context);
 }

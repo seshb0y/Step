@@ -69,12 +69,9 @@ public class AuthService : IAuthService
 
     }
 
-    public async Task<RefreshTokenResponse> RefreshTokenAsync(RefreshTokenRequest request)
+    public async Task<RefreshTokenResponse> RefreshTokenAsync(string accessToken, string refreshToken)
     {
         _logger.LogInformation("Обновление токена через gRPC");
-
-        var accessToken = request.AccessToken;
-        var refreshToken = request.RefreshToken;
 
         if (string.IsNullOrEmpty(refreshToken) || string.IsNullOrEmpty(accessToken))
             throw new RpcException(new Status(StatusCode.InvalidArgument, "Tokens are missing"));

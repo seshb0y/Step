@@ -2,6 +2,7 @@
 using ControllerFirst.DTO.Responses;
 using CRMSolution.Data.Validators.Auth;
 using CRMSolution.Services.Interfaces;
+using Grpc.Core;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CRMSolution.Controllers;
@@ -69,8 +70,9 @@ public class AccountController : ControllerBase
     }
 
     [HttpGet("me")]
-    public async Task<IActionResult> GetMeAsync()
+    public async Task<IActionResult> GetMeAsync(ServerCallContext context)
     {
-        return Ok(await _accountService.GetCurrentUserAsync());
+        var token = context.RequestHeaders.FirstOrDefault(x => x.Key == "accessToken").Value;
+        return Ok(await _accountService.GetCurrentUserAsync(token));
     }
 }
