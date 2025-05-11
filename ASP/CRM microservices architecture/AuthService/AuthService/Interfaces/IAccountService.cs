@@ -13,6 +13,6 @@ public interface IAccountService
     public Task VerifyEmailAsync(string token);
     public Task ResetPasswordAsync(ResetPasswordRequest request);
     
-    public Task ChangePasswordAsync(ChangePasswordRequest request);
-    public Task<CurrentUserResponse> GetCurrentUserAsync();
+    public Task ChangePasswordAsync(ChangePasswordRequest request, string token);
+    public Task<CurrentUserResponse> GetCurrentUserAsync(string token);
 }

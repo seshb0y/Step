@@ -172,16 +172,13 @@ message DefaultRequest{
 
 message ChangePasswordRequest{
   string newPassword = 1;
-  string token = 2;
 }
 
 message ResetPasswordRequest{
   string username = 1;
 }
 
-message VerifyEmailRequest{
-  string token = 1;
-}
+message VerifyEmailRequest{}
 
 message ConfirmRequest{
   string username = 1;

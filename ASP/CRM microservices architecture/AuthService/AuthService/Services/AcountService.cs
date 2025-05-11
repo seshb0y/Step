@@ -126,14 +126,14 @@ public class AccountService : IAccountService
         await SendEmailAsync(user.Email, "Сброс пароля", emailBody);
     }
 
-    public async Task ChangePasswordAsync(ChangePasswordRequest request)
+    public async Task ChangePasswordAsync(ChangePasswordRequest request, string token)
     {
         _logger.LogInformation("Изменение пароля: {@Request}", request);
-        bool isValid = await _tokenService.ValidateChangePasswordTokenAsync(request.Token);
+        bool isValid = await _tokenService.ValidateChangePasswordTokenAsync(token);
         if (!isValid)
             throw new Exception("Invalid or expired token");
 
-        var username = await _tokenService.GetNameFromToken(request.Token);
+        var username = await _tokenService.GetNameFromToken(token);
         var user = await _userRep.FindByNameAsync(username);
         if (user == null)
             throw new Exception("User not found");
@@ -142,19 +142,8 @@ public class AccountService : IAccountService
         await _userRep.SaveChangesAsync();
     }
     
-    public async Task<CurrentUserResponse> GetCurrentUserAsync()
+    public async Task<CurrentUserResponse> GetCurrentUserAsync(string token)
     {
-        var httpContext = _httpContextAccessor.HttpContext;
-        if (httpContext == null)
-        {
-            throw new Exception("HttpContext is not available");
-        }
-
-        var token = httpContext.Request.Cookies["accessToken"];
-        if (string.IsNullOrEmpty(token))
-        {
-            throw new Exception("No accessToken found");
-        }
 
         string username = await _tokenService.GetNameFromToken(token);
         if (string.IsNullOrEmpty(username))

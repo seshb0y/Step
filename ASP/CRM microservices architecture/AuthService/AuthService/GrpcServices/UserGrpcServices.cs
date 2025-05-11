@@ -82,7 +82,8 @@ public class UserGrpcService : UserService.UserServiceBase
 
     public override async Task<DefaultResponse> VerifyEmail(VerifyEmailRequest request, ServerCallContext context)
     {
-        await _accountService.VerifyEmailAsync(request.Token);
+        var token = context.RequestHeaders.FirstOrDefault(h => h.Key == "token").Value;
+        await _accountService.VerifyEmailAsync(token);
         return new DefaultResponse
         {
             Message = "verify email success",
@@ -102,7 +103,8 @@ public class UserGrpcService : UserService.UserServiceBase
 
     public override async Task<DefaultResponse> ChangePassword(ChangePasswordRequest request, ServerCallContext context)
     {
-        await _accountService.ChangePasswordAsync(request);
+        var token = context.RequestHeaders.FirstOrDefault(h => h.Key == "token").Value;
+        await _accountService.ChangePasswordAsync(request, token);
         return new DefaultResponse
         {
             Message = "password change success",
@@ -112,7 +114,8 @@ public class UserGrpcService : UserService.UserServiceBase
 
     public override async Task<CurrentUserResponse> GetCurrentUser(DefaultRequest request, ServerCallContext context)
     {
-        return await _accountService.GetCurrentUserAsync();
+        var token = context.RequestHeaders.FirstOrDefault(h => h.Key == "token").Value;
+        return await _accountService.GetCurrentUserAsync(token);
     }
 
     public override async Task<DefaultResponse> SendEmail(SendEmailRequest request, ServerCallContext context)

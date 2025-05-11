@@ -30,7 +30,7 @@ using Microsoft.AspNetCore.Mvc;
                  HttpOnly = true,
                  Secure = true,
                  SameSite = SameSiteMode.Strict,
-                 Expires = DateTime.UtcNow.AddMinutes(15)
+                 Expires = DateTime.UtcNow.AddMinutes(30)
          });
          Response.Cookies.Append("refreshToken", grpcResponse.RefreshToken,
              new CookieOptions{
