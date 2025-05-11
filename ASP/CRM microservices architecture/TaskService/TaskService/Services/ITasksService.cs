@@ -15,5 +15,6 @@ public interface ITasksService
     Task<TaskEntity> GetByIdAsync(int id);
     Task<GetTaskByOrderIdResponse> GetTasksByOrderIdAsync(int orderId);
     Task<GetTasksByUserIdsResponse> GetTasksByUserIdsAsync(GetTasksByUserIdsRequest request);
+    Task<GetTasksByOrderIdsResponse> GetTasksByOrderIdsAsync(GetTasksByOrderIdsRequest request);
 
 }

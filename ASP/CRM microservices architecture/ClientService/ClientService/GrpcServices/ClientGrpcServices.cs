@@ -51,4 +51,41 @@ public class ClientGrpcService : CRMSolution.Grpc.Client.ClientGrpcService.Clien
     {
         return await _clientService.GetClientsByIds(request);
     }
+
+    public override async Task<DefaultClientResponse> CreateClient(CreateClientRequest request,
+        ServerCallContext context)
+    {
+        return await _clientService.CreateClient(request);
+    }
+
+    public override async Task<DefaultClientResponse> ChangeDataClient(ChangeDataClientRequest request,
+        ServerCallContext context)
+    {
+        return await _clientService.ChangeDataClient(request);
+    }
+
+    public override async Task<DefaultClientResponse> DeleteClient(DeleteClientRequest request,
+        ServerCallContext context)
+    {
+        await _clientService.DeleteClient(request);
+        return new DefaultClientResponse
+        {
+            Message = "client deleted",
+            Success = true
+        };
+    }
+
+    public override async Task<GetAllClientsResponse> GetAllClients(GetAllClientsRequest request,
+        ServerCallContext context)
+    {
+        return await _clientService.GetAllClients(request);
+    }
+
+    public override async Task<GetClientsWithOrdersAndTasksResponse> GetClientsWithOrdersAndTasks(
+        GetClientWithOrdersAndTasksRequest request,
+        ServerCallContext context)
+    {
+        var token = context.RequestHeaders.FirstOrDefault(h => h.Key == "authorization").Value;
+        return await _clientService.GetClientsWithOrdersAndTasksAsync(token);
+    }
 }

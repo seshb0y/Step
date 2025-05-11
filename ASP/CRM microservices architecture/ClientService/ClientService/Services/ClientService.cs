@@ -7,9 +7,12 @@ using ClientService.Hubs;
 using ClientService.Services.Interfaces;
 using CRMSolution.DTO.Requests.Client;
 using CRMSolution.Grpc.Client;
+using CRMSolution.Grpc.Orders;
 using CRMSolution.Grpc.Tasks;
+using CRMSolution.Grpc.Users;
 using Google.Protobuf.WellKnownTypes;
 using Microsoft.AspNetCore.SignalR;
+using TaskDto = CRMSolution.Grpc.Client.TaskDto;
 
 namespace ClientService.Services.Classes;
 
@@ -19,13 +22,21 @@ public class ClientService : IClientService
     private readonly IMapper _mapper;
     private readonly ILogger<ClientService> _logger;
     private readonly IHubContext<NotificationHub> _hubContext;
+    private readonly UserService.UserServiceClient _userGrpcClient;
+    private readonly OrderGrpcService.OrderGrpcServiceClient _orderGrpcClient;
+    private readonly TaskGrpcService.TaskGrpcServiceClient _taskGrpcClient;
     
-    public ClientService(IClientRep clientRepository, IMapper mapper, ILogger<ClientService> logger, IHubContext<NotificationHub> hubContext)
+    public ClientService(IClientRep clientRepository, IMapper mapper, ILogger<ClientService> logger, IHubContext<NotificationHub> hubContext
+    , UserService.UserServiceClient userGrpcClient, OrderGrpcService.OrderGrpcServiceClient orderGrpcClient, TaskGrpcService.TaskGrpcServiceClient taskGrpcClient)
     {
         _clientRepository = clientRepository;
         _mapper = mapper;
         _logger = logger;
         _hubContext = hubContext;
+        _userGrpcClient = userGrpcClient;
+        _orderGrpcClient = orderGrpcClient;
+        _taskGrpcClient = taskGrpcClient;
+        
     }
     
     public async Task<DefaultClientResponse> CreateClient(CreateClientRequest request)
@@ -198,5 +209,63 @@ public class ClientService : IClientService
         {
             ClientName = { names }
         };
+    }
+    public async Task<GetClientsWithOrdersAndTasksResponse> GetClientsWithOrdersAndTasksAsync(string httpContext)
+    {
+        var token = httpContext;
+        var username = (await _userGrpcClient.GetNameFromTokenAsync(new GetNameFromTokenRequest { Token = token })).Username;
+        var user = await _userGrpcClient.FindUserAsync(new GetUserByEmailRequest { Email = username });
+
+        var ordersResponse = await _orderGrpcClient.GetOrdersByUserIdsAsync(
+            new GetOrdersByUserIdsRequest { UserIds = { user.Id } });
+
+        var orders = ordersResponse.Orders;
+        var orderIds = orders.Select(o => o.Id).ToList();
+        var clientIds = orders.Select(o => o.ClientId).Distinct().ToList();
+
+        var tasksResponse = await _taskGrpcClient.GetTasksByOrderIdsAsync(
+            new GetTasksByOrderIdsRequest { OrderIds = { orderIds } });
+
+        var tasks = tasksResponse.Tasks;
+        var clients = await _clientRepository.GetClientsByIdsAsync(clientIds);
+
+        var response = new GetClientsWithOrdersAndTasksResponse();
+
+        response.Clients.AddRange(clients.Select(client =>
+        {
+            var clientOrders = orders.Where(o => o.ClientId == client.Id).ToList();
+
+            return new ClientWithOrdersAndTasks
+            {
+                Id = client.Id,
+                Name = client.Name,
+                Email = client.Email,
+                Phone = client.Phone,
+                Address = client.Address,
+                CreatedAt = Timestamp.FromDateTime(client.CreatedAt.ToUniversalTime()),
+                Orders = {
+                    clientOrders.Select(order => new KanbanOrder
+                    {
+                        Id = order.Id,
+                        TotalAmount = order.TotalAmount,
+                        Status = order.Status.ToString(),
+                        CreatedAt = Timestamp.FromDateTime(order.CreatedAt.ToDateTime()),
+                        Tasks = {
+                            tasks.Where(t => t.OrderId == order.Id).Select(t => new TaskDto
+                            {
+                                Id = t.Id,
+                                Title = t.Title,
+                                Description = t.Description,
+                                Status = t.Status.ToString(),
+                                DueDate = t.DueDate
+                            })
+                        }
+                    })
+                }
+            };
+        }));
+
+        return response;
+
     }
 }

@@ -14,7 +14,10 @@ using CRMSolution.Grpc.Client;
 using CRMSolution.Grpc.Orders;
 using CRMSolution.Grpc.Tasks;
 using Google.Protobuf.WellKnownTypes;
+using ClientDto = CRMSolution.Grpc.Orders.ClientDto;
 using OrderStatus = CRMSolution.Grpc.Orders.OrderStatus;
+using TaskDto = CRMSolution.Grpc.Orders.TaskDto;
+using UserRole = CRMSolution.Grpc.Orders.UserRole;
 
 
 namespace OrderService.Services.Classes;
@@ -89,7 +92,7 @@ public class OrderService : IOrderService
             Id = grpcUserResponse.Id,
             Username = grpcUserResponse.Username,
             Email = grpcUserResponse.Email,
-            Role =  (int)grpcUserResponse.Role,
+            Role =  (UserRole)grpcUserResponse.Role,
             IsEmailConfirmed = grpcUserResponse.IsEmailConfirmed
         });
         
@@ -269,7 +272,9 @@ public class OrderService : IOrderService
                 UserId = order.UserId.Value,
                 Id = order.Id,
                 TotalAmount = (double)order.TotalAmount,
-                Status = (OrderStatus)order.Status
+                Status = (OrderStatus)order.Status,
+                ClientId = order.ClientId.Value,
+                CreatedAt = Timestamp.FromDateTime(order.CreatedAt.ToUniversalTime()),
             });
         }
 

@@ -3,7 +3,9 @@ using AuthService.Data;
 using CRMSolution.Data.Repository;
 using CRMSolution.Data.Repository.Interface;
 using CRMSolution.Data.Repository.UserRep;
+using CRMSolution.Grpc.Client;
 using CRMSolution.Grpc.Orders;
+using CRMSolution.Grpc.Tasks;
 using CRMSolution.Hubs;
 using CRMSolution.Services;
 using CRMSolution.Services.Classes;
@@ -70,22 +72,22 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddAuthorization();
 builder.Services.AddGrpc();
 
-// builder.Services.AddGrpcClient<TaskService.TaskServiceClient>(o =>
-// {
-//     o.Address = new Uri("http://taskservice:5003");
-// });
-// builder.Services.AddGrpcClient<OrderService.OrderServiceClient>(o =>
-// {
-//     o.Address = new Uri("http://localhost:5234");
-// })
-// .ConfigureChannel(o =>
-// {
-//     o.Credentials = Grpc.Core.ChannelCredentials.Insecure;
-// });
-// builder.Services.AddGrpcClient<ClientService.ClientServiceClient>(o =>
-// {
-//     o.Address = new Uri("http://clientservice:5004");
-// });
+builder.Services.AddGrpcClient<TaskGrpcService.TaskGrpcServiceClient>(o =>
+{
+    o.Address = new Uri("http://taskservice:5296");
+});
+builder.Services.AddGrpcClient<OrderGrpcService.OrderGrpcServiceClient>(o =>
+{
+    o.Address = new Uri("http://localhost:5235");
+})
+.ConfigureChannel(o =>
+{
+    o.Credentials = Grpc.Core.ChannelCredentials.Insecure;
+});
+builder.Services.AddGrpcClient<ClientGrpcService.ClientGrpcServiceClient>(o =>
+{
+    o.Address = new Uri("http://clientservice:5111");
+});
 
 builder.WebHost.ConfigureKestrel(options =>
 {

@@ -76,7 +76,7 @@ public class TokenService : ITokenService
             issuer: _config.GetSection("JWT:Issuer").Get<string[]>()[0],
             audience: _config.GetSection("JWT:Audience").Get<string[]>()[0],
             claims: claims,
-            expires: DateTime.UtcNow.AddMinutes(1),
+            expires: DateTime.UtcNow.AddMinutes(30),
             signingCredentials: signingCredentials
         );
 

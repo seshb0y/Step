@@ -77,7 +77,7 @@ public class UserService : IUserService
     public async Task<GetUserResponse> FindUser(GetUserByEmailRequest request)
     {
         _logger.LogInformation("Поиск юзера: {@Request}", request);
-        var userEntity = await _userRepository.FindByEmailAsync(request.Email);
+        var userEntity = await _userRepository.FindByNameAsync(request.Email);
         if (request.OrderId != 0)
         {
             userEntity.OrderId = request.OrderId;

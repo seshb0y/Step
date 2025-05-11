@@ -2,7 +2,7 @@
 
 namespace ApiGateway.DTO.Responses;
 
-public class GetAllClientsResponse
+public class HttpGetAllClientsResponse
 {
     public List<ClientDto> Clients { get; set; }
 }

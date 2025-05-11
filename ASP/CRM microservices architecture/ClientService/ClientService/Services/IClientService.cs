@@ -17,4 +17,5 @@ public interface IClientService
     Task<Client> GetByEmailAsync(GetClientByEmailRequest request);
     Task<Client> GetByIdAsync(GetClientByIdRequest request);
     Task<GetClientsByIdsResponse> GetClientsByIds(GetClientsByIdsRequest request);
+    Task<GetClientsWithOrdersAndTasksResponse> GetClientsWithOrdersAndTasksAsync(string request);
 }

@@ -14,6 +14,9 @@ using ClientService.GrpcServices;
 using ClientService.Hubs;
 using ClientService.Services;
 using ClientService.Services.Interfaces;
+using CRMSolution.Grpc.Orders;
+using CRMSolution.Grpc.Tasks;
+using CRMSolution.Grpc.Users;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -66,15 +69,26 @@ builder.Services.AddSignalR();
 
 // gRPC сервер и клиент
 builder.Services.AddGrpc();
-// builder.Services.AddGrpcClient<TaskService.TaskSer>(o =>
-//     {
-//         o.Address = new Uri("http://localhost:5234");
-//     })
-//     .ConfigureChannel(options =>
-//     {
-//         options.Credentials = Grpc.Core.ChannelCredentials.Insecure;
-//     });
-
+builder.Services.AddGrpcClient<UserService.UserServiceClient>(o =>
+    {
+        o.Address = new Uri("http://localhost:5171");
+    })
+    .ConfigureChannel(options =>
+    {
+        options.Credentials = Grpc.Core.ChannelCredentials.Insecure;
+    });
+builder.Services.AddGrpcClient<OrderGrpcService.OrderGrpcServiceClient>(o =>
+    {
+        o.Address = new Uri("http://localhost:5235");
+    })
+    .ConfigureChannel(o =>
+    {
+        o.Credentials = Grpc.Core.ChannelCredentials.Insecure;
+    });
+builder.Services.AddGrpcClient<TaskGrpcService.TaskGrpcServiceClient>(o =>
+{
+    o.Address = new Uri("http://localhost:5296");
+});
 
 
 

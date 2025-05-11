@@ -2,7 +2,7 @@
 
 namespace ApiGateway.DTO.Responses;
 
-public class FindClientResponse
+public class HttpFindClientResponse
 {
     public OrderDto[]? Orders { get; set; }
     public UserDto[]? Users { get; set; }

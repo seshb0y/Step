@@ -15,11 +15,14 @@ public class DataSeeder
 
     public void Seed()
     {
+        if (_context.Orders.Any()) return;
+        
         int orderId = 1;
         var orderFaker = new Faker<Order>()
             .RuleFor(o => o.TotalAmount, f => f.Finance.Amount(500, 10000))
             .RuleFor(o => o.Status, f => f.PickRandom<OrderStatus>())
-            .RuleFor(o => o.CreatedAt, f => f.Date.Past(1))
+            .RuleFor(o => o.CreatedAt, f => f.Date.Past(1).ToUniversalTime())
+            .RuleFor(o => o.IsDeleted, f =>  f.Equals(false))
             .RuleFor(o => o.ClientId, f => f.Random.Int(1, 50))
             .RuleFor(o => o.UserId, f => f.Random.Int(1, 10));
 

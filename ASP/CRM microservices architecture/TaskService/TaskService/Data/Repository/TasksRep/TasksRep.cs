@@ -94,4 +94,11 @@ public class TasksRep : Repository<TaskEntity>, ITasksRep
             .Where(t => userIds.Contains(t.UserId))
             .ToListAsync();
     }
+    
+    public async Task<List<TaskEntity>> GetTasksByOrderIds(List<int> orderIds)
+    {
+        return await _context.Tasks
+            .Where(t => orderIds.Contains(t.OrderId))
+            .ToListAsync();
+    }
 }

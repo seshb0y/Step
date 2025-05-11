@@ -16,6 +16,7 @@ using OrderService.Hubs;
 using OrderService.Services.Interfaces;
 using CRMSolution.Grpc.Users;
 using OrderService.GrpcServices;
+using OrderService.Services;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -61,6 +62,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 builder.Services.AddAuthorization();
+builder.Services.AddTransient<DataSeeder>();
 
 // SignalR
 builder.Services.AddSignalR();
@@ -146,6 +148,8 @@ using (var scope = app.Services.CreateScope())
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<OrderDbContext>();
     context.Database.Migrate();
+    var seeder = services.GetRequiredService<DataSeeder>();
+    seeder.Seed();
 }
 
 app.Run();

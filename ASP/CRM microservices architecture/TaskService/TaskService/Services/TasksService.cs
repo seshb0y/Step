@@ -211,4 +211,23 @@ public class TasksService : ITasksService
         }
         return response;
     }
+    
+    public async Task<GetTasksByOrderIdsResponse> GetTasksByOrderIdsAsync(GetTasksByOrderIdsRequest request)
+    {
+        var tasks = await _tasksRep.GetTasksByOrderIds(request.OrderIds.ToList());
+        var response = new GetTasksByOrderIdsResponse();
+        foreach (var task in tasks)
+        {
+            response.Tasks.Add(new GetTaskByIdResponse()
+            {
+                OrderId = task.OrderId,
+                Id = task.Id,
+                Title = task.Title,
+                Description = task.Description,
+                Status = (int)task.Status,
+                DueDate = Timestamp.FromDateTime(task.DueDate.ToUniversalTime())
+            });
+        }
+        return response;
+    }
 }

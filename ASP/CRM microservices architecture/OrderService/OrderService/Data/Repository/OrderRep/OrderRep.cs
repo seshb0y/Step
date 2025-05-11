@@ -19,7 +19,10 @@ public class OrderRep : Repository<Order>, IOrderRep
 
     public async Task<List<Order>> GetOrdersByUserIds(List<int> userIds)
     {
-        var orders = await _context.Orders.Where(o => userIds.Contains(o.Id)).ToListAsync();
+        var orders = await _context.Orders
+            .Where(o => o.UserId.HasValue && userIds.Contains(o.UserId.Value))
+            .ToListAsync();
+
         return orders;
     }
 
