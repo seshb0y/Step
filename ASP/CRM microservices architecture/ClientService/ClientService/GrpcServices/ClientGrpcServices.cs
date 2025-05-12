@@ -88,4 +88,9 @@ public class ClientGrpcService : CRMSolution.Grpc.Client.ClientGrpcService.Clien
         var token = context.RequestHeaders.FirstOrDefault(h => h.Key == "authorization").Value;
         return await _clientService.GetClientsWithOrdersAndTasksAsync(token);
     }
+
+    public override async Task<GetDashboardDataResponse> GetDashboardData(GetDashboardDataRequest request, ServerCallContext context)
+    {
+        return await _clientService.GetDashboardData(request);
+    }
 }

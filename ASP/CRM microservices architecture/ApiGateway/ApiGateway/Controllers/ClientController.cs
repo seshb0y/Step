@@ -107,6 +107,12 @@ public class ClientController : ControllerBase
         return Ok(grpcResponse);
     }
 
+    [HttpGet("dashboard")]
+    public async Task<IActionResult> GetDashboard()
+    {
+        var grpcResponse = _clientService.GetDashboardData(new GetDashboardDataRequest());
+        return Ok(grpcResponse);
+    }
 
 
 }

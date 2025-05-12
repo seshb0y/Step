@@ -25,9 +25,9 @@ service ClientGrpcService {
 message GetDashboardDataResponse{
   double ordersTotalAmount = 1;
   int32 ordersCount = 2;
-  google.protobuf.Timestamp ordersCreatedDates = 3;
+  repeated google.protobuf.Timestamp ordersCreatedDates = 3;
   int32 clientsAmount = 4;
-  GrpcTaskStatus tasksStatuses = 5;
+  repeated GrpcTaskStatus tasksStatuses = 5;
   int32 tasksCount = 6;
 }
 message GetDashboardDataRequest{}
