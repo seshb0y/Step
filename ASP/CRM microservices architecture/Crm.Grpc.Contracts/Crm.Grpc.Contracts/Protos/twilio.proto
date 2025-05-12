@@ -1,0 +1,10 @@
+﻿syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+option csharp_namespace = "CRMSolution.Grpc.Twilio";
+
+package twilio;
+
+service TwilioGrpcService {
+  
+}

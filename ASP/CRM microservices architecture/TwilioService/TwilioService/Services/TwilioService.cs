@@ -1,0 +1,62 @@
+﻿using CRMSolution.Data.Repository.Interface;
+using TaskService.Data;
+using Twilio;
+using Twilio.Rest.Api.V2010.Account;
+using Twilio.Types;
+using TwilioService.Services;
+
+namespace CRMSolution.Services.Classes;
+
+public class TwilioService : ITwilioService
+{
+    private readonly string _accountSid;
+    private readonly string _authToken;
+    private readonly string _twilioNumber;
+    private readonly string _twimlUrl;
+    
+    public TwilioService(IConfiguration configuration)
+    {
+        _accountSid = configuration["Twilio:AccountSid"];
+        _authToken = configuration["Twilio:AuthToken"];
+        _twilioNumber = configuration["Twilio:PhoneNumber"];
+        _twimlUrl = configuration["Twilio:TwiMLUrl"];
+        TwilioClient.Init(_accountSid, _authToken);
+    }
+    
+    
+    public string MakeCall(string to)
+    {
+        var call = CallResource.Create(
+            to: new PhoneNumber(to),
+            from: new PhoneNumber(_twilioNumber),
+            url: new Uri($"https://your-crm.com/api/twilio/twiml?to={to}"),
+            record: true
+        );
+
+        return call.Sid;
+    }
+
+    public string GetRecordingUrl(string callSid)
+    {
+        var recording = RecordingResource.Read(callSid: callSid).FirstOrDefault();
+        
+        return $"https://api.twilio.com{recording.Uri.Replace(".json", ".mp3")}";
+    }
+    
+    public async Task SaveCallRecording(int orderId, string callSid)
+    {
+        var recordingUrl = GetRecordingUrl(callSid);
+        // if (!string.IsNullOrEmpty(recordingUrl))
+        // {
+        //     var order = await _twilioDbContext.OrderRep.GetByIdAsync(orderId);
+        //     var record = new CallRecording
+        //     {
+        //         OrderId = orderId,
+        //         Url = recordingUrl,
+        //         Order = order
+        //     };
+        //     order.CallRecordings.Add(record);
+        //     await _unitOfWork.SaveChangesAsync();
+        // }
+    }
+}
