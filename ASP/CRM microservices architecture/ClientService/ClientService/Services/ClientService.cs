@@ -210,6 +210,28 @@ public class ClientService : IClientService
             ClientName = { names }
         };
     }
+
+    public async Task<GetDashboardDataResponse> GetDashboardData(GetDashboardDataRequest request)
+    {
+        List<Client> clients = new List<Client>();
+        clients.AddRange(await _clientRepository.GetAllAsync());
+        var orders = await _orderGrpcClient.GetLowInfoOrdersListAsync(new GetLowInfoOrdersListRequest
+            { Sort = new SortOrdersRequest { SortBy = "", Descending = true } });
+        var tasks = await _taskGrpcClient.GetAllTasks(new GetAllTasksRequest{Sort =  new SortTasksRequest() { SortBy = "", Descending = true }});
+
+        var ordersTotalAmount = orders.Orders.Sum(o => o.TotalAmount);
+        var ordersCreatedDates = orders.Orders.Select(o => o.CreatedAt).ToList();
+        var taskStatuses = tasks.Tasks.Select(t => t.Status).ToList();
+        return new GetDashboardDataResponse
+        {
+            ClientsAmount = clients.Count,
+            OrdersCreatedDates = Timestamp.FromDateTime(ordersCreatedDates.ToUniversalTime()),
+            TasksStatuses = taskStatuses,
+            OrdersTotalAmount = ordersTotalAmount,
+            OrdersCount = orders.Orders.Count,
+            TasksCount = tasks.Tasks.Count
+        };
+    }
     public async Task<GetClientsWithOrdersAndTasksResponse> GetClientsWithOrdersAndTasksAsync(string httpContext)
     {
         var token = httpContext;
@@ -268,4 +290,5 @@ public class ClientService : IClientService
         return response;
 
     }
+    
 }

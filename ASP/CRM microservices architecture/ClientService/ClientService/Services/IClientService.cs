@@ -18,4 +18,5 @@ public interface IClientService
     Task<Client> GetByIdAsync(GetClientByIdRequest request);
     Task<GetClientsByIdsResponse> GetClientsByIds(GetClientsByIdsRequest request);
     Task<GetClientsWithOrdersAndTasksResponse> GetClientsWithOrdersAndTasksAsync(string request);
+    Task<GetDashboardDataResponse> GetDashboardData(GetDashboardDataRequest request);
 }

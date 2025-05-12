@@ -2,6 +2,12 @@ syntax = "proto3";
 import "google/protobuf/timestamp.proto";
 option csharp_namespace = "CRMSolution.Grpc.Client";
 
+enum GrpcTaskStatus
+{
+  New = 0;
+  InProgress = 1;
+  Completed = 2;
+}
 package client;
 
 service ClientGrpcService {
@@ -13,8 +19,18 @@ service ClientGrpcService {
   rpc DeleteClient (DeleteClientRequest) returns (DefaultClientResponse);
   rpc GetAllClients (GetAllClientsRequest) returns (GetAllClientsResponse);
   rpc GetClientsWithOrdersAndTasks(GetClientWithOrdersAndTasksRequest) returns (GetClientsWithOrdersAndTasksResponse);
-
+  rpc GetDashboardData(GetDashboardDataRequest) returns (GetDashboardDataResponse);
 }
+
+message GetDashboardDataResponse{
+  double ordersTotalAmount = 1;
+  int32 ordersCount = 2;
+  google.protobuf.Timestamp ordersCreatedDates = 3;
+  int32 clientsAmount = 4;
+  GrpcTaskStatus tasksStatuses = 5;
+  int32 tasksCount = 6;
+}
+message GetDashboardDataRequest{}
 
 message GetClientWithOrdersAndTasksRequest {}
 
