@@ -31,39 +31,39 @@ public class UserController : ControllerBase
     
     [HttpPut]
     // [Authorize(Policy = "ManagerPolicy")]
-    public async Task<IActionResult> ChangeUser([FromBody] ChangeUserDataRequest request, 
+    public async Task<IActionResult> ChangeUser([FromBody] HttpChangeUserDataRequest request, 
         [FromServices] IValidator<ChangeUserDataRequest> validator)
     {
-        var validationResult = await validator.ValidateAsync(request);
-        if (!validationResult.IsValid)
-        {
-            return BadRequest(validationResult.Errors);
-        }
-
-        
-        return Ok(await _userService.ChangeUserData(request));
+        // var validationResult = await validator.ValidateAsync(request);
+        // if (!validationResult.IsValid)
+        // {
+        //     return BadRequest(validationResult.Errors);
+        // }
+        //
+        //
+        return Ok("await _userService.ChangeUserData(request)");
     }
     
     [HttpDelete]
     // [Authorize(Policy = "ManagerPolicy")]
-    public async Task<IActionResult> DeleteUser([FromBody] DeleteUserRequest request)
+    public async Task<IActionResult> DeleteUser([FromBody] HttpDeleteUserRequest request)
     {
-        await _userService.DeleteUser(request);
+        // await _userService.DeleteUser(request);
         return Ok("User deleted");
     }
     
     [HttpGet("search")]
     // [Authorize(Policy = "ManagerPolicy")]
-    public async Task<IActionResult> LoadUserData([FromQuery] GetUserByEmailRequest request)
+    public async Task<IActionResult> LoadUserData([FromQuery] HttpFindUserRequest request)
     {
-        return Ok(await _userService.FindUser(request));
+        return Ok("await _userService.FindUser(request)");
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAllUsers([FromQuery] SortUsersRequest sortUsersRequest)
+    public async Task<IActionResult> GetAllUsers([FromQuery] HttpSortUsersRequest sortUsersRequest)
     {
-        var users = await _userService.GetAllUsers(sortUsersRequest);
-        return Ok(users);
+        // var users = await _userService.GetAllUsers(sortUsersRequest);
+        return Ok("users");
     }
     //
     // [HttpGet("Get/Clients/With/Orders/And/Tasks")]

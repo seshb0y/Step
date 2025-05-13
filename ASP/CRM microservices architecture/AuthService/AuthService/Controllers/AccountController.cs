@@ -40,7 +40,7 @@ public class AccountController : ControllerBase
     [HttpGet("email/verify")]
     public async Task<IActionResult> VerifyEmailAsync([FromQuery] string token)
     {
-        await _accountService.VerifyEmailAsync(token);
+        // await _accountService.VerifyEmailAsync(token);
         
         return Ok(new HttpResult<string>(true, "Email confirmed", "Email confirmed"));
     }
@@ -70,9 +70,9 @@ public class AccountController : ControllerBase
     }
 
     [HttpGet("me")]
-    public async Task<IActionResult> GetMeAsync(ServerCallContext context)
+    public async Task<IActionResult> GetMeAsync(string context)
     {
-        var token = context.RequestHeaders.FirstOrDefault(x => x.Key == "accessToken").Value;
-        return Ok(await _accountService.GetCurrentUserAsync(token));
+        // var token = context.RequestHeaders.FirstOrDefault(x => x.Key == "accessToken").Value;
+        return Ok("await _accountService.GetCurrentUserAsync(token)");
     }
 }

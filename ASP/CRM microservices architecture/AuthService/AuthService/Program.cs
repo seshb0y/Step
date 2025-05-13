@@ -26,7 +26,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddTransient<DataSeeder>();
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddAutoMapper(typeof(UserService).Assembly);
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 builder.Services.AddHttpContextAccessor();
 
