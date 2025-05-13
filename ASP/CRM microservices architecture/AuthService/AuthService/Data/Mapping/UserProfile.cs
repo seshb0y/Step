@@ -60,8 +60,8 @@ public class UserProfile : Profile
                 .MapFrom(src => src.Email))
             .ForMember(dest => dest.Role, opt => opt
                 .MapFrom(src => src.Role))
-            .ForMember(dest => dest.IsEmailConfirmed, opt => opt
-                .MapFrom(src => src.IsEmailConfirmed))
+            .ForMember(dest => dest.CreatedAt, opt => opt
+                .MapFrom(src => src.CreatedAt))
             .ForMember(dest => dest.Id, opt => opt
                 .MapFrom(src => src.Id));
 

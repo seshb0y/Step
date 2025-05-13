@@ -1,4 +1,5 @@
 ﻿using ApiGateway.DTO.Requests.Task;
+using ApiGateway.Hubs;
 using AutoMapper;
 using CRMSolution.DTO.Requests;
 using CRMSolution.DTO.Requests.Task;
@@ -7,6 +8,7 @@ using CRMSolution.Grpc.Tasks;
 using Google.Protobuf.WellKnownTypes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using DeleteTaskRequest = CRMSolution.Grpc.Tasks.DeleteTaskRequest;
 using SortTasksRequest = CRMSolution.Grpc.Tasks.SortTasksRequest;
 using UpdateTaskRequest = CRMSolution.Grpc.Tasks.UpdateTaskRequest;
@@ -19,11 +21,13 @@ public class TaskController : ControllerBase
 {
     private readonly TaskGrpcService.TaskGrpcServiceClient _tasksService;
     private readonly IMapper _mapper;
+    private readonly IHubContext<NotificationHub> _hubContext;
 
-    public TaskController(TaskGrpcService.TaskGrpcServiceClient tasksService, IMapper mapper)
+    public TaskController(TaskGrpcService.TaskGrpcServiceClient tasksService, IMapper mapper,  IHubContext<NotificationHub> hubContext)
     {
         _tasksService = tasksService;
         _mapper = mapper;
+        _hubContext = hubContext;
     }
 
 
@@ -39,7 +43,18 @@ public class TaskController : ControllerBase
             OrderId = request.orderId,
         };
         var grpcResponse = await _tasksService.CreateTaskAsync(grpcRequest);
-        return Ok(grpcResponse);
+        
+        await _hubContext.Clients.All.SendAsync("TaskCreated", new
+        {
+            grpcResponse.Id,
+            grpcResponse.Title,
+            grpcResponse.Description,
+            grpcResponse.Status,
+            grpcResponse.DueDate,
+            grpcResponse.OrderId
+        });
+        
+        return Ok("Task created");
     }
     
     [HttpPut]
@@ -53,7 +68,17 @@ public class TaskController : ControllerBase
             TaskId = request.taskId,
         };
         var grpcResponse = await _tasksService.UpdateTaskAsync(grpcRequest);
-        return Ok(grpcResponse);
+        
+        await _hubContext.Clients.All.SendAsync("TaskUpdated", new
+        {
+            grpcResponse.Id,
+            grpcResponse.Title,
+            grpcResponse.Description,
+            grpcResponse.Status,
+            grpcResponse.DueDate
+        });
+        
+        return Ok("Task updated");
     }
     
     [HttpDelete]
@@ -65,7 +90,13 @@ public class TaskController : ControllerBase
             Id = request.taskId
         };
         var grpcResponse = await _tasksService.DeleteTaskAsync(grpcRequest);
-        return Ok(grpcResponse);
+        
+        await _hubContext.Clients.All.SendAsync("TaskDeleted", new
+        {
+            grpcResponse.TaskId,
+        });
+        
+        return Ok("Task deleted");
     }
     
     [HttpGet("search")]

@@ -28,8 +28,8 @@ service UserService {
   rpc GetUserById (GetUserByIdRequest) returns (GetUserResponse);
   rpc GetUsersByIds (GetUsersByIdsRequest) returns (GetUsersByIdsResponse);
   
-  rpc Register(RegisterRequest) returns (DefaultResponse);
-  rpc ConfirmEmail(ConfirmRequest) returns (DefaultResponse);
+  rpc Register(RegisterRequest) returns (RegisterResponse);
+  rpc ConfirmEmail(ConfirmRequest) returns (ConfirmResponse);
   rpc VerifyEmail(VerifyEmailRequest) returns (DefaultResponse);
   rpc ResetPassword(ResetPasswordRequest) returns (DefaultResponse);
   rpc ChangePassword(ChangePasswordRequest) returns (DefaultResponse);
@@ -47,8 +47,12 @@ service UserService {
   rpc ValidatePasswordTokenAsync(ValidateTokenRequest) returns (ValidateTokenResponse);
   
   rpc ChangeUserData(ChangeUserDataRequest) returns (ChangeUserDataResponse);
-  rpc DeleteUser(DeleteUserRequest) returns (DefaultResponse);
+  rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse);
   rpc GetAllUsers(GetAllUsersRequest) returns (GetAllUsersResponse);
+}
+
+message DeleteUserResponse{
+  int32 userId = 1;
 }
 
 message SortUsersRequest{
@@ -99,7 +103,7 @@ message ChangeUserDataResponse{
   string username = 2;
   string email = 3;
   UserRole role = 4;
-  bool IsEmailConfirmed = 5;
+  google.protobuf.Timestamp createdAt = 5;
 }
 
 message ChangeUserDataRequest{
@@ -178,10 +182,20 @@ message ResetPasswordRequest{
 
 message VerifyEmailRequest{}
 
+message ConfirmResponse{
+  string username = 1;
+}
 message ConfirmRequest{
   string username = 1;
 }
 
+message RegisterResponse{
+  int32 id = 1;
+  string email = 2;
+  string username = 3;
+  google.protobuf.Timestamp createdAt = 4;
+  UserRole role = 5;
+}
 message RegisterRequest{
   string username = 1;
   string password = 2;

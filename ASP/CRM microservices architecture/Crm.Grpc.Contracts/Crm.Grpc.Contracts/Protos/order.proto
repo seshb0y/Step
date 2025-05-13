@@ -33,6 +33,16 @@ service OrderGrpcService {
   rpc GetOrderFullInfo(GetOrderFullInfoRequest) returns (GetOrderFullInfoResponse);
   rpc GetLowInfoOrdersList(GetLowInfoOrdersListRequest) returns (GetLowInfoOrdersListResponse);
   rpc GetOrdersByUserIds (GetOrdersByUserIdsRequest) returns (GetOrdersByUserIdsResponse);
+  rpc ChangeResponsible (ChangeResponsibleRequest) returns (ChangeResponsibleResponse);
+}
+
+message ChangeResponsibleResponse{
+  int32 userId = 1;
+  int32 orderId = 2;
+}
+message ChangeResponsibleRequest{
+  int32 userId = 1;
+  int32 orderId = 2;
 }
 
 message GetOrdersByUserIdsRequest {
@@ -69,8 +79,10 @@ message ChangeOrderDataRequest {
   int32 orderId = 3;
 }
 message ChangeOrderDataResponse {
-  bool success = 1;
-  string message = 2;
+  double totalAmount = 1;
+  google.protobuf.Timestamp createdAt = 2;
+  OrderStatus status = 3;
+  int32 id = 4;
 }
 
 message CreateOrderRequest{
@@ -79,8 +91,10 @@ message CreateOrderRequest{
   string userEmail = 3;
 }
 message CreateOrderResponse{
-  bool success = 1;
-  string message = 2;
+  double totalAmount = 1;
+  google.protobuf.Timestamp createdAt = 2;
+  OrderStatus status = 3;
+  int32 id = 4;
 }
 
 message DeleteOrderRequest{

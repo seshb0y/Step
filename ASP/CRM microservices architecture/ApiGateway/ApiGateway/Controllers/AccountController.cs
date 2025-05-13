@@ -1,7 +1,10 @@
-﻿using CRMSolution.Grpc.Users;
+﻿using ApiGateway.DTO.Responses;
+using ApiGateway.Hubs;
+using CRMSolution.Grpc.Users;
 using Grpc.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace ApiGateway.Controllers;
 
@@ -11,9 +14,11 @@ namespace ApiGateway.Controllers;
 public class AccountController : ControllerBase
 {
     private readonly UserService.UserServiceClient _accountService;
+    private readonly IHubContext<NotificationHub> _hubContext;
 
-    public AccountController(UserService.UserServiceClient accountService)
+    public AccountController(UserService.UserServiceClient accountService, IHubContext<NotificationHub> hubContext)
     {
+        _hubContext = hubContext;
         _accountService = accountService;
     }
 
@@ -28,6 +33,14 @@ public class AccountController : ControllerBase
             Username = request.Username
         };
         var response = await _accountService.RegisterAsync(grpcRequest);
+        await _hubContext.Clients.All.SendAsync("NewUserRegistered", new
+        {
+            response.Id,
+            response.Email,
+            response.Username,
+            response.CreatedAt,
+            response.Role,
+        });
         return Ok(response);
     }
 
@@ -39,7 +52,8 @@ public class AccountController : ControllerBase
         var metadata = new Metadata();
         metadata.Add("token", accessToken);
         var grpcResponse = await _accountService.VerifyEmailAsync(new VerifyEmailRequest(), metadata);
-        return Ok(grpcResponse);
+        
+        return Ok(new Result<string>(true, "Email confirmed", "Email confirmed"));
     }
     // [Authorize(Policy = "AdminPolicy")]
     [HttpPost("email/confirm")]
@@ -50,7 +64,8 @@ public class AccountController : ControllerBase
             Username = request.Username,
         };
         var grpcResponse = await _accountService.ConfirmEmailAsync(grpcRequest);
-        return Ok(grpcResponse);
+        
+        return Ok(new Result<string>(true, grpcResponse.Username, "Email sent"));
     }
 
     [HttpPost("password/reset")]
@@ -61,7 +76,8 @@ public class AccountController : ControllerBase
             Username = request.Username,
         };
         var grpcResponse = await _accountService.ResetPasswordAsync(grpcRequest);
-        return Ok(grpcResponse);
+        
+        return Ok(new Result<string>(true, request.Username, "Reset password mail sent"));
     }
 
     [HttpPost("password/change")]
@@ -76,7 +92,8 @@ public class AccountController : ControllerBase
             NewPassword = request.NewPassword,
         };
         var  grpcResponse = await _accountService.ChangePasswordAsync(grpcRequest,  metadata);
-        return Ok(grpcResponse);
+        
+        return Ok(new Result<string>(true, "Password changed", "Password changed"));
     }
 
     [HttpGet("me")]

@@ -1,9 +1,11 @@
 ﻿using ApiGateway.DTO.Requests.Client;
+using ApiGateway.Hubs;
 using CRMSolution.Grpc.Client;
 using FluentValidation;
 using Grpc.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace ApiGateway.Controllers;
 
@@ -12,10 +14,12 @@ namespace ApiGateway.Controllers;
 public class ClientController : ControllerBase
 {
     private readonly ClientGrpcService.ClientGrpcServiceClient _clientService;
+    private readonly IHubContext<NotificationHub> _hubContext;
 
-    public ClientController(ClientGrpcService.ClientGrpcServiceClient clientService)
+    public ClientController(ClientGrpcService.ClientGrpcServiceClient clientService, IHubContext<NotificationHub> hubContext)
     {
         _clientService = clientService;
+        _hubContext = hubContext;
     }
 
 
@@ -31,6 +35,14 @@ public class ClientController : ControllerBase
             Phone = request.phone,
         };
         var grpcResponse = await _clientService.CreateClientAsync(grpcRequest);
+        
+        _hubContext.Clients.All.SendAsync("ClientCreated", new
+        {
+            grpcResponse.Name,
+            grpcResponse.Email,
+            grpcResponse.Phone,
+            grpcResponse.Address
+        });
         return Ok(grpcResponse);
     }
     
@@ -52,7 +64,14 @@ public class ClientController : ControllerBase
             Phone = request.phone,
         };
         var grpcResponse = await _clientService.ChangeDataClientAsync(grpcRequest);
-        
+        await _hubContext.Clients.All.SendAsync("ClientUpdated", new
+        {
+            grpcResponse.Id,
+            grpcResponse.Name,
+            grpcResponse.Email,
+            grpcResponse.Phone,
+            grpcResponse.Address,
+        });
         return Ok(grpcResponse);
     }
     
@@ -65,6 +84,11 @@ public class ClientController : ControllerBase
             Email = request.email,
         };
         var grpcResponse = await _clientService.DeleteClientAsync(grpcRequest);
+        
+        await _hubContext.Clients.All.SendAsync("ClientDeleted", new
+        {
+            grpcResponse.Id
+        });
         return Ok("Client deleted");
     }
     

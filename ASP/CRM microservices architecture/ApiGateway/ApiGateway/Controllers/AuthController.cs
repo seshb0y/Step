@@ -1,7 +1,10 @@
-﻿using CRMSolution.Grpc.Users;
+﻿using ApiGateway.DTO.Responses;
+using ApiGateway.Hubs;
+using CRMSolution.Grpc.Users;
 using MailKit;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using LoginRequest = CRMSolution.Grpc.Users.LoginRequest;
 using Metadata = Grpc.Core.Metadata;
 
@@ -11,11 +14,13 @@ namespace ApiGateway.Controllers;
  [Route("api/v1/auth/")]
  public class AuthController : ControllerBase
  {
+     private readonly IHubContext<NotificationHub>  _hubContext;
      private readonly UserService.UserServiceClient _authService;
      // private readonly ITokenService _tokenService;
 
-     public AuthController(UserService.UserServiceClient authService)
+     public AuthController(UserService.UserServiceClient authService, IHubContext<NotificationHub> hubContext)
      {
+         _hubContext = hubContext;
          // _tokenService = tokenService;
          _authService = authService;
      }
@@ -43,8 +48,9 @@ namespace ApiGateway.Controllers;
                   SameSite = SameSiteMode.Strict,
                   Expires = DateTime.UtcNow.AddDays(7)
           });
+         var response = new HttpLoginResponse(grpcResponse.AccessToken, grpcResponse.RefreshToken);
          
-         return Ok("new Result<LoginResponse>(true, response, \"Successfully logged in\")");
+         return Ok(response);
      }
 
      [HttpPost("refresh")]
@@ -56,7 +62,8 @@ namespace ApiGateway.Controllers;
          metadata.Add("accessToken", accessToken);
          metadata.Add("refreshToken", refreshToken);
          var grpcResponse = await _authService.RefreshTokenAsync(new RefreshTokenRequest(), metadata);
-         return Ok(grpcResponse);
+         var response = new HttpRefreshTokenResponse(grpcResponse.AccessToken, grpcResponse.RefreshToken);
+         return Ok(response);
      }
 
      
@@ -65,7 +72,7 @@ namespace ApiGateway.Controllers;
      { 
          context.Response.Cookies.Delete("accessToken");
         context.Response.Cookies.Delete("refreshToken");
-        return Ok("cookies deleted");
+        return Ok(new { message = "Logged out successfully" });
      }
 
  }

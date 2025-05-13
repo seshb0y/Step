@@ -52,27 +52,22 @@ public class ClientGrpcService : CRMSolution.Grpc.Client.ClientGrpcService.Clien
         return await _clientService.GetClientsByIds(request);
     }
 
-    public override async Task<DefaultClientResponse> CreateClient(CreateClientRequest request,
+    public override async Task<CreateClientResponse> CreateClient(CreateClientRequest request,
         ServerCallContext context)
     {
         return await _clientService.CreateClient(request);
     }
 
-    public override async Task<DefaultClientResponse> ChangeDataClient(ChangeDataClientRequest request,
+    public override async Task<ChangeDataClientResponse> ChangeDataClient(ChangeDataClientRequest request,
         ServerCallContext context)
     {
         return await _clientService.ChangeDataClient(request);
     }
 
-    public override async Task<DefaultClientResponse> DeleteClient(DeleteClientRequest request,
+    public override async Task<DeleteClientResponse> DeleteClient(DeleteClientRequest request,
         ServerCallContext context)
     {
-        await _clientService.DeleteClient(request);
-        return new DefaultClientResponse
-        {
-            Message = "client deleted",
-            Success = true
-        };
+        return await _clientService.DeleteClient(request);
     }
 
     public override async Task<GetAllClientsResponse> GetAllClients(GetAllClientsRequest request,

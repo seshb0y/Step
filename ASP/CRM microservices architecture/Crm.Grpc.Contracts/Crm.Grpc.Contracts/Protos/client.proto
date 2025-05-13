@@ -14,9 +14,9 @@ service ClientGrpcService {
   rpc GetClientByEmail (GetClientByEmailRequest) returns (GetClientResponse);
   rpc GetClientById (GetClientByIdRequest) returns (GetClientResponse);
   rpc GetClientsByIds (GetClientsByIdsRequest) returns (GetClientsByIdsResponse);
-  rpc CreateClient (CreateClientRequest) returns (DefaultClientResponse);
-  rpc ChangeDataClient (ChangeDataClientRequest) returns (DefaultClientResponse);
-  rpc DeleteClient (DeleteClientRequest) returns (DefaultClientResponse);
+  rpc CreateClient (CreateClientRequest) returns (CreateClientResponse);
+  rpc ChangeDataClient (ChangeDataClientRequest) returns (ChangeDataClientResponse);
+  rpc DeleteClient (DeleteClientRequest) returns (DeleteClientResponse);
   rpc GetAllClients (GetAllClientsRequest) returns (GetAllClientsResponse);
   rpc GetClientsWithOrdersAndTasks(GetClientWithOrdersAndTasksRequest) returns (GetClientsWithOrdersAndTasksResponse);
   rpc GetDashboardData(GetDashboardDataRequest) returns (GetDashboardDataResponse);
@@ -88,10 +88,20 @@ message GetAllClientsResponse {
   repeated ClientInfo clients = 1;
 }
 
+message DeleteClientResponse{
+  int32 id = 1;
+}
 message DeleteClientRequest{
   string email = 1;
 }
 
+message ChangeDataClientResponse{
+  string name = 1;
+  string email = 2;
+  string phone = 3;
+  string address = 4;
+  int32 id = 5;
+}
 message ChangeDataClientRequest{
   string name = 1;
   string email = 2;
@@ -100,6 +110,12 @@ message ChangeDataClientRequest{
   string oldEmail = 5;
 }
 
+message CreateClientResponse{
+  string name = 1;
+  string email = 2;
+  string phone = 3;
+  string address = 4;
+}
 message CreateClientRequest{
   string name = 1;
   string email = 2;

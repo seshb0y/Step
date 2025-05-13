@@ -41,29 +41,23 @@ public class ClientService : IClientService
         
     }
     
-    public async Task<DefaultClientResponse> CreateClient(CreateClientRequest request)
+    public async Task<CreateClientResponse> CreateClient(CreateClientRequest request)
     {
         _logger.LogInformation("Создаем нового клиента: {@Request}", request);
         Client client = _mapper.Map<Client>(request);
         await _clientRepository.AddAsync(client);
         await _clientRepository.SaveChangesAsync();
         _logger.LogInformation("Отправка сигнала ClientCreated");
-        await _hubContext.Clients.All.SendAsync("ClientCreated", new
+        return new CreateClientResponse
         {
-            client.Id,
-            client.Name,
-            client.Email,
-            client.Phone,
-            client.Address
-        });
-        return new DefaultClientResponse
-        {
-            Success = true,
-            Message = "Client created"
+            Name = client.Name,
+            Address = client.Address,
+            Email = client.Email,
+            Phone =  client.Phone,
         };
     }
 
-    public async Task<DefaultClientResponse> ChangeDataClient(ChangeDataClientRequest request)
+    public async Task<ChangeDataClientResponse> ChangeDataClient(ChangeDataClientRequest request)
     {
         _logger.LogInformation("Изменяем данные клиента: {@Request}", request);
         Client client = await _clientRepository.GetClientByEmail(request.OldEmail);
@@ -74,22 +68,18 @@ public class ClientService : IClientService
         client = _mapper.Map(request, client);
         _clientRepository.Update(client);
         await _clientRepository.SaveChangesAsync();
-        await _hubContext.Clients.All.SendAsync("ClientUpdated", new
+
+        return new ChangeDataClientResponse
         {
-            client.Id,
-            client.Name,
-            client.Email,
-            client.Phone,
-            client.Address
-        });
-        return new DefaultClientResponse
-        {
-            Success = true,
-            Message = "Client updated"
+            Id = client.Id,
+            Name = client.Name,
+            Email = client.Email,
+            Phone = client.Phone,
+            Address = client.Address,
         };
     }
     
-    public async Task DeleteClient(DeleteClientRequest request)
+    public async Task<DeleteClientResponse> DeleteClient(DeleteClientRequest request)
     {
         _logger.LogInformation("Удаляем клиента: {@Request}", request);
         Client client = await _clientRepository.GetClientByEmail(request.Email);
@@ -103,6 +93,10 @@ public class ClientService : IClientService
             client.Id
         });
         await _clientRepository.SaveChangesAsync();
+        return new DeleteClientResponse
+        {
+            Id = client.Id,
+        };
     }
 
     public async Task<GetClientResponse> FindClient(GetClientByEmailRequest request)

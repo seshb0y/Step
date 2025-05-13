@@ -7,6 +7,7 @@ using ControllerFirst.DTO.Responses;
 using CRMSolution.Data.Repository.UserRep;
 using CRMSolution.Grpc.Users;
 using CRMSolution.Hubs;
+using Google.Protobuf.WellKnownTypes;
 using MimeKit;
 using MailKit.Security;
 using Microsoft.AspNetCore.SignalR;
@@ -37,7 +38,7 @@ public class AccountService : IAccountService
         _notificationHub = notificationHub;
     }
 
-    public async Task RegisterAsync(RegisterRequest request)
+    public async Task<RegisterResponse> RegisterAsync(RegisterRequest request)
     {
         _logger.LogInformation("Регистрация юзера: {@Request}", request);
         if (await _userRep.FindByNameAsync(request.Username) != null || 
@@ -53,17 +54,18 @@ public class AccountService : IAccountService
 
         await _userRep.AddAsync(user);
         await _userRep.SaveChangesAsync();
-        await _notificationHub.Clients.All.SendAsync("NewUserRegistered", new
+        return new RegisterResponse
         {
-            user.Id,
-            user.Email,
-            user.Username,
-            user.CreatedAt,
-            user.Role,
-        });
+            Id = user.Id,
+            Email = user.Email,
+            Username = user.Username,
+            CreatedAt = Timestamp.FromDateTime(user.CreatedAt.ToUniversalTime()) ,
+            Role = (Grpc.Users.UserRole)user.Role
+        };
+
     }
 
-    public async Task ConfirmEmailAsync(ConfirmRequest request)
+    public async Task<ConfirmResponse> ConfirmEmailAsync(ConfirmRequest request)
     {
         _logger.LogInformation("Отправка письма для подтверждения мыла: {@Request}", request);
         var user = await _userRep.FindByNameAsync(request.Username);
@@ -88,6 +90,10 @@ public class AccountService : IAccountService
                 <p style='color: #666; font-size: 12px; margin-top: 30px;'>This link will expire in 24 hours.</p>
             </div>";
         await SendEmailAsync(user.Email, "Email Confirmation", emailBody);
+        return new ConfirmResponse
+        {
+            Username = user.Username,
+        };
     }
 
     public async Task VerifyEmailAsync(string token)

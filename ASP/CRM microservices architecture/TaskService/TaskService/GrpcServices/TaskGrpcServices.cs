@@ -38,15 +38,9 @@ public class TaskGrpcService : CRMSolution.Grpc.Tasks.TaskGrpcService.TaskGrpcSe
         };
     }
     
-    public override async Task<DefaultTaskResponse> CreateTask(CreateTaskRequest request, ServerCallContext context)
+    public override async Task<CreateTaskResponse> CreateTask(CreateTaskRequest request, ServerCallContext context)
     {
-        await _tasksService.CreateTaskAsync(request.OrderId, request.Description, request.DueDate.ToDateTime(), request.Title);
-        
-        return new DefaultTaskResponse
-        {
-            Success = true,
-            Message = "Task created"
-        };
+        return await _tasksService.CreateTaskAsync(request.OrderId, request.Description, request.DueDate.ToDateTime(), request.Title);
     }
 
     public override async Task<GetTaskByOrderIdResponse> GetTaskByOrderId(GetTaskByIdRequest request,
@@ -55,26 +49,16 @@ public class TaskGrpcService : CRMSolution.Grpc.Tasks.TaskGrpcService.TaskGrpcSe
         return await _tasksService.GetTasksByOrderIdAsync(request.Id);
     }
 
-    public override async Task<DefaultTaskResponse> UpdateTask(UpdateTaskRequest request,
+    public override async Task<TaskInfo> UpdateTask(UpdateTaskRequest request,
         ServerCallContext context)
     {
-        await _tasksService.UpdateTaskAsync(request);
-        return new DefaultTaskResponse
-        {
-            Success = true,
-            Message = "Task updated"
-        };
+        return await _tasksService.UpdateTaskAsync(request);
     }
     
-    public override async Task<DefaultTaskResponse> DeleteTask(DeleteTaskRequest DeleteTaskRequest,
+    public override async Task<DeleteTaskResponse> DeleteTask(DeleteTaskRequest DeleteTaskRequest,
         ServerCallContext context)
     {
-        await _tasksService.DeleteTaskAsync(DeleteTaskRequest);
-        return new DefaultTaskResponse
-        {
-            Success = true,
-            Message = "Task deleted"
-        };
+        return await _tasksService.DeleteTaskAsync(DeleteTaskRequest);
     }
     
     public override async Task<GetAllTasksResponse> GetAllTasks(GetAllTasksRequest getAllTasksRequest,

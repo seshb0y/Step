@@ -51,27 +51,19 @@ public class UserService : IUserService
         user = _mapper.Map(request, user);
         _userRepository.Update(user);
         await _userRepository.SaveChangesAsync();
-        await _notificationHub.Clients.All.SendAsync("UserUpdated", new
-        {
-            user.Id,
-            user.Email,
-            user.Username,
-            user.CreatedAt,
-            user.Role,
-        });
         return _mapper.Map<ChangeUserDataResponse>(user);
     }
     
-    public async Task DeleteUser(DeleteUserRequest request)
+    public async Task<DeleteUserResponse> DeleteUser(DeleteUserRequest request)
     {
         _logger.LogInformation("Удаляем юзера: {@Request}", request);
         User user = await _userRepository.FindByEmailAsync(request.Email);
         _userRepository.Delete(user);
         await _userRepository.SaveChangesAsync();
-        await _notificationHub.Clients.All.SendAsync("UserDeleted", new
+        return new DeleteUserResponse
         {
-            user.Id,
-        });
+            UserId = user.Id
+        };
     }
 
     public async Task<GetUserResponse> FindUser(GetUserByEmailRequest request)

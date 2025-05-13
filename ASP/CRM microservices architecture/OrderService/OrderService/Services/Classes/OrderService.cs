@@ -14,6 +14,7 @@ using CRMSolution.Grpc.Client;
 using CRMSolution.Grpc.Orders;
 using CRMSolution.Grpc.Tasks;
 using Google.Protobuf.WellKnownTypes;
+using Org.BouncyCastle.Asn1.X509;
 using ClientDto = CRMSolution.Grpc.Orders.ClientDto;
 using OrderStatus = CRMSolution.Grpc.Orders.OrderStatus;
 using TaskDto = CRMSolution.Grpc.Orders.TaskDto;
@@ -103,7 +104,7 @@ public class OrderService : IOrderService
     }
 
 
-    public async Task CreateOrder(CreateOrderRequest request)
+    public async Task<CreateOrderResponse> CreateOrder(CreateOrderRequest request)
     {
         _logger.LogInformation("Создаем заказ. Проверка пользователя через gRPC: {@Request}", request);
 
@@ -144,18 +145,18 @@ public class OrderService : IOrderService
             OrderId = order.Id,
         };
         var grpcTaskReponse = await _taskGrpcService.CreateTaskAsync(grpcTaskRequest);
-        _logger.LogInformation("Задача создана через gRPC: ", grpcTaskReponse.Success, grpcTaskReponse.Message);
-        
-        await _notificationHub.Clients.All.SendAsync("OrderCreated", new
+        _logger.LogInformation("Задача создана через gRPC: ");
+
+        return new CreateOrderResponse
         {
-            order.Id,
-            order.CreatedAt,
-            order.TotalAmount,
-            order.Status,
-        });
+            TotalAmount = (double)order.TotalAmount,
+            CreatedAt = Timestamp.FromDateTime(DateTime.UtcNow),
+            Status = (OrderStatus)order.Status,
+            Id = order.Id,
+        };
     }
 
-    public async Task ChangeDataOrder(ChangeOrderDataRequest request)
+    public async Task<ChangeOrderDataResponse> ChangeDataOrder(ChangeOrderDataRequest request)
     {
         _logger.LogInformation("Изменяем заказ: {@Request}", request);
         Order order = await _orderRep.GetById(request.OrderId);
@@ -163,13 +164,13 @@ public class OrderService : IOrderService
         order = _mapper.Map(request, order);
         _orderRep.Update(order);
         await _orderRep.SaveChangesAsync();
-        await _notificationHub.Clients.All.SendAsync("OrderUpdated", new
+        return new ChangeOrderDataResponse
         {
-            order.Id,
-            order.CreatedAt,
-            order.TotalAmount,
-            order.Status,
-        });
+            Id = order.Id,
+            CreatedAt = Timestamp.FromDateTime(order.CreatedAt.ToUniversalTime()),
+            TotalAmount = (double)order.TotalAmount,
+            Status = (OrderStatus)order.Status,
+        };
     }
 
     public async Task DeleteOrder(DeleteOrderRequest request)
@@ -177,6 +178,18 @@ public class OrderService : IOrderService
         Order order = await _orderRep.GetByIdAsync(request.OrderId);
         order.IsDeleted = true;
         await _orderRep.SaveChangesAsync();
+    }
+
+    public async Task<ChangeResponsibleResponse> ChangeResponsible(ChangeResponsibleRequest request)
+    {
+        Order order = await _orderRep.GetByIdAsync(request.OrderId);
+        order.UserId = request.UserId;
+        await _orderRep.SaveChangesAsync();
+        return new ChangeResponsibleResponse
+        {
+            UserId = order.UserId.Value,
+            OrderId = order.Id,
+        };
     }
     
     public async Task<GetLowInfoOrdersListResponse> GetLowInfoOrdersAsync(SortOrdersRequest sortRequest)
@@ -235,29 +248,6 @@ public class OrderService : IOrderService
         {
             Orders = { orderList }
         };
-    }
-    
-    public async Task ChangeResponsible(int orderId, ChangeResponsibleRequest request)
-    {
-        _logger.LogInformation("Изменение ответственного. Проверка пользователя через gRPC: {@UserId}", request.userId);
-
-        // gRPC-запрос на получение пользователя по Id
-        var grpcUserRequest = new GetUserByIdRequest
-        {
-            Id = request.userId
-        };
-
-        var grpcUserResponse = await _userGrpcClient.GetUserByIdAsync(grpcUserRequest);
-
-        if (grpcUserResponse == null || grpcUserResponse.Id == 0)
-        {
-            _logger.LogWarning("Пользователь с ID {UserId} не найден.", request.userId);
-            throw new KeyNotFoundException($"User with id {request.userId} not found.");
-        }
-
-        _logger.LogInformation("Пользователь найден через gRPC: {UserId} - {Email}", grpcUserResponse.Id, grpcUserResponse.Email);
-
-        // Здесь могла бы быть логика изменения ответственного, но она убрана по твоему запросу
     }
 
     public async Task<GetOrdersByUserIdsResponse> GetOrdersByUserIds(GetOrdersByUserIdsRequest request)

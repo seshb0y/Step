@@ -1,9 +1,11 @@
 ﻿using ApiGateway.DTO.Requests;
+using ApiGateway.Hubs;
 using CRMSolution.DTO.Requests;
 using CRMSolution.Grpc.Users;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace ApiGateway.Controllers;
 
@@ -12,10 +14,12 @@ namespace ApiGateway.Controllers;
 public class UserController : ControllerBase
 {
     private readonly UserService.UserServiceClient _userService;
+    private readonly IHubContext<NotificationHub> _notificationHub;
 
-    public UserController(UserService.UserServiceClient userService)
+    public UserController(UserService.UserServiceClient userService,  IHubContext<NotificationHub> notificationHub)
     {
         _userService = userService;
+        _notificationHub = notificationHub;
     }
 
 
@@ -44,6 +48,16 @@ public class UserController : ControllerBase
             Username = request.username,
         };
         var grpcResponse = await _userService.ChangeUserDataAsync(grpcRequest);
+        
+        await _notificationHub.Clients.All.SendAsync("UserUpdated", new
+        {
+            grpcResponse.Id,
+            grpcResponse.Email,
+            grpcResponse.Username,
+            grpcResponse.CreatedAt,
+            grpcResponse.Role,
+        });
+        
         return Ok(grpcResponse);
     }
     
@@ -56,7 +70,13 @@ public class UserController : ControllerBase
             Email = request.email,
         };
         var grpcResponse = await _userService.DeleteUserAsync(grpcRequest);
-        return Ok(grpcResponse);
+        
+        await _notificationHub.Clients.All.SendAsync("UserDeleted", new
+        {
+            grpcResponse.UserId,
+        });
+        
+        return Ok("User deleted");
     }
     
     [HttpGet("search")]

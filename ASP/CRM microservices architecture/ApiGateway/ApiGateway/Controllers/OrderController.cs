@@ -2,11 +2,13 @@
 using ApiGateway.DTO.Requests.Order;
 using ApiGateway.DTO.Requests.Orders;
 using ApiGateway.DTO.Responses;
+using ApiGateway.Hubs;
 using AutoMapper;
 using CRMSolution.DTO.Requests;
 using CRMSolution.Grpc.Orders;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using HttpChangeOrderDataRequest = CRMSolution.Grpc.Orders.ChangeOrderDataRequest;
 using HttpDeleteOrderRequest = CRMSolution.Grpc.Orders.DeleteOrderRequest;
 
@@ -18,11 +20,13 @@ public class OrderController : ControllerBase
 {
     private readonly OrderGrpcService.OrderGrpcServiceClient _orderGrpcService;
     private readonly IMapper _mapper;
+    private readonly IHubContext<NotificationHub> _notificationHubContext;
 
-    public OrderController(OrderGrpcService.OrderGrpcServiceClient orderGrpcService,  IMapper mapper)
+    public OrderController(OrderGrpcService.OrderGrpcServiceClient orderGrpcService,  IMapper mapper,  IHubContext<NotificationHub> notificationHubContext)
     {
         _orderGrpcService = orderGrpcService;
         _mapper = mapper;
+        _notificationHubContext = notificationHubContext;
     }
 
 
@@ -38,7 +42,14 @@ public class OrderController : ControllerBase
         };
         var grpcResponse = await _orderGrpcService.CreateOrderAsync(grpcRequest);
         
-        return Ok(grpcResponse);
+        await _notificationHubContext.Clients.All.SendAsync("OrderCreated", new
+        {
+            grpcResponse.Id,
+            grpcResponse.CreatedAt,
+            grpcResponse.TotalAmount,
+            grpcResponse.Status,
+        });
+        return Ok("order created");
     }
     
     [HttpPut]
@@ -53,7 +64,14 @@ public class OrderController : ControllerBase
         };
         var grpcResponse = await _orderGrpcService.ChangeOrderDataAsync(grpcRequest);
         
-        return Ok(grpcResponse);
+        await _notificationHubContext.Clients.All.SendAsync("OrderUpdated", new
+        {
+            grpcResponse.Id,
+            grpcResponse.CreatedAt,
+            grpcResponse.TotalAmount,
+            grpcResponse.Status,
+        });
+        return Ok("order updated");
     }
     
     [HttpDelete]
@@ -65,7 +83,12 @@ public class OrderController : ControllerBase
             OrderId = request.OrderId
         };
         var grpcResponse = await _orderGrpcService.DeleteOrderAsync(grpcRequest);
-        return Ok(grpcResponse);
+        
+        await _notificationHubContext.Clients.All.SendAsync("OrderDeleted", new
+        {
+            request.OrderId,
+        });
+        return Ok("Order deleted");
     }
     
     // [HttpGet("find/order")]
@@ -89,14 +112,22 @@ public class OrderController : ControllerBase
     }
     
     [HttpPut("{orderId}/user")]
-    public async Task<IActionResult> ChangeResponsible(int orderId, ChangeResponsibleRequest request)
+    public async Task<IActionResult> ChangeResponsible(int orderId, HttpChangeResponsibleRequest request)
     {
-        var grpcRequest = new ChangeOrderDataRequest
+        var grpcRequest = new ChangeResponsibleRequest
         {
             OrderId = orderId,
+            UserId = request.userId,
         };
-        var grpcResponse = await _orderGrpcService.ChangeOrderDataAsync(grpcRequest);
-        return Ok(grpcResponse);
+        var grpcResponse = await _orderGrpcService.ChangeResponsibleAsync(grpcRequest);
+        
+        await _notificationHubContext.Clients.All.SendAsync("ResponsibleUpdated", new
+        {
+            userId =  grpcResponse.UserId,
+            orderId = grpcResponse.OrderId,
+        });
+        
+        return Ok("Responsible changed");
     }
     
     

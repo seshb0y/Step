@@ -17,7 +17,7 @@ export const useSignalR = () => {
     const startConnection = async () => {
       try {
         connection = new HubConnectionBuilder()
-          .withUrl("http://localhost:5241/notificationHub")
+          .withUrl("http://localhost:5167/notificationHub")
           .withAutomaticReconnect()
           .configureLogging(LogLevel.Information)
           .build();

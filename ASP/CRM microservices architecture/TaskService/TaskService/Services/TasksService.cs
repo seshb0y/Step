@@ -96,7 +96,7 @@ public class TasksService : ITasksService
     //         Tasks = _mapper.Map<List<TaskDto>>(tasks)
     //     };
     // }
-    public Task CreateTaskAsync(int orderId, string description, DateTime dueDate, string title)
+    public async Task<CreateTaskResponse> CreateTaskAsync(int orderId, string description, DateTime dueDate, string title)
     {
         TaskEntity task = new TaskEntity
         {
@@ -105,24 +105,47 @@ public class TasksService : ITasksService
             DueDate = dueDate,
             OrderId = orderId
         };
-        _tasksRep.AddAsync(task);
-        _tasksRep.SaveChangesAsync();
-        return Task.CompletedTask;
+        await _tasksRep.AddAsync(task);
+        await _tasksRep.SaveChangesAsync();
+        return new CreateTaskResponse
+        {
+            OrderId = orderId,
+            Description = description,
+            DueDate = Timestamp.FromDateTime(dueDate.ToUniversalTime()),
+            Title = title,
+            Status = (GrpcTaskStatus)task.Status,
+            Id = task.Id
+        };
+
     }
 
-    public async Task UpdateTaskAsync(UpdateTaskRequest request)
+    public async Task<TaskInfo> UpdateTaskAsync(UpdateTaskRequest request)
     {
         TaskEntity task = await _tasksRep.GetById(request.TaskId);
         _mapper.Map(request, task); 
         _tasksRep.Update(task);
         await _tasksRep.SaveChangesAsync();
+
+        return new TaskInfo
+        {
+            Id = task.Id,
+            Title = task.Title,
+            Description = task.Description,
+            DueDate = Timestamp.FromDateTime(task.DueDate.ToUniversalTime()),
+            Status = (GrpcTaskStatus)task.Status,
+        };
     }
 
-    public async Task DeleteTaskAsync(DeleteTaskRequest request)
+    public async Task<DeleteTaskResponse> DeleteTaskAsync(DeleteTaskRequest request)
     {
         TaskEntity task = await _tasksRep.GetById(request.Id);
         _tasksRep.Delete(task);
         await _tasksRep.SaveChangesAsync();
+
+        return new DeleteTaskResponse
+        {
+            TaskId = request.Id,
+        };
     }
 
     public async Task<GetAllTasksResponse> GetAllTasks(SortTasksRequest sortTasksRequest)

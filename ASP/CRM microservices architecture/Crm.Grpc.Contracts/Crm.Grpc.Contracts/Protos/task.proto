@@ -14,13 +14,17 @@ enum GrpcTaskStatus
 
 service TaskGrpcService {
   rpc GetTaskById (GetTaskByIdRequest) returns (GetTaskByIdResponse);
-  rpc CreateTask (CreateTaskRequest) returns (DefaultTaskResponse);
+  rpc CreateTask (CreateTaskRequest) returns (CreateTaskResponse);
   rpc GetTaskByOrderId (GetTaskByIdRequest) returns (GetTaskByOrderIdResponse);
   rpc GetTasksByOrderIds (GetTasksByOrderIdsRequest) returns (GetTasksByOrderIdsResponse);
   rpc GetTasksByUserIds (GetTasksByUserIdsRequest) returns (GetTasksByUserIdsResponse);
-  rpc UpdateTask(UpdateTaskRequest) returns (DefaultTaskResponse);
-  rpc DeleteTask(DeleteTaskRequest) returns (DefaultTaskResponse);
+  rpc UpdateTask(UpdateTaskRequest) returns (TaskInfo);
+  rpc DeleteTask(DeleteTaskRequest) returns (DeleteTaskResponse);
   rpc GetAllTasks(GetAllTasksRequest) returns (GetAllTasksResponse);
+}
+
+message DeleteTaskResponse{
+  int32 taskId = 1;
 }
 
 message GetTasksByUserIdsRequest {
@@ -55,6 +59,14 @@ message GetTaskByIdResponse {
   int32 orderId = 6;
 }
 
+message CreateTaskResponse{
+  int32 Id = 1;
+  string title = 2;
+  string description = 3;
+  GrpcTaskStatus status = 4;
+  google.protobuf.Timestamp dueDate = 5;
+  int32 orderId = 6;
+}
 message CreateTaskRequest {
   int32 orderId = 1;
   string title = 2;
@@ -78,6 +90,7 @@ message GetTasksByOrderIdsRequest {
 message GetTasksByOrderIdsResponse {
   repeated GetTaskByIdResponse tasks = 1;
 }
+
 message UpdateTaskRequest{
   GrpcTaskStatus status = 1;
   string description = 2;

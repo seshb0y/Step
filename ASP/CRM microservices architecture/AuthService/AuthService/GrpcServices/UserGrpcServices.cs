@@ -2,6 +2,7 @@
 using CRMSolution.Data.Repository.UserRep;
 using CRMSolution.Grpc.Users;
 using CRMSolution.Services.Interfaces;
+using Google.Protobuf.WellKnownTypes;
 using Microsoft.Extensions.Logging;
 using UserRole = CRMSolution.Grpc.Users.UserRole;
 
@@ -60,24 +61,14 @@ public class UserGrpcService : UserService.UserServiceBase
         return await _userService.GetUsersByIds(request);
     }
     
-    public override async Task<DefaultResponse> Register(RegisterRequest request, ServerCallContext context)
+    public override async Task<RegisterResponse> Register(RegisterRequest request, ServerCallContext context)
     {
-        await _accountService.RegisterAsync(request);
-        return new DefaultResponse
-        {
-            Message = "register success",
-            Success = true
-        };
+        return await _accountService.RegisterAsync(request);
     }
 
-    public override async Task<DefaultResponse> ConfirmEmail(ConfirmRequest request, ServerCallContext context)
+    public override async Task<ConfirmResponse> ConfirmEmail(ConfirmRequest request, ServerCallContext context)
     {
-        await _accountService.ConfirmEmailAsync(request);
-        return new DefaultResponse
-        {
-            Message = "confirm email success",
-            Success = true
-        };
+        return await _accountService.ConfirmEmailAsync(request);
     }
 
     public override async Task<DefaultResponse> VerifyEmail(VerifyEmailRequest request, ServerCallContext context)
@@ -193,7 +184,7 @@ public class UserGrpcService : UserService.UserServiceBase
 
     public override async Task<ChangeUserDataResponse> ChangeUserData(ChangeUserDataRequest request,
         ServerCallContext context)
-    {
+    { 
         var changedUser = await _userService.ChangeUserData(request);
         return new ChangeUserDataResponse
         {
@@ -201,18 +192,13 @@ public class UserGrpcService : UserService.UserServiceBase
             Email = changedUser.Email,
             Role = changedUser.Role,
             Id = changedUser.Id,
-            IsEmailConfirmed = changedUser.IsEmailConfirmed,
+            CreatedAt = Timestamp.FromDateTime(changedUser.CreatedAt.ToDateTime().ToUniversalTime())
         };
     }
 
-    public override async Task<DefaultResponse> DeleteUser(DeleteUserRequest request, ServerCallContext context)
+    public override async Task<DeleteUserResponse> DeleteUser(DeleteUserRequest request, ServerCallContext context)
     {
-        await _userService.DeleteUser(request);
-        return new DefaultResponse
-        {
-            Message = "user deleted success",
-            Success = true
-        };
+        return await _userService.DeleteUser(request);
     }
 
     public override async Task<GetAllUsersResponse> GetAllUsers(GetAllUsersRequest request, ServerCallContext context)

@@ -50,24 +50,13 @@ public class OrderGrpcService : CRMSolution.Grpc.Orders.OrderGrpcService.OrderGr
     public override async Task<CreateOrderResponse> CreateOrder(CreateOrderRequest request,
         ServerCallContext context)
     {
-        _orderService.CreateOrder(request);
-        return new CreateOrderResponse
-        {
-            Success = true,
-            Message = "Order created successfully!"
-        };
+        return await _orderService.CreateOrder(request);
     }
 
     public override async Task<ChangeOrderDataResponse> ChangeOrderData(ChangeOrderDataRequest request,
         ServerCallContext context)
     {
-        await _orderService.ChangeDataOrder(request);
-
-        return new ChangeOrderDataResponse
-        {
-            Success = true,
-            Message = "Order updated"
-        };
+        return await _orderService.ChangeDataOrder(request);
     }
 
     public override async Task<DeleteOrderResponse> DeleteOrder(DeleteOrderRequest request, ServerCallContext context)
@@ -96,5 +85,10 @@ public class OrderGrpcService : CRMSolution.Grpc.Orders.OrderGrpcService.OrderGr
         ServerCallContext context)
     {
         return await _orderService.GetOrdersByUserIds(request);
+    }
+
+    public override async Task<ChangeResponsibleResponse> ChangeResponsible(ChangeResponsibleRequest request, ServerCallContext context)
+    {
+        return await _orderService.ChangeResponsible(request);
     }
 }

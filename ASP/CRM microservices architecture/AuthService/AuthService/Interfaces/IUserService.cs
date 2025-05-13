@@ -10,7 +10,7 @@ public interface IUserService
 {
     // public Task<User> CreateUser(CreateUserRequest request);
     public Task<ChangeUserDataResponse> ChangeUserData(ChangeUserDataRequest request);
-    public Task DeleteUser(DeleteUserRequest request);
+    public Task<DeleteUserResponse> DeleteUser(DeleteUserRequest request);
     public Task<GetUserResponse> FindUser(GetUserByEmailRequest request);
     public Task<GetAllUsersResponse> GetAllUsers(SortUsersRequest sortUsersRequest);
     // Task<List<UsersWithOrdersAndTasksResponse>> GetUsersWithOrdersAndTasks(HttpContext httpContext);

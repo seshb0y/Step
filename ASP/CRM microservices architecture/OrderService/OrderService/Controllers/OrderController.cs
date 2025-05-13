@@ -61,9 +61,9 @@ public class OrderController : ControllerBase
     }
     
     [HttpPut("{orderId}/user")]
-    public async Task<IActionResult> ChangeResponsible(int orderId, ChangeResponsibleRequest request)
+    public async Task<IActionResult> ChangeResponsible(int orderId, HttpChangeResponsibleRequest request)
     {
-        await _orderService.ChangeResponsible(orderId, request);
+        // await _orderService.ChangeResponsible(orderId, request);
         return Ok("Responsible changed");
     }
     

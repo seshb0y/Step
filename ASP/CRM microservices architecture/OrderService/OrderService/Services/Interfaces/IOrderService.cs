@@ -9,14 +9,14 @@ namespace OrderService.Services.Interfaces;
 
 public interface IOrderService
 {
-    public Task CreateOrder(CreateOrderRequest request);
-    public Task ChangeDataOrder(ChangeOrderDataRequest request);
+    public Task<CreateOrderResponse> CreateOrder(CreateOrderRequest request);
+    public Task<ChangeOrderDataResponse> ChangeDataOrder(ChangeOrderDataRequest request);
     public Task DeleteOrder(DeleteOrderRequest request);
     // public Task<OrderResponse> FindOrder(FindOrderRequest request);
     public Task<GetLowInfoOrdersListResponse> GetLowInfoOrdersAsync(SortOrdersRequest sortRequest);
-    public Task ChangeResponsible(int orderId, ChangeResponsibleRequest request);
     Task<Order> GetByIdAsync(int orderId);
     Task<GetOrderFullInfoResponse> GetOrderInfo(GetOrderFullInfoRequest request);
     Task<GetOrdersByUserIdsResponse>  GetOrdersByUserIds(GetOrdersByUserIdsRequest request);
+    Task<ChangeResponsibleResponse> ChangeResponsible(ChangeResponsibleRequest request);
 
 }
