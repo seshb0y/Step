@@ -71,7 +71,7 @@ builder.Services.AddSignalR();
 builder.Services.AddGrpc();
 builder.Services.AddGrpcClient<UserService.UserServiceClient>(o =>
     {
-        o.Address = new Uri("http://localhost:5171");
+        o.Address = new Uri("http://userservice:5171");
     })
     .ConfigureChannel(options =>
     {
@@ -79,7 +79,7 @@ builder.Services.AddGrpcClient<UserService.UserServiceClient>(o =>
     });
 builder.Services.AddGrpcClient<OrderGrpcService.OrderGrpcServiceClient>(o =>
     {
-        o.Address = new Uri("http://localhost:5235");
+        o.Address = new Uri("http://orderservice:5235");
     })
     .ConfigureChannel(o =>
     {
@@ -87,7 +87,7 @@ builder.Services.AddGrpcClient<OrderGrpcService.OrderGrpcServiceClient>(o =>
     });
 builder.Services.AddGrpcClient<TaskGrpcService.TaskGrpcServiceClient>(o =>
 {
-    o.Address = new Uri("http://localhost:5296");
+    o.Address = new Uri("http://taskservice:5296");
 });
 
 
@@ -107,11 +107,11 @@ builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
 builder.WebHost.ConfigureKestrel(options =>
 {
-    options.ListenLocalhost(5111, listenOptions =>
+    options.ListenAnyIP(5111, listenOptions =>
     {
         listenOptions.Protocols = HttpProtocols.Http2;
     });
-    options.ListenLocalhost(5110, listenOptions =>
+    options.ListenAnyIP(5110, listenOptions =>
     {
         listenOptions.Protocols = HttpProtocols.Http1;
         // listenOptions.UseHttps();

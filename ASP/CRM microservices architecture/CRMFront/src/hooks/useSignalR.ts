@@ -11,13 +11,20 @@ import { AppDispatch } from "../store/store";
 export const useSignalR = () => {
   const dispatch = useDispatch<AppDispatch>();
 
+  const signalrUrl = import.meta.env.PROD
+  ? import.meta.env.VITE_PRODUCTION_SIGNALR_URL
+  : import.meta.env.VITE_SIGNALR_URL;
+
+  console.log("SignalR URL:", signalrUrl);
+  
   useEffect(() => {
     let connection: HubConnection;
 
+    
     const startConnection = async () => {
       try {
         connection = new HubConnectionBuilder()
-          .withUrl("http://localhost:5167/notificationHub")
+          .withUrl(signalrUrl)
           .withAutomaticReconnect()
           .configureLogging(LogLevel.Information)
           .build();

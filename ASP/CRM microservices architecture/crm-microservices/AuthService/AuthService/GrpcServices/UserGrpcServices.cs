@@ -105,7 +105,7 @@ public class UserGrpcService : UserService.UserServiceBase
 
     public override async Task<CurrentUserResponse> GetCurrentUser(DefaultRequest request, ServerCallContext context)
     {
-        var token = context.RequestHeaders.FirstOrDefault(h => h.Key == "token").Value;
+        var token = context.RequestHeaders.FirstOrDefault(h => h.Key == "access-token").Value;
         return await _accountService.GetCurrentUserAsync(token);
     }
 

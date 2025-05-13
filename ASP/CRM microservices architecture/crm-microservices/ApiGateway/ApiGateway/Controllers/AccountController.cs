@@ -100,8 +100,12 @@ public class AccountController : ControllerBase
     public async Task<IActionResult> GetMeAsync()
     {
         string? accessToken = Request.Cookies["accessToken"];
-        var metadata = new Metadata();
-        metadata.Add("accessToken", accessToken);
-        return Ok(await _accountService.GetCurrentUserAsync(new DefaultRequest(), metadata));
+        var metadata = new Metadata { { "access-token", accessToken } };
+
+        var callOptions = new CallOptions(metadata);
+
+        var response = await _accountService.GetCurrentUserAsync(new DefaultRequest(), callOptions);
+            
+        return Ok(response);
     }
 }

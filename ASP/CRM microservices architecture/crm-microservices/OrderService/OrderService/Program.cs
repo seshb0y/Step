@@ -2,18 +2,21 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using CRMSolution.Grpc; // gRPC UserService клиент
+using CRMSolution.Grpc;
+using CRMSolution.Grpc.Client;
+using CRMSolution.Grpc.Tasks; // gRPC UserService клиент
 using FluentValidation;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Microsoft.OpenApi.Models;
-using TaskService.Data;
-using TaskService.Data.Repository.Interface;
-using TaskService.Data.Repository.TasksRep;
-using TaskService.GrpcServices;
-using TaskService.Hubs;
-using TaskService.Services;
-using TaskService.Services.Interfaces;
+using OrderService.Data;
+using OrderService.Data.Repository.Interface;
+using OrderService.Data.Repository.OrderResp;
+using OrderService.Hubs;
+using OrderService.Services.Interfaces;
+using CRMSolution.Grpc.Users;
+using OrderService.GrpcServices;
+using OrderService.Services;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -27,10 +30,9 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 // Database
-builder.Services.AddDbContext<TaskDbContext>(options =>
+builder.Services.AddDbContext<OrderDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddTransient<DataSeeder>();
 // Authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -60,20 +62,37 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 builder.Services.AddAuthorization();
+builder.Services.AddTransient<DataSeeder>();
 
 // SignalR
 builder.Services.AddSignalR();
 
 // gRPC сервер и клиент
 builder.Services.AddGrpc();
-// builder.Services.AddGrpcClient<TaskService.TaskSer>(o =>
-//     {
-//         o.Address = new Uri("http://localhost:5234");
-//     })
-//     .ConfigureChannel(options =>
-//     {
-//         options.Credentials = Grpc.Core.ChannelCredentials.Insecure;
-//     });
+builder.Services.AddGrpcClient<UserService.UserServiceClient>(o =>
+    {
+        o.Address = new Uri("http://authservice:5171");
+    })
+    .ConfigureChannel(options =>
+    {
+        options.Credentials = Grpc.Core.ChannelCredentials.Insecure;
+    });
+builder.Services.AddGrpcClient<ClientGrpcService.ClientGrpcServiceClient>(o =>
+    {
+        o.Address = new Uri("http://clientservice:5111"); 
+    })
+    .ConfigureChannel(options =>
+    {
+        options.Credentials = Grpc.Core.ChannelCredentials.Insecure;
+    });
+builder.Services.AddGrpcClient<TaskGrpcService.TaskGrpcServiceClient>(o =>
+    {
+        o.Address = new Uri("http://taskservice:5296");
+    })
+    .ConfigureChannel(options =>
+    {
+        options.Credentials = Grpc.Core.ChannelCredentials.Insecure;
+    });
 
 
 
@@ -87,17 +106,17 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
 // Репозитории и Сервисы
-builder.Services.AddScoped<ITasksService, TaskService.Services.Classes.TasksService>();
-builder.Services.AddScoped<ITasksRep, TasksRep>();
+builder.Services.AddScoped<IOrderService, OrderService.Services.Classes.OrderService>();
+builder.Services.AddScoped<IOrderRep, OrderRep>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
 builder.WebHost.ConfigureKestrel(options =>
 {
-    options.ListenLocalhost(5296, listenOptions =>
+    options.ListenAnyIP(5235, listenOptions =>
     {
         listenOptions.Protocols = HttpProtocols.Http2;
     });
-    options.ListenLocalhost(5295, listenOptions =>
+    options.ListenAnyIP(5234, listenOptions =>
     {
         listenOptions.Protocols = HttpProtocols.Http1;
         // listenOptions.UseHttps();
@@ -120,20 +139,17 @@ app.UseHttpsRedirection();
 
 // Map Controllers and gRPC Services
 app.MapControllers();
-// app.MapGrpcService<OrderGrpcService>(); // (если ты будешь делать gRPC сервер для OrderService)
+app.MapGrpcService<OrderGrpcService>(); // (если ты будешь делать gRPC сервер для OrderService)
 app.MapHub<NotificationHub>("/notificationHub");
 
 // Автоматическое применение миграций
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-    var context = services.GetRequiredService<TaskDbContext>();
-    var seeder = services.GetRequiredService<DataSeeder>();
-
+    var context = services.GetRequiredService<OrderDbContext>();
     context.Database.Migrate();
+    var seeder = services.GetRequiredService<DataSeeder>();
     seeder.Seed();
 }
-
-app.MapGrpcService<TaskGrpcService>();
 
 app.Run();

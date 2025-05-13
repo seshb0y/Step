@@ -74,7 +74,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 builder.Services.AddGrpc();
 builder.Services.AddGrpcClient<UserService.UserServiceClient>(o =>
     {
-        o.Address = new Uri("http://localhost:5171");
+        o.Address = new Uri("http://authservice:5171");
     })
     .ConfigureChannel(options =>
     {
@@ -82,7 +82,7 @@ builder.Services.AddGrpcClient<UserService.UserServiceClient>(o =>
     });
 builder.Services.AddGrpcClient<ClientGrpcService.ClientGrpcServiceClient>(o =>
     {
-        o.Address = new Uri("http://localhost:5111"); 
+        o.Address = new Uri("http://clientservice:5111"); 
     })
     .ConfigureChannel(options =>
     {
@@ -90,7 +90,7 @@ builder.Services.AddGrpcClient<ClientGrpcService.ClientGrpcServiceClient>(o =>
     });
 builder.Services.AddGrpcClient<TaskGrpcService.TaskGrpcServiceClient>(o =>
     {
-        o.Address = new Uri("http://localhost:5296");
+        o.Address = new Uri("http://taskservice:5296");
     })
     .ConfigureChannel(options =>
     {
@@ -98,7 +98,7 @@ builder.Services.AddGrpcClient<TaskGrpcService.TaskGrpcServiceClient>(o =>
     });
 builder.Services.AddGrpcClient<OrderGrpcService.OrderGrpcServiceClient>(o =>
     {
-        o.Address = new Uri("http://localhost:5235");
+        o.Address = new Uri("http://orderservice:5235");
     })
     .ConfigureChannel(options =>
     {
@@ -138,5 +138,6 @@ app.UseEndpoints(endpoints => {
 });
 
 //app.UseHttpsRedirection();
+builder.WebHost.UseUrls("http://0.0.0.0:80");
 
 app.Run();
