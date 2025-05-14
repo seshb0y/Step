@@ -8,6 +8,7 @@ public class Order
     public decimal TotalAmount { get; set; }
     public OrderStatus Status { get; set; } = OrderStatus.New;
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public List<string>? CallRecord { get; set; }
     public bool IsDeleted { get; set; } = false;
     
     public int? UserId { get; set; }

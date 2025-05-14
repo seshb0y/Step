@@ -1,4 +1,5 @@
 ﻿using CRMSolution.Grpc.Orders;
+using CRMSolution.Grpc.Twilio;
 using OrderService.Data.Models;
 using OrderService.DTO.Requests;
 using OrderService.DTO.Requests.Order;
@@ -18,5 +19,5 @@ public interface IOrderService
     Task<GetOrderFullInfoResponse> GetOrderInfo(GetOrderFullInfoRequest request);
     Task<GetOrdersByUserIdsResponse>  GetOrdersByUserIds(GetOrdersByUserIdsRequest request);
     Task<ChangeResponsibleResponse> ChangeResponsible(ChangeResponsibleRequest request);
-
+    Task SaveCallRecord(SaveCallRecordRequest request);
 }

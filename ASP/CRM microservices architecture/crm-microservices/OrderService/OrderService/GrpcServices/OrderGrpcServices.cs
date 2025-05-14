@@ -127,4 +127,11 @@ public class OrderGrpcService : CRMSolution.Grpc.Orders.OrderGrpcService.OrderGr
     {
         return await _orderService.ChangeResponsible(request);
     }
+
+    public override async Task<SaveCallRecordResponse> SaveCallRecord(SaveCallRecordRequest request,
+        ServerCallContext context)
+    {
+        await _orderService.SaveCallRecord(request);
+        return new SaveCallRecordResponse();
+    }
 }

@@ -13,6 +13,7 @@ using CRMSolution.Grpc.Users;
 using CRMSolution.Grpc.Client;
 using CRMSolution.Grpc.Orders;
 using CRMSolution.Grpc.Tasks;
+using CRMSolution.Grpc.Twilio;
 using Google.Protobuf.WellKnownTypes;
 using Org.BouncyCastle.Asn1.X509;
 using ClientDto = CRMSolution.Grpc.Orders.ClientDto;
@@ -32,10 +33,12 @@ public class OrderService : IOrderService
     private readonly UserService.UserServiceClient _userGrpcClient;
     private readonly ClientGrpcService.ClientGrpcServiceClient _clientGrpcClient;
     private readonly TaskGrpcService.TaskGrpcServiceClient _taskGrpcService;
+    private readonly TwilioGrpcService.TwilioGrpcServiceClient _twilioGrpcService;
     
     public OrderService(IOrderRep orderRep, IMapper mapper, ILogger<OrderService> logger, 
         IHubContext<NotificationHub> notificationHub, UserService.UserServiceClient userGrpcClient,
-        ClientGrpcService.ClientGrpcServiceClient clientGrpcClient, TaskGrpcService.TaskGrpcServiceClient taskGrpcService)
+        ClientGrpcService.ClientGrpcServiceClient clientGrpcClient, TaskGrpcService.TaskGrpcServiceClient taskGrpcService,
+        TwilioGrpcService.TwilioGrpcServiceClient twilioGrpcService)
     {
         _orderRep = orderRep;
         _mapper = mapper;
@@ -44,6 +47,7 @@ public class OrderService : IOrderService
         _userGrpcClient = userGrpcClient;
         _clientGrpcClient = clientGrpcClient;
         _taskGrpcService = taskGrpcService;
+        _twilioGrpcService = twilioGrpcService;
     }
     public async Task<Order> GetByIdAsync(int orderId)
     {
@@ -154,6 +158,22 @@ public class OrderService : IOrderService
             Status = (OrderStatus)order.Status,
             Id = order.Id,
         };
+    }
+
+    public async Task SaveCallRecord(SaveCallRecordRequest request)
+    {
+        var grpcRequest = new GetRecodingUrlRequest
+        {
+            CallSid = request.CallSid,
+        };
+        var grpcResponse = _twilioGrpcService.GetRecordingUrl(grpcRequest);
+        var recordingUrl = grpcResponse.RecordingUrl;
+        if (!string.IsNullOrEmpty(recordingUrl))
+        {
+            var order = await _orderRep.GetByIdAsync(request.OrderId);
+            order.CallRecord.Add(recordingUrl);
+            await _orderRep.SaveChangesAsync();
+        }
     }
 
     public async Task<ChangeOrderDataResponse> ChangeDataOrder(ChangeOrderDataRequest request)

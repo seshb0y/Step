@@ -34,6 +34,14 @@ service OrderGrpcService {
   rpc GetLowInfoOrdersList(GetLowInfoOrdersListRequest) returns (GetLowInfoOrdersListResponse);
   rpc GetOrdersByUserIds (GetOrdersByUserIdsRequest) returns (GetOrdersByUserIdsResponse);
   rpc ChangeResponsible (ChangeResponsibleRequest) returns (ChangeResponsibleResponse);
+  rpc SaveCallRecord(SaveCallRecordRequest) returns (SaveCallRecordResponse);
+}
+
+message SaveCallRecordResponse{}
+
+message SaveCallRecordRequest{
+  int32 orderId = 1;
+  string callSid = 2;
 }
 
 message ChangeResponsibleResponse{
