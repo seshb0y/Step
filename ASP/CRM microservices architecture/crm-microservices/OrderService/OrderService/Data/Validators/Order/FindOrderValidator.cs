@@ -1,10 +1,11 @@
-﻿using FluentValidation;
+﻿using CRMSolution.Grpc.Orders;
+using FluentValidation;
 using OrderService.Data.Repository.Interface;
 using OrderService.DTO.Requests;
 
 namespace OrderService.Data.Validators.Order;
 
-public class FindOrderValidator : AbstractValidator<FindOrderRequest>
+public class FindOrderValidator : AbstractValidator<GetOrderByIdRequest>
 {
     IRepository<Models.Order> _orderRepository;
 
@@ -12,7 +13,7 @@ public class FindOrderValidator : AbstractValidator<FindOrderRequest>
     {
         _orderRepository = orderRepository;
         
-        RuleFor(r => r.orderId)
+        RuleFor(r => r.OrderId)
             .NotEmpty()
             .WithMessage("Invalid order ID.")
             .MustAsync(IsOrderExist)

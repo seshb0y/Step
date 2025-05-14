@@ -1,11 +1,12 @@
 ﻿using ControllerFirst.Shared;
 using CRMSolution.Data.Repository.UserRep;
 using CRMSolution.DTO.Requests;
+using CRMSolution.Grpc.Users;
 using FluentValidation;
 
 namespace CRMSolution.Data.Validators.User;
 
-public class ChangeUserDataValidator : AbstractValidator<HttpChangeUserDataRequest>
+public class ChangeUserDataValidator : AbstractValidator<ChangeUserDataRequest>
 {
     IUserRep _userRep;
     
@@ -13,13 +14,13 @@ public class ChangeUserDataValidator : AbstractValidator<HttpChangeUserDataReque
     {
         _userRep = userRep;
         
-        RuleFor(x => x.username)
+        RuleFor(x => x.Username)
             .MinimumLength(2).WithMessage("Name must be at least 2 characters");
 
-        RuleFor(x => x.newEmail)
+        RuleFor(x => x.NewEmail)
             .EmailAddress().WithMessage("Invalid email address");
 
-        RuleFor(x => x.oldEmail)
+        RuleFor(x => x.OldEmail)
             .MustAsync(IsClientExist)
             .WithMessage("The client email does not exist.");
         

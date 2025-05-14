@@ -22,7 +22,7 @@ public class AccountController : ControllerBase
         _accountService = accountService;
     }
 
-
+    
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterRequest request)
     {
@@ -30,9 +30,12 @@ public class AccountController : ControllerBase
         {
             Email = request.Email,
             Password = request.Password,
+            ConfirmPassword = request.ConfirmPassword,
             Username = request.Username
         };
+
         var response = await _accountService.RegisterAsync(grpcRequest);
+
         await _hubContext.Clients.All.SendAsync("NewUserRegistered", new
         {
             response.Id,
@@ -41,8 +44,10 @@ public class AccountController : ControllerBase
             response.CreatedAt,
             response.Role,
         });
+
         return Ok(response);
     }
+
 
     // [Authorize(Policy = "AdminPolicy")]
     [HttpGet("email/verify")]

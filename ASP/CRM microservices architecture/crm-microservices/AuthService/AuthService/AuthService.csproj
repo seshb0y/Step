@@ -41,8 +41,6 @@
 
     <ItemGroup>
       <Folder Include="Configuration\" />
-      <Folder Include="Repository\" />
-      <Folder Include="Validators\" />
     </ItemGroup>
 
     <ItemGroup>

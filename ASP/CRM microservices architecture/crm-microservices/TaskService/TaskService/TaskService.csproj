@@ -37,6 +37,7 @@
 
     <ItemGroup>
       <Folder Include="Data\Repository\" />
+      <Folder Include="Data\Validators\" />
       <Folder Include="DTO\Requests\" />
       <Folder Include="DTO\Responses\" />
     </ItemGroup>

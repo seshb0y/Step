@@ -1,14 +1,15 @@
 ﻿using ControllerFirst.DTO.Requests;
 using ControllerFirst.Shared;
+using CRMSolution.Grpc.Users;
 using FluentValidation;
 
 namespace CRMSolution.Data.Validators.Auth;
 
-public class ChangePasswordValidator : AbstractValidator<HttpChangePasswordRequest>
+public class ChangePasswordValidator : AbstractValidator<ChangePasswordRequest>
 {
     public ChangePasswordValidator()
     {
-        RuleFor(r => r.newPassword)
+        RuleFor(r => r.NewPassword)
             .NotEmpty()
             .WithMessage("Password is required")
             .MinimumLength(8)

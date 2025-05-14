@@ -35,5 +35,9 @@
         <Protobuf Include="..\..\Crm.Grpc.Contracts\Crm.Grpc.Contracts\Protos\order.proto" GrpcServices="Both" />
         <Protobuf Include="..\..\Crm.Grpc.Contracts\Crm.Grpc.Contracts\Protos\client.proto" GrpcServices="Both" />
     </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Data\Validators\" />
+    </ItemGroup>
     
 </Project>

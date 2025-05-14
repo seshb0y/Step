@@ -1,4 +1,7 @@
-﻿using ClientService.Services.Interfaces;
+﻿using AutoMapper;
+using ClientService.Data.Repository.SpecialRepClass.ClientRep;
+using ClientService.Services.Interfaces;
+using CRMSolution.Data.Validators;
 using CRMSolution.Grpc.Client;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
@@ -9,11 +12,13 @@ public class ClientGrpcService : CRMSolution.Grpc.Client.ClientGrpcService.Clien
 {
     private readonly IClientService _clientService;
     private readonly ILogger<ClientGrpcService> _logger;
+    private readonly IClientRep _clientRep;
 
-    public ClientGrpcService(IClientService clientService,  ILogger<ClientGrpcService> logger)
+    public ClientGrpcService(IClientService clientService,  ILogger<ClientGrpcService> logger,  IClientRep clientRep)
     {
         _clientService = clientService;
         _logger = logger;
+        _clientRep = clientRep;
     }
 
     public override async Task<GetClientResponse> GetClientById(GetClientByIdRequest request, ServerCallContext context)
@@ -31,6 +36,14 @@ public class ClientGrpcService : CRMSolution.Grpc.Client.ClientGrpcService.Clien
     }
     public override async Task<GetClientResponse> GetClientByEmail(GetClientByEmailRequest request, ServerCallContext context)
     {
+        var validator = new FindClientValidator(_clientRep);
+        var result = validator.Validate(request);
+
+        if (!result.IsValid)
+        {
+            var errorMessages = string.Join(" | ", result.Errors.Select(e => e.ErrorMessage));
+            throw new RpcException(new Status(StatusCode.InvalidArgument, errorMessages));
+        }
         _logger.LogInformation("gRPC запрос на поиск клиента по Email: {Email}", request.Email);
         var client = await _clientService.GetByEmailAsync(request);
 
@@ -55,18 +68,43 @@ public class ClientGrpcService : CRMSolution.Grpc.Client.ClientGrpcService.Clien
     public override async Task<CreateClientResponse> CreateClient(CreateClientRequest request,
         ServerCallContext context)
     {
+        var validator = new CreateClientValidator();
+        var result = validator.Validate(request);
+
+        if (!result.IsValid)
+        {
+            var errorMessages = string.Join(" | ", result.Errors.Select(e => e.ErrorMessage));
+            throw new RpcException(new Status(StatusCode.InvalidArgument, errorMessages));
+        }
         return await _clientService.CreateClient(request);
     }
 
     public override async Task<ChangeDataClientResponse> ChangeDataClient(ChangeDataClientRequest request,
         ServerCallContext context)
     {
+        var validator = new ChangeDataClientValidator(_clientRep);
+        var result = validator.Validate(request);
+
+        if (!result.IsValid)
+        {
+            var errorMessages = string.Join(" | ", result.Errors.Select(e => e.ErrorMessage));
+            throw new RpcException(new Status(StatusCode.InvalidArgument, errorMessages));
+        }
+        
         return await _clientService.ChangeDataClient(request);
     }
 
     public override async Task<DeleteClientResponse> DeleteClient(DeleteClientRequest request,
         ServerCallContext context)
     {
+        var validator = new DeleteClientValidator(_clientRep);
+        var result = validator.Validate(request);
+
+        if (!result.IsValid)
+        {
+            var errorMessages = string.Join(" | ", result.Errors.Select(e => e.ErrorMessage));
+            throw new RpcException(new Status(StatusCode.InvalidArgument, errorMessages));
+        }
         return await _clientService.DeleteClient(request);
     }
 

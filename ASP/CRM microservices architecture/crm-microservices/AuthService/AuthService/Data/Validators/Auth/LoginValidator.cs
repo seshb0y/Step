@@ -3,28 +3,29 @@ using ControllerFirst.Shared;
 using CRMSolution.Data.Models;
 using CRMSolution.Data.Repository.Interface;
 using CRMSolution.Data.Repository.UserRep;
+using CRMSolution.Grpc.Users;
 using FluentValidation;
 
 namespace CRMSolution.Data.Validators.Auth;
 
-public class LoginValidator : AbstractValidator<HttpLoginRequest>
+public class LoginValidator : AbstractValidator<LoginRequest>
 {
     IUserRep _userRep;
     public LoginValidator(IUserRep userRep)
     {
         _userRep = userRep;
         
-        RuleFor(x => x.username)
+        RuleFor(x => x.Username)
             .NotEmpty()
             .WithMessage("Username is required")
             .NotNull()
             .WithMessage("Username is required")
             .Matches(RegexPattern.Username)
             .WithMessage("Username must be at least 6 characters long and contain only letters, numbers, underscores, and hyphens")
-            .MustAsync(IsClientExist)
+            .MustAsync(IsUserExist)
             .WithMessage("The client ID does not exist.");
 
-        RuleFor(x => x.password)
+        RuleFor(x => x.Password)
             .NotEmpty()
             .WithMessage("Password is required")
             .NotNull()
@@ -34,9 +35,9 @@ public class LoginValidator : AbstractValidator<HttpLoginRequest>
         
     }
     
-    private async Task<bool> IsClientExist(string name, CancellationToken cancellationToken)
+    private async Task<bool> IsUserExist(string name, CancellationToken cancellationToken)
     {
-        var user = await _userRep.FindByNameAsync(name);
-        return user != null;
+        var client = await _userRep.FindByNameAsync(name);
+        return client != null;
     }
 }

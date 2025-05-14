@@ -28,7 +28,7 @@ public class TaskController : ControllerBase
     
     [HttpPut]
     // [Authorize(Policy = "ManagerPolicy")]
-    public async Task<IActionResult> ChangeTask([FromBody] UpdateTaskRequest request)
+    public async Task<IActionResult> ChangeTask([FromBody] HttpUpdateTaskRequest request)
     {
         // await _tasksService.UpdateTaskAsync(request);
         return Ok("Task updated");

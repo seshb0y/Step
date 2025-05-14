@@ -1,5 +1,8 @@
-﻿using Grpc.Core;
+﻿using AutoMapper;
+using Grpc.Core;
 using CRMSolution.Data.Repository.UserRep;
+using CRMSolution.Data.Validators.Auth;
+using CRMSolution.Data.Validators.User;
 using CRMSolution.Grpc.Users;
 using CRMSolution.Services.Interfaces;
 using Google.Protobuf.WellKnownTypes;
@@ -13,15 +16,17 @@ public class UserGrpcService : UserService.UserServiceBase
     private readonly IAccountService _accountService;
     private readonly IAuthService _authService;
     private readonly ITokenService _tokenService;
+    private readonly IUserRep _userRep;
 
     public UserGrpcService(IUserService userService, ILogger<UserGrpcService> logger, 
-        IAccountService accountService, IAuthService authService, ITokenService tokenService)
+        IAccountService accountService, IAuthService authService, ITokenService tokenService, IUserRep userRep)
     {
         _userService =  userService;
         _logger = logger;
         _accountService = accountService;
         _authService = authService;
         _tokenService = tokenService;
+        _userRep = userRep;
     }
 
     public override async Task<GetUserResponse> GetUserById(GetUserByIdRequest request, ServerCallContext context)
@@ -63,6 +68,15 @@ public class UserGrpcService : UserService.UserServiceBase
     
     public override async Task<RegisterResponse> Register(RegisterRequest request, ServerCallContext context)
     {
+        var validator = new RegisterValidator();
+        var result = validator.Validate(request);
+
+        if (!result.IsValid)
+        {
+            var errorMessages = string.Join(" | ", result.Errors.Select(e => e.ErrorMessage));
+            throw new RpcException(new Status(StatusCode.InvalidArgument, errorMessages));
+        }
+        
         return await _accountService.RegisterAsync(request);
     }
 
@@ -94,6 +108,15 @@ public class UserGrpcService : UserService.UserServiceBase
 
     public override async Task<DefaultResponse> ChangePassword(ChangePasswordRequest request, ServerCallContext context)
     {
+        var validator = new ChangePasswordValidator();
+        var result = validator.Validate(request);
+
+        if (!result.IsValid)
+        {
+            var errorMessages = string.Join(" | ", result.Errors.Select(e => e.ErrorMessage));
+            throw new RpcException(new Status(StatusCode.InvalidArgument, errorMessages));
+        }
+        
         var token = context.RequestHeaders.FirstOrDefault(h => h.Key == "token").Value;
         await _accountService.ChangePasswordAsync(request, token);
         return new DefaultResponse
@@ -121,6 +144,14 @@ public class UserGrpcService : UserService.UserServiceBase
 
     public override async Task<LoginResponse> Login(LoginRequest request, ServerCallContext context)
     {
+        var validator = new LoginValidator(_userRep);
+        var result = validator.Validate(request);
+
+        if (!result.IsValid)
+        {
+            var errorMessages = string.Join(" | ", result.Errors.Select(e => e.ErrorMessage));
+            throw new RpcException(new Status(StatusCode.InvalidArgument, errorMessages));
+        }
         return await _authService.LoginAsync(request);
     }
 
@@ -185,6 +216,14 @@ public class UserGrpcService : UserService.UserServiceBase
     public override async Task<ChangeUserDataResponse> ChangeUserData(ChangeUserDataRequest request,
         ServerCallContext context)
     { 
+        var validator = new ChangeUserDataValidator(_userRep);
+        var result = validator.Validate(request);
+
+        if (!result.IsValid)
+        {
+            var errorMessages = string.Join(" | ", result.Errors.Select(e => e.ErrorMessage));
+            throw new RpcException(new Status(StatusCode.InvalidArgument, errorMessages));
+        }
         var changedUser = await _userService.ChangeUserData(request);
         return new ChangeUserDataResponse
         {

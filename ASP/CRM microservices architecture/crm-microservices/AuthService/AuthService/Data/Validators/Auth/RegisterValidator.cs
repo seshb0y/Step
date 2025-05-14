@@ -1,10 +1,11 @@
 ﻿using ControllerFirst.DTO.Requests;
 using ControllerFirst.Shared;
+using CRMSolution.Grpc.Users;
 using FluentValidation;
 
 namespace CRMSolution.Data.Validators.Auth;
 
-public class RegisterValidator : AbstractValidator<HttpRegisterRequest>
+public class RegisterValidator : AbstractValidator<RegisterRequest>
 {
     public RegisterValidator()
     {
