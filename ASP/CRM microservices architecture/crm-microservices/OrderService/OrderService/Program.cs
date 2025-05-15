@@ -4,7 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using CRMSolution.Grpc;
 using CRMSolution.Grpc.Client;
-using CRMSolution.Grpc.Tasks; // gRPC UserService клиент
+using CRMSolution.Grpc.Tasks;
+using CRMSolution.Grpc.Twilio; 
 using FluentValidation;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -69,6 +70,14 @@ builder.Services.AddSignalR();
 
 // gRPC сервер и клиент
 builder.Services.AddGrpc();
+builder.Services.AddGrpcClient<TwilioGrpcService.TwilioGrpcServiceClient>(o =>
+    {
+        o.Address = new Uri("http://twilioservice");
+    })
+    .ConfigureChannel(options =>
+    {
+        options.Credentials = Grpc.Core.ChannelCredentials.Insecure;
+    });
 builder.Services.AddGrpcClient<UserService.UserServiceClient>(o =>
     {
         o.Address = new Uri("http://authservice:5171");
@@ -122,7 +131,6 @@ builder.WebHost.ConfigureKestrel(options =>
         // listenOptions.UseHttps();
     });
 });
-
 var app = builder.Build();
 
 // Middleware

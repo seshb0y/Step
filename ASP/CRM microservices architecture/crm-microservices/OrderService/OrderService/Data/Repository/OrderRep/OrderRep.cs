@@ -1,8 +1,9 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
-using OrderService.Data;
 using OrderService.Data.Models;
 using OrderService.Data.Repository.Interface;
+using OrderService.Data;
+
 namespace OrderService.Data.Repository.OrderResp;
 
 public class OrderRep : Repository<Order>, IOrderRep

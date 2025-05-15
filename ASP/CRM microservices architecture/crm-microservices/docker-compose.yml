@@ -1,6 +1,20 @@
 ﻿version: "3.9"
 
 services:
+  twilio-db:
+    image: postgres:16
+    container_name: twilio_postgres
+    environment:
+      POSTGRES_DB: twilio_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: secret
+    ports:
+      - "5448:5432"  # 👈 проброс наружу
+    volumes:
+      - twilio_pgdata:/var/lib/postgresql/data
+    networks:
+      - crm_network
+  
   auth-db:
     image: postgres:16
     container_name: auth_postgres
@@ -57,6 +71,18 @@ services:
     networks:
       - crm_network
   
+  twilioservice:
+    build:
+      context: .
+      dockerfile: TwilioService/TwilioService/Dockerfile
+    depends_on:
+      - twilio-db
+    networks:
+      - crm_network
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Host=twilio-db;Database=twilio_db;Username=postgres;Password=secret
+
   
   authservice:
     build:
@@ -86,7 +112,6 @@ services:
     build:
       context: .
       dockerfile: OrderService/OrderService/Dockerfile
-
     depends_on:
       - order-db
     networks:
@@ -132,3 +157,4 @@ volumes:
   client_pgdata:
   order_pgdata:
   task_pgdata:
+  twilio_pgdata:

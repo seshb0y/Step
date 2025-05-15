@@ -1,9 +1,6 @@
-﻿// using CRMSolution.DTO.Requests.Twilio;
-// using CRMSolution.Services.Classes;
-// using CRMSolution.Services.Interfaces;
+﻿// using ApiGateway.DTO.Requests.Twilio;
+// using CRMSolution.Grpc.Twilio;
 // using Microsoft.AspNetCore.Mvc;
-// using Twilio.TwiML;
-// using Twilio.TwiML.Voice;
 //
 // namespace ApiGateway.Controllers;
 //
@@ -11,18 +8,16 @@
 // [Route("api/v1/twilio")]
 // public class TwilioController : ControllerBase
 // {
-//     private readonly ITwilioService _twilioService;
-//
-//     public TwilioController(ITwilioService twilioService)
-//     {
-//         _twilioService = twilioService;
-//     }
 //
 //     [HttpPost("calls")]
-//     public IActionResult MakeCall([FromBody] CallRequest request)
+//     public IActionResult MakeCall([FromBody] HttpCallRequest request)
 //     {
-//         var callSid = _twilioService.MakeCall(request.To);
-//         return Ok(new { CallSid = callSid });
+//         var grpcRequest = new MakeCallRequest
+//         {
+//             To = request.To
+//         };
+//         var grpcResponse = new MakeCallResponse();
+//         return Ok(new { CallSid = grpcResponse });
 //     }
 //
 //     [HttpGet("recordings/{callSid}")]

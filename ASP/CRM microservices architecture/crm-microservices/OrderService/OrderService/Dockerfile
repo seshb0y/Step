@@ -5,8 +5,8 @@ EXPOSE 80
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
-# Скопировать .csproj и зависимости
-COPY Crm.Grpc.Contracts/ Crm.Grpc.Contracts/
+# КОРРЕКТНО скопировать .csproj и зависимости
+COPY Crm.Grpc.Contracts/ /src/Crm.Grpc.Contracts/
 COPY OrderService/ OrderService/
 
 # Восстановить зависимости

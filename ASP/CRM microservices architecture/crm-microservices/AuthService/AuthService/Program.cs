@@ -3,6 +3,8 @@ using AuthService.Data;
 using CRMSolution.Data.Repository;
 using CRMSolution.Data.Repository.Interface;
 using CRMSolution.Data.Repository.UserRep;
+using CRMSolution.Data.Validators.Auth;
+using CRMSolution.Data.Validators.User;
 using CRMSolution.Grpc.Client;
 using CRMSolution.Grpc.Orders;
 using CRMSolution.Grpc.Tasks;
@@ -27,7 +29,10 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddTransient<DataSeeder>();
 builder.Services.AddAutoMapper(typeof(UserService).Assembly);
-builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+builder.Services.AddValidatorsFromAssemblyContaining<ChangePasswordValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<LoginValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<RegisterValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<ChangeUserDataValidator>();
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddSignalR();

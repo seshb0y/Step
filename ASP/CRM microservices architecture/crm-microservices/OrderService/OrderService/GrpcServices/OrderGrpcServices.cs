@@ -4,11 +4,11 @@ using CRMSolution.Grpc.Orders;
 using CRMSolution.Grpc.Tasks;
 using CRMSolution.Grpc.Users;
 using Grpc.Core;
-using OrderService.Data.Models;
 using OrderService.Data.Repository.OrderResp;
 using OrderService.Data.Validators.Order;
-using OrderService.DTO.Requests; // <-- Только этот using правильный!
 using OrderService.Services.Interfaces;
+using OrderService.Data.Models;
+using OrderService.DTO.Requests; // <-- Только этот using правильный!
 using OrderService.DTO.Requests.Order;
 using OrderStatus = CRMSolution.Grpc.Orders.OrderStatus;
 

@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OrderService.DTO.Requests;
 using OrderService.DTO.Requests.Order;
-using OrderService.DTO.Requests.Orders;
 using OrderService.Services.Interfaces;
+using OrderService.DTO.Requests.Orders;
 
 namespace OrderService.Controllers;
 

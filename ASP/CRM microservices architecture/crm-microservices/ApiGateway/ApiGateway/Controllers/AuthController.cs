@@ -68,11 +68,11 @@ namespace ApiGateway.Controllers;
 
      
      [HttpPost("logout")]
-     public async Task<IActionResult> Logout(HttpContext context)
+     public async Task<IActionResult> Logout()
      { 
-         context.Response.Cookies.Delete("accessToken");
-        context.Response.Cookies.Delete("refreshToken");
-        return Ok(new { message = "Logged out successfully" });
+         HttpContext.Response.Cookies.Delete("accessToken");
+         HttpContext.Response.Cookies.Delete("refreshToken");
+         return Ok(new { message = "Logged out successfully" });
      }
 
  }

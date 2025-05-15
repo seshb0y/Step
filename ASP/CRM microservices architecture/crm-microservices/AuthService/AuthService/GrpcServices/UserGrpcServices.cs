@@ -5,6 +5,7 @@ using CRMSolution.Data.Validators.Auth;
 using CRMSolution.Data.Validators.User;
 using CRMSolution.Grpc.Users;
 using CRMSolution.Services.Interfaces;
+using FluentValidation;
 using Google.Protobuf.WellKnownTypes;
 using Microsoft.Extensions.Logging;
 using UserRole = CRMSolution.Grpc.Users.UserRole;
@@ -17,9 +18,15 @@ public class UserGrpcService : UserService.UserServiceBase
     private readonly IAuthService _authService;
     private readonly ITokenService _tokenService;
     private readonly IUserRep _userRep;
+    private readonly IValidator<RegisterRequest> _registerValidator;
+    private readonly IValidator<LoginRequest> _loginValidator;
+    private readonly IValidator<ChangePasswordRequest> _changePasswordValidator;
+    private readonly IValidator<ChangeUserDataRequest> _changeUserDataValidator;
 
     public UserGrpcService(IUserService userService, ILogger<UserGrpcService> logger, 
-        IAccountService accountService, IAuthService authService, ITokenService tokenService, IUserRep userRep)
+        IAccountService accountService, IAuthService authService, ITokenService tokenService, IUserRep userRep,
+        IValidator<RegisterRequest> registerValidator, IValidator<LoginRequest> loginValidator,
+        IValidator<ChangePasswordRequest> changePasswordValidator, IValidator<ChangeUserDataRequest> changeUserDataValidator)
     {
         _userService =  userService;
         _logger = logger;
@@ -27,6 +34,10 @@ public class UserGrpcService : UserService.UserServiceBase
         _authService = authService;
         _tokenService = tokenService;
         _userRep = userRep;
+        _registerValidator = registerValidator;
+        _loginValidator = loginValidator;
+        _changePasswordValidator = changePasswordValidator;
+        _changeUserDataValidator = changeUserDataValidator;
     }
 
     public override async Task<GetUserResponse> GetUserById(GetUserByIdRequest request, ServerCallContext context)
@@ -68,8 +79,7 @@ public class UserGrpcService : UserService.UserServiceBase
     
     public override async Task<RegisterResponse> Register(RegisterRequest request, ServerCallContext context)
     {
-        var validator = new RegisterValidator();
-        var result = validator.Validate(request);
+        var result = await _registerValidator.ValidateAsync(request);
 
         if (!result.IsValid)
         {
@@ -108,8 +118,7 @@ public class UserGrpcService : UserService.UserServiceBase
 
     public override async Task<DefaultResponse> ChangePassword(ChangePasswordRequest request, ServerCallContext context)
     {
-        var validator = new ChangePasswordValidator();
-        var result = validator.Validate(request);
+        var result = await _changePasswordValidator.ValidateAsync(request);
 
         if (!result.IsValid)
         {
@@ -144,8 +153,7 @@ public class UserGrpcService : UserService.UserServiceBase
 
     public override async Task<LoginResponse> Login(LoginRequest request, ServerCallContext context)
     {
-        var validator = new LoginValidator(_userRep);
-        var result = validator.Validate(request);
+        var result = await _loginValidator.ValidateAsync(request);
 
         if (!result.IsValid)
         {
@@ -216,8 +224,7 @@ public class UserGrpcService : UserService.UserServiceBase
     public override async Task<ChangeUserDataResponse> ChangeUserData(ChangeUserDataRequest request,
         ServerCallContext context)
     { 
-        var validator = new ChangeUserDataValidator(_userRep);
-        var result = validator.Validate(request);
+        var result = await _changeUserDataValidator.ValidateAsync(request);
 
         if (!result.IsValid)
         {

@@ -1,3 +1,3 @@
 ﻿namespace ApiGateway.DTO.Requests.Twilio;
 
-public record CallRequest(string To);
+public record HttpCallRequest(string To);

@@ -1,6 +1,7 @@
 using System.Text;
 using CRMSolution.Data.Repository.Interface;
 using CRMSolution.Grpc.Orders;
+using CRMSolution.Grpc.Twilio;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -11,7 +12,7 @@ using Microsoft.OpenApi.Models;
 using TaskService.Data;
 using TwilioService.Services;
 using Grpc.AspNetCore;
-
+using TwilioGrpcService = TwilioService.GrpcServices.TwilioGrpcService;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -90,11 +91,11 @@ builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
 builder.WebHost.ConfigureKestrel(options =>
 {
-    options.ListenLocalhost(5298, listenOptions =>
+    options.ListenAnyIP(5298, listenOptions =>
     {
         listenOptions.Protocols = HttpProtocols.Http2;
     });
-    options.ListenLocalhost(5299, listenOptions =>
+    options.ListenAnyIP(5299, listenOptions =>
     {
         listenOptions.Protocols = HttpProtocols.Http1;
         // listenOptions.UseHttps();
@@ -117,13 +118,14 @@ app.UseHttpsRedirection();
 
 // Map Controllers and gRPC Services
 app.MapControllers();
-
 // Автоматическое применение миграций
+app.MapGrpcService<TwilioGrpcService>();
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<TwilioDbContext>();
     context.Database.Migrate();
 }
+
 
 app.Run();

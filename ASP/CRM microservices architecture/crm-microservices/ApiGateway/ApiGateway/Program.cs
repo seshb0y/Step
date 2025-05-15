@@ -4,6 +4,7 @@ using CRMSolution.Grpc.Tasks;
 using CRMSolution.Grpc.Users;
 using ApiGateway.Hubs;
 using FluentValidation;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -104,6 +105,14 @@ builder.Services.AddGrpcClient<OrderGrpcService.OrderGrpcServiceClient>(o =>
     {
         options.Credentials = Grpc.Core.ChannelCredentials.Insecure;
     });
+
+// builder.WebHost.ConfigureKestrel(options =>
+// {
+//     options.ListenLocalhost(5167, listenOptions =>
+//     {
+//         listenOptions.Protocols = HttpProtocols.Http1AndHttp2;
+//     });
+// });
 
 
 builder.Services.AddAuthorization();
