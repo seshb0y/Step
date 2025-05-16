@@ -45,10 +45,12 @@ public class ClientController : ControllerBase
         
         _hubContext.Clients.All.SendAsync("ClientCreated", new
         {
+            grpcResponse.Id,
             grpcResponse.Name,
             grpcResponse.Email,
             grpcResponse.Phone,
-            grpcResponse.Address
+            grpcResponse.Address,
+            CreatedAt = grpcResponse.CreatedAt.ToDateTime()
         });
         return Ok(grpcResponse);
     }

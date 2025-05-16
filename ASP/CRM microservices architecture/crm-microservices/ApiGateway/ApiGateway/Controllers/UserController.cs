@@ -6,6 +6,7 @@ using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using UserRole = CRMSolution.Grpc.Orders.UserRole;
 
 namespace ApiGateway.Controllers;
 
@@ -99,8 +100,38 @@ public class UserController : ControllerBase
             Sort = new SortUsersRequest(sortUsersRequest)
         };
         var grpcResponse = await _userService.GetAllUsersAsync(grpcRequest);
+        
+        var users = grpcResponse.Users.Select(u => new HttpUserWithDetailsResponse
+        {
+            UserId = u.UserId,
+            Username = u.Username,
+            Email = u.Email,
+            UserRole = (UserRole)u.UserRole,
+            IsEmailConfirmed = u.IsEmailConfirmed,
+            CreatedAt = u.CreatedAt.ToDateTime(),
 
-        return Ok(grpcResponse);
+            Tasks = u.Tasks.Select(t => new HttpTaskInfo
+            {
+                TaskId = t.TaskId,
+                Title = t.Title,
+                Description = t.Description,
+                TaskStatus = t.TaskStatus.ToString(),
+                DueDate = t.DueDate.ToDateTime()
+            }).ToList(),
+
+            Orders = u.Orders.Select(o => new HttpOrderInfo
+            {
+                OrderId = o.OrderId,
+                TotalAmount = o.TotalAmount,
+                OrderStatus = o.OrderStatus.ToString()
+            }).ToList()
+        });
+
+        var response = new HttpGetAllUsersResponse
+        {
+            Users = users.ToList()
+        };
+        return Ok(response);
     }
     //
     // [HttpGet("Get/Clients/With/Orders/And/Tasks")]

@@ -4,7 +4,12 @@ using CRMSolution.Grpc.Users;
 using OrderStatus = CRMSolution.Grpc.Users.OrderStatus;
 using UserRole = CRMSolution.Grpc.Orders.UserRole;
 
-public class HttpUserResponse
+public class HttpGetAllUsersResponse
+{
+    public List<HttpUserWithDetailsResponse> Users { get; set; } = new();
+}
+
+public class HttpUserWithDetailsResponse
 {
     public int UserId { get; set; }
     public string Username { get; set; } = string.Empty;
@@ -12,40 +17,23 @@ public class HttpUserResponse
     public UserRole UserRole { get; set; }
     public bool IsEmailConfirmed { get; set; }
     public DateTime CreatedAt { get; set; }
+
+    public List<HttpTaskInfo> Tasks { get; set; } = new();
+    public List<HttpOrderInfo> Orders { get; set; } = new();
 }
 
-// public class HttpGetAllUsersResponse
-// {
-//     public List<GetAllUsersUserResponse> Users { get; set; }
-// }
-//
-// public class GetAllUsersUserResponse
-// {
-//     public string UserId { get; set; }
-//     public string Username { get; set; }
-//     public string Email { get; set; }
-//     
-//     public bool IsEmailConfirmed { get; set; }
-//     public UserRole UserRole { get; set; }
-//     public DateTime CreatedAt { get; set; }
-//     public List<GetAllUsersTasksResponse> Tasks { get; set; }
-//     public List<GetAllUsersOrdersResponse> Orders { get; set; }
-//     public List<GetAllUsersClientsResponse> Clients { get; set; }
-// }
-//
-// public class GetAllUsersTasksResponse
-// {
-//     public string TaskId { get; set; }
-//     public TaskStatus TaskStatus { get; set; }
-// }
-//
-// public class GetAllUsersOrdersResponse
-// {
-//     public string OrderId { get; set; }
-//     public OrderStatus OrderStatus { get; set; }
-// }
-//
-// public class GetAllUsersClientsResponse
-// {
-//     public string ClientName { get; set; }
-// }
+public class HttpTaskInfo
+{
+    public int TaskId { get; set; }
+    public string Title { get; set; } = "";
+    public string Description { get; set; } = "";
+    public string TaskStatus { get; set; } = "";
+    public DateTime DueDate { get; set; }
+}
+
+public class HttpOrderInfo
+{
+    public int OrderId { get; set; }
+    public double TotalAmount { get; set; }
+    public string OrderStatus { get; set; } = "";
+}

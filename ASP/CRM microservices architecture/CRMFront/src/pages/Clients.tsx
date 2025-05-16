@@ -11,6 +11,8 @@ import ClientCreateModal from "../components/Modals/ClientCreateModal";
 import { Client } from "../types/Client";
 import { ClientSearch } from '../components/Search/ClientSearch';
 
+const ITEMS_PER_PAGE = 15;
+const MAX_VISIBLE_PAGES = 5; // Максимальное количество видимых кнопок страниц
 
 export const ClientsPage = () => {
   const dispatch = useAppDispatch();
@@ -19,6 +21,7 @@ export const ClientsPage = () => {
   const [selectedClient, setSelectedClient] = useState<Client | null>(null);
   const [isClientModalOpen, setIsClientModalOpen] = useState(false);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
   const [sortClients, setSortClients] = useState<{ sortBy: string; descending: boolean }>({
     sortBy: "id",
     descending: false,
@@ -45,6 +48,60 @@ export const ClientsPage = () => {
       descending: prev.sortBy === key ? !prev.descending : false,
     }));
     dispatch(fetchClients({ sortBy: key, descending: sortClients.sortBy === key ? !sortClients.descending : false }));
+  };
+
+  const totalPages = Math.ceil(clients.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+  const currentClients = clients.slice(startIndex, endIndex);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  const getVisiblePages = () => {
+    const pages: (number | string)[] = [];
+    
+    if (totalPages <= MAX_VISIBLE_PAGES) {
+      // Если страниц меньше или равно MAX_VISIBLE_PAGES, показываем все
+      return Array.from({ length: totalPages }, (_, i) => i + 1);
+    }
+
+    // Всегда показываем первую страницу
+    pages.push(1);
+
+    // Вычисляем начальную и конечную страницу для отображения
+    let startPage = Math.max(2, currentPage - 1);
+    let endPage = Math.min(totalPages - 1, currentPage + 1);
+
+    // Корректируем диапазон, если мы близко к началу или концу
+    if (currentPage <= 3) {
+      endPage = Math.min(totalPages - 1, MAX_VISIBLE_PAGES - 1);
+    } else if (currentPage >= totalPages - 2) {
+      startPage = Math.max(2, totalPages - MAX_VISIBLE_PAGES + 2);
+    }
+
+    // Добавляем многоточие после первой страницы, если есть пропуск
+    if (startPage > 2) {
+      pages.push('...');
+    }
+
+    // Добавляем страницы в диапазоне
+    for (let i = startPage; i <= endPage; i++) {
+      pages.push(i);
+    }
+
+    // Добавляем многоточие перед последней страницей, если есть пропуск
+    if (endPage < totalPages - 1) {
+      pages.push('...');
+    }
+
+    // Всегда показываем последнюю страницу
+    if (totalPages > 1) {
+      pages.push(totalPages);
+    }
+
+    return pages;
   };
 
   return (
@@ -137,7 +194,7 @@ export const ClientsPage = () => {
                       </td>
                     </tr>
                   ) : (
-                    clients.map((client) => (
+                    currentClients.map((client) => (
                       <tr 
                         key={client.id} 
                         className="border-b border-purple-500/10 hover:bg-[rgba(139,92,246,0.1)] transition-all duration-200 cursor-pointer"
@@ -155,6 +212,50 @@ export const ClientsPage = () => {
                 </tbody>
               </table>
             </div>
+
+            {/* Пагинация */}
+            {!loading && !error && clients.length > 0 && (
+              <div className="flex justify-center items-center gap-2 py-4 bg-[rgba(30,27,75,0.98)] border-t border-purple-500/20">
+                <button
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  className="px-3 py-1 rounded-lg bg-purple-600/50 hover:bg-purple-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                >
+                  ←
+                </button>
+                
+                {getVisiblePages().map((page, index) => (
+                  page === '...' ? (
+                    <span 
+                      key={`ellipsis-${index}`}
+                      className="px-3 py-1 text-purple-400"
+                    >
+                      ...
+                    </span>
+                  ) : (
+                    <button
+                      key={page}
+                      onClick={() => handlePageChange(page as number)}
+                      className={`px-3 py-1 rounded-lg transition-all ${
+                        currentPage === page
+                          ? 'bg-purple-600 text-white'
+                          : 'bg-purple-600/50 hover:bg-purple-600'
+                      }`}
+                    >
+                      {page}
+                    </button>
+                  )
+                ))}
+                
+                <button
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                  className="px-3 py-1 rounded-lg bg-purple-600/50 hover:bg-purple-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                >
+                  →
+                </button>
+              </div>
+            )}
           </div>
         )}
       </div>

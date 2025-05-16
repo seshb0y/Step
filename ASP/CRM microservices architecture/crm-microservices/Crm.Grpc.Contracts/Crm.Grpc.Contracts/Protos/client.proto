@@ -115,6 +115,8 @@ message CreateClientResponse{
   string email = 2;
   string phone = 3;
   string address = 4;
+  int32 id = 5;
+  google.protobuf.Timestamp createdAt = 6;
 }
 message CreateClientRequest{
   string name = 1;

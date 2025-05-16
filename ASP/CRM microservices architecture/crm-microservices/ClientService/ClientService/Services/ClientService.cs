@@ -50,10 +50,12 @@ public class ClientService : IClientService
         _logger.LogInformation("Отправка сигнала ClientCreated");
         return new CreateClientResponse
         {
+            Id = client.Id,
             Name = client.Name,
             Address = client.Address,
             Email = client.Email,
             Phone =  client.Phone,
+            CreatedAt = Timestamp.FromDateTime(client.CreatedAt.ToUniversalTime())
         };
     }
 
@@ -133,19 +135,23 @@ public class ClientService : IClientService
                 ? grpcClient.OrderByDescending(x => x.Id).ToList()
                 : grpcClient.OrderBy(x => x.Id).ToList(),
 
-            "title" => getAllClientsRequest.Sort.Descending
+            "name" => getAllClientsRequest.Sort.Descending
                 ? grpcClient.OrderByDescending(x => x.Name).ToList()
                 : grpcClient.OrderBy(x => x.Name).ToList(),
 
-            "status" => getAllClientsRequest.Sort.Descending
+            "email" => getAllClientsRequest.Sort.Descending
                 ? grpcClient.OrderByDescending(x => x.Email).ToList()
                 : grpcClient.OrderBy(x => x.Email).ToList(),
             
-            "description" => getAllClientsRequest.Sort.Descending
+            "address" => getAllClientsRequest.Sort.Descending
                 ? grpcClient.OrderByDescending(x => x.Address).ToList()
                 : grpcClient.OrderBy(x => x.Address).ToList(),
+            
+            "phone" => getAllClientsRequest.Sort.Descending
+                ? grpcClient.OrderByDescending(x => x.Phone).ToList()
+                : grpcClient.OrderBy(x => x.Phone).ToList(), 
 
-            "duedate" => getAllClientsRequest.Sort.Descending
+            "createdat" => getAllClientsRequest.Sort.Descending
                 ? grpcClient.OrderByDescending(x => x.CreatedAt.Seconds).ToList()
                 : grpcClient.OrderBy(x => x.CreatedAt.Seconds).ToList(),
 

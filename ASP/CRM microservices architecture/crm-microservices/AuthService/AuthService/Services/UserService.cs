@@ -9,6 +9,7 @@ using CRMSolution.Grpc.Tasks;
 using CRMSolution.Grpc.Users;
 using CRMSolution.Hubs;
 using CRMSolution.Services.Interfaces;
+using Google.Protobuf.WellKnownTypes;
 using Microsoft.AspNetCore.SignalR;
 using GrpcTaskStatus = CRMSolution.Grpc.Users.GrpcTaskStatus;
 using TaskInfo = CRMSolution.Grpc.Users.TaskInfo;
@@ -148,12 +149,29 @@ public class UserService : IUserService
         var users = await _userRepository.GetAllAsync();
         users = sortUsersRequest.SortBy?.ToLower() switch
         {
-            "id" => sortUsersRequest.Descending ? users.OrderByDescending(u => u.Id).ToList() : users.OrderBy(u => u.Id).ToList(),
-            "username" => sortUsersRequest.Descending ? users.OrderByDescending(u => u.Username).ToList() : users.OrderBy(u => u.Username).ToList(),
-            "email" => sortUsersRequest.Descending ? users.OrderByDescending(u => u.Email).ToList() : users.OrderBy(u => u.Email).ToList(),
-            "role" => sortUsersRequest.Descending ? users.OrderByDescending(u => u.Role).ToList() : users.OrderBy(u => u.Role).ToList(),
-            "isemailconfirmed" => sortUsersRequest.Descending ? users.OrderByDescending(u => u.IsEmailConfirmed).ToList() : users.OrderBy(u => u.IsEmailConfirmed).ToList(),
-            "createdat" => sortUsersRequest.Descending ? users.OrderByDescending(u => u.CreatedAt).ToList() : users.OrderBy(u => u.CreatedAt).ToList(),
+            "userid" => sortUsersRequest.Descending
+                ? users.OrderByDescending(u => u.Id).ToList() 
+                : users.OrderBy(u => u.Id).ToList(),
+            
+            "username" => sortUsersRequest.Descending 
+                ? users.OrderByDescending(u => u.Username).ToList() 
+                : users.OrderBy(u => u.Username).ToList(),
+            
+            "email" => sortUsersRequest.Descending 
+                ? users.OrderByDescending(u => u.Email).ToList() 
+                : users.OrderBy(u => u.Email).ToList(),
+            
+            "role" => sortUsersRequest.Descending 
+                ? users.OrderByDescending(u => u.Role).ToList() 
+                : users.OrderBy(u => u.Role).ToList(),
+            
+            "isemailconfirmed" => sortUsersRequest.Descending 
+                ? users.OrderByDescending(u => u.IsEmailConfirmed).ToList() 
+                : users.OrderBy(u => u.IsEmailConfirmed).ToList(),
+            
+            "createdat" => sortUsersRequest.Descending 
+                ? users.OrderByDescending(u => u.CreatedAt).ToList() 
+                : users.OrderBy(u => u.CreatedAt).ToList(),
             _ => users
         };
 
@@ -176,8 +194,9 @@ public class UserService : IUserService
                 UserId = user.Id,
                 Username = user.Username,
                 Email = user.Email,
-                Role = (CRMSolution.Grpc.Users.UserRole)user.Role,
+                UserRole = (CRMSolution.Grpc.Users.UserRole)user.Role,
                 IsEmailConfirmed = user.IsEmailConfirmed,
+                CreatedAt = Timestamp.FromDateTime(user.CreatedAt),
             };
 
             if (tasksByUser.TryGetValue(user.Id, out var userTasks))

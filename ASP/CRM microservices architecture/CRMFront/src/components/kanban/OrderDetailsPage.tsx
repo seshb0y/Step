@@ -215,7 +215,7 @@ const OrderDetailsPage = () => {
       
       const request = {
         taskId: editingTask.id,
-        status: getTaskStatusInt(editingTaskStatus),
+        status: getTaskStatusString(editingTaskStatus),
         description: editingTaskDescription
       };
 
@@ -326,16 +326,16 @@ const OrderDetailsPage = () => {
     }
   };
 
-  const getTaskStatusInt = (status: number): number => {
+  const getTaskStatusString = (status: number): string => {
     switch (status) {
       case TaskStatus.New:
-        return 0;
+        return "New";
       case TaskStatus.InProgress:
-        return 1;
+        return "In Progress";
       case TaskStatus.Completed:
-        return 2;
+        return "Completed";
       default:
-        return 3;
+        return "Undefined";
     }
   };
 
@@ -457,7 +457,7 @@ const OrderDetailsPage = () => {
                         <div>
                           <h3 className="text-lg font-semibold">{task.title}</h3>
                           <p>{task.description}</p>
-                          <p className="text-sm text-gray-400">Status: {getTaskStatusInt(task.status)}</p>
+                          <p className="text-sm text-gray-400">Status: {getTaskStatusString(task.status)}</p>
                           <p className="text-sm text-gray-400">
                             Deadline: {task.dueDate ? new Date(task.dueDate).toLocaleDateString('en-US') : 'Not set'}
                           </p>

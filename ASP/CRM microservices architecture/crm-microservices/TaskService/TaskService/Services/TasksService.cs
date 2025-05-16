@@ -185,7 +185,7 @@ public class TasksService : ITasksService
         
         grpcTasks = sortTasksRequest.SortBy.ToLower() switch
         {
-            "id" => sortTasksRequest.Descending
+            "taskid" => sortTasksRequest.Descending
                 ? grpcTasks.OrderByDescending(x => x.Id).ToList()
                 : grpcTasks.OrderBy(x => x.Id).ToList(),
 
@@ -200,7 +200,11 @@ public class TasksService : ITasksService
             "description" => sortTasksRequest.Descending
                 ? grpcTasks.OrderByDescending(x => x.Description).ToList()
                 : grpcTasks.OrderBy(x => x.Description).ToList(),
-
+            
+            "username" => sortTasksRequest.Descending
+                ? grpcTasks.OrderByDescending(x => x.Username).ToList()
+                : grpcTasks.OrderBy(x => x.Username).ToList(),
+            
             "duedate" => sortTasksRequest.Descending
                 ? grpcTasks.OrderByDescending(x => x.DueDate.Seconds).ToList()
                 : grpcTasks.OrderBy(x => x.DueDate.Seconds).ToList(),

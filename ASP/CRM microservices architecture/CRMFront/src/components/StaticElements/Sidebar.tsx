@@ -26,7 +26,6 @@ const menuItems = [
   { text: "Tasks", icon: <AssignmentIcon />, animation: TasksAnimation, path: "/tasks", roles: [0] },
   { text: "Users", icon: <GroupIcon />, animation: UsersAnimation, path: "/users", roles: [0] },
   { text: "Kanban", icon: <ViewKanbanIcon />, animation: KanbanAnimation, path: "/kanban", roles: [0, 1] },
-  { text: "Settings", icon: <SettingsIcon />, animation: SettingsAnimation, path: "/settings", roles: [0] },
 ];
 
 interface SidebarProps {

@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using DeleteTaskRequest = CRMSolution.Grpc.Tasks.DeleteTaskRequest;
+using Enum = System.Enum;
 using SortTasksRequest = CRMSolution.Grpc.Tasks.SortTasksRequest;
 using UpdateTaskRequest = CRMSolution.Grpc.Tasks.UpdateTaskRequest;
 
@@ -32,6 +33,7 @@ public class TaskController : ControllerBase
     }
 
 
+
     [HttpPost]
     // [Authorize(Policy = "ManagerPolicy")]
     public async Task<IActionResult> AddTask([FromBody] HttpCreateTaskRequest request)
@@ -50,7 +52,7 @@ public class TaskController : ControllerBase
             grpcResponse.Id,
             grpcResponse.Title,
             grpcResponse.Description,
-            grpcResponse.Status,
+            Status = (TaskStatus)grpcResponse.Status,
             grpcResponse.DueDate,
             grpcResponse.OrderId
         });
@@ -58,14 +60,27 @@ public class TaskController : ControllerBase
         return Ok("Task created");
     }
     
+    private static string NormalizeStatus(string input)
+    {
+        return input
+            .Replace(" ", "", StringComparison.OrdinalIgnoreCase)
+            .Replace("_", "", StringComparison.OrdinalIgnoreCase)
+            .Trim();
+    }
     [HttpPut]
     // [Authorize(Policy = "ManagerPolicy")]
     public async Task<IActionResult> ChangeTask([FromBody] HttpUpdateTaskRequest request)
     {
+        string normalizedStatus = NormalizeStatus(request.status);
+
+        if (!Enum.TryParse<GrpcTaskStatus>(normalizedStatus, ignoreCase: true, out var parsedStatus))
+        {
+            return BadRequest($"Invalid task status: {request.status}");
+        }
         var grpcRequest = new UpdateTaskRequest
         {
             Description = request.description,
-            Status = (GrpcTaskStatus)(int)request.status,
+            Status = parsedStatus,
             TaskId = request.taskId,
         };
         var grpcResponse = await _tasksService.UpdateTaskAsync(grpcRequest);
@@ -75,7 +90,7 @@ public class TaskController : ControllerBase
             grpcResponse.Id,
             grpcResponse.Title,
             grpcResponse.Description,
-            grpcResponse.Status,
+            Status = grpcResponse.Status.ToString(),
             grpcResponse.DueDate
         });
         
@@ -128,4 +143,5 @@ public class TaskController : ControllerBase
         var httpResponse = _mapper.Map<List<TaskDto>>(grpcResponse);
         return Ok(new HttpGetAllTasksResponse{Tasks = httpResponse});
     }
+    
 }
