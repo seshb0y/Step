@@ -179,7 +179,7 @@ public class TasksService : ITasksService
             Status = (TasksStatus)t.Status,
             DueDate = Timestamp.FromDateTime(t.DueDate.ToUniversalTime()),
             OrderId =  t.OrderId,
-            Username = usersDict.TryGetValue(t.UserId, out var username) ? username : null
+            Username = usersDict.TryGetValue(t.UserId, out var username) ? username : string.Empty
 
         }).ToList();
         

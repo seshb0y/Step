@@ -75,6 +75,8 @@ public class OrderProfile : Profile
                 MapFrom(src => src.Client))
             .ForMember(dest => dest.Tasks, opt => opt.
                 MapFrom(src => src.Tasks))
+            .ForMember(dest => dest.CallRecordingUrl, opt => opt.
+                MapFrom(src => src.CallRecordingUrl))
             .ForMember(dest => dest.Users, opt => opt.
                 MapFrom(src => src.Users));
 

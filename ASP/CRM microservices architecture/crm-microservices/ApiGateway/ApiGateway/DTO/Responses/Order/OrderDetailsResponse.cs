@@ -7,6 +7,7 @@ public class OrderDetailsResponse
     public OrderStatus Status { get; set; }
 
     public ClientResponse Client { get; set; }
+    public List<string> CallRecordingUrl { get; set; }
     public List<OrderDetailsTaskResponse> Tasks { get; set; }
     public List<OrderDetailsUserResponse> Users { get; set; }
 }

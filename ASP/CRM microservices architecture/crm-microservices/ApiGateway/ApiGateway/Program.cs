@@ -3,6 +3,7 @@ using CRMSolution.Grpc.Orders;
 using CRMSolution.Grpc.Tasks;
 using CRMSolution.Grpc.Users;
 using ApiGateway.Hubs;
+using CRMSolution.Grpc.Twilio;
 using FluentValidation;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.OpenApi.Models;
@@ -109,6 +110,16 @@ builder.Services.AddGrpcClient<OrderGrpcService.OrderGrpcServiceClient>(o =>
         o.Address = isDocker
             ? new Uri("http://orderservice:5235")
             : new Uri("http://localhost:5235");
+    })
+    .ConfigureChannel(options =>
+    {
+        options.Credentials = Grpc.Core.ChannelCredentials.Insecure;
+    });
+builder.Services.AddGrpcClient<TwilioGrpcService.TwilioGrpcServiceClient>(o =>
+    {
+        o.Address = isDocker
+            ? new Uri("http://twilioservice:5298")
+            : new Uri("http://localhost:5298");
     })
     .ConfigureChannel(options =>
     {

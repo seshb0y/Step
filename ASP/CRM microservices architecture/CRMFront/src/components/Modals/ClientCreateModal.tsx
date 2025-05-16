@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { createClient } from "../../features/clients/clientSlice";
 import { RootState, AppDispatch } from "../../store/store";
 
-
 interface ClientCreateModalProps {
   onClose: () => void;
 }
@@ -21,18 +20,12 @@ const ClientCreateModal = ({ onClose }: ClientCreateModalProps) => {
   });
 
   const formatPhoneNumber = (value: string) => {
-    // Удаляем все нецифровые символы
     const phoneNumber = value.replace(/\D/g, '');
-    
-    // Если номер начинается с +, сохраняем его
     const hasPlus = value.startsWith('+');
-    
-    // Определяем код страны (первые 1-3 цифры)
     let countryCode = '';
     let localNumber = '';
     
     if (phoneNumber.length > 0) {
-      // Пробуем определить код страны (обычно 1-3 цифры)
       if (phoneNumber.length >= 3) {
         countryCode = phoneNumber.slice(0, 3);
         localNumber = phoneNumber.slice(3);
@@ -41,7 +34,6 @@ const ClientCreateModal = ({ onClose }: ClientCreateModalProps) => {
       }
     }
     
-    // Форматируем номер
     let formatted = hasPlus ? '+' : '';
     if (countryCode) {
       formatted += countryCode;
@@ -57,13 +49,11 @@ const ClientCreateModal = ({ onClose }: ClientCreateModalProps) => {
     const { name, value } = e.target;
     
     if (name === 'phone') {
-      // Для телефона применяем форматирование
       setFormData(prev => ({
         ...prev,
         [name]: formatPhoneNumber(value)
       }));
     } else {
-      // Для остальных полей оставляем как есть
       setFormData(prev => ({
         ...prev,
         [name]: value
@@ -72,7 +62,6 @@ const ClientCreateModal = ({ onClose }: ClientCreateModalProps) => {
   };
 
   const handleSave = () => {
-    // Преобразуем номер телефона в формат для сервера (только цифры)
     const phoneForServer = formData.phone.replace(/\D/g, '');
     
     dispatch(createClient({

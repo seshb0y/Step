@@ -65,13 +65,16 @@ builder.Services.AddSignalR();
 
 // gRPC сервер и клиент
 builder.Services.AddGrpc();
+var isDocker = Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true";
 builder.Services.AddGrpcClient<OrderGrpcService.OrderGrpcServiceClient>(o =>
     {
-        o.Address = new Uri("http://localhost:5235");
+        o.Address = isDocker
+            ? new Uri("http://orderservice:5235")
+            : new Uri("http://localhost:5235");
     })
-    .ConfigureChannel(o =>
+    .ConfigureChannel(options =>
     {
-        o.Credentials = Grpc.Core.ChannelCredentials.Insecure;
+        options.Credentials = Grpc.Core.ChannelCredentials.Insecure;
     });
 
 

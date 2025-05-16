@@ -102,6 +102,7 @@ public class OrderService : IOrderService
         });
         
         response.Tasks.AddRange(_mapper.Map<List<TaskDto>>(grpcTaskResponse.Tasks));
+        response.CallRecordingUrl.AddRange(order.CallRecord);
 
 
         return response;
@@ -162,18 +163,14 @@ public class OrderService : IOrderService
 
     public async Task SaveCallRecord(SaveCallRecordRequest request)
     {
-        var grpcRequest = new GetRecodingUrlRequest
+        var order = await _orderRep.GetByIdAsync(request.OrderId);
+        if (order.CallRecord == null)
         {
-            CallSid = request.CallSid,
-        };
-        var grpcResponse = _twilioGrpcService.GetRecordingUrl(grpcRequest);
-        var recordingUrl = grpcResponse.RecordingUrl;
-        if (!string.IsNullOrEmpty(recordingUrl))
-        {
-            var order = await _orderRep.GetByIdAsync(request.OrderId);
-            order.CallRecord.Add(recordingUrl);
-            await _orderRep.SaveChangesAsync();
+            order.CallRecord = new List<string>();
         }
+        order.CallRecord.Add(request.RecordUrl);
+        await _orderRep.SaveChangesAsync();
+        
     }
 
     public async Task<ChangeOrderDataResponse> ChangeDataOrder(ChangeOrderDataRequest request)

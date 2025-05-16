@@ -7,7 +7,7 @@ import { createTask, deleteTask } from "../../features/tasks/tasksSlice";
 import Sidebar from "../StaticElements/Sidebar";
 import TopBox from "../StaticElements/TopBox";
 import { Order, OrderStatus } from "../../types/Order";
-import { TaskStatus } from "../../types/Task";
+import { TaskStatus, Task } from "../../types/Task";
 import { fetchChangeClientData } from "../../features/clients/clientSlice";
 import OrderEditModal from "../Modals/OrderEditModal";
 import { fetchUsers } from "../../features/user/userSlice";
@@ -136,8 +136,9 @@ const OrderDetailsPage = () => {
   
       setTimeout(async () => {
         try {
-          const recordingRes = await axiosInstance.get(`twilio/recordings/${callSid}`);
-          const mediaUrl = recordingRes.data.mediaUrl;
+          console.log("start", callSid)
+          const recordingRes = await axiosInstance.get(`twilio/recordings/${String(callSid)}`);
+          const mediaUrl = recordingRes.data.recordingUrl;
   
           console.log("Recording URL received:", mediaUrl);
           
@@ -146,7 +147,13 @@ const OrderDetailsPage = () => {
             callSid: callSid,
           });
   
-          setOrder({ ...order, callRecordingUrl: mediaUrl });
+          setOrder(prevOrder => {
+            if (!prevOrder) return prevOrder;
+            return {
+              ...prevOrder,
+              callRecordingUrl: mediaUrl
+            };
+          });
   
         } catch (err) {
           console.error("Error getting call recording:", err);
@@ -339,6 +346,40 @@ const OrderDetailsPage = () => {
     }
   };
 
+  const getCallRecordingDate = (url: string): Date => {
+    if (typeof url !== 'string') return new Date(0);
+    const file = url.split('/').pop()?.replace('.mp3', '');
+    if (!file) return new Date(0);
+    const parts = file.split('_');
+    if (parts.length < 2) return new Date(0);
+    const dateStr = parts[1];
+    const date = new Date(dateStr);
+    return isNaN(date.getTime()) ? new Date(0) : date;
+  };
+
+  const getCombinedItems = (order: Order) => {
+    const items: { type: 'task' | 'call', date?: Date, task?: Task, url?: string }[] = [];
+    if (order.tasks) {
+      for (const task of order.tasks) {
+        if (task.dueDate) {
+          items.push({ type: 'task', date: new Date(task.dueDate), task });
+        }
+      }
+    }
+    if (Array.isArray(order.callRecordingUrl)) {
+      for (const url of order.callRecordingUrl) {
+        items.push({ type: 'call', url });
+      }
+    } else if (typeof order.callRecordingUrl === 'string') {
+      items.push({ type: 'call', url: order.callRecordingUrl });
+    }
+    // Сортируем только задачи по дате, звонки идут после задач
+    return [
+      ...items.filter(i => i.type === 'task').sort((a, b) => (b.date?.getTime() || 0) - (a.date?.getTime() || 0)),
+      ...items.filter(i => i.type === 'call')
+    ];
+  };
+
   if (loading) return <LoadingScreen title="Loading..." />;
   if (error) return <p className="text-red-500">{error}</p>;
 
@@ -448,70 +489,84 @@ const OrderDetailsPage = () => {
 
           <div className="flex-1">
             <div className="bg-[#2a1042] p-6 rounded-lg shadow-md h-[calc(100vh-140px)] flex flex-col">
-              <h2 className="text-lg font-semibold mb-4">Tasks</h2>
-              {order.tasks && order.tasks.length > 0 ? (
+              <h2 className="text-lg font-semibold mb-4">Tasks & Calls</h2>
+              {order.tasks && order.tasks.length > 0 || order.callRecordingUrl ? (
                 <div className="space-y-4 overflow-y-auto flex-1 pr-2">
-                  {order.tasks.map((task) => (
-                    <div key={task.id} className="bg-[#3a1a5e] p-4 rounded-md shadow-md">
-                      <div className="flex justify-between items-start">
-                        <div>
-                          <h3 className="text-lg font-semibold">{task.title}</h3>
-                          <p>{task.description}</p>
-                          <p className="text-sm text-gray-400">Status: {getTaskStatusString(task.status)}</p>
-                          <p className="text-sm text-gray-400">
-                            Deadline: {task.dueDate ? new Date(task.dueDate).toLocaleDateString('en-US') : 'Not set'}
-                          </p>
-                        </div>
-                        <div className="flex gap-2">
-                          <button
-                            onClick={() => task.id && openEditTaskModal({
-                              id: task.id,
-                              tittle: task.title,
-                              description: task.description || '',
-                              status: task.status
-                            })}
-                            className={`${
-                              updatingTaskId === task.id
-                                ? "bg-purple-700"
-                                : "bg-primary-purple hover:bg-purple-700"
-                            } text-white p-1.5 rounded-md text-sm transition-colors flex items-center justify-center w-8 h-8`}
-                            disabled={updatingTaskId === task.id}
-                            title="Edit task"
-                          >
-                            {updatingTaskId === task.id ? (
-                              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                            ) : (
-                              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                                <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
-                              </svg>
-                            )}
-                          </button>
-                          <button
-                            onClick={() => task.id && handleDeleteTask(task.id)}
-                            className={`${
-                              deletingTaskIds.includes(task.id || 0)
-                                ? "bg-red-700"
-                                : "bg-red-600 hover:bg-red-700"
-                            } text-white p-1.5 rounded-md text-sm transition-colors flex items-center justify-center w-8 h-8`}
-                            disabled={deletingTaskIds.includes(task.id || 0)}
-                            title="Delete task"
-                          >
-                            {deletingTaskIds.includes(task.id || 0) ? (
-                              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                            ) : (
-                              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                                <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
-                              </svg>
-                            )}
-                          </button>
+                  {getCombinedItems(order).map((item, idx) =>
+                    item.type === 'task' && item.task ? (
+                      <div key={`task-${item.task.id}`} className="bg-[#3a1a5e] p-4 rounded-md shadow-md">
+                        <div className="flex justify-between items-start">
+                          <div>
+                            <h3 className="text-lg font-semibold">{item.task.title}</h3>
+                            <p>{item.task.description}</p>
+                            <p className="text-sm text-gray-400">Status: {getTaskStatusString(item.task.status)}</p>
+                            <p className="text-sm text-gray-400">
+                              Deadline: {item.task.dueDate ? new Date(item.task.dueDate).toLocaleDateString('en-US') : 'Not set'}
+                            </p>
+                          </div>
+                          <div className="flex gap-2">
+                            <button
+                              onClick={() => item.task?.id && openEditTaskModal({
+                                id: item.task?.id,
+                                tittle: item.task?.title,
+                                description: item.task?.description || '',
+                                status: item.task?.status
+                              })}
+                              className={`${
+                                updatingTaskId === item.task?.id
+                                  ? "bg-purple-700"
+                                  : "bg-primary-purple hover:bg-purple-700"
+                              } text-white p-1.5 rounded-md text-sm transition-colors flex items-center justify-center w-8 h-8`}
+                              disabled={updatingTaskId === item.task?.id}
+                              title="Edit task"
+                            >
+                              {updatingTaskId === item.task?.id ? (
+                                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                              ) : (
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                  <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                                </svg>
+                              )}
+                            </button>
+                            <button
+                              onClick={() => item.task?.id && handleDeleteTask(item.task.id)}
+                              className={`${
+                                deletingTaskIds.includes(item.task?.id || 0)
+                                  ? "bg-red-700"
+                                  : "bg-red-600 hover:bg-red-700"
+                              } text-white p-1.5 rounded-md text-sm transition-colors flex items-center justify-center w-8 h-8`}
+                              disabled={deletingTaskIds.includes(item.task?.id || 0)}
+                              title="Delete task"
+                            >
+                              {deletingTaskIds.includes(item.task?.id || 0) ? (
+                                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                              ) : (
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                  <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
+                                </svg>
+                              )}
+                            </button>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    ) : (
+                      <div key={`call-${idx}`} className="bg-[#3a1a5e] p-4 rounded-md shadow-md">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <p className="text-sm text-gray-400">Запись звонка</p>
+                          </div>
+                          <audio controls className="w-64">
+                            <source src={item.url} type="audio/mpeg" />
+                            Ваш браузер не поддерживает аудио элемент.
+                          </audio>
+                        </div>
+                      </div>
+                    )
+                  )}
                 </div>
               ) : (
                 <div className="flex-1">
-                  <p className="text-gray-400">No tasks</p>
+                  <p className="text-gray-400">No tasks or call recordings</p>
                 </div>
               )}
               <div className="flex items-center justify-between mt-4 pt-4 border-t border-purple-500/20">
@@ -524,18 +579,6 @@ const OrderDetailsPage = () => {
                   </svg>
                   Add Task
                 </button>
-                {order.callRecordingUrl?.length != 0 && (
-                  <a href={order.callRecordingUrl} 
-                     target="_blank" 
-                     rel="noopener noreferrer"
-                     className="text-purple-400 hover:text-purple-300 transition-colors text-sm flex items-center gap-2"
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
-                    </svg>
-                    Listen to call recording
-                  </a>
-                )}
               </div>
             </div>
           </div>

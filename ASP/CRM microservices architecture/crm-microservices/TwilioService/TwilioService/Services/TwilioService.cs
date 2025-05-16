@@ -1,5 +1,4 @@
-﻿using CRMSolution.Data.Repository.Interface;
-using TaskService.Data;
+﻿using CRMSolution.Grpc.Orders;
 using Twilio;
 using Twilio.Rest.Api.V2010.Account;
 using Twilio.Types;
@@ -13,14 +12,16 @@ public class TwilioService : ITwilioService
     private readonly string _authToken;
     private readonly string _twilioNumber;
     private readonly string _twimlUrl;
+    private readonly OrderGrpcService.OrderGrpcServiceClient _orderGrpcService;
     
-    public TwilioService(IConfiguration configuration)
+    public TwilioService(IConfiguration configuration, OrderGrpcService.OrderGrpcServiceClient orderGrpcService)
     {
         _accountSid = configuration["Twilio:AccountSid"];
         _authToken = configuration["Twilio:AuthToken"];
         _twilioNumber = configuration["Twilio:PhoneNumber"];
         _twimlUrl = configuration["Twilio:TwiMLUrl"];
         TwilioClient.Init(_accountSid, _authToken);
+        _orderGrpcService = orderGrpcService;
     }
     
     
@@ -46,17 +47,12 @@ public class TwilioService : ITwilioService
     public async Task SaveCallRecording(int orderId, string callSid)
     {
         var recordingUrl = GetRecordingUrl(callSid);
-        // if (!string.IsNullOrEmpty(recordingUrl))
-        // {
-        //     var order = await _twilioDbContext.OrderRep.GetByIdAsync(orderId);
-        //     var record = new CallRecording
-        //     {
-        //         OrderId = orderId,
-        //         Url = recordingUrl,
-        //         Order = order
-        //     };
-        //     order.CallRecordings.Add(record);
-        //     await _unitOfWork.SaveChangesAsync();
-        // }
+
+        var grpcRequest = new SaveCallRecordRequest
+        {
+            OrderId = orderId,
+            RecordUrl = recordingUrl,
+        };
+        var grpcResponse = await _orderGrpcService.SaveCallRecordAsync(grpcRequest);
     }
 }

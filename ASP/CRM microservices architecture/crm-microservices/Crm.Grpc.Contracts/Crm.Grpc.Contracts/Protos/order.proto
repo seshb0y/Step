@@ -41,7 +41,7 @@ message SaveCallRecordResponse{}
 
 message SaveCallRecordRequest{
   int32 orderId = 1;
-  string callSid = 2;
+  string recordUrl = 2;
 }
 
 message ChangeResponsibleResponse{
@@ -151,6 +151,8 @@ message GetOrderFullInfoResponse{
   
   repeated TaskDto tasks = 5;
   repeated UserDto users = 6;
+  
+  repeated  string callRecordingUrl = 7;
 }
 
 message SortOrdersRequest{
