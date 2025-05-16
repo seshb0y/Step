@@ -73,7 +73,7 @@ public class AccountService : IAccountService
             throw new Exception("User not found");
 
         string token = await _tokenService.CreateEmailTokenAsync(request.Username);
-        string link = $"http://localhost:5234/api/v1/account/email/verify?token={token}";
+        string link = $"http://localhost:5173/verify-email?token={token}";
 
         string emailBody = $@"
             <div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;'>
@@ -99,7 +99,7 @@ public class AccountService : IAccountService
     public async Task VerifyEmailAsync(string token)
     {
         _logger.LogInformation("Подтверждение мыла по токены: {@Token}", token);
-        string username = await _tokenService.GetNameFromToken(token);
+        string username = await _tokenService.GetNameFromToken(token, _config["JWT:EmailKey"]);
         if (string.IsNullOrEmpty(username))
             throw new Exception("Invalid token");
 
@@ -124,7 +124,7 @@ public class AccountService : IAccountService
             throw new Exception("User not found");
 
         string token = await _tokenService.CreateResetPasswordTokenAsync(request.Username);
-        string link = $"http://localhost:5173/api/v1/account/password/change?token={token}";
+        string link = $"http://localhost:5173/change-password?token={token}";
 
         string emailBody = $"<p>Привет, {request.Username}! Чтобы сбросить пароль, перейдите <a href='{link}'>сюда</a>.</p>";
         await SendEmailAsync(user.Email, "Сброс пароля", emailBody);

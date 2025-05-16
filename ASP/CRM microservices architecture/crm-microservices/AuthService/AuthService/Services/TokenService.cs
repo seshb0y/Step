@@ -106,6 +106,30 @@ public class TokenService : ITokenService
         return tokenString;
     }
 
+    public async Task<string> GetNameFromToken(string token, string key)
+    {
+        try
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var securityToken = tokenHandler.ReadToken(token) as JwtSecurityToken;
+
+            if (securityToken == null)
+                throw new SecurityTokenException("Invalid token");
+
+            var username = securityToken.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
+
+            if (string.IsNullOrEmpty(username))
+                throw new SecurityTokenException("Username not found in token");
+
+            return username;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError("Ошибка парсинга токена: {Error}", ex.Message);
+            throw;
+        }
+    }
+
     public async Task<bool> ValidateEmailTokenAsync(string token)
     {
         _logger.LogInformation("Проверка токена для подтверждения мыла: {@Token}", token);

@@ -1,4 +1,5 @@
-﻿using ApiGateway.DTO.Responses;
+﻿using ApiGateway.DTO.Requests;
+using ApiGateway.DTO.Responses;
 using ApiGateway.Hubs;
 using CRMSolution.Grpc.Users;
 using Grpc.Core;
@@ -55,7 +56,7 @@ public class AccountController : ControllerBase
     {
         string? accessToken = Request.Cookies["accessToken"];
         var metadata = new Metadata();
-        metadata.Add("token", accessToken);
+        metadata.Add("token", token);
         var grpcResponse = await _accountService.VerifyEmailAsync(new VerifyEmailRequest(), metadata);
         
         return Ok(new Result<string>(true, "Email confirmed", "Email confirmed"));
@@ -86,15 +87,13 @@ public class AccountController : ControllerBase
     }
 
     [HttpPost("password/change")]
-    public async Task<IActionResult> ChangePasswordAsync([FromBody] ChangePasswordRequest request)
+    public async Task<IActionResult> ChangePasswordAsync([FromBody] HttpChangePasswordRequest request)
     {
-        await _accountService.ChangePasswordAsync(request);
-        string? accessToken = Request.Cookies["accessToken"];
         var metadata = new Metadata();
-        metadata.Add("token", accessToken);
+        metadata.Add("token", request.token);
         var grpcRequest = new ChangePasswordRequest
         {
-            NewPassword = request.NewPassword,
+            NewPassword = request.newPassword,
         };
         var  grpcResponse = await _accountService.ChangePasswordAsync(grpcRequest,  metadata);
         

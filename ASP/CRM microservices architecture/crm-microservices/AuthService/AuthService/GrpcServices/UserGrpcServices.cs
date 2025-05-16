@@ -162,8 +162,8 @@ public class UserGrpcService : UserService.UserServiceBase
     public override async Task<RefreshTokenResponse> RefreshToken(RefreshTokenRequest request,
         ServerCallContext context)
     {
-        var accessToken = context.RequestHeaders.FirstOrDefault(h => h.Key == "accessToken").Value;
-        var refreshToken = context.RequestHeaders.FirstOrDefault(h => h.Key == "refreshToken").Value;
+        var accessToken = context.RequestHeaders.FirstOrDefault(h => h.Key == "accesstoken")?.Value;
+        var refreshToken = context.RequestHeaders.FirstOrDefault(h => h.Key == "refreshtoken")?.Value;
         return await _authService.RefreshTokenAsync(accessToken, refreshToken);
     }
 

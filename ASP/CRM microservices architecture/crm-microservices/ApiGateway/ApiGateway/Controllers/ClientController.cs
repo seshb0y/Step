@@ -171,7 +171,16 @@ public class ClientController : ControllerBase
     public async Task<IActionResult> GetDashboard()
     {
         var grpcResponse = _clientService.GetDashboardData(new GetDashboardDataRequest());
-        return Ok(grpcResponse);
+        var response = new DashboardResponse
+        {
+            ClientsAmount = grpcResponse.ClientsAmount,
+            OrdersCount = grpcResponse.OrdersCount,
+            OrdersCreatedDates = grpcResponse.OrdersCreatedDates.Select(g => g.ToDateTime()).ToList(),
+            OrdersTotalAmount = (decimal)grpcResponse.OrdersTotalAmount,
+            TasksCount = grpcResponse.TasksCount,
+            TasksStatuses = grpcResponse.TasksStatuses.Select(s => (CRMSolution.Grpc.Tasks.GrpcTaskStatus)s).ToList()
+        };
+        return Ok(response);
     }
 
 
