@@ -62,21 +62,21 @@ message SortUsersRequest{
 }
 
 message TaskInfo {
-  int32 id = 1;
+  int32 taskId = 1;
   string title = 2;
   string description = 3;
-  GrpcTaskStatus status = 4;
+  GrpcTaskStatus taskStatus = 4;
   google.protobuf.Timestamp dueDate = 5;
 }
 
 message OrderInfo {
-  int32 id = 1;
+  int32 orderId = 1;
   double totalAmount = 2;
-  OrderStatus status = 3;
+  OrderStatus orderStatus = 3;
 }
 
 message UserInfo {
-  int32 id = 1;
+  int32 userId = 1;
   string username = 2;
   string email = 3;
   UserRole role = 4;
@@ -84,6 +84,8 @@ message UserInfo {
 
   repeated TaskInfo tasks = 6;
   repeated OrderInfo orders = 7;
+  
+  google.protobuf.Timestamp createdAt = 8;
 }
 
 message GetAllUsersRequest {

@@ -99,6 +99,7 @@ public class UserController : ControllerBase
             Sort = new SortUsersRequest(sortUsersRequest)
         };
         var grpcResponse = await _userService.GetAllUsersAsync(grpcRequest);
+
         return Ok(grpcResponse);
     }
     //

@@ -173,7 +173,7 @@ public class UserService : IUserService
         {
             var userInfo = new UserInfo
             {
-                Id = user.Id,
+                UserId = user.Id,
                 Username = user.Username,
                 Email = user.Email,
                 Role = (CRMSolution.Grpc.Users.UserRole)user.Role,
@@ -184,10 +184,10 @@ public class UserService : IUserService
             {
                 userInfo.Tasks.AddRange(userTasks.Select<TaskWithUserId, TaskInfo>(t => new TaskInfo
                 {
-                    Id = t.Id,
+                    TaskId = t.Id,
                     Title = t.Title,
                     Description = t.Description,
-                    Status = (GrpcTaskStatus)t.Status,
+                    TaskStatus = (GrpcTaskStatus)t.Status,
                     DueDate = t.DueDate
                 }));
 
@@ -198,9 +198,9 @@ public class UserService : IUserService
             {
                 userInfo.Orders.AddRange(userOrders.Select(o => new OrderInfo
                 {
-                    Id = o.Id,
+                    OrderId = o.Id,
                     TotalAmount = o.TotalAmount,
-                    Status = (OrderStatus)o.Status
+                    OrderStatus = (OrderStatus)o.Status
                 }));
             }
 
