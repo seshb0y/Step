@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CRMSolution.Grpc.Tasks;
+using CRMSolution.Grpc.Users;
 using Google.Protobuf.WellKnownTypes;
 using Microsoft.AspNetCore.SignalR;
 using TaskService.Data.Models;
@@ -8,6 +9,7 @@ using TaskService.DTO.Requests.Task;
 using TaskService.DTO.Responses;
 using TaskService.Hubs;
 using TaskService.Services.Interfaces;
+using TaskInfo = CRMSolution.Grpc.Tasks.TaskInfo;
 using TasksStatus = CRMSolution.Grpc.Tasks.GrpcTaskStatus;
 using UpdateTaskRequest = CRMSolution.Grpc.Tasks.UpdateTaskRequest;
 
@@ -19,13 +21,16 @@ public class TasksService : ITasksService
     private readonly IMapper _mapper;
     private readonly ILogger<TasksService> _logger;
     private readonly IHubContext<NotificationHub>  _hubContext;
+    private readonly UserService.UserServiceClient _userService;
 
-    public TasksService(ITasksRep tasksRep, IMapper mapper, ILogger<TasksService> logger,  IHubContext<NotificationHub> hubContext)
+    public TasksService(ITasksRep tasksRep, IMapper mapper, ILogger<TasksService> logger,  IHubContext<NotificationHub> hubContext,
+        UserService.UserServiceClient userService)
     {
         _tasksRep = tasksRep;
         _mapper = mapper;
         _logger = logger;
         _hubContext = hubContext;
+        _userService = userService;
     }
     
     // public async Task CreateTaskAsync(CreateTaskRequest request)
@@ -113,7 +118,7 @@ public class TasksService : ITasksService
             Description = description,
             DueDate = Timestamp.FromDateTime(dueDate.ToUniversalTime()),
             Title = title,
-            Status = (GrpcTaskStatus)task.Status,
+            Status = (TasksStatus)task.Status,
             Id = task.Id
         };
 
@@ -132,7 +137,7 @@ public class TasksService : ITasksService
             Title = task.Title,
             Description = task.Description,
             DueDate = Timestamp.FromDateTime(task.DueDate.ToUniversalTime()),
-            Status = (GrpcTaskStatus)task.Status,
+            Status = (TasksStatus)task.Status,
         };
     }
 
@@ -152,13 +157,30 @@ public class TasksService : ITasksService
     {
         var tasks = (await _tasksRep.GetAllAsync()).ToList();
         
+        var userIds = tasks
+            .Where(t => t.UserId != 0)
+            .Select(t => t.UserId)
+            .Distinct()
+            .ToList();
+        
+        var userResponse = await _userService.GetUsersByIdsAsync(new GetUsersByIdsRequest
+        {
+            Ids = { userIds }
+        });
+        
+        var usernames = userResponse.Usernames.ToList();
+        var usersDict = userIds.Zip(usernames).ToDictionary(x => x.First, x => x.Second);
+        
         var grpcTasks = tasks.Select(t => new TaskInfo
         {
             Id = t.Id,
             Title = t.Title,
             Description = t.Description,
             Status = (TasksStatus)t.Status,
-            DueDate = Timestamp.FromDateTime(t.DueDate.ToUniversalTime())
+            DueDate = Timestamp.FromDateTime(t.DueDate.ToUniversalTime()),
+            OrderId =  t.OrderId,
+            Username = usersDict.TryGetValue(t.UserId, out var username) ? username : null
+
         }).ToList();
         
         grpcTasks = sortTasksRequest.SortBy.ToLower() switch
@@ -228,7 +250,7 @@ public class TasksService : ITasksService
                 Id = task.Id,
                 Title = task.Title,
                 Description = task.Description,
-                Status = (GrpcTaskStatus)task.Status,
+                Status = (TasksStatus)task.Status,
                 DueDate = Timestamp.FromDateTime(task.DueDate.ToUniversalTime())
             });
         }

@@ -124,7 +124,7 @@ public class ClientService : IClientService
             Phone = t.Phone,
             Address = t.Address,
             CreatedAt = Timestamp.FromDateTime(t.CreatedAt.ToUniversalTime()),
-            OrderId = t.OrderId.Value
+            OrderId = t.OrderId ?? 0
         }).ToList();
         
         grpcClient = getAllClientsRequest.Sort.SortBy.ToLower() switch
@@ -237,7 +237,7 @@ public class ClientService : IClientService
     {
         var token = httpContext;
         var username = (await _userGrpcClient.GetNameFromTokenAsync(new GetNameFromTokenRequest { Token = token })).Username;
-        var user = await _userGrpcClient.FindUserAsync(new GetUserByEmailRequest { Email = username });
+        var user = await _userGrpcClient.GetUserByUsernameAsync(new GetUserByEmailRequest { Email = username });
 
         var ordersResponse = await _orderGrpcClient.GetOrdersByUserIdsAsync(
             new GetOrdersByUserIdsRequest { UserIds = { user.Id } });

@@ -33,6 +33,7 @@
     <ItemGroup>
         <Protobuf Include="..\..\Crm.Grpc.Contracts\Crm.Grpc.Contracts\Protos\order.proto" GrpcServices="Both" />
         <Protobuf Include="..\..\Crm.Grpc.Contracts\Crm.Grpc.Contracts\Protos\task.proto" GrpcServices="Both" />
+        <Protobuf Include="..\..\Crm.Grpc.Contracts\Crm.Grpc.Contracts\Protos\user.proto" GrpcServices="Both" />
     </ItemGroup>
 
     <ItemGroup>

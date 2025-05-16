@@ -1,8 +1,10 @@
 using System.Text;
+using CRMSolution.Data.Validators.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using CRMSolution.Grpc; // gRPC UserService клиент
+using CRMSolution.Grpc;
+using CRMSolution.Grpc.Users; // gRPC UserService клиент
 using FluentValidation;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -65,7 +67,19 @@ builder.Services.AddAuthorization();
 builder.Services.AddSignalR();
 
 // gRPC сервер и клиент
+var isDocker = Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true";
+
 builder.Services.AddGrpc();
+builder.Services.AddGrpcClient<UserService.UserServiceClient>(o =>
+    {
+        o.Address = isDocker
+            ? new Uri("http://authservice:5171")
+            : new Uri("http://localhost:5171");
+    })
+    .ConfigureChannel(options =>
+    {
+        options.Credentials = Grpc.Core.ChannelCredentials.Insecure;
+    });
 // builder.Services.AddGrpcClient<TaskService.TaskSer>(o =>
 //     {
 //         o.Address = new Uri("http://localhost:5234");
@@ -84,7 +98,10 @@ builder.Services.AddGrpc();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 // FluentValidation
-builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateTaskValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<DeleteTaskValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<FindTaskValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<UpdateTaskValidator>();
 
 // Репозитории и Сервисы
 builder.Services.AddScoped<ITasksService, TaskService.Services.Classes.TasksService>();

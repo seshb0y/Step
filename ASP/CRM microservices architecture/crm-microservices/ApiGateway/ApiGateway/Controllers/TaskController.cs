@@ -1,4 +1,5 @@
 ﻿using ApiGateway.DTO.Requests.Task;
+using ApiGateway.DTO.Responses;
 using ApiGateway.Hubs;
 using AutoMapper;
 using CRMSolution.DTO.Requests;
@@ -124,6 +125,7 @@ public class TaskController : ControllerBase
         };
         
         var grpcResponse = await _tasksService.GetAllTasksAsync(grpcRequest);
-        return Ok(grpcResponse);
+        var httpResponse = _mapper.Map<List<TaskDto>>(grpcResponse);
+        return Ok(new HttpGetAllTasksResponse{Tasks = httpResponse});
     }
 }

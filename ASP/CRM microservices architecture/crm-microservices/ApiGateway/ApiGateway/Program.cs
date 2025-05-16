@@ -71,11 +71,14 @@ builder.Services.ConfigureApplicationCookie(options =>
 //         policy.RequireRole(UserRole.Manager.ToString(), UserRole.Admin.ToString()));
 // });
 
+var isDocker = Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true";
 
 builder.Services.AddGrpc();
 builder.Services.AddGrpcClient<UserService.UserServiceClient>(o =>
     {
-        o.Address = new Uri("http://authservice:5171");
+        o.Address = isDocker
+            ? new Uri("http://authservice:5171")
+            : new Uri("http://localhost:5171");
     })
     .ConfigureChannel(options =>
     {
@@ -83,7 +86,9 @@ builder.Services.AddGrpcClient<UserService.UserServiceClient>(o =>
     });
 builder.Services.AddGrpcClient<ClientGrpcService.ClientGrpcServiceClient>(o =>
     {
-        o.Address = new Uri("http://clientservice:5111"); 
+        o.Address = isDocker
+            ? new Uri("http://clientservice:5111")
+            : new Uri("http://localhost:5111");
     })
     .ConfigureChannel(options =>
     {
@@ -91,7 +96,9 @@ builder.Services.AddGrpcClient<ClientGrpcService.ClientGrpcServiceClient>(o =>
     });
 builder.Services.AddGrpcClient<TaskGrpcService.TaskGrpcServiceClient>(o =>
     {
-        o.Address = new Uri("http://taskservice:5296");
+        o.Address = isDocker
+            ? new Uri("http://taskservice:5296")
+            : new Uri("http://localhost:5296");
     })
     .ConfigureChannel(options =>
     {
@@ -99,7 +106,9 @@ builder.Services.AddGrpcClient<TaskGrpcService.TaskGrpcServiceClient>(o =>
     });
 builder.Services.AddGrpcClient<OrderGrpcService.OrderGrpcServiceClient>(o =>
     {
-        o.Address = new Uri("http://orderservice:5235");
+        o.Address = isDocker
+            ? new Uri("http://orderservice:5235")
+            : new Uri("http://localhost:5235");
     })
     .ConfigureChannel(options =>
     {
@@ -147,6 +156,10 @@ app.UseEndpoints(endpoints => {
 });
 
 //app.UseHttpsRedirection();
-builder.WebHost.UseUrls("http://0.0.0.0:80");
+if (isDocker)
+    builder.WebHost.UseUrls("http://0.0.0.0:80"); // для Docker
+else
+    builder.WebHost.UseUrls("http://localhost:5167"); // для Rider/IDE
+
 
 app.Run();

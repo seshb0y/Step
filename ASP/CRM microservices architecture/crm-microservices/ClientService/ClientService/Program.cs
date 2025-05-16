@@ -14,6 +14,7 @@ using ClientService.GrpcServices;
 using ClientService.Hubs;
 using ClientService.Services;
 using ClientService.Services.Interfaces;
+using CRMSolution.Data.Validators;
 using CRMSolution.Grpc.Orders;
 using CRMSolution.Grpc.Tasks;
 using CRMSolution.Grpc.Users;
@@ -28,6 +29,10 @@ builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo { Title = "OrderService API", Version = "v1" });
 });
+builder.Services.AddValidatorsFromAssemblyContaining<ChangeDataClientValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateClientValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<DeleteClientValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<FindClientValidator>();
 
 // Database
 builder.Services.AddDbContext<ClientDbContext>(options =>
@@ -66,12 +71,25 @@ builder.Services.AddAuthorization();
 
 // SignalR
 builder.Services.AddSignalR();
+var isDocker = Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true";
 
 // gRPC сервер и клиент
 builder.Services.AddGrpc();
 builder.Services.AddGrpcClient<UserService.UserServiceClient>(o =>
     {
-        o.Address = new Uri("http://userservice:5171");
+        o.Address = isDocker
+            ? new Uri("http://authservice:5171")
+            : new Uri("http://localhost:5171");
+    })
+    .ConfigureChannel(options =>
+    {
+        options.Credentials = Grpc.Core.ChannelCredentials.Insecure;
+    });
+builder.Services.AddGrpcClient<TaskGrpcService.TaskGrpcServiceClient>(o =>
+    {
+        o.Address = isDocker
+            ? new Uri("http://taskservice:5296")
+            : new Uri("http://localhost:5296");
     })
     .ConfigureChannel(options =>
     {
@@ -79,16 +97,14 @@ builder.Services.AddGrpcClient<UserService.UserServiceClient>(o =>
     });
 builder.Services.AddGrpcClient<OrderGrpcService.OrderGrpcServiceClient>(o =>
     {
-        o.Address = new Uri("http://orderservice:5235");
+        o.Address = isDocker
+            ? new Uri("http://orderservice:5235")
+            : new Uri("http://localhost:5235");
     })
-    .ConfigureChannel(o =>
+    .ConfigureChannel(options =>
     {
-        o.Credentials = Grpc.Core.ChannelCredentials.Insecure;
+        options.Credentials = Grpc.Core.ChannelCredentials.Insecure;
     });
-builder.Services.AddGrpcClient<TaskGrpcService.TaskGrpcServiceClient>(o =>
-{
-    o.Address = new Uri("http://taskservice:5296");
-});
 
 
 

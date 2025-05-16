@@ -55,20 +55,16 @@ public class UserGrpcService : UserService.UserServiceBase
         };
     }
 
-    public override async Task<GetUserResponse> FindUser(GetUserByEmailRequest request, ServerCallContext context)
+    public override async Task<GetUserResponse> GetUserByUsername(GetUserByEmailRequest request, ServerCallContext context)
     {
-        _logger.LogInformation("gRPC запрос на поиск пользователя по Email: {Email}", request.Email);
-        
-        var user = await _userService.FindUser(request);
-    
-        return new GetUserResponse
-        {
-            Id = user.Id,
-            Username = user.Username,
-            Email = user.Email,
-            Role = user.Role,
-            IsEmailConfirmed = user.IsEmailConfirmed,
-        };
+        _logger.LogInformation("gRPC FindUser: {username}", request.Email);
+        return await _userService.GetUserByUsername(request);
+    }
+    public override async Task<FindUserResponse> FindUser(GetUserByEmailRequest request, ServerCallContext context)
+    {
+        _logger.LogInformation("gRPC FindUser: {Email}", request.Email);
+        var userData = await _userService.FindUser(request);
+        return userData;
     }
 
     public override async Task<GetUsersByIdsResponse> GetUsersByIds(GetUsersByIdsRequest request,

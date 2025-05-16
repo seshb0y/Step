@@ -24,7 +24,8 @@ enum OrderStatus {
 }
 
 service UserService {
-  rpc FindUser (GetUserByEmailRequest) returns (GetUserResponse);
+  rpc FindUser (GetUserByEmailRequest) returns (FindUserResponse);
+  rpc GetUserByUsername (GetUserByEmailRequest) returns (GetUserResponse);
   rpc GetUserById (GetUserByIdRequest) returns (GetUserResponse);
   rpc GetUsersByIds (GetUsersByIdsRequest) returns (GetUsersByIdsResponse);
   
@@ -233,4 +234,25 @@ message GetUserResponse {
   bool IsEmailConfirmed = 5;
 }
 
+message FindUserResponse {
+  repeated FindUserClientsResponse clients = 1;
+  repeated FindUserOrdersResponse orders = 2;
+  repeated FindUserTasksResponse tasks = 3;
+}
+
+message FindUserClientsResponse {
+  string clientName = 1;
+}
+
+message FindUserOrdersResponse {
+  string orderId = 1;
+  double totalAmount = 2;
+  string status = 3;
+}
+
+message FindUserTasksResponse {
+  string taskId = 1;
+  string title = 2;
+  string status = 3;
+}
 

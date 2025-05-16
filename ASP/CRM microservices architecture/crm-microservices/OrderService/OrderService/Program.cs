@@ -1,4 +1,5 @@
 using System.Text;
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -16,6 +17,8 @@ using OrderService.Data.Repository.OrderResp;
 using OrderService.Hubs;
 using OrderService.Services.Interfaces;
 using CRMSolution.Grpc.Users;
+using OrderService.Data.Mapping;
+using OrderService.Data.Validators.Order;
 using OrderService.GrpcServices;
 using OrderService.Services;
 
@@ -67,6 +70,7 @@ builder.Services.AddTransient<DataSeeder>();
 
 // SignalR
 builder.Services.AddSignalR();
+var isDocker = Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true";
 
 // gRPC сервер и клиент
 builder.Services.AddGrpc();
@@ -80,7 +84,9 @@ builder.Services.AddGrpcClient<TwilioGrpcService.TwilioGrpcServiceClient>(o =>
     });
 builder.Services.AddGrpcClient<UserService.UserServiceClient>(o =>
     {
-        o.Address = new Uri("http://authservice:5171");
+        o.Address = isDocker
+            ? new Uri("http://authservice:5171")
+            : new Uri("http://localhost:5171");
     })
     .ConfigureChannel(options =>
     {
@@ -88,7 +94,9 @@ builder.Services.AddGrpcClient<UserService.UserServiceClient>(o =>
     });
 builder.Services.AddGrpcClient<ClientGrpcService.ClientGrpcServiceClient>(o =>
     {
-        o.Address = new Uri("http://clientservice:5111"); 
+        o.Address = isDocker
+            ? new Uri("http://clientservice:5111")
+            : new Uri("http://localhost:5111");
     })
     .ConfigureChannel(options =>
     {
@@ -96,7 +104,9 @@ builder.Services.AddGrpcClient<ClientGrpcService.ClientGrpcServiceClient>(o =>
     });
 builder.Services.AddGrpcClient<TaskGrpcService.TaskGrpcServiceClient>(o =>
     {
-        o.Address = new Uri("http://taskservice:5296");
+        o.Address = isDocker
+            ? new Uri("http://taskservice:5296")
+            : new Uri("http://localhost:5296");
     })
     .ConfigureChannel(options =>
     {
@@ -109,10 +119,16 @@ builder.Services.AddGrpcClient<TaskGrpcService.TaskGrpcServiceClient>(o =>
 
 
 // AutoMapper
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddAutoMapper(typeof(OrderProfile));
+var sp = builder.Services.BuildServiceProvider();
+var mapper = sp.GetRequiredService<IMapper>();
+mapper.ConfigurationProvider.AssertConfigurationIsValid();
 
 // FluentValidation
-builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+builder.Services.AddValidatorsFromAssemblyContaining<ChangeOrderDataValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateOrderValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<DeleteOrderValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<FindOrderValidator>();
 
 // Репозитории и Сервисы
 builder.Services.AddScoped<IOrderService, OrderService.Services.Classes.OrderService>();

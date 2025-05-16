@@ -1,11 +1,15 @@
 ﻿using ApiGateway.DTO.Requests.Client;
+using ApiGateway.DTO.Responses;
 using ApiGateway.Hubs;
+using AutoMapper;
 using CRMSolution.Grpc.Client;
 using FluentValidation;
 using Grpc.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using KanbanOrderResponse = ApiGateway.DTO.Responses.KanbanOrderResponse;
+using TaskResponse = ApiGateway.DTO.Responses.TaskResponse;
 
 namespace ApiGateway.Controllers;
 
@@ -15,11 +19,14 @@ public class ClientController : ControllerBase
 {
     private readonly ClientGrpcService.ClientGrpcServiceClient _clientService;
     private readonly IHubContext<NotificationHub> _hubContext;
+    private readonly IMapper _mapper;
 
-    public ClientController(ClientGrpcService.ClientGrpcServiceClient clientService, IHubContext<NotificationHub> hubContext)
+    public ClientController(ClientGrpcService.ClientGrpcServiceClient clientService, IHubContext<NotificationHub> hubContext,
+        IMapper mapper)
     {
         _clientService = clientService;
         _hubContext = hubContext;
+        _mapper = mapper;
     }
 
 
@@ -117,18 +124,45 @@ public class ClientController : ControllerBase
             }
         };
         var grpcResponse = await _clientService.GetAllClientsAsync(grpcRequest);
-        return Ok(grpcResponse);
+        var httpResponse = _mapper.Map<HttpGetAllClientsResponse>(grpcResponse);
+        return Ok(httpResponse);
     }
     
     [HttpGet("relations")]
     public async Task<IActionResult> GetClientsWithOrdersAndTasks()
     {
         string? accessToken = Request.Cookies["accessToken"];
-        var metadata = new Metadata();
-        metadata.Add("authorization", accessToken);
+        var metadata = new Metadata { { "authorization", accessToken } };
+
         var grpcRequest = new GetClientWithOrdersAndTasksRequest();
         var grpcResponse = await _clientService.GetClientsWithOrdersAndTasksAsync(grpcRequest, metadata);
-        return Ok(grpcResponse);
+
+        var result = grpcResponse.Clients.Select(c => new ClientWithOrdersAndTasksResponse()
+        {
+            Id = c.Id,
+            Name = c.Name,
+            Email = c.Email,
+            Phone = c.Phone,
+            Address = c.Address,
+            CreatedAt = c.CreatedAt.ToDateTime(),
+            Orders = c.Orders.Select(o => new KanbanOrderResponse
+            {
+                OrderId = o.Id,
+                TotalAmount = (decimal)o.TotalAmount,
+                OrderStatus = o.Status,
+                CreatedAt = o.CreatedAt.ToDateTime(),
+                Tasks = o.Tasks.Select(t => new KanbanTaskResponse()
+                {
+                    Taskid = t.Id,
+                    Title = t.Title,
+                    Description = t.Description,
+                    Status = t.Status,
+                    DueDate = t.DueDate.ToDateTime()
+                }).ToList()
+            }).ToList()
+        }).ToList();
+
+        return Ok(result);
     }
 
     [HttpGet("dashboard")]

@@ -24,6 +24,7 @@ export const TasksPage = () => {
     dispatch(fetchGetAllTasks(sortTask));
   }, [dispatch, sortTask]);
 
+  console.log(tasks)
   const handleSort = (key: string) => {
     setSortTask((prev) => ({
       sortBy: key,

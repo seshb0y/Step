@@ -3,6 +3,7 @@ using ClientService.Data.Repository.SpecialRepClass.ClientRep;
 using ClientService.Services.Interfaces;
 using CRMSolution.Data.Validators;
 using CRMSolution.Grpc.Client;
+using FluentValidation;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 
@@ -13,12 +14,22 @@ public class ClientGrpcService : CRMSolution.Grpc.Client.ClientGrpcService.Clien
     private readonly IClientService _clientService;
     private readonly ILogger<ClientGrpcService> _logger;
     private readonly IClientRep _clientRep;
+    private readonly IValidator<ChangeDataClientRequest> _changeDataClientValidator;
+    private readonly IValidator<CreateClientRequest> _createClientValidator;
+    private readonly IValidator<DeleteClientRequest> _deleteValidator;
+    private readonly IValidator<GetClientByEmailRequest> _getClientByEmailValidator;
 
-    public ClientGrpcService(IClientService clientService,  ILogger<ClientGrpcService> logger,  IClientRep clientRep)
+    public ClientGrpcService(IClientService clientService,  ILogger<ClientGrpcService> logger,  IClientRep clientRep,
+        IValidator<ChangeDataClientRequest> changeDataClientValidator, IValidator<CreateClientRequest> createClientValidator,
+        IValidator<DeleteClientRequest> deleteValidator, IValidator<GetClientByEmailRequest> getClientByEmailValidator)
     {
         _clientService = clientService;
         _logger = logger;
         _clientRep = clientRep;
+        _changeDataClientValidator = changeDataClientValidator;
+        _createClientValidator = createClientValidator;
+        _deleteValidator = deleteValidator;
+        _getClientByEmailValidator = getClientByEmailValidator;
     }
 
     public override async Task<GetClientResponse> GetClientById(GetClientByIdRequest request, ServerCallContext context)
@@ -36,8 +47,7 @@ public class ClientGrpcService : CRMSolution.Grpc.Client.ClientGrpcService.Clien
     }
     public override async Task<GetClientResponse> GetClientByEmail(GetClientByEmailRequest request, ServerCallContext context)
     {
-        var validator = new FindClientValidator(_clientRep);
-        var result = validator.Validate(request);
+        var result = await _getClientByEmailValidator.ValidateAsync(request);
 
         if (!result.IsValid)
         {
@@ -68,8 +78,7 @@ public class ClientGrpcService : CRMSolution.Grpc.Client.ClientGrpcService.Clien
     public override async Task<CreateClientResponse> CreateClient(CreateClientRequest request,
         ServerCallContext context)
     {
-        var validator = new CreateClientValidator();
-        var result = validator.Validate(request);
+        var result = await _createClientValidator.ValidateAsync(request);
 
         if (!result.IsValid)
         {
@@ -82,8 +91,7 @@ public class ClientGrpcService : CRMSolution.Grpc.Client.ClientGrpcService.Clien
     public override async Task<ChangeDataClientResponse> ChangeDataClient(ChangeDataClientRequest request,
         ServerCallContext context)
     {
-        var validator = new ChangeDataClientValidator(_clientRep);
-        var result = validator.Validate(request);
+        var result = await _changeDataClientValidator.ValidateAsync(request);
 
         if (!result.IsValid)
         {
@@ -98,7 +106,7 @@ public class ClientGrpcService : CRMSolution.Grpc.Client.ClientGrpcService.Clien
         ServerCallContext context)
     {
         var validator = new DeleteClientValidator(_clientRep);
-        var result = validator.Validate(request);
+        var result = await _deleteValidator.ValidateAsync(request);
 
         if (!result.IsValid)
         {

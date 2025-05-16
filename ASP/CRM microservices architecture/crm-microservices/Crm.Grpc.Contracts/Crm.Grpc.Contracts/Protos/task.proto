@@ -108,7 +108,8 @@ message TaskInfo {
   string description = 3;
   GrpcTaskStatus status = 4;
   google.protobuf.Timestamp dueDate = 5;
-  
+  int32 orderId = 6;
+  string username = 7;
 }
 
 message GetAllTasksRequest {

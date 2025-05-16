@@ -126,7 +126,7 @@ public class OrderService : IOrderService
             Email = request.UserEmail
         };
 
-        var grpcUserResponse = await _userGrpcClient.FindUserAsync(grpcUserRequest);
+        var grpcUserResponse = await _userGrpcClient.GetUserByUsernameAsync(grpcUserRequest);
         
         var lastOrder = _orderRep.GetAllAsync();
         var grpcClientRequest = new GetClientByEmailRequest

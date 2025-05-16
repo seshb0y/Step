@@ -76,23 +76,38 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddAuthorization();
 builder.Services.AddGrpc();
+var isDocker = Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true";
 
-builder.Services.AddGrpcClient<TaskGrpcService.TaskGrpcServiceClient>(o =>
-{
-    o.Address = new Uri("http://taskservice:5296");
-});
-builder.Services.AddGrpcClient<OrderGrpcService.OrderGrpcServiceClient>(o =>
-{
-    o.Address = new Uri("http://orderservice:5235");
-})
-.ConfigureChannel(o =>
-{
-    o.Credentials = Grpc.Core.ChannelCredentials.Insecure;
-});
 builder.Services.AddGrpcClient<ClientGrpcService.ClientGrpcServiceClient>(o =>
-{
-    o.Address = new Uri("http://clientservice:5111");
-});
+    {
+        o.Address = isDocker
+            ? new Uri("http://clientservice:5111")
+            : new Uri("http://localhost:5111");
+    })
+    .ConfigureChannel(options =>
+    {
+        options.Credentials = Grpc.Core.ChannelCredentials.Insecure;
+    });
+builder.Services.AddGrpcClient<TaskGrpcService.TaskGrpcServiceClient>(o =>
+    {
+        o.Address = isDocker
+            ? new Uri("http://taskservice:5296")
+            : new Uri("http://localhost:5296");
+    })
+    .ConfigureChannel(options =>
+    {
+        options.Credentials = Grpc.Core.ChannelCredentials.Insecure;
+    });
+builder.Services.AddGrpcClient<OrderGrpcService.OrderGrpcServiceClient>(o =>
+    {
+        o.Address = isDocker
+            ? new Uri("http://orderservice:5235")
+            : new Uri("http://localhost:5235");
+    })
+    .ConfigureChannel(options =>
+    {
+        options.Credentials = Grpc.Core.ChannelCredentials.Insecure;
+    });
 
 builder.WebHost.ConfigureKestrel(options =>
 {

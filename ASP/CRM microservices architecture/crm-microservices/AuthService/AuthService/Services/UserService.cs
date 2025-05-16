@@ -3,6 +3,7 @@ using ControllerFirst.DTO.Responses.User;
 using CRMSolution.Data.Models;
 using CRMSolution.Data.Repository.UserRep;
 using CRMSolution.DTO.Requests;
+using CRMSolution.Grpc.Client;
 using CRMSolution.Grpc.Orders;
 using CRMSolution.Grpc.Tasks;
 using CRMSolution.Grpc.Users;
@@ -12,6 +13,7 @@ using Microsoft.AspNetCore.SignalR;
 using GrpcTaskStatus = CRMSolution.Grpc.Users.GrpcTaskStatus;
 using TaskInfo = CRMSolution.Grpc.Users.TaskInfo;
 using OrderStatus = CRMSolution.Grpc.Users.OrderStatus;
+using UserRole = CRMSolution.Grpc.Users.UserRole;
 
 namespace CRMSolution.Services.Classes;
 
@@ -23,9 +25,11 @@ public class UserService : IUserService
     private readonly IHubContext<NotificationHub> _notificationHub;
     private readonly OrderGrpcService.OrderGrpcServiceClient _orderGrpcService;
     private readonly TaskGrpcService.TaskGrpcServiceClient _taskGrpcService;
+    private readonly ClientGrpcService.ClientGrpcServiceClient _clientGrpcService;
     
     public UserService(IUserRep userRepository, IMapper mapper, ILogger<UserService> logger, IHubContext<NotificationHub> notificationHub
-    , OrderGrpcService.OrderGrpcServiceClient orderGrpcService,  TaskGrpcService.TaskGrpcServiceClient taskGrpcService)
+    , OrderGrpcService.OrderGrpcServiceClient orderGrpcService,  TaskGrpcService.TaskGrpcServiceClient taskGrpcService,
+    ClientGrpcService.ClientGrpcServiceClient clientGrpcService)
     {
         _userRepository = userRepository;
         _mapper = mapper;
@@ -33,6 +37,7 @@ public class UserService : IUserService
         _notificationHub = notificationHub;
         _orderGrpcService = orderGrpcService;
         _taskGrpcService = taskGrpcService;
+        _clientGrpcService = clientGrpcService;
     }
     
     // public async Task<User> CreateUser(CreateUserRequest request)
@@ -66,18 +71,76 @@ public class UserService : IUserService
         };
     }
 
-    public async Task<GetUserResponse> FindUser(GetUserByEmailRequest request)
+    public async Task<GetUserResponse> GetUserByUsername(GetUserByEmailRequest request)
     {
-        _logger.LogInformation("Поиск юзера: {@Request}", request);
-        var userEntity = await _userRepository.FindByNameAsync(request.Email);
-        if (request.OrderId != 0)
+        User? user;
+        
+        if (request.Email.Contains("@"))
         {
-            userEntity.OrderId = request.OrderId;
-            await _userRepository.SaveChangesAsync();
+            user = await _userRepository.FindByEmailAsync(request.Email);
         }
-        GetUserResponse user =  _mapper.Map<GetUserResponse>(userEntity);
-        _logger.LogInformation("Юзер найден: {ClientId}", request.Email);
-        return user;
+        else
+        {
+            user = await _userRepository.FindByNameAsync(request.Email);
+        }
+        return new GetUserResponse
+        {
+            Email = user.Email,
+            Id = user.Id,
+            Username = user.Username,
+            IsEmailConfirmed = user.IsEmailConfirmed,
+            Role = (UserRole)user.Role,
+        };
+    }
+    public async Task<FindUserResponse> FindUser(GetUserByEmailRequest request)
+    {
+        _logger.LogInformation("Сбор расширенной информации о пользователе: {Email}", request.Email);
+
+        var user = await _userRepository.FindByEmailAsync(request.Email);
+        if (user == null) return null;
+
+        var orderResponse = await _orderGrpcService.GetOrdersByUserIdsAsync(
+            new GetOrdersByUserIdsRequest { UserIds = { user.Id } });
+
+        var orders = orderResponse.Orders;
+    
+        var taskResponse = await _taskGrpcService.GetTasksByUserIdsAsync(
+            new GetTasksByUserIdsRequest { UserIds = { user.Id } });
+
+        var tasks = taskResponse.Tasks;
+
+        var clientIds = orders
+            .Select(o => o.ClientId)
+            .Distinct()
+            .ToList();
+
+        var clientResponse = await _clientGrpcService.GetClientsByIdsAsync(
+            new GetClientsByIdsRequest { Ids = { clientIds } });
+
+        var clientNames = clientResponse.ClientName;
+
+        var response = new FindUserResponse();
+
+        response.Orders.AddRange(orders.Select(o => new FindUserOrdersResponse
+        {
+            OrderId = o.Id.ToString(),
+            TotalAmount = o.TotalAmount,
+            Status = o.Status.ToString()
+        }));
+
+        response.Tasks.AddRange(tasks.Select(t => new FindUserTasksResponse
+        {
+            TaskId = t.Id.ToString(),
+            Title = t.Title,
+            Status = t.Status.ToString()
+        }));
+
+        response.Clients.AddRange(clientNames.Select(name => new FindUserClientsResponse
+        {
+            ClientName = name
+        }));
+
+        return response;
     }
 
     public async Task<GetAllUsersResponse> GetAllUsers(SortUsersRequest sortUsersRequest)

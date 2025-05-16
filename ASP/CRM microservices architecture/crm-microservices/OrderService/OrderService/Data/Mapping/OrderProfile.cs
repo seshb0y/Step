@@ -4,6 +4,13 @@ using CRMSolution.Grpc.Tasks;
 using OrderService.Data.Models;
 using OrderService.DTO.Requests;
 using OrderService.DTO.Responses;
+using ChangeOrderRequestGrpc = CRMSolution.Grpc.Orders.ChangeOrderDataRequest;
+using CreateOrderRequestGrpc = CRMSolution.Grpc.Orders.CreateOrderRequest;
+using DeleteOrderRequestGrpc = CRMSolution.Grpc.Orders.DeleteOrderRequest;
+using FindOrderRequestDto = OrderService.DTO.Requests.FindOrderRequest;
+using HttpChangeOrderDataRequestDto = OrderService.DTO.Requests.HttpChangeOrderDataRequest;
+using HttpCreateOrderRequestDto = OrderService.DTO.Requests.HttpCreateOrderRequest;
+using HttpDeleteOrderRequestDto = OrderService.DTO.Requests.HttpDeleteOrderRequest;
 
 namespace OrderService.Data.Mapping;
 
@@ -11,66 +18,84 @@ public class OrderProfile : Profile
 {
     public OrderProfile()
     {
-        CreateMap<CreateOrderRequest, Order>()
+        // gRPC: создание
+        CreateMap<CreateOrderRequestGrpc, Order>()
             .ForMember(dest => dest.TotalAmount, opt => opt.MapFrom(src => (decimal)src.TotalAmount))
             .ForMember(dest => dest.Status, opt => opt.Ignore())
             .ForMember(dest => dest.UserId, opt => opt.Ignore())
             .ForMember(dest => dest.ClientId, opt => opt.Ignore())
-            .ForMember(dest => dest.CreatedAt, opt => opt.Ignore());
-        
-        CreateMap<HttpChangeOrderDataRequest, Order>()
-            .ForMember(dest => dest.Status, opt => opt
-                .MapFrom(src => src.status))
-            .ForMember(dest => dest.TotalAmount, opt =>
-                opt.MapFrom(src => src.totalAmount))
-            .ForMember(dest => dest.Id, opt => opt
-                .MapFrom(src => src.orderId));
-        
-        
-        CreateMap<DeleteOrderRequest, Order>()
-            .ForMember(dest => dest.Id, opt => opt
-                .MapFrom(src => src.OrderId));
-        
-        CreateMap<FindOrderRequest, Order>()
-            .ForMember(dest => dest.Id, opt => opt
-                .MapFrom(src => src.orderId));
+            .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.CallRecord, opt => opt.Ignore())
+            .ForMember(dest => dest.IsDeleted, opt => opt.Ignore());
 
+        // HTTP: создание
+        CreateMap<HttpCreateOrderRequestDto, Order>()
+            .ForMember(dest => dest.TotalAmount, opt => opt.MapFrom(src => src.totalAmount))
+            .ForMember(dest => dest.Status, opt => opt.Ignore())
+            .ForMember(dest => dest.UserId, opt => opt.Ignore())
+            .ForMember(dest => dest.ClientId, opt => opt.Ignore())
+            .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.CallRecord, opt => opt.Ignore())
+            .ForMember(dest => dest.IsDeleted, opt => opt.Ignore());
+
+        // gRPC: изменение
+        CreateMap<ChangeOrderRequestGrpc, Order>()
+            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.OrderId))
+            .ForMember(dest => dest.Status, opt => opt.MapFrom(src => (OrderService.Data.Models.OrderStatus)src.Status))
+            .ForMember(dest => dest.TotalAmount, opt => opt.MapFrom(src => (decimal)src.TotalAmount))
+            .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.UserId, opt => opt.Ignore())
+            .ForMember(dest => dest.ClientId, opt => opt.Ignore())
+            .ForMember(dest => dest.CallRecord, opt => opt.Ignore())
+            .ForMember(dest => dest.IsDeleted, opt => opt.Ignore());
+
+        // HTTP: изменение
+        CreateMap<HttpChangeOrderDataRequestDto, Order>()
+            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.orderId))
+            .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.status))
+            .ForMember(dest => dest.TotalAmount, opt => opt.MapFrom(src => src.totalAmount))
+            .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.UserId, opt => opt.Ignore())
+            .ForMember(dest => dest.ClientId, opt => opt.Ignore())
+            .ForMember(dest => dest.CallRecord, opt => opt.Ignore())
+            .ForMember(dest => dest.IsDeleted, opt => opt.Ignore());
+
+        // gRPC: удаление
+        CreateMap<DeleteOrderRequestGrpc, Order>()
+            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.OrderId))
+            .ForMember(dest => dest.TotalAmount, opt => opt.Ignore())
+            .ForMember(dest => dest.Status, opt => opt.Ignore())
+            .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.CallRecord, opt => opt.Ignore())
+            .ForMember(dest => dest.IsDeleted, opt => opt.Ignore())
+            .ForMember(dest => dest.UserId, opt => opt.Ignore())
+            .ForMember(dest => dest.ClientId, opt => opt.Ignore());
+
+        // HTTP: удаление
+        CreateMap<HttpDeleteOrderRequestDto, Order>()
+            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.orderId))
+            .ForMember(dest => dest.TotalAmount, opt => opt.Ignore())
+            .ForMember(dest => dest.Status, opt => opt.Ignore())
+            .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.CallRecord, opt => opt.Ignore())
+            .ForMember(dest => dest.IsDeleted, opt => opt.Ignore())
+            .ForMember(dest => dest.UserId, opt => opt.Ignore())
+            .ForMember(dest => dest.ClientId, opt => opt.Ignore());
+
+        // HTTP: поиск
+        CreateMap<FindOrderRequestDto, Order>()
+            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.orderId))
+            .ForMember(dest => dest.TotalAmount, opt => opt.Ignore())
+            .ForMember(dest => dest.Status, opt => opt.Ignore())
+            .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.CallRecord, opt => opt.Ignore())
+            .ForMember(dest => dest.IsDeleted, opt => opt.Ignore())
+            .ForMember(dest => dest.UserId, opt => opt.Ignore())
+            .ForMember(dest => dest.ClientId, opt => opt.Ignore());
+
+        // gRPC задача
         CreateMap<GetTaskByIdResponse, TaskDto>();
-
-        // CreateMap<Order, OrderResponse>()
-        //     .ForMember(dest => dest.ClientOrders, opt => opt
-        //         .MapFrom(src => src.ClientOrders));
-        //
-        // CreateMap<ClientOrder, ClientOrderDto>()
-        //     .ForMember(dest => dest.ClientId, opt => opt
-        //         .MapFrom(src => src.ClientId))
-        //     .ForMember(dest => dest.ClientName, opt => opt
-        //         .MapFrom(src => src.Client.Name))
-        //     .ForMember(dest => dest.ClientEmail, opt => opt
-        //         .MapFrom(src => src.Client.Email))
-        //     .ForMember(dest => dest.ClientPhone, opt => opt
-        //         .MapFrom(src => src.Client.Phone))
-        //     .ForMember(dest => dest.CreatedAt, opt => opt
-        //         .MapFrom(src => src.Client.CreatedAt.ToString()))
-        //     .ForMember(dest => dest.ClientAddress, opt => opt
-        //         .MapFrom(src => src.Client.Address));
-        //
-        // CreateMap<Order, OrderDetailsResponse>()
-        //     .ForMember(dest => dest.Client, opt => opt
-        //         .MapFrom(src => src.ClientOrders.FirstOrDefault().Client))
-        //     .ForMember(dest => dest.CallRecordingUrl, opt => opt
-        //         .MapFrom(src => src.CallRecordings.Select(cr => cr.Url).ToList()))
-        //     .ForMember(dest => dest.Users, opt => opt
-        //         .MapFrom(src => src.UserOrders.Select(uo => uo.User)));
-        //
-        //
-        //
-        // CreateMap<User, OrderDetailsUserResponse>()
-        //     .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.Username));
-        //
-        // CreateMap<Client, ClientResponse>();
-        // CreateMap<Tasks, OrderDetailsTaskResponse>()
-        //     .ForMember(dest => dest.Status, opt => opt
-        //         .MapFrom(src => src.Status));
     }
 }

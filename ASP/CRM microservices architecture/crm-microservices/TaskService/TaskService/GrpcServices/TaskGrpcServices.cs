@@ -2,6 +2,7 @@
 using CRMSolution.Data.Validators.Tasks;
 using Grpc.Core;
 using CRMSolution.Grpc.Tasks;
+using FluentValidation;
 using TaskService.Data.Models;
 using TaskService.Data.Repository.TasksRep; // <-- Правильный namespace
 using TaskService.Services.Interfaces;
@@ -12,11 +13,21 @@ public class TaskGrpcService : CRMSolution.Grpc.Tasks.TaskGrpcService.TaskGrpcSe
 {
     private readonly ITasksService _tasksService;
     private readonly ITasksRep _tasksRep;
+    private readonly IValidator<CreateTaskRequest> _createTaskValidator;
+    private readonly IValidator<UpdateTaskRequest> _updateTaskValidator;
+    private readonly IValidator<DeleteTaskRequest> _deleteTaskValidator;
+    private readonly IValidator<GetTaskByIdRequest> _getTaskByIdValidator;
 
-    public TaskGrpcService(ITasksService tasksService, ITasksRep tasksRep)
+    public TaskGrpcService(ITasksService tasksService, ITasksRep tasksRep,  IValidator<CreateTaskRequest> createTaskValidator, 
+        IValidator<UpdateTaskRequest> updateTaskValidator,  IValidator<DeleteTaskRequest> deleteTaskValidator,
+        IValidator<GetTaskByIdRequest> getTaskByIdValidator)
     {
         _tasksService = tasksService;
         _tasksRep = tasksRep;
+        _createTaskValidator = createTaskValidator;
+        _updateTaskValidator = updateTaskValidator;
+        _deleteTaskValidator = deleteTaskValidator;
+        _getTaskByIdValidator = getTaskByIdValidator;
     }
 
     public override async Task<GetTasksByUserIdsResponse> GetTasksByUserIds(GetTasksByUserIdsRequest request,
@@ -32,8 +43,7 @@ public class TaskGrpcService : CRMSolution.Grpc.Tasks.TaskGrpcService.TaskGrpcSe
     }
     public override async Task<GetTaskByIdResponse> GetTaskById(GetTaskByIdRequest request, ServerCallContext context)
     {
-        var validator = new FindTaskValidator(_tasksRep);
-        var result = validator.Validate(request);
+        var result = await _getTaskByIdValidator.ValidateAsync(request);
 
         if (!result.IsValid)
         {
@@ -53,8 +63,7 @@ public class TaskGrpcService : CRMSolution.Grpc.Tasks.TaskGrpcService.TaskGrpcSe
     
     public override async Task<CreateTaskResponse> CreateTask(CreateTaskRequest request, ServerCallContext context)
     {
-        var validator = new CreateTaskValidator();
-        var result = validator.Validate(request);
+        var result = await _createTaskValidator.ValidateAsync(request);
 
         if (!result.IsValid)
         {
@@ -73,8 +82,7 @@ public class TaskGrpcService : CRMSolution.Grpc.Tasks.TaskGrpcService.TaskGrpcSe
     public override async Task<TaskInfo> UpdateTask(UpdateTaskRequest request,
         ServerCallContext context)
     {
-        var validator = new UpdateTaskValidator(_tasksRep);
-        var result = await validator.ValidateAsync(request);
+        var result = await _updateTaskValidator.ValidateAsync(request);
 
         if (!result.IsValid)
         {
@@ -88,7 +96,7 @@ public class TaskGrpcService : CRMSolution.Grpc.Tasks.TaskGrpcService.TaskGrpcSe
         ServerCallContext context)
     {
         var validator = new DeleteTaskValidator(_tasksRep);
-        var result = validator.Validate(DeleteTaskRequest);
+        var result = await _deleteTaskValidator.ValidateAsync(DeleteTaskRequest);
 
         if (!result.IsValid)
         {

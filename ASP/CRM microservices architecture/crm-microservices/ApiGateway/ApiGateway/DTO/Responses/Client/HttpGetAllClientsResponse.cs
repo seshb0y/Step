@@ -1,4 +1,4 @@
-﻿using CRMSolution.Grpc.Orders;
+﻿using ApiGateway.DTO.MappingDto;
 
 namespace ApiGateway.DTO.Responses;
 

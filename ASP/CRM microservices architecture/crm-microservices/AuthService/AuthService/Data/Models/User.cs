@@ -11,7 +11,6 @@ public class User
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public Guid RefreshToken { get; set; } = Guid.NewGuid();
     public DateTime RefreshTokenExpiration { get; set; } = DateTime.UtcNow.AddDays(7);
-    public int OrderId { get; set; }
     
 }
 

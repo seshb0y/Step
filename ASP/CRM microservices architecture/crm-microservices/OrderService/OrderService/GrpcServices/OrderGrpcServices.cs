@@ -3,6 +3,7 @@ using CRMSolution.Grpc.Client;
 using CRMSolution.Grpc.Orders;
 using CRMSolution.Grpc.Tasks;
 using CRMSolution.Grpc.Users;
+using FluentValidation;
 using Grpc.Core;
 using OrderService.Data.Repository.OrderResp;
 using OrderService.Data.Validators.Order;
@@ -23,10 +24,16 @@ public class OrderGrpcService : CRMSolution.Grpc.Orders.OrderGrpcService.OrderGr
     private readonly TaskGrpcService.TaskGrpcServiceClient _taskGrpcService;
     private readonly IMapper _mapper;
     private readonly IOrderRep _orderRep;
+    private readonly IValidator<ChangeOrderDataRequest>  _changeOrderDataRequestValidator;
+    private readonly IValidator<CreateOrderRequest>  _createOrderRequestValidator;
+    private readonly IValidator<DeleteOrderRequest>  _deleteOrderRequestValidator;
+    private readonly IValidator<GetOrderByIdRequest>  _findOrderRequestValidator;
 
     public OrderGrpcService(IOrderService orderService,  ILogger<OrderGrpcService> logger, UserService.UserServiceClient userGrpcClient,
         ClientGrpcService.ClientGrpcServiceClient clientGrpcClient,  TaskGrpcService.TaskGrpcServiceClient taskGrpcService,
-        IMapper mapper,  IOrderRep orderRep)
+        IMapper mapper,  IOrderRep orderRep,  IValidator<ChangeOrderDataRequest> changeOrderDataRequestValidator,
+        IValidator<CreateOrderRequest> createOrderRequestValidator,  IValidator<DeleteOrderRequest> deleteOrderRequestValidator,
+        IValidator<GetOrderByIdRequest> findOrderRequestValidator)
     {
         _orderService = orderService;
         _logger = logger;
@@ -35,12 +42,15 @@ public class OrderGrpcService : CRMSolution.Grpc.Orders.OrderGrpcService.OrderGr
         _taskGrpcService = taskGrpcService;
         _mapper = mapper;
         _orderRep = orderRep;
+        _changeOrderDataRequestValidator = changeOrderDataRequestValidator;
+        _createOrderRequestValidator = createOrderRequestValidator;
+        _deleteOrderRequestValidator = deleteOrderRequestValidator;
+        _findOrderRequestValidator = findOrderRequestValidator;
     }
 
     public override async Task<OrderDto> GetOrderById(GetOrderByIdRequest request, ServerCallContext context)
     {
-        var validator = new FindOrderValidator(_orderRep);
-        var result = validator.Validate(request);
+        var result = await _findOrderRequestValidator.ValidateAsync(request);
 
         if (!result.IsValid)
         {
@@ -63,7 +73,7 @@ public class OrderGrpcService : CRMSolution.Grpc.Orders.OrderGrpcService.OrderGr
         ServerCallContext context)
     {
         var validator = new CreateOrderValidator();
-        var result = validator.Validate(request);
+        var result = await _createOrderRequestValidator.ValidateAsync(request);
 
         if (!result.IsValid)
         {
@@ -77,7 +87,7 @@ public class OrderGrpcService : CRMSolution.Grpc.Orders.OrderGrpcService.OrderGr
         ServerCallContext context)
     {
         var validator = new ChangeOrderDataValidator(_orderRep);
-        var result = validator.Validate(request);
+        var result = await _changeOrderDataRequestValidator.ValidateAsync(request);
 
         if (!result.IsValid)
         {
@@ -90,7 +100,7 @@ public class OrderGrpcService : CRMSolution.Grpc.Orders.OrderGrpcService.OrderGr
     public override async Task<DeleteOrderResponse> DeleteOrder(DeleteOrderRequest request, ServerCallContext context)
     {
         var validator = new DeleteOrderValidator(_orderRep);
-        var result = validator.Validate(request);
+        var result = await _deleteOrderRequestValidator.ValidateAsync(request);
 
         if (!result.IsValid)
         {
