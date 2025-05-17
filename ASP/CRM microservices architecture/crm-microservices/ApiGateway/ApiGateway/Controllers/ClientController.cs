@@ -85,7 +85,7 @@ public class ClientController : ControllerBase
     }
     
     [HttpDelete]
-    // [Authorize(Policy = "ManagerPolicy")]
+    [Authorize(Policy = "AdminPolicy")]
     public async Task<IActionResult> DeleteClient([FromBody] HttpDeleteClientRequest request)
     {
         var grpcRequest = new DeleteClientRequest

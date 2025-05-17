@@ -128,6 +128,7 @@ public class TaskController : ControllerBase
     }
     
     [HttpGet]
+    [Authorize(Policy = "AdminPolicy")]
     public async Task<IActionResult> GetAllTasks([FromQuery] HttpSortTasksRequest sortTasksRequest)
     {
         var grpcRequest = new GetAllTasksRequest

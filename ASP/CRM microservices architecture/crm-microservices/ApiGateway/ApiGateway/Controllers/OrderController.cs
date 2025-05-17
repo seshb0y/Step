@@ -75,7 +75,7 @@ public class OrderController : ControllerBase
     }
     
     [HttpDelete]
-    // [Authorize(Policy = "ManagerPolicy")]
+    [Authorize(Policy = "AdminPolicy")]
     public async Task<IActionResult> DeleteOrder([FromBody] HttpDeleteOrderRequest request)
     {
         var grpcRequest = new DeleteOrderRequest
@@ -133,6 +133,7 @@ public class OrderController : ControllerBase
     
     
     [HttpGet]
+    [Authorize(Policy = "AdminPolicy")]
     public async Task<IActionResult> GetAllOrders([FromQuery] HttpSortOrdersRequest sortOrdersRequest)
     {
         var grpcRequest = new GetLowInfoOrdersListRequest

@@ -1,3 +1,4 @@
+using System.Text;
 using CRMSolution.Grpc.Client;
 using CRMSolution.Grpc.Orders;
 using CRMSolution.Grpc.Tasks;
@@ -5,8 +6,11 @@ using CRMSolution.Grpc.Users;
 using ApiGateway.Hubs;
 using CRMSolution.Grpc.Twilio;
 using FluentValidation;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using UserRole = CRMSolution.Grpc.Orders.UserRole;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +22,41 @@ builder.Services.AddSwaggerGen(options =>
     options.SwaggerDoc("v1", new OpenApiInfo { Title = "ApiGateway", Version = "v1" });
 });
 
+var jwtSection  = builder.Configuration.GetSection("JWT");
+var jwtKey      = jwtSection.GetValue<string>("Key");
+var jwtIssuer   = jwtSection.GetValue<string>("Issuer");
+var jwtAudience = jwtSection.GetValue<string>("Audience");
+
+builder.Services
+    .AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme    = JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer           = true,
+            ValidateAudience         = true,
+            ValidateLifetime         = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer              = jwtIssuer,
+            ValidAudience            = jwtAudience,
+            IssuerSigningKey         = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
+            ClockSkew                = TimeSpan.FromMinutes(30)
+        };
+
+        options.Events = new JwtBearerEvents
+        {
+            OnMessageReceived = ctx =>
+            {
+                if (ctx.Request.Cookies.TryGetValue("access-token", out var cookie))
+                    ctx.Token = cookie;
+                return Task.CompletedTask;
+            }
+        };
+    });
 
 var loggerFactory = LoggerFactory.Create(builder => {
     builder.AddConsole();
@@ -61,16 +100,19 @@ builder.Services.ConfigureApplicationCookie(options =>
 {
     options.Cookie.SameSite = SameSiteMode.None;
     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-    options.Cookie.Domain = null; // Это позволит куки работать на всех поддоменах
+    options.Cookie.Domain = null; 
     options.Cookie.HttpOnly = true;
 });
 
-// builder.Services.AddAuthorization(options => {
-//     options.AddPolicy("AdminPolicy", policy =>
-//         policy.RequireRole(UserRole.Admin.ToString()));
-//     options.AddPolicy("ManagerPolicy", policy =>
-//         policy.RequireRole(UserRole.Manager.ToString(), UserRole.Admin.ToString()));
-// });
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminPolicy",
+        p => p.RequireRole(UserRole.Admin.ToString()));
+
+    options.AddPolicy("ManagerPolicy",
+        p => p.RequireRole(UserRole.Manager.ToString(),
+            UserRole.Admin.ToString()));
+});
 
 var isDocker = Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true";
 
@@ -137,7 +179,6 @@ builder.Services.AddGrpcClient<TwilioGrpcService.TwilioGrpcServiceClient>(o =>
 
 builder.Services.AddAuthorization();
 
-// SignalR
 builder.Services.AddSignalR();
 builder.Services.AddControllers();
 
@@ -168,9 +209,9 @@ app.UseEndpoints(endpoints => {
 
 //app.UseHttpsRedirection();
 if (isDocker)
-    builder.WebHost.UseUrls("http://0.0.0.0:80"); // для Docker
+    builder.WebHost.UseUrls("http://0.0.0.0:80"); 
 else
-    builder.WebHost.UseUrls("http://localhost:5167"); // для Rider/IDE
+    builder.WebHost.UseUrls("http://localhost:5167"); 
 
 
 app.Run();

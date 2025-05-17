@@ -25,6 +25,7 @@ public class AccountController : ControllerBase
 
     
     [HttpPost("register")]
+    [Authorize(Policy = "AdminPolicy")]
     public async Task<IActionResult> Register([FromBody] RegisterRequest request)
     {
         var grpcRequest = new RegisterRequest

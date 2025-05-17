@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../store/store";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axiosInstance from "../../api/axiosInstance";
 import { createTask, deleteTask } from "../../features/tasks/tasksSlice";
 import Sidebar from "../StaticElements/Sidebar";
@@ -47,6 +47,7 @@ const OrderDetailsPage = () => {
   });
   const [isOrderEditModalOpen, setIsOrderEditModalOpen] = useState(false);
   const [shouldRefresh, setShouldRefresh] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(fetchUsers({}));
@@ -381,7 +382,20 @@ const OrderDetailsPage = () => {
   };
 
   if (loading) return <LoadingScreen title="Loading..." />;
-  if (error) return <p className="text-red-500">{error}</p>;
+  if (error) return (
+    <div className="w-screen h-screen flex flex-col items-center justify-center bg-gradient-to-br from-indigo-950 via-purple-950 to-slate-900 text-white">
+      <div className="bg-gradient-to-br from-red-900/60 to-purple-900/60 p-8 rounded-xl shadow-xl flex flex-col items-center">
+        <h2 className="text-2xl font-bold mb-4 text-red-300">Ошибка загрузки заказа</h2>
+        <p className="mb-6 text-red-200">{error || 'Не удалось загрузить информацию о заказе. Попробуйте позже.'}</p>
+        <button
+          onClick={() => navigate('/orders')}
+          className="bg-gradient-to-r from-purple-600 to-purple-800 hover:from-purple-700 hover:to-purple-900 px-6 py-2.5 rounded-lg text-white font-medium transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/20"
+        >
+          Назад к списку заказов
+        </button>
+      </div>
+    </div>
+  );
 
   if (!order) {
     return <p className="text-red-500">Order data is missing</p>;
