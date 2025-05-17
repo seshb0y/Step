@@ -42,7 +42,7 @@ public class AccountController : ControllerBase
             response.Id,
             response.Email,
             response.Username,
-            response.CreatedAt,
+            CreatedAt = response.CreatedAt.ToDateTime(),
             response.Role,
         });
 

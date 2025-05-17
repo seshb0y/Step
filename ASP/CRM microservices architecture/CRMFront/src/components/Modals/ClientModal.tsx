@@ -124,25 +124,27 @@ const ClientModal = ({ client, onClose }: ClientModalProps) => {
       alert("Выберите ответственного");
       return;
     }
-  
-    try {
-      const authResponse = await dispatch(checkAuth()).unwrap();
-      const updatedUserEmail = authResponse?.email || user?.email || "";
 
-  
+    const responsibleUser = users.find(u => String(u.userId) === String(newOrderData.userId));
+    if (!responsibleUser) {
+      alert("Ответственный не найден");
+      return;
+    }
+
+    try {
       dispatch(
         createOrder({
           totalAmount: parseFloat(newOrderData.totalAmount),
           clientEmail: client.email,
-          userEmail: updatedUserEmail,
+          userEmail: responsibleUser.email,
           userId: Number(newOrderData.userId)
         })
       );
-  
+
       setNewOrderData({ totalAmount: "", userId: "" });
-  
+
     } catch (error) {
-      console.error("Ошибка при обновлении пользователя:", error);
+      console.error("Ошибка при создании заказа:", error);
     }
   };
   

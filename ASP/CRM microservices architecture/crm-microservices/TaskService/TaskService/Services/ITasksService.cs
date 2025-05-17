@@ -8,7 +8,7 @@ namespace TaskService.Services.Interfaces;
 
 public interface ITasksService
 {
-    public Task<CreateTaskResponse> CreateTaskAsync(int orderId, string description, DateTime dueDate, string title);
+    public Task<CreateTaskResponse> CreateTaskAsync(int orderId, string description, DateTime dueDate, string title, int userId);
     public Task<TaskInfo> UpdateTaskAsync(UpdateTaskRequest request);
     public Task<DeleteTaskResponse> DeleteTaskAsync(DeleteTaskRequest request);
     public Task<GetAllTasksResponse> GetAllTasks(SortTasksRequest sortTasksRequest);

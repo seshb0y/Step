@@ -102,7 +102,10 @@ public class OrderService : IOrderService
         });
         
         response.Tasks.AddRange(_mapper.Map<List<TaskDto>>(grpcTaskResponse.Tasks));
-        response.CallRecordingUrl.AddRange(order.CallRecord);
+        if (order.CallRecord != null)
+        {
+            response.CallRecordingUrl.AddRange(order.CallRecord);
+        }
 
 
         return response;
@@ -112,9 +115,6 @@ public class OrderService : IOrderService
     public async Task<CreateOrderResponse> CreateOrder(CreateOrderRequest request)
     {
         _logger.LogInformation("Создаем заказ. Проверка пользователя через gRPC: {@Request}", request);
-
-        // gRPC-запрос на получение пользователя по Email
-        
 
         Order order = _mapper.Map<Order>(request);
         
@@ -148,6 +148,7 @@ public class OrderService : IOrderService
             Description = "Connect the client",
             DueDate = Timestamp.FromDateTime(DateTime.UtcNow),
             OrderId = order.Id,
+            UserId = order.UserId.Value
         };
         var grpcTaskReponse = await _taskGrpcService.CreateTaskAsync(grpcTaskRequest);
         _logger.LogInformation("Задача создана через gRPC: ");

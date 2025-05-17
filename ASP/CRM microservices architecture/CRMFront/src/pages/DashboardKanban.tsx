@@ -54,7 +54,7 @@ export const DashboardKanban = () => {
         ) : !clients || clients.length === 0 ? (
           <p className="text-gray-500">No data to display</p>
         ) : (
-          <div className="flex gap-6 p-6 min-w-max">
+          <div className="flex min-w-max">
             <OrderStatusColumn
               title="New orders"
               status={OrderStatus.New}

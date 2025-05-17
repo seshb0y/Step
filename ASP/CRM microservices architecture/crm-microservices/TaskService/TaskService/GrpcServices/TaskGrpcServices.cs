@@ -70,7 +70,7 @@ public class TaskGrpcService : CRMSolution.Grpc.Tasks.TaskGrpcService.TaskGrpcSe
             var errorMessages = string.Join(" | ", result.Errors.Select(e => e.ErrorMessage));
             throw new RpcException(new Status(StatusCode.InvalidArgument, errorMessages));
         }
-        return await _tasksService.CreateTaskAsync(request.OrderId, request.Description, request.DueDate.ToDateTime(), request.Title);
+        return await _tasksService.CreateTaskAsync(request.OrderId, request.Description, request.DueDate.ToDateTime(), request.Title, request.UserId);
     }
 
     public override async Task<GetTaskByOrderIdResponse> GetTaskByOrderId(GetTaskByIdRequest request,

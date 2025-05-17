@@ -72,6 +72,7 @@ message CreateTaskRequest {
   string title = 2;
   string description = 3;
   google.protobuf.Timestamp dueDate = 4;
+  int32 userId = 5;
 }
 
 message DefaultTaskResponse {

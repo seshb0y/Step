@@ -101,14 +101,15 @@ public class TasksService : ITasksService
     //         Tasks = _mapper.Map<List<TaskDto>>(tasks)
     //     };
     // }
-    public async Task<CreateTaskResponse> CreateTaskAsync(int orderId, string description, DateTime dueDate, string title)
+    public async Task<CreateTaskResponse> CreateTaskAsync(int orderId, string description, DateTime dueDate, string title, int userId)
     {
         TaskEntity task = new TaskEntity
         {
             Title = title,
             Description = description,
             DueDate = dueDate,
-            OrderId = orderId
+            OrderId = orderId,
+            UserId = userId
         };
         await _tasksRep.AddAsync(task);
         await _tasksRep.SaveChangesAsync();

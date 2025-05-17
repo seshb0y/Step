@@ -84,7 +84,7 @@ export const NewDealChart: React.FC<NewDealChartProps> = ({ showCumulative, onTo
                   return (
                     <div className="bg-indigo-900/90 backdrop-blur-sm p-3 rounded-lg border border-purple-500/20 shadow-xl">
                       <p className="text-white">{data.fullDate}</p>
-                      <p className="text-white font-bold">${data.amount}</p>
+                      <p className="text-white font-bold">${Number(data.amount).toFixed(2)}</p>
                       <p className="text-gray-400">{data.name}</p>
                     </div>
                   );
