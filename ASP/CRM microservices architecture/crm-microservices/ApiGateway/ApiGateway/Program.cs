@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using UserRole = CRMSolution.Grpc.Orders.UserRole;
+using UserRole = CRMSolution.Grpc.Users.UserRole;
 
 var builder = WebApplication.CreateBuilder(args);
 

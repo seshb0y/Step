@@ -59,11 +59,13 @@ namespace ApiGateway.Controllers;
          string accessToken =  Request.Cookies["accessToken"];
          string  refreshToken = Request.Cookies["refreshToken"];
          var metadata = new Metadata();
-         metadata.Add("accessToken", accessToken);
-         metadata.Add("refreshToken", refreshToken);
+         metadata.Add("accesstoken", accessToken);
+         metadata.Add("refreshtoken", refreshToken);
+         if (string.IsNullOrEmpty(accessToken) || string.IsNullOrEmpty(refreshToken))
+             return Unauthorized();
          var grpcResponse = await _authService.RefreshTokenAsync(new RefreshTokenRequest(), metadata);
-         var response = new HttpRefreshTokenResponse(grpcResponse.AccessToken, grpcResponse.RefreshToken);
-         return Ok(response);
+         // var response = new HttpRefreshTokenResponse(grpcResponse.AccessToken, grpcResponse.RefreshToken);
+         return Ok(new Result<RefreshTokenResponse>(true, grpcResponse, "Successfully refreshed token"));
      }
 
      

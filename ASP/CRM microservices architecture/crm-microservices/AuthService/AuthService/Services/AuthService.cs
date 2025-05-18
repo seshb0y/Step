@@ -88,6 +88,7 @@ public class AuthService : IAuthService
 
         var newAccessToken = await _tokenService.CreateTokenAsync(user.Username);
         var newRefreshToken = user.RefreshToken.ToString();
+        _logger.LogWarning("Token mismatch: user.RefreshToken={DbToken}, provided={RequestToken}", user.RefreshToken, refreshToken);
 
         return new RefreshTokenResponse
         {
