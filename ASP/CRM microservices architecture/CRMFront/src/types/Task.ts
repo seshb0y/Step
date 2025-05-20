@@ -24,6 +24,6 @@ export interface CreateTask {
     title: string;
     description: string;
     endDate: Date;
-    userName: string;
+    userId: number;
     orderId: number;
 }

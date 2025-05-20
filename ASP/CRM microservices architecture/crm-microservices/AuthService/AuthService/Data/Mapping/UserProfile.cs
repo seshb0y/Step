@@ -23,7 +23,7 @@ public class UserProfile : Profile
 
         CreateMap<User, CurrentUserResponse>()
             .ForMember(dest => dest.Id, opt => opt
-                .MapFrom(src => src.Id))
+                .MapFrom(src => src.UserId))
             .ForMember(dest => dest.Username, opt => opt
                 .MapFrom(src => src.Username))
             .ForMember(dest => dest.Role, opt => opt
@@ -63,11 +63,11 @@ public class UserProfile : Profile
             .ForMember(dest => dest.CreatedAt, opt =>
                 opt.MapFrom(src => Google.Protobuf.WellKnownTypes.Timestamp.FromDateTime(src.CreatedAt.ToUniversalTime())))
             .ForMember(dest => dest.Id, opt => opt
-                .MapFrom(src => src.Id));
+                .MapFrom(src => src.UserId));
 
         CreateMap<User, GetUserResponse>()
             .ForMember(dest => dest.Id, opt => opt
-                .MapFrom(src => src.Id))
+                .MapFrom(src => src.UserId))
             .ForMember(dest => dest.Username, opt => opt
                 .MapFrom(src => src.Username))
             .ForMember(dest => dest.IsEmailConfirmed, opt => opt

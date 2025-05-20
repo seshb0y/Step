@@ -44,6 +44,7 @@ public class TaskController : ControllerBase
             Description = request.description,
             DueDate = Timestamp.FromDateTime(request.endDate.ToUniversalTime()),
             OrderId = request.orderId,
+            UserId = request.userId
         };
         var grpcResponse = await _tasksService.CreateTaskAsync(grpcRequest);
         

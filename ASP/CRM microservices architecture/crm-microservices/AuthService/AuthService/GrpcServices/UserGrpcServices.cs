@@ -48,7 +48,7 @@ public class UserGrpcService : UserService.UserServiceBase
         
         return new GetUserResponse
         {
-            Id = user.Id,
+            Id = user.UserId,
             Username = user.Username,
             Email = user.Email,
             Role = (UserRole)user.Role

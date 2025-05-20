@@ -28,7 +28,7 @@ public class UserRep : Repository<User>, IUserRep
     public Task<List<User>> GetUsersByIdsAsync(List<int> ids)
     {
         return _context.Users
-            .Where(u => ids.Contains(u.Id))
+            .Where(u => ids.Contains(u.UserId))
             .ToListAsync();
     }
 

@@ -4,7 +4,6 @@ import { RootState, AppDispatch } from "../../store/store";
 import { deleteClient, fetchChangeClientData } from "../../features/clients/clientSlice";
 import { createOrder } from "../../features/orders/orderSlice";
 import { Client } from "../../types/Client";
-import { checkAuth } from "../../features/auth/authSlice";
 import { fetchUsers } from "../../features/user/userSlice";
 
 interface ClientModalProps {

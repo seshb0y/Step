@@ -1,4 +1,5 @@
-﻿version: "3.9"
+
+version: "3.9"
 
 services:
   twilio-db:
@@ -9,12 +10,12 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: secret
     ports:
-      - "5448:5432"  # 👈 проброс наружу
+      - "5448:5432"
     volumes:
       - twilio_pgdata:/var/lib/postgresql/data
     networks:
       - crm_network
-  
+
   auth-db:
     image: postgres:16
     container_name: auth_postgres
@@ -23,7 +24,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: secret
     ports:
-      - "5444:5432"  # 👈 проброс наружу
+      - "5444:5432"
     volumes:
       - auth_pgdata:/var/lib/postgresql/data
     networks:
@@ -37,7 +38,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: secret
     ports:
-      - "5447:5432"  # 👈
+      - "5447:5432"
     volumes:
       - client_pgdata:/var/lib/postgresql/data
     networks:
@@ -51,7 +52,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: secret
     ports:
-      - "5445:5432"  # 👈
+      - "5445:5432"
     volumes:
       - order_pgdata:/var/lib/postgresql/data
     networks:
@@ -65,12 +66,12 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: secret
     ports:
-      - "5446:5432"  # 👈
+      - "5446:5432"
     volumes:
       - task_pgdata:/var/lib/postgresql/data
     networks:
       - crm_network
-  
+
   twilioservice:
     build:
       context: .
@@ -83,7 +84,6 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Host=twilio-db;Database=twilio_db;Username=postgres;Password=secret
 
-  
   authservice:
     build:
       context: .

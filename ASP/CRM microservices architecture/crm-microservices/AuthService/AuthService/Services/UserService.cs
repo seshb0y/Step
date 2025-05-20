@@ -68,7 +68,7 @@ public class UserService : IUserService
         await _userRepository.SaveChangesAsync();
         return new DeleteUserResponse
         {
-            UserId = user.Id
+            UserId = user.UserId
         };
     }
 
@@ -87,7 +87,7 @@ public class UserService : IUserService
         return new GetUserResponse
         {
             Email = user.Email,
-            Id = user.Id,
+            Id = user.UserId,
             Username = user.Username,
             IsEmailConfirmed = user.IsEmailConfirmed,
             Role = (UserRole)user.Role,
@@ -101,12 +101,12 @@ public class UserService : IUserService
         if (user == null) return null;
 
         var orderResponse = await _orderGrpcService.GetOrdersByUserIdsAsync(
-            new GetOrdersByUserIdsRequest { UserIds = { user.Id } });
+            new GetOrdersByUserIdsRequest { UserIds = { user.UserId } });
 
         var orders = orderResponse.Orders;
     
         var taskResponse = await _taskGrpcService.GetTasksByUserIdsAsync(
-            new GetTasksByUserIdsRequest { UserIds = { user.Id } });
+            new GetTasksByUserIdsRequest { UserIds = { user.UserId } });
 
         var tasks = taskResponse.Tasks;
 
@@ -150,8 +150,8 @@ public class UserService : IUserService
         users = sortUsersRequest.SortBy?.ToLower() switch
         {
             "userid" => sortUsersRequest.Descending
-                ? users.OrderByDescending(u => u.Id).ToList() 
-                : users.OrderBy(u => u.Id).ToList(),
+                ? users.OrderByDescending(u => u.UserId).ToList() 
+                : users.OrderBy(u => u.UserId).ToList(),
             
             "username" => sortUsersRequest.Descending 
                 ? users.OrderByDescending(u => u.Username).ToList() 
@@ -175,7 +175,7 @@ public class UserService : IUserService
             _ => users
         };
 
-        var userIds = users.Select(u => u.Id).ToList();
+        var userIds = users.Select(u => u.UserId).ToList();
 
         var taskResponse = await _taskGrpcService.GetTasksByUserIdsAsync(new GetTasksByUserIdsRequest { UserIds = { userIds } });
         var orderResponse = await _orderGrpcService.GetOrdersByUserIdsAsync(new GetOrdersByUserIdsRequest { UserIds = { userIds } });
@@ -191,7 +191,7 @@ public class UserService : IUserService
         {
             var userInfo = new UserInfo
             {
-                UserId = user.Id,
+                UserId = user.UserId,
                 Username = user.Username,
                 Email = user.Email,
                 UserRole = (CRMSolution.Grpc.Users.UserRole)user.Role,
@@ -199,7 +199,7 @@ public class UserService : IUserService
                 CreatedAt = Timestamp.FromDateTime(user.CreatedAt),
             };
 
-            if (tasksByUser.TryGetValue(user.Id, out var userTasks))
+            if (tasksByUser.TryGetValue(user.UserId, out var userTasks))
             {
                 userInfo.Tasks.AddRange(userTasks.Select<TaskWithUserId, TaskInfo>(t => new TaskInfo
                 {
@@ -213,7 +213,7 @@ public class UserService : IUserService
             }
 
             // добавь заказы
-            if (ordersByUser.TryGetValue(user.Id, out var userOrders))
+            if (ordersByUser.TryGetValue(user.UserId, out var userOrders))
             {
                 userInfo.Orders.AddRange(userOrders.Select(o => new OrderInfo
                 {
@@ -240,7 +240,9 @@ public class UserService : IUserService
         var ids = request.Ids.ToList();
         
         var users = await _userRepository.GetUsersByIdsAsync(ids);
-        var usernames = users.Select(u => u.Username).ToList();
+        
+        var sortedUsers = ids.Select(id => users.FirstOrDefault(u => u.UserId == id)).ToList();
+        var usernames = sortedUsers.Select(u => u?.Username ?? "Unknown").ToList();
 
         return new GetUsersByIdsResponse
         {

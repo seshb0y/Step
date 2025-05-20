@@ -172,7 +172,7 @@ const OrderDetailsPage = () => {
       return;
     }
 
-    if (!order.users || order.users.length === 0 || !order.users[0].username) {
+    if (!order.users || order.users.length === 0 || !order.users[0].id) {
       toast.error('No responsible user assigned to this order');
       return;
     }
@@ -181,7 +181,7 @@ const OrderDetailsPage = () => {
       title: taskTitle,
       description: taskDescription,
       endDate: new Date(taskDueDate),
-      userName: order.users[0].username,
+      userId: Number(order.users[0].id),
       orderId: order.id
     };
 

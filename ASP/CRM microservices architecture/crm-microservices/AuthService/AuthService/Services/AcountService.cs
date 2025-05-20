@@ -56,7 +56,7 @@ public class AccountService : IAccountService
         await _userRep.SaveChangesAsync();
         return new RegisterResponse
         {
-            Id = user.Id,
+            Id = user.UserId,
             Email = user.Email,
             Username = user.Username,
             CreatedAt = Timestamp.FromDateTime(user.CreatedAt.ToUniversalTime()) ,
