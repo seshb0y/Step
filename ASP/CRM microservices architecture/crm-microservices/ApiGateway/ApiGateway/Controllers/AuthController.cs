@@ -2,6 +2,7 @@
 using ApiGateway.Hubs;
 using CRMSolution.Grpc.Users;
 using MailKit;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
@@ -54,6 +55,7 @@ namespace ApiGateway.Controllers;
      }
 
      [HttpPost("refresh")]
+     [Authorize(Policy = "ManagerPolicy")]
      public async Task<IActionResult> Refresh()
      {
          string accessToken =  Request.Cookies["accessToken"];
@@ -70,6 +72,7 @@ namespace ApiGateway.Controllers;
 
      
      [HttpPost("logout")]
+     [Authorize(Policy = "ManagerPolicy")]
      public async Task<IActionResult> Logout()
      { 
          HttpContext.Response.Cookies.Delete("accessToken");

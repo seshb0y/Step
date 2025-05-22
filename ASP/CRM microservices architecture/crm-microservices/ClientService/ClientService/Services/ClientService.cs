@@ -232,7 +232,6 @@ public class ClientService : IClientService
             TasksCount = tasks.Tasks.Count
         };
         response.OrdersCreatedDates.AddRange(orders.Orders.Select(o => o.CreatedAt));
-
         response.TasksStatuses.AddRange(
             taskStatuses.Select(s => (CRMSolution.Grpc.Client.GrpcTaskStatus)(int)s)
         );

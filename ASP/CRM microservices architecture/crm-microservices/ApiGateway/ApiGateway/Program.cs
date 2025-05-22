@@ -24,8 +24,9 @@ builder.Services.AddSwaggerGen(options =>
 
 var jwtSection  = builder.Configuration.GetSection("JWT");
 var jwtKey      = jwtSection.GetValue<string>("Key");
-var jwtIssuer   = jwtSection.GetValue<string>("Issuer");
-var jwtAudience = jwtSection.GetValue<string>("Audience");
+var jwtIssuers   = jwtSection.GetSection("Issuer").Get<string[]>();
+var jwtAudiences = jwtSection.GetSection("Audience").Get<string[]>();
+
 
 builder.Services
     .AddAuthentication(options =>
@@ -37,21 +38,22 @@ builder.Services
     {
         options.TokenValidationParameters = new TokenValidationParameters
         {
-            ValidateIssuer           = true,
-            ValidateAudience         = true,
-            ValidateLifetime         = true,
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            ValidIssuer              = jwtIssuer,
-            ValidAudience            = jwtAudience,
-            IssuerSigningKey         = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
-            ClockSkew                = TimeSpan.FromMinutes(30)
+            ValidIssuers = jwtIssuers,
+            ValidAudiences = jwtAudiences,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
+            ClockSkew = TimeSpan.FromMinutes(30)
         };
+
 
         options.Events = new JwtBearerEvents
         {
             OnMessageReceived = ctx =>
             {
-                if (ctx.Request.Cookies.TryGetValue("access-token", out var cookie))
+                if (ctx.Request.Cookies.TryGetValue("accessToken", out var cookie))
                     ctx.Token = cookie;
                 return Task.CompletedTask;
             }

@@ -35,7 +35,7 @@ public class TaskController : ControllerBase
 
 
     [HttpPost]
-    // [Authorize(Policy = "ManagerPolicy")]
+    [Authorize(Policy = "ManagerPolicy")]
     public async Task<IActionResult> AddTask([FromBody] HttpCreateTaskRequest request)
     {
         var grpcRequest = new CreateTaskRequest
@@ -69,7 +69,7 @@ public class TaskController : ControllerBase
             .Trim();
     }
     [HttpPut]
-    // [Authorize(Policy = "ManagerPolicy")]
+    [Authorize(Policy = "ManagerPolicy")]
     public async Task<IActionResult> ChangeTask([FromBody] HttpUpdateTaskRequest request)
     {
         string normalizedStatus = NormalizeStatus(request.status);
@@ -99,7 +99,7 @@ public class TaskController : ControllerBase
     }
     
     [HttpDelete]
-    // [Authorize(Policy = "ManagerPolicy")]
+    [Authorize(Policy = "ManagerPolicy")]
     public async Task<IActionResult> DeleteTask([FromBody] HttpDeleteTaskRequest request)
     {
         var grpcRequest = new DeleteTaskRequest
@@ -117,7 +117,7 @@ public class TaskController : ControllerBase
     }
     
     [HttpGet("search")]
-    // [Authorize(Policy = "ManagerPolicy")]
+    [Authorize(Policy = "ManagerPolicy")]
     public async Task<IActionResult> FindTask([FromQuery] HttpFindTaskRequest request)
     {
         var grpcRequest = new GetTaskByIdRequest
@@ -129,7 +129,7 @@ public class TaskController : ControllerBase
     }
     
     [HttpGet]
-    // [Authorize(Policy = "AdminPolicy")]
+    [Authorize(Policy = "ManagerPolicy")]
     public async Task<IActionResult> GetAllTasks([FromQuery] HttpSortTasksRequest sortTasksRequest)
     {
         var grpcRequest = new GetAllTasksRequest

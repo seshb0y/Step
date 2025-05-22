@@ -31,7 +31,7 @@ public class OrderController : ControllerBase
 
 
     [HttpPost]
-    // [Authorize(Policy = "ManagerPolicy")]
+    [Authorize(Policy = "ManagerPolicy")]
     public async Task<IActionResult> AddOrder([FromBody] HttpCreateOrderRequest request)
     {
         var grpcRequest = new CreateOrderRequest
@@ -53,7 +53,7 @@ public class OrderController : ControllerBase
     }
     
     [HttpPut]
-    // [Authorize(Policy = "ManagerPolicy")]
+    [Authorize(Policy = "ManagerPolicy")]
     public async Task<IActionResult> ChangeOrder([FromBody] HttpChangeOrderDataRequest request)
     {
         var grpcRequest = new ChangeOrderDataRequest
@@ -75,7 +75,7 @@ public class OrderController : ControllerBase
     }
     
     [HttpDelete]
-    // [Authorize(Policy = "AdminPolicy")]
+    [Authorize(Policy = "AdminPolicy")]
     public async Task<IActionResult> DeleteOrder([FromBody] HttpDeleteOrderRequest request)
     {
         var grpcRequest = new DeleteOrderRequest
@@ -99,6 +99,7 @@ public class OrderController : ControllerBase
     // }
     
     [HttpGet("{orderId}")]
+    [Authorize(Policy = "ManagerPolicy")]
     public async Task<IActionResult> GetOrderDetails(int orderId)
     {
         var grpcRequest = new GetOrderFullInfoRequest
@@ -112,6 +113,7 @@ public class OrderController : ControllerBase
     }
     
     [HttpPut("{orderId}/user")]
+    [Authorize(Policy = "ManagerPolicy")]
     public async Task<IActionResult> ChangeResponsible(int orderId, HttpChangeResponsibleRequest request)
     {
         var grpcRequest = new ChangeResponsibleRequest
@@ -133,7 +135,7 @@ public class OrderController : ControllerBase
     
     
     [HttpGet]
-    // [Authorize(Policy = "ManagerPolicy")]
+    [Authorize(Policy = "ManagerPolicy")]
     // [AllowAnonymous]
     public async Task<IActionResult> GetAllOrders([FromQuery] HttpSortOrdersRequest sortOrdersRequest)
     {

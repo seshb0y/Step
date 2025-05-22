@@ -31,7 +31,7 @@ public class ClientController : ControllerBase
 
 
     [HttpPost]
-    // [Authorize(Policy = "ManagerPolicy")]
+    [Authorize(Policy = "AdminPolicy")]
     public async Task<IActionResult> AddClient([FromBody] HttpCreateClientRequest request)
     {
         var grpcRequest = new CreateClientRequest
@@ -56,7 +56,7 @@ public class ClientController : ControllerBase
     }
     
     [HttpPut]
-    // [Authorize(Policy = "ManagerPolicy")]
+    [Authorize(Policy = "ManagerPolicy")]
     public async Task<IActionResult> ChangeClient([FromBody] HttpChangeDataClientRequest request)
     {
         // var validationResult = await validator.ValidateAsync(request);
@@ -102,7 +102,7 @@ public class ClientController : ControllerBase
     }
     
     [HttpGet("search")]
-    // [Authorize(Policy = "ManagerPolicy")]
+    [Authorize(Policy = "ManagerPolicy")]
     public async Task<IActionResult> LoadClientData([FromQuery] HttpFindClientRequest request)
     {
         var grpcRequest = new GetClientByEmailRequest
@@ -115,6 +115,7 @@ public class ClientController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize(Policy = "ManagerPolicy")]
     public async Task<IActionResult> GetAllClients([FromQuery] HttpSortClientsRequest sortClientsRequest)
     {
         var grpcRequest = new GetAllClientsRequest
@@ -131,6 +132,7 @@ public class ClientController : ControllerBase
     }
     
     [HttpGet("relations")]
+    [Authorize(Policy = "ManagerPolicy")]
     public async Task<IActionResult> GetClientsWithOrdersAndTasks()
     {
         string? accessToken = Request.Cookies["accessToken"];
@@ -168,6 +170,7 @@ public class ClientController : ControllerBase
     }
 
     [HttpGet("dashboard")]
+    [Authorize(Policy = "ManagerPolicy")]
     public async Task<IActionResult> GetDashboard()
     {
         var grpcResponse = _clientService.GetDashboardData(new GetDashboardDataRequest());

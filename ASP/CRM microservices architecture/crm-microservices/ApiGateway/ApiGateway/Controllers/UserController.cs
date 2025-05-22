@@ -33,7 +33,7 @@ public class UserController : ControllerBase
     // }
     
     [HttpPut]
-    // [Authorize(Policy = "AdminPolicy")]
+    [Authorize(Policy = "AdminPolicy")]
     public async Task<IActionResult> ChangeUser([FromBody] HttpChangeUserDataRequest request)
     {
         // var validationResult = await validator.ValidateAsync(request);
@@ -63,7 +63,7 @@ public class UserController : ControllerBase
     }
     
     [HttpDelete]
-    // [Authorize(Policy = "AdminPolicy")]
+    [Authorize(Policy = "AdminPolicy")]
     public async Task<IActionResult> DeleteUser([FromBody] HttpDeleteUserRequest request)
     {
         var grpcRequest = new DeleteUserRequest
@@ -81,7 +81,7 @@ public class UserController : ControllerBase
     }
     
     [HttpGet("search")]
-    // [Authorize(Policy = "AdminPolicy")]
+    [Authorize(Policy = "AdminPolicy")]
     public async Task<IActionResult> LoadUserData([FromQuery] HttpFindUserRequest request)
     {
         var grpcRequest = new GetUserByEmailRequest
@@ -93,7 +93,7 @@ public class UserController : ControllerBase
     }
 
     [HttpGet]
-    // [Authorize(Policy = "AdminPolicy")]
+    [Authorize(Policy = "AdminPolicy")]
     public async Task<IActionResult> GetAllUsers([FromQuery] SortUsersRequest sortUsersRequest)
     {
         var grpcRequest = new GetAllUsersRequest

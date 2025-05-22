@@ -87,8 +87,9 @@ axiosInstance.interceptors.response.use(
         return axiosInstance(originalRequest);
       } catch (refreshError) {
         processQueue(refreshError as Error);
-        localStorage.removeItem('isLogin');
-        window.location.href = "/login";
+        toast.error('Session expired or insufficient permissions. Please log in again.');
+        //localStorage.removeItem('isLogin');
+        //window.location.href = "/login";
         return Promise.reject(refreshError);
       } finally {
         isRefreshing = false;

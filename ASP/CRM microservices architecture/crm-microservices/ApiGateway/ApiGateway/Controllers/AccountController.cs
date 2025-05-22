@@ -51,8 +51,8 @@ public class AccountController : ControllerBase
     }
 
 
-    // [Authorize(Policy = "AdminPolicy")]
     [HttpGet("email/verify")]
+    [Authorize(Policy = "ManagerPolicy")]
     public async Task<IActionResult> VerifyEmailAsync([FromQuery] string token)
     {
         string? accessToken = Request.Cookies["accessToken"];
@@ -62,8 +62,8 @@ public class AccountController : ControllerBase
         
         return Ok(new Result<string>(true, "Email confirmed", "Email confirmed"));
     }
-    // [Authorize(Policy = "AdminPolicy")]
     [HttpPost("email/confirm")]
+    [Authorize(Policy = "ManagerPolicy")]
     public async Task<IActionResult> ConfirmEmailAsync([FromBody] ConfirmRequest request)
     {
         var grpcRequest = new ConfirmRequest
@@ -102,6 +102,7 @@ public class AccountController : ControllerBase
     }
 
     [HttpGet("me")]
+    [Authorize(Policy = "ManagerPolicy")]
     public async Task<IActionResult> GetMeAsync()
     {
         string? accessToken = Request.Cookies["accessToken"];
