@@ -32,7 +32,7 @@ const TopBox = ({ isExpanded }: TopBoxProps) => {
 
   const handleLogOut = () => {
     dispatch(logoutUser());
-    navigate("/");
+    navigate("/login");
   };
 
   return (
