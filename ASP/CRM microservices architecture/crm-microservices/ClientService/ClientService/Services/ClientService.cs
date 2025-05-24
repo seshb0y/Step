@@ -209,8 +209,9 @@ public class ClientService : IClientService
 
         return new GetClientsByIdsResponse
         {
-            ClientName = { names }
+            Clients = { clients.Select(c => new ClientInfoForOrdersFecth { Id = c.Id, Name = c.Name }) }
         };
+
     }
 
     public async Task<GetDashboardDataResponse> GetDashboardData(GetDashboardDataRequest request)

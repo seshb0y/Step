@@ -233,9 +233,8 @@ public class OrderService : IOrderService
             .Select((id, index) => new { id, username = grpcUserResponse.Usernames.ElementAtOrDefault(index) ?? "Unknown" })
             .ToDictionary(x => x.id, x => x.username);
 
-        var clientMap = clientIds
-            .Select((id, index) => new { id, name = grpcClientResponse.ClientName.ElementAtOrDefault(index) ?? "Unknown" })
-            .ToDictionary(x => x.id, x => x.name);
+        var clientMap = grpcClientResponse.Clients.ToDictionary(c => c.Id, c => c.Name);
+
 
         
         var orderList = orders.Select(o => new LowInfoOrder

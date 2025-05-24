@@ -37,6 +37,8 @@ export const Orders = () => {
     dispatch(fetchGetAllOrders({ sortBy: key, descending: newDescending }));
   };
 
+  console.log("Заказы в компоненте:", orders.map(order => ({ id: order.id, clientName: order.clientName })));
+
   const handleOrderSelect = (order: Order) => {
     navigate(`/orders/${order.id}`);
   };
@@ -202,7 +204,7 @@ export const Orders = () => {
                         {order.createdAt ? new Date(order.createdAt).toLocaleDateString() : ''}
                       </td>
                       <td className="py-2 px-4 text-white/90 tracking-wide font-inter">{order.username}</td>
-                      <td className="py-2 px-4 text-white/90 tracking-wide font-inter">{order.clientName || 'No client'}</td>
+                      <td className="py-2 px-4 text-white/90 tracking-wide font-inter">{order.clientName}</td>
                     </tr>
                   ))}
                 </tbody>

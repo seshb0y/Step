@@ -150,7 +150,12 @@ message GetClientsByIdsRequest {
   repeated int32 ids = 1;
 }
 
+message ClientInfoForOrdersFecth {
+  int32 id = 1;
+  string name = 2;
+}
+
 message GetClientsByIdsResponse {
-  repeated string ClientName = 1;
+  repeated ClientInfoForOrdersFecth clients = 1;
 }
 

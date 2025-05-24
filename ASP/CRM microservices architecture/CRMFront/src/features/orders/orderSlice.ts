@@ -72,6 +72,7 @@ export const fetchGetAllOrders = createAsyncThunk(
     if (descending !== undefined) params.append("Descending", descending.toString());
 
     const response = await axiosInstance.get(`/orders/?${params.toString()}`);
+    console.log("Получены заказы с сервера:", response.data);
     return response.data;
   }
 );
@@ -80,6 +81,7 @@ export const createOrder = createAsyncThunk(
   "orders/createOrder",
   async (orderData: Omit<CreateOrder, "id">, { rejectWithValue }) => {
     try {
+      console.log(orderData)
       const response = await axiosInstance.post("/orders", orderData);
       toast.success('Заказ успешно создан');
       return response.data;
@@ -111,9 +113,13 @@ const ordersSlice = createSlice({
   initialState,
   reducers: {
     addOrderRealtime: (state, action) => {
-      const exists = state.orders.find(order => order.orderId === action.payload.orderId);
+      const exists = state.orders.find(order => order.id === action.payload.id);
       if (!exists) {
-        state.orders.push(action.payload);
+        console.log("Добавляем новый заказ в реальном времени:", action.payload);
+        state.orders.unshift({
+          ...action.payload,
+          clientName: action.payload.clientName
+        });
       }
     },
     changeOrderRealtime: (state, action) => {
@@ -140,7 +146,20 @@ const ordersSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchGetAllOrders.fulfilled, (state, action) => {
-        state.orders = Array.isArray(action.payload.orders) ? action.payload.orders : [];
+        console.log("Получены заказы с сервера:", action.payload.orders);
+        const orders = Array.isArray(action.payload.orders) ? action.payload.orders : [];
+        
+        // Создаем Map существующих заказов для быстрого поиска
+        const existingOrdersMap = new Map(state.orders.map(order => [order.id, order]));
+        
+        // Обновляем заказы, сохраняя clientName из существующих заказов
+        state.orders = orders.map((order: Order) => {
+          const existingOrder = existingOrdersMap.get(order.id);
+          return {
+            ...order,
+            clientName: existingOrder?.clientName || order.clientName || 'Unknown'
+          };
+        });
         state.loading = false;
       })
       .addCase(fetchGetAllOrders.rejected, (state, action) => {
