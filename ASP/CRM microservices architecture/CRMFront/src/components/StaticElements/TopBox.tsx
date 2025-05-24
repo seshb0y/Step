@@ -30,9 +30,10 @@ const TopBox = ({ isExpanded }: TopBoxProps) => {
     setAnchorEl(null);
   };
 
-  const handleLogOut = () => {
+  const handleLogout = () => {
     dispatch(logoutUser());
-    navigate("/login");
+    localStorage.removeItem('isLogin');
+    //navigate("/login");
   };
 
   return (
@@ -136,7 +137,7 @@ const TopBox = ({ isExpanded }: TopBoxProps) => {
           >
             Профиль
           </MenuItem>
-          <MenuItem onClick={handleLogOut}>
+          <MenuItem onClick={handleLogout}>
             <Logout fontSize="small" sx={{ marginRight: "8px", color: "#8B5CF6" }} />
             Выйти
           </MenuItem>

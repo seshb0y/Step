@@ -48,6 +48,7 @@ public class OrderController : ControllerBase
             grpcResponse.CreatedAt,
             grpcResponse.TotalAmount,
             grpcResponse.Status,
+            grpcResponse.ClientName
         });
         return Ok("order created");
     }

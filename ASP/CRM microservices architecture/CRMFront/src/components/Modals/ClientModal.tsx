@@ -136,7 +136,8 @@ const ClientModal = ({ client, onClose }: ClientModalProps) => {
           totalAmount: parseFloat(newOrderData.totalAmount),
           clientEmail: client.email,
           userEmail: responsibleUser.email,
-          userId: Number(newOrderData.userId)
+          userId: Number(newOrderData.userId),
+          clientName: client.name
         })
       );
 

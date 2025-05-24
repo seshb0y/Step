@@ -159,6 +159,7 @@ public class OrderService : IOrderService
             CreatedAt = Timestamp.FromDateTime(DateTime.UtcNow),
             Status = (OrderStatus)order.Status,
             Id = order.Id,
+            ClientName = grpcClientResponse.Name,
         };
     }
 

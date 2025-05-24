@@ -31,5 +31,6 @@ export interface CreateOrder {
     clientEmail: string;
     userEmail: string;
     userId: number;
+    clientName: string;
 }
 

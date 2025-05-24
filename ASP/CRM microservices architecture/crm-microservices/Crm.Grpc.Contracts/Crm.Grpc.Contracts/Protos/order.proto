@@ -103,6 +103,7 @@ message CreateOrderResponse{
   google.protobuf.Timestamp createdAt = 2;
   OrderStatus status = 3;
   int32 id = 4;
+  string clientName = 5;
 }
 
 message DeleteOrderRequest{
