@@ -149,17 +149,10 @@ const ordersSlice = createSlice({
         console.log("Получены заказы с сервера:", action.payload.orders);
         const orders = Array.isArray(action.payload.orders) ? action.payload.orders : [];
         
-        // Создаем Map существующих заказов для быстрого поиска
-        const existingOrdersMap = new Map(state.orders.map(order => [order.id, order]));
-        
-        // Обновляем заказы, сохраняя clientName из существующих заказов
-        state.orders = orders.map((order: Order) => {
-          const existingOrder = existingOrdersMap.get(order.id);
-          return {
-            ...order,
-            clientName: existingOrder?.clientName || order.clientName || 'Unknown'
-          };
-        });
+        state.orders = orders.map((order: Order) => ({
+          ...order,
+          clientName: order.clientName || 'Unknown'
+        }));
         state.loading = false;
       })
       .addCase(fetchGetAllOrders.rejected, (state, action) => {

@@ -118,7 +118,7 @@ public class UserService : IUserService
         var clientResponse = await _clientGrpcService.GetClientsByIdsAsync(
             new GetClientsByIdsRequest { Ids = { clientIds } });
 
-        var clientNames = clientResponse.ClientName;
+        var clientNames = clientResponse.Clients.Select(c => c.Name);
 
         var response = new FindUserResponse();
 
