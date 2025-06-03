@@ -2,7 +2,6 @@ import { Avatar, Box, IconButton, Menu, MenuItem, Typography } from "@mui/materi
 import { Logout } from "@mui/icons-material";
 import { useState } from "react";
 import UserProfileModal from "../Modals/UserProfileModal";
-import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
 import { logoutUser } from "../../features/auth/authSlice";
 import Lottie from "lottie-react";
@@ -18,7 +17,6 @@ const TopBox = ({ isExpanded }: TopBoxProps) => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const user = useSelector((state: RootState) => state.auth.user);
 

@@ -76,6 +76,7 @@ builder.Services.AddCors(policy => {
             .WithOrigins(
                 "http://localhost:5173",
                 "http://localhost:5241",
+                "http://localhost:3000",
                 "https://crm-solution-delta.vercel.app"
             )
             .AllowAnyHeader()
@@ -181,7 +182,12 @@ builder.Services.AddGrpcClient<TwilioGrpcService.TwilioGrpcServiceClient>(o =>
 
 builder.Services.AddAuthorization();
 
-builder.Services.AddSignalR();
+builder.Services.AddSignalR(options =>
+{
+    options.EnableDetailedErrors = true;
+    options.MaximumReceiveMessageSize = 102400; // 100 KB
+});
+
 builder.Services.AddControllers();
 
 

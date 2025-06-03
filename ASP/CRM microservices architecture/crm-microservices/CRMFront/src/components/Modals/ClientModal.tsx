@@ -14,7 +14,6 @@ interface ClientModalProps {
 const ClientModal = ({ client, onClose }: ClientModalProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const { clientLoading, clientError, clients } = useSelector((state: RootState) => state.clients);
-  const { user } = useSelector((state: RootState) => state.auth);
   const { users } = useSelector((state: RootState) => state.users);
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState<Client>(client);
@@ -38,6 +37,7 @@ const ClientModal = ({ client, onClose }: ClientModalProps) => {
         setIsEditing(false);
       }
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [clients, client.id]);
 
   const formatPhoneNumber = (value: string) => {

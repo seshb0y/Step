@@ -1,0 +1,59 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-db
+  namespace: crm-system
+spec:
+  selector:
+    app: auth-db
+  ports:
+  - port: 5432
+    targetPort: 5432
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: client-db
+  namespace: crm-system
+spec:
+  selector:
+    app: client-db
+  ports:
+  - port: 5432
+    targetPort: 5432
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: order-db
+  namespace: crm-system
+spec:
+  selector:
+    app: order-db
+  ports:
+  - port: 5432
+    targetPort: 5432
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: task-db
+  namespace: crm-system
+spec:
+  selector:
+    app: task-db
+  ports:
+  - port: 5432
+    targetPort: 5432
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: twilio-db
+  namespace: crm-system
+spec:
+  selector:
+    app: twilio-db
+  ports:
+  - port: 5432
+    targetPort: 5432 

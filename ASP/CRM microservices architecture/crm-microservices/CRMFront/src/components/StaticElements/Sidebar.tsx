@@ -5,7 +5,6 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import PeopleIcon from "@mui/icons-material/People";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import SettingsIcon from "@mui/icons-material/Settings";
 import GroupIcon from "@mui/icons-material/Group";
 import ViewKanbanIcon from "@mui/icons-material/ViewKanban";
 import { useAppSelector } from "../../hooks/useAppSelector";
@@ -16,7 +15,6 @@ import OrdersAnimation from "../../assets/OrdersAnimation.json";
 import TasksAnimation from "../../assets/TasksAnimation.json";
 import UsersAnimation from "../../assets/UsersAnimation.json";
 import KanbanAnimation from "../../assets/KanbanAnimation.json";
-import SettingsAnimation from "../../assets/SettingsAnimation.json";
 import { useState } from "react";
 
 const menuItems = [

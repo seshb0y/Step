@@ -76,6 +76,7 @@ const OrderDetailsPage = () => {
     }
 
     fetchOrderDetails();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [orderId]);
 
   useEffect(() => {
@@ -113,6 +114,7 @@ const OrderDetailsPage = () => {
       fetchOrderDetails();
       setShouldRefresh(false);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shouldRefresh]);
 
   useEffect(() => {
@@ -172,7 +174,7 @@ const OrderDetailsPage = () => {
       return;
     }
 
-    if (!order.users || order.users.length === 0 || !order.users[0].id) {
+    if (!order.users || order.users.length === 0 || !order.users[0].userId) {
       toast.error('No responsible user assigned to this order');
       return;
     }
@@ -181,7 +183,7 @@ const OrderDetailsPage = () => {
       title: taskTitle,
       description: taskDescription,
       endDate: new Date(taskDueDate),
-      userId: Number(order.users[0].id),
+      userId: Number(order.users[0].userId),
       orderId: order.id
     };
 
@@ -343,19 +345,8 @@ const OrderDetailsPage = () => {
       case TaskStatus.Completed:
         return "Completed";
       default:
-        return "Undefined";
+        return "Unknown";
     }
-  };
-
-  const getCallRecordingDate = (url: string): Date => {
-    if (typeof url !== 'string') return new Date(0);
-    const file = url.split('/').pop()?.replace('.mp3', '');
-    if (!file) return new Date(0);
-    const parts = file.split('_');
-    if (parts.length < 2) return new Date(0);
-    const dateStr = parts[1];
-    const date = new Date(dateStr);
-    return isNaN(date.getTime()) ? new Date(0) : date;
   };
 
   const getCombinedItems = (order: Order) => {
