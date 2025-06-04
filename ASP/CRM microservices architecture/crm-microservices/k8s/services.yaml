@@ -1,0 +1,63 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: authservice
+  namespace: crm-system
+spec:
+  selector:
+    app: auth-service
+  ports:
+    - name: grpc
+      port: 5171
+      targetPort: 5171
+    - name: http
+      port: 5172
+      targetPort: 5172
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: client-service
+  namespace: crm-system
+spec:
+  selector:
+    app: client-service
+  ports:
+    - port: 80
+      targetPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: order-service
+  namespace: crm-system
+spec:
+  selector:
+    app: order-service
+  ports:
+    - port: 80
+      targetPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: task-service
+  namespace: crm-system
+spec:
+  selector:
+    app: task-service
+  ports:
+    - port: 80
+      targetPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: twilio-service
+  namespace: crm-system
+spec:
+  selector:
+    app: twilio-service
+  ports:
+    - port: 80
+      targetPort: 80 

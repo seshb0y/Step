@@ -3,27 +3,14 @@ FROM node:20-alpine as build
 
 WORKDIR /app
 
-# Копируем файлы package.json и package-lock.json
 COPY package*.json ./
-
-# Устанавливаем зависимости
-RUN npm ci
-
-# Копируем исходный код
+RUN npm install
 COPY . .
-
-# Собираем приложение
 RUN npm run build
 
 # Этап production
 FROM nginx:alpine
-
-# Копируем собранное приложение
 COPY --from=build /app/dist /usr/share/nginx/html
 
-# Копируем конфигурацию nginx
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-
 EXPOSE 80
-
-CMD ["nginx", "-g", "daemon off;"] 
+CMD ["nginx", "-g", "daemon off;"]
