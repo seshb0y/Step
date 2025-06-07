@@ -297,5 +297,10 @@ public class ClientService : IClientService
         return response;
 
     }
+
+    public async Task<AddCommentToClientResponse> AddCommentToClient(AddCommentToClientRequest request)
+    {
+        throw new NotImplementedException();
+    }
     
 }

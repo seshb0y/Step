@@ -20,6 +20,19 @@ service ClientGrpcService {
   rpc GetAllClients (GetAllClientsRequest) returns (GetAllClientsResponse);
   rpc GetClientsWithOrdersAndTasks(GetClientWithOrdersAndTasksRequest) returns (GetClientsWithOrdersAndTasksResponse);
   rpc GetDashboardData(GetDashboardDataRequest) returns (GetDashboardDataResponse);
+  rpc AddCommentToClient(AddCommentToClientRequest) returns (AddCommentToClientResponse);
+}
+
+message AddCommentToClientRequest{
+  int32 userId = 1;
+  int32 clientId = 2;
+  string comment = 3;
+}
+
+message AddCommentToClientResponse{
+  int32 userId = 1;
+  int32 clientId = 2;
+  string comment = 3;
 }
 
 message GetDashboardDataResponse{

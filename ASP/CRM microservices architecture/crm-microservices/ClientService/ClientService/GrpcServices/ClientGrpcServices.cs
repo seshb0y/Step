@@ -134,4 +134,10 @@ public class ClientGrpcService : CRMSolution.Grpc.Client.ClientGrpcService.Clien
     {
         return await _clientService.GetDashboardData(request);
     }
+
+    public override async Task<AddCommentToClientResponse> AddCommentToClient(AddCommentToClientRequest request,
+        ServerCallContext context)
+    {
+        throw new NotImplementedException();
+    }
 }
