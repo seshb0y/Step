@@ -39,6 +39,14 @@ namespace CRMSolution.Data.Mapping
                     .MapFrom(src => src.Email))
                 .ForMember(dest => dest.Phone, opt => opt
                     .MapFrom(src => src.Phone));
+
+            CreateMap<ClientsComments, AddCommentToClientResponse>()
+                .ForMember(dest => dest.Comment, opt => opt
+                    .MapFrom(src => src.Comment))
+                .ForMember(dest => dest.ClientId, opt => opt
+                    .MapFrom(src => src.ClientId))
+                .ForMember(dest => dest.UserId, opt => opt
+                    .MapFrom(src => src.UserId));
             //
             // CreateMap<Client, ClientWithOrdersAndTasksResponse>()
             //     .ForMember(dest => dest.Orders, opt => opt

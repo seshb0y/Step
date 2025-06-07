@@ -186,5 +186,45 @@ public class ClientController : ControllerBase
         return Ok(response);
     }
 
+    [HttpPost("comment")]
+    // [Authorize(Policy = "ManagerPolicy")]
+    public async Task<IActionResult> AddComment([FromBody] HttpAddCommentRequest request)
+    {
+        var grpcRequest = new AddCommentToClientRequest
+        {
+            UserId = request.userId,
+            Comment = request.comment,
+            ClientId = request.clientId
+        };
+        var grpcResponse = await _clientService.AddCommentToClientAsync(grpcRequest);
+        _hubContext.Clients.All.SendAsync("CommentAdded", new
+        {
+            grpcResponse.ClientId,
+            grpcResponse.UserId,
+            grpcResponse.Comment,
+        });
+        return Ok(grpcResponse);
+    }
+
+    [HttpGet("comments")]
+    // [Authorize(Policy = "ManagerPolicy")]
+    public async Task<HttpGetClientCommentsResponse> ClientComments([FromQuery] HttpGetCommentRequest request)
+    {
+        var grpcRequest = new GetClientCommentsRequest
+        {
+            ClientId = request.clientId
+        };
+        var grpcResponse = await _clientService.GetClientCommentsAsync(grpcRequest);
+        return new HttpGetClientCommentsResponse
+        {
+            comments = grpcResponse.Comments.Select(c => new Comments
+            {
+                ClientId = c.ClientId,
+                Comment = c.Comment_,
+                UserId = c.UserId,
+                CreatedAt = c.CreatedAt.ToDateTime()
+            }).ToList()
+        };
+    }
 
 }

@@ -20,6 +20,7 @@ namespace ClientService.Services.Classes;
 
 public class ClientService : IClientService
 {
+    private readonly IClientCommentsRep _clientCommentsRep;
     private readonly IClientRep _clientRepository;
     private readonly IMapper _mapper;
     private readonly ILogger<ClientService> _logger;
@@ -29,7 +30,10 @@ public class ClientService : IClientService
     private readonly TaskGrpcService.TaskGrpcServiceClient _taskGrpcClient;
     
     public ClientService(IClientRep clientRepository, IMapper mapper, ILogger<ClientService> logger, IHubContext<NotificationHub> hubContext
-    , UserService.UserServiceClient userGrpcClient, OrderGrpcService.OrderGrpcServiceClient orderGrpcClient, TaskGrpcService.TaskGrpcServiceClient taskGrpcClient)
+    , UserService.UserServiceClient userGrpcClient, 
+    OrderGrpcService.OrderGrpcServiceClient orderGrpcClient, 
+    TaskGrpcService.TaskGrpcServiceClient taskGrpcClient,
+    IClientCommentsRep clientCommentsRep)
     {
         _clientRepository = clientRepository;
         _mapper = mapper;
@@ -38,7 +42,7 @@ public class ClientService : IClientService
         _userGrpcClient = userGrpcClient;
         _orderGrpcClient = orderGrpcClient;
         _taskGrpcClient = taskGrpcClient;
-        
+        _clientCommentsRep = clientCommentsRep;
     }
     
     public async Task<CreateClientResponse> CreateClient(CreateClientRequest request)
@@ -300,7 +304,31 @@ public class ClientService : IClientService
 
     public async Task<AddCommentToClientResponse> AddCommentToClient(AddCommentToClientRequest request)
     {
-        throw new NotImplementedException();
+        ClientsComments newComment = new ClientsComments
+        {
+            ClientId = request.ClientId,
+            Comment = request.Comment,
+            UserId = request.UserId
+        };
+        await _clientCommentsRep.AddAsync(newComment);
+        await _clientRepository.SaveChangesAsync();
+        return _mapper.Map<AddCommentToClientResponse>(newComment);
     }
-    
+
+    public async Task<GetClientCommentsResponse> GetClientComments(GetClientCommentsRequest request)
+    {
+        var comments = await _clientCommentsRep.GetCommentsByClientId(request.ClientId);
+        var grpcComments = comments
+            .Where(c => c != null)
+            .Select(c => new Comment
+            {
+                ClientId = c.ClientId,
+                UserId = c.UserId,
+                Comment_ = c.Comment,
+                CreatedAt = Timestamp.FromDateTime(c.CreatedAt.ToUniversalTime())
+            });
+        var response = new GetClientCommentsResponse();
+        response.Comments.AddRange(grpcComments);
+        return response;
+    }
 }

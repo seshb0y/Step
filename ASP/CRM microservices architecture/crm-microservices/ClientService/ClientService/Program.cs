@@ -119,6 +119,7 @@ builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 // Репозитории и Сервисы
 builder.Services.AddScoped<IClientService, ClientService.Services.Classes.ClientService>();
 builder.Services.AddScoped<IClientRep, ClientRep>();
+builder.Services.AddScoped<IClientCommentsRep, ClientCommentsRep>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
 builder.WebHost.ConfigureKestrel(options =>

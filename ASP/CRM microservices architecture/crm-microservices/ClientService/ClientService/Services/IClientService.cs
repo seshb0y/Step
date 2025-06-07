@@ -20,4 +20,5 @@ public interface IClientService
     Task<GetClientsWithOrdersAndTasksResponse> GetClientsWithOrdersAndTasksAsync(string request);
     Task<GetDashboardDataResponse> GetDashboardData(GetDashboardDataRequest request);
     Task<AddCommentToClientResponse>  AddCommentToClient(AddCommentToClientRequest request);
+    Task<GetClientCommentsResponse>  GetClientComments(GetClientCommentsRequest request);
 }

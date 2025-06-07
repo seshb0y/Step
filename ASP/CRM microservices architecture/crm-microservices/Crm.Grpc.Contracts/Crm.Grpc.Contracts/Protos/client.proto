@@ -21,6 +21,21 @@ service ClientGrpcService {
   rpc GetClientsWithOrdersAndTasks(GetClientWithOrdersAndTasksRequest) returns (GetClientsWithOrdersAndTasksResponse);
   rpc GetDashboardData(GetDashboardDataRequest) returns (GetDashboardDataResponse);
   rpc AddCommentToClient(AddCommentToClientRequest) returns (AddCommentToClientResponse);
+  rpc GetClientComments(GetClientCommentsRequest) returns (GetClientCommentsResponse);
+}
+
+message Comment{
+  int32 userId = 1;
+  int32 clientId = 2;
+  string comment = 3;
+  google.protobuf.Timestamp createdAt = 4;
+}
+message GetClientCommentsResponse{
+  repeated Comment comments = 1;
+}
+
+message GetClientCommentsRequest{
+  int32 clientId = 1;
 }
 
 message AddCommentToClientRequest{
