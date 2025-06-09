@@ -103,6 +103,7 @@ public class TasksService : ITasksService
     // }
     public async Task<CreateTaskResponse> CreateTaskAsync(int orderId, string description, DateTime dueDate, string title, int userId)
     {
+        _logger.LogInformation("Создаем задачу");
         TaskEntity task = new TaskEntity
         {
             Title = title,
@@ -113,6 +114,7 @@ public class TasksService : ITasksService
         };
         await _tasksRep.AddAsync(task);
         await _tasksRep.SaveChangesAsync();
+        _logger.LogInformation("Задача создана: {@Task}", task);
         return new CreateTaskResponse
         {
             OrderId = orderId,
@@ -127,11 +129,12 @@ public class TasksService : ITasksService
 
     public async Task<TaskInfo> UpdateTaskAsync(UpdateTaskRequest request)
     {
+        _logger.LogInformation("Обновляем задачу: {@Request}", request);
         TaskEntity task = await _tasksRep.GetById(request.TaskId);
         _mapper.Map(request, task); 
         _tasksRep.Update(task);
         await _tasksRep.SaveChangesAsync();
-
+        _logger.LogInformation("Задача обновлена: {@Task}", task);
         return new TaskInfo
         {
             Id = task.Id,
@@ -144,10 +147,11 @@ public class TasksService : ITasksService
 
     public async Task<DeleteTaskResponse> DeleteTaskAsync(DeleteTaskRequest request)
     {
+        _logger.LogInformation("Удаляем задачу: {@Request}", request);
         TaskEntity task = await _tasksRep.GetById(request.Id);
         _tasksRep.Delete(task);
         await _tasksRep.SaveChangesAsync();
-
+        _logger.LogInformation("Задача удалена: {@Task}", task);
         return new DeleteTaskResponse
         {
             TaskId = request.Id,

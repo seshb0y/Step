@@ -183,6 +183,7 @@ public class OrderService : IOrderService
         order = _mapper.Map(request, order);
         _orderRep.Update(order);
         await _orderRep.SaveChangesAsync();
+        _logger.LogInformation("Заказ изменен: {@Order}", order);
         return new ChangeOrderDataResponse
         {
             Id = order.Id,
@@ -194,16 +195,20 @@ public class OrderService : IOrderService
 
     public async Task DeleteOrder(DeleteOrderRequest request)
     {
+        _logger.LogInformation("Удаляем заказ: {@Request}", request);
         Order order = await _orderRep.GetByIdAsync(request.OrderId);
         order.IsDeleted = true;
+        _logger.LogInformation("Заказ удален: {@Order}", order);
         await _orderRep.SaveChangesAsync();
     }
 
     public async Task<ChangeResponsibleResponse> ChangeResponsible(ChangeResponsibleRequest request)
     {
+        _logger.LogInformation("Изменяем ответственного: {@Request}", request);
         Order order = await _orderRep.GetByIdAsync(request.OrderId);
         order.UserId = request.UserId;
         await _orderRep.SaveChangesAsync();
+        _logger.LogInformation("Ответственный изменен: {@Order}", order);
         return new ChangeResponsibleResponse
         {
             UserId = order.UserId.Value,

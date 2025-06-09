@@ -27,7 +27,7 @@ public class AccountService : IAccountService
     private readonly IHubContext<NotificationHub> _notificationHub;
 
     public AccountService(IMapper mapper, IUserRep userRep, IConfiguration config, ITokenService tokenService,
-        ILogger<AccountService> logger,  IHttpContextAccessor httpContextAccessor, IHubContext<NotificationHub> notificationHub)
+        ILogger<AccountService> logger, IHttpContextAccessor httpContextAccessor, IHubContext<NotificationHub> notificationHub)
     {
         _mapper = mapper;
         _userRep = userRep;
@@ -40,37 +40,41 @@ public class AccountService : IAccountService
 
     public async Task<RegisterResponse> RegisterAsync(RegisterRequest request)
     {
-        _logger.LogInformation("Регистрация юзера: {@Request}", request);
+        _logger.LogInformation("Регистрация пользователя: {@Request}", request);
         if (await _userRep.FindByNameAsync(request.Username) != null || 
             await _userRep.FindByEmailAsync(request.Email) != null)
         {
+            _logger.LogWarning("Пользователь уже существует: {Username} / {Email}", request.Username, request.Email);
             throw new Exception("User with this email or username already exists");
         }
 
-
         var user = _mapper.Map<User>(request);
         user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password);
-        user.Role = UserRole.Manager; 
+        user.Role = UserRole.Manager;
 
         await _userRep.AddAsync(user);
         await _userRep.SaveChangesAsync();
+
+        _logger.LogInformation("Пользователь зарегистрирован: {UserId}", user.UserId);
         return new RegisterResponse
         {
             Id = user.UserId,
             Email = user.Email,
             Username = user.Username,
-            CreatedAt = Timestamp.FromDateTime(user.CreatedAt.ToUniversalTime()) ,
+            CreatedAt = Timestamp.FromDateTime(user.CreatedAt.ToUniversalTime()),
             Role = (Grpc.Users.UserRole)user.Role
         };
-
     }
 
     public async Task<ConfirmResponse> ConfirmEmailAsync(ConfirmRequest request)
     {
-        _logger.LogInformation("Отправка письма для подтверждения мыла: {@Request}", request);
+        _logger.LogInformation("Запрос на отправку подтверждения email: {@Request}", request);
         var user = await _userRep.FindByNameAsync(request.Username);
         if (user == null)
+        {
+            _logger.LogWarning("Пользователь не найден для подтверждения email: {Username}", request.Username);
             throw new Exception("User not found");
+        }
 
         string token = await _tokenService.CreateEmailTokenAsync(request.Username);
         string link = $"http://localhost:5173/verify-email?token={token}";
@@ -90,79 +94,71 @@ public class AccountService : IAccountService
                 <p style='color: #666; font-size: 12px; margin-top: 30px;'>This link will expire in 24 hours.</p>
             </div>";
         await SendEmailAsync(user.Email, "Email Confirmation", emailBody);
-        return new ConfirmResponse
-        {
-            Username = user.Username,
-        };
+
+        _logger.LogInformation("Письмо подтверждения email отправлено: {Email}", user.Email);
+        return new ConfirmResponse { Username = user.Username };
     }
 
     public async Task VerifyEmailAsync(string token)
     {
-        _logger.LogInformation("Подтверждение мыла по токены: {@Token}", token);
+        _logger.LogInformation("Подтверждение email по токену: {Token}", token);
         string username = await _tokenService.GetNameFromToken(token, _config["JWT:EmailKey"]);
-        if (string.IsNullOrEmpty(username))
-            throw new Exception("Invalid token");
+        if (string.IsNullOrEmpty(username)) throw new Exception("Invalid token");
 
         bool isValid = await _tokenService.ValidateEmailTokenAsync(token);
-        if (!isValid)
-            throw new Exception("Token is invalid or expired");
+        if (!isValid) throw new Exception("Token is invalid or expired");
 
         var user = await _userRep.FindByNameAsync(username);
-        if (user == null)
-            throw new Exception("User not found");
+        if (user == null) throw new Exception("User not found");
 
         user.IsEmailConfirmed = true;
         await _userRep.SaveChangesAsync();
+        _logger.LogInformation("Email подтвержден: {Username}", username);
     }
-    
 
     public async Task ResetPasswordAsync(ResetPasswordRequest request)
     {
-        _logger.LogInformation("Отправка письма для сброса пароля: {@Request}", request);
+        _logger.LogInformation("Запрос на сброс пароля: {@Request}", request);
         var user = await _userRep.FindByNameAsync(request.Username);
-        if (user == null)
-            throw new Exception("User not found");
+        if (user == null) throw new Exception("User not found");
 
         string token = await _tokenService.CreateResetPasswordTokenAsync(request.Username);
         string link = $"http://localhost:5173/change-password?token={token}";
 
-        string emailBody = $"<p>Привет, {request.Username}! Чтобы сбросить пароль, перейдите <a href='{link}'>сюда</a>.</p>";
+        string emailBody = $"<p>Привет, {request.Username}! Чтобы сбросить пароль, перейдите по ссылке: <a href='{link}'>{link}</a></p>";
         await SendEmailAsync(user.Email, "Сброс пароля", emailBody);
+        _logger.LogInformation("Письмо для сброса пароля отправлено: {Email}", user.Email);
     }
 
     public async Task ChangePasswordAsync(ChangePasswordRequest request, string token)
     {
-        _logger.LogInformation("Изменение пароля: {@Request}", request);
+        _logger.LogInformation("Изменение пароля по токену: {Token}", token);
         bool isValid = await _tokenService.ValidateChangePasswordTokenAsync(token);
-        if (!isValid)
-            throw new Exception("Invalid or expired token");
+        if (!isValid) throw new Exception("Invalid or expired token");
 
         var username = await _tokenService.GetNameFromToken(token);
         var user = await _userRep.FindByNameAsync(username);
-        if (user == null)
-            throw new Exception("User not found");
+        if (user == null) throw new Exception("User not found");
 
         user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
         await _userRep.SaveChangesAsync();
+        _logger.LogInformation("Пароль успешно изменен: {Username}", username);
     }
-    
+
     public async Task<CurrentUserResponse> GetCurrentUserAsync(string token)
     {
-
+        _logger.LogInformation("Получение текущего пользователя по токену");
         string username = await _tokenService.GetNameFromToken(token);
-        if (string.IsNullOrEmpty(username))
-        {
-            throw new Exception("Invalid token");
-        }
+        if (string.IsNullOrEmpty(username)) throw new Exception("Invalid token");
 
         var user = await _userRep.FindByNameAsync(username);
-        
-        
+        _logger.LogInformation("Текущий пользователь: {Username}", username);
         return _mapper.Map<CurrentUserResponse>(user);
     }
-    
+
     public async Task SendEmailAsync(string to, string subject, string html)
     {
+        _logger.LogInformation("Отправка email: To={To}, Subject={Subject}", to, subject);
         var email = new MimeMessage();
         email.From.Add(MailboxAddress.Parse(_config["Smtp:SenderEmail"]));
         email.To.Add(MailboxAddress.Parse(to));
@@ -183,12 +179,12 @@ public class AccountService : IAccountService
             "starttlswhenavailable" => SecureSocketOptions.StartTlsWhenAvailable,
             _ => SecureSocketOptions.StartTls
         };
-        
+
         await smtp.ConnectAsync(host, port, socketOption);
-        smtp.AuthenticationMechanisms.Remove("XOAUTH2"); 
+        smtp.AuthenticationMechanisms.Remove("XOAUTH2");
         await smtp.AuthenticateAsync(username, password);
         await smtp.SendAsync(email);
         await smtp.DisconnectAsync(true);
+        _logger.LogInformation("Email отправлен: {To}", to);
     }
-
 }

@@ -49,10 +49,11 @@ public class TokenService : ITokenService
     
     public async Task<string> GetNameFromCookies(string token)
     {
+        _logger.LogInformation("Берется имя из токена: {@Token}", token);
         var accessToken = token;
         if (string.IsNullOrEmpty(accessToken))
             throw new SecurityTokenException("Access token is missing");
-
+        
         return await GetNameFromToken(accessToken);
     }
     public async Task<string> CreateTokenAsync(string username)
@@ -79,7 +80,7 @@ public class TokenService : ITokenService
             expires: DateTime.UtcNow.AddMinutes(30),
             signingCredentials: signingCredentials
         );
-
+        _logger.LogInformation("Токен создан: {@tokenString}", securityToken);
         return new JwtSecurityTokenHandler().WriteToken(securityToken);
     }
     
@@ -103,6 +104,7 @@ public class TokenService : ITokenService
             signingCredentials: signingCred);
 
         string tokenString = new JwtSecurityTokenHandler().WriteToken(securityToken);
+        _logger.LogInformation("Токен для подтверждения создан: {@tokenString}", tokenString);
         return tokenString;
     }
 
@@ -199,10 +201,12 @@ public class TokenService : ITokenService
         try
         {
             var principal = tokenHandler.ValidateToken(token, validationParameters, out _);
+            _logger.LogInformation("Токен подтвержден");
             return true;
         }
         catch (SecurityTokenException)
         {
+            _logger.LogInformation("Токен не подтвержден");
             return false;
         }
     }
