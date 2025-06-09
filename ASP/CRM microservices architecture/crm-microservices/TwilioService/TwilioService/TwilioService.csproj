@@ -31,6 +31,10 @@
         <PackageReference Include="Moq" Version="4.20.72" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.3" />
+        <PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
+        <PackageReference Include="Serilog.Settings.Configuration" Version="9.0.0" />
+        <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
+        <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
         <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.6.2" />
         <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="8.4.0" />
@@ -48,5 +52,8 @@
     <ItemGroup>
       <Folder Include="Data\Repository\" />
     </ItemGroup>
+    <Target Name="CreateLogsDirectory" BeforeTargets="Build">
+        <MakeDir Directories="Logs" />
+    </Target>
 
 </Project>

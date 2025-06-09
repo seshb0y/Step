@@ -47,34 +47,36 @@ public class ClientService : IClientService
     
     public async Task<CreateClientResponse> CreateClient(CreateClientRequest request)
     {
-        _logger.LogInformation("Создаем нового клиента: {@Request}", request);
+        _logger.LogInformation("Запрос на создание клиента: {@Request}", request);
         Client client = _mapper.Map<Client>(request);
         await _clientRepository.AddAsync(client);
         await _clientRepository.SaveChangesAsync();
-        _logger.LogInformation("Отправка сигнала ClientCreated");
+        _logger.LogInformation("Клиент успешно создан с ID: {ClientId}", client.Id);
         return new CreateClientResponse
         {
             Id = client.Id,
             Name = client.Name,
             Address = client.Address,
             Email = client.Email,
-            Phone =  client.Phone,
+            Phone = client.Phone,
             CreatedAt = Timestamp.FromDateTime(client.CreatedAt.ToUniversalTime())
         };
     }
 
+
     public async Task<ChangeDataClientResponse> ChangeDataClient(ChangeDataClientRequest request)
     {
-        _logger.LogInformation("Изменяем данные клиента: {@Request}", request);
+        _logger.LogInformation("Изменение клиента: {@Request}", request);
         Client client = await _clientRepository.GetClientByEmail(request.OldEmail);
         if (client == null)
         {
+            _logger.LogWarning("Клиент с email {Email} не найден", request.OldEmail);
             throw new KeyNotFoundException($"Client with email {request.OldEmail} not found");
         }
         client = _mapper.Map(request, client);
         _clientRepository.Update(client);
         await _clientRepository.SaveChangesAsync();
-
+        _logger.LogInformation("Клиент обновлён: {ClientId}", client.Id);
         return new ChangeDataClientResponse
         {
             Id = client.Id,
@@ -87,39 +89,36 @@ public class ClientService : IClientService
     
     public async Task<DeleteClientResponse> DeleteClient(DeleteClientRequest request)
     {
-        _logger.LogInformation("Удаляем клиента: {@Request}", request);
+        _logger.LogInformation("Удаление клиента: {@Request}", request);
         Client client = await _clientRepository.GetClientByEmail(request.Email);
         if (client == null)
         {
+            _logger.LogWarning("Клиент для удаления не найден: {Email}", request.Email);
             throw new KeyNotFoundException($"Client with email {request.Email} not found");
         }
         _clientRepository.Delete(client);
-        await _hubContext.Clients.All.SendAsync("ClientDeleted", new
-        {
-            client.Id
-        });
+        await _hubContext.Clients.All.SendAsync("ClientDeleted", new { client.Id });
         await _clientRepository.SaveChangesAsync();
-        return new DeleteClientResponse
-        {
-            Id = client.Id,
-        };
+        _logger.LogInformation("Клиент удалён: {ClientId}", client.Id);
+        return new DeleteClientResponse { Id = client.Id };
     }
 
     public async Task<GetClientResponse> FindClient(GetClientByEmailRequest request)
     {
-        _logger.LogInformation("Поиск клиента: {@Request}", request);
+        _logger.LogInformation("Поиск клиента по email: {Email}", request.Email);
         HttpFindClientResponse? client = await _clientRepository.GetClientsOrdersAndUsersAsync(request.Email);
         if (client == null)
         {
-            _logger.LogWarning("Клиент с email {Email} не найден",request.Email);
+            _logger.LogWarning("Клиент не найден: {Email}", request.Email);
             throw new KeyNotFoundException($"Client with email {request.Email} not found");
         }
-        _logger.LogInformation("Клиент найден: {ClientId}", request.Email);
+        _logger.LogInformation("Клиент найден: {Email}", request.Email);
         return _mapper.Map<GetClientResponse>(client);
     }
 
     public async Task<GetAllClientsResponse> GetAllClients(GetAllClientsRequest getAllClientsRequest)
     {
+        _logger.LogInformation("Запрос списка всех клиентов с сортировкой: {@Sort}", getAllClientsRequest.Sort);
         var tasks = (await _clientRepository.GetAllAsync()).ToList();
         
         var grpcClient = tasks.Select(t => new ClientInfo
@@ -161,7 +160,7 @@ public class ClientService : IClientService
 
             _ => grpcClient
         };
-        
+        _logger.LogInformation("Получено клиентов: {Count}", grpcClient.Count);
         return new GetAllClientsResponse
         {
             Clients = { grpcClient }
@@ -220,6 +219,7 @@ public class ClientService : IClientService
 
     public async Task<GetDashboardDataResponse> GetDashboardData(GetDashboardDataRequest request)
     {
+        _logger.LogInformation("Получение данных дашборда");
         List<Client> clients = new List<Client>();
         clients.AddRange(await _clientRepository.GetAllAsync());
         var orders = await _orderGrpcClient.GetLowInfoOrdersListAsync(new GetLowInfoOrdersListRequest
@@ -240,11 +240,13 @@ public class ClientService : IClientService
         response.TasksStatuses.AddRange(
             taskStatuses.Select(s => (CRMSolution.Grpc.Client.GrpcTaskStatus)(int)s)
         );
-        
+        _logger.LogInformation("Дашборд: клиентов {Clients}, заказов {Orders}, сумма {Sum}, задач {Tasks}", 
+            clients.Count, orders.Orders.Count, ordersTotalAmount, tasks.Tasks.Count);
         return response;
     }
     public async Task<GetClientsWithOrdersAndTasksResponse> GetClientsWithOrdersAndTasksAsync(string httpContext)
     {
+        _logger.LogInformation("Получение клиентов с заказами и задачами по токену");
         var token = httpContext;
         var username = (await _userGrpcClient.GetNameFromTokenAsync(new GetNameFromTokenRequest { Token = token })).Username;
         var user = await _userGrpcClient.GetUserByUsernameAsync(new GetUserByEmailRequest { Email = username });
@@ -261,7 +263,7 @@ public class ClientService : IClientService
 
         var tasks = tasksResponse.Tasks;
         var clients = await _clientRepository.GetClientsByIdsAsync(clientIds);
-
+        _logger.LogInformation("Получено заказов: {Orders}, клиентов: {Clients}, задач: {Tasks}", orders.Count, clients.Count, tasks.Count);
         var response = new GetClientsWithOrdersAndTasksResponse();
 
         response.Clients.AddRange(clients.Select(client =>
@@ -304,6 +306,7 @@ public class ClientService : IClientService
 
     public async Task<AddCommentToClientResponse> AddCommentToClient(AddCommentToClientRequest request)
     {
+        _logger.LogInformation("Добавление комментария клиенту: {@Request}", request);
         ClientsComments newComment = new ClientsComments
         {
             ClientId = request.ClientId,
@@ -312,11 +315,13 @@ public class ClientService : IClientService
         };
         await _clientCommentsRep.AddAsync(newComment);
         await _clientRepository.SaveChangesAsync();
+        _logger.LogInformation("Комментарий добавлен к клиенту ID: {ClientId}", request.ClientId);
         return _mapper.Map<AddCommentToClientResponse>(newComment);
     }
 
     public async Task<GetClientCommentsResponse> GetClientComments(GetClientCommentsRequest request)
     {
+        _logger.LogInformation("Получение комментариев для клиента ID: {ClientId}", request.ClientId);
         var comments = await _clientCommentsRep.GetCommentsByClientId(request.ClientId);
         var grpcComments = comments
             .Where(c => c != null)
@@ -329,6 +334,27 @@ public class ClientService : IClientService
             });
         var response = new GetClientCommentsResponse();
         response.Comments.AddRange(grpcComments);
+        _logger.LogInformation("Получено комментариев: {Count}", grpcComments.Count());
         return response;
+    }
+
+    public async Task<UpdateClientCommentsResponse> UpdateClientComments(UpdateClientCommentsRequest request)
+    {
+        _logger.LogInformation("Обновление комментария ID: {CommentId}", request.Id);
+        ClientsComments comment = await _clientCommentsRep.GetById(request.Id);
+        comment.Comment = request.Comment;
+        await _clientCommentsRep.SaveChangesAsync();
+        _logger.LogInformation("Комментарий обновлён: {CommentId}", comment.Id);
+        return _mapper.Map<UpdateClientCommentsResponse>(comment);
+    }
+
+    public async Task<DeleteClientCommentsResponse> DeleteClientComments(DeleteClientCommentsRequest request)
+    {
+        _logger.LogInformation("Удаление комментария ID: {CommentId}", request.Id);
+        ClientsComments comment = await _clientCommentsRep.GetById(request.Id);
+        _clientCommentsRep.Delete(comment);
+        await _clientCommentsRep.SaveChangesAsync();
+        _logger.LogInformation("Комментарий удалён: {CommentId}", comment.Id);
+        return _mapper.Map<DeleteClientCommentsResponse>(comment);
     }
 }

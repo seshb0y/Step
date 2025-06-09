@@ -13,9 +13,23 @@ using TaskService.Data;
 using TwilioService.Services;
 using Grpc.AspNetCore;
 using TwilioGrpcService = TwilioService.GrpcServices.TwilioGrpcService;
+using Serilog;
+using Microsoft.Extensions.Configuration;
 
+var configuration = new ConfigurationBuilder()
+    .AddJsonFile("appsettings.json")
+    .AddEnvironmentVariables()
+    .Build();
+
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(configuration)
+    .Enrich.FromLogContext()
+    .WriteTo.Console()
+    .WriteTo.File("Logs/log-.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Host.UseSerilog();
 
 // Controllers
 builder.Services.AddControllers();

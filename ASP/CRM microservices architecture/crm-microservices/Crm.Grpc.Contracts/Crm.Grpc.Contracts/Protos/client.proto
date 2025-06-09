@@ -20,8 +20,27 @@ service ClientGrpcService {
   rpc GetAllClients (GetAllClientsRequest) returns (GetAllClientsResponse);
   rpc GetClientsWithOrdersAndTasks(GetClientWithOrdersAndTasksRequest) returns (GetClientsWithOrdersAndTasksResponse);
   rpc GetDashboardData(GetDashboardDataRequest) returns (GetDashboardDataResponse);
+  
   rpc AddCommentToClient(AddCommentToClientRequest) returns (AddCommentToClientResponse);
   rpc GetClientComments(GetClientCommentsRequest) returns (GetClientCommentsResponse);
+  rpc UpdateClientComments(UpdateClientCommentsRequest) returns (UpdateClientCommentsResponse);
+  rpc DeleteClientComments(DeleteClientCommentsRequest) returns (DeleteClientCommentsResponse);
+}
+
+message DeleteClientCommentsResponse{
+  int32 id = 1;
+}
+
+message DeleteClientCommentsRequest{
+  int32 id = 1;
+}
+
+message UpdateClientCommentsRequest{
+  int32 id = 1;
+  string comment = 2;
+}
+message UpdateClientCommentsResponse{
+  string comment = 1;
 }
 
 message Comment{

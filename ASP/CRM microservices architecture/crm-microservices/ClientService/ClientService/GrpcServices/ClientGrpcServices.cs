@@ -146,4 +146,16 @@ public class ClientGrpcService : CRMSolution.Grpc.Client.ClientGrpcService.Clien
     {
         return await _clientService.GetClientComments(request);
     }
+
+    public override async Task<UpdateClientCommentsResponse> UpdateClientComments(UpdateClientCommentsRequest request,
+        ServerCallContext context)
+    {
+        return await _clientService.UpdateClientComments(request);
+    }
+    
+    public override async Task<DeleteClientCommentsResponse> DeleteClientComments(DeleteClientCommentsRequest request,
+        ServerCallContext context)
+    {
+        return await _clientService.DeleteClientComments(request);
+    }
 }

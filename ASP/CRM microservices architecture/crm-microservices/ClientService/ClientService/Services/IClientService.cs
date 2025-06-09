@@ -21,4 +21,6 @@ public interface IClientService
     Task<GetDashboardDataResponse> GetDashboardData(GetDashboardDataRequest request);
     Task<AddCommentToClientResponse>  AddCommentToClient(AddCommentToClientRequest request);
     Task<GetClientCommentsResponse>  GetClientComments(GetClientCommentsRequest request);
+    Task<UpdateClientCommentsResponse>  UpdateClientComments(UpdateClientCommentsRequest request);
+    Task<DeleteClientCommentsResponse> DeleteClientComments(DeleteClientCommentsRequest request);
 }

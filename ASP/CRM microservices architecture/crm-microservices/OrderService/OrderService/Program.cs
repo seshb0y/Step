@@ -21,9 +21,23 @@ using OrderService.Data.Mapping;
 using OrderService.Data.Validators.Order;
 using OrderService.GrpcServices;
 using OrderService.Services;
+using Microsoft.Extensions.Configuration;
+using Serilog;
 
+var configuration = new ConfigurationBuilder()
+    .AddJsonFile("appsettings.json")
+    .AddEnvironmentVariables()
+    .Build();
+
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(configuration)
+    .Enrich.FromLogContext()
+    .WriteTo.Console()
+    .WriteTo.File("Logs/log-.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Host.UseSerilog();
 
 // Controllers
 builder.Services.AddControllers();
