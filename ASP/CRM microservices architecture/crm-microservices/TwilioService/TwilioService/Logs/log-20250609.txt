@@ -1,0 +1,1 @@
+2025-06-09 19:48:57.343 +03:00 [WRN] Overriding address(es) 'http://localhost:5299, http://localhost:5298'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.

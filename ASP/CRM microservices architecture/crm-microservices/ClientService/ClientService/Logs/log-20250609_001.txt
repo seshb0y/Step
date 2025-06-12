@@ -1,0 +1,4 @@
+2025-06-09 19:48:01.526 +03:00 [WRN] No instantiatable types implementing `IEntityTypeConfiguration` were found while while scanning assembly 'ClientService, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null'.
+2025-06-09 19:48:06.646 +03:00 [ERR] An error occurred using the connection to database 'client_db' on server 'tcp://localhost:5447'.
+2025-06-09 19:48:52.728 +03:00 [WRN] No instantiatable types implementing `IEntityTypeConfiguration` were found while while scanning assembly 'ClientService, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null'.
+2025-06-09 19:48:54.106 +03:00 [WRN] Overriding address(es) 'http://localhost:5110,  http://localhost:5111'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.

@@ -1,0 +1,4 @@
+2025-06-09 19:47:49.316 +03:00 [WRN] No instantiatable types implementing `IEntityTypeConfiguration` were found while while scanning assembly 'TaskService, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null'.
+2025-06-09 19:47:53.768 +03:00 [ERR] An error occurred using the connection to database 'task_db' on server 'tcp://localhost:5446'.
+2025-06-09 19:48:50.314 +03:00 [WRN] No instantiatable types implementing `IEntityTypeConfiguration` were found while while scanning assembly 'TaskService, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null'.
+2025-06-09 19:48:51.942 +03:00 [WRN] Overriding address(es) 'http://localhost:5295, http://localhost:5296'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.

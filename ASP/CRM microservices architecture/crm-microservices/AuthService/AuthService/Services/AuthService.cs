@@ -60,7 +60,7 @@ public class AuthService : IAuthService
         //     SameSite = SameSiteMode.Strict,
         //     Expires = DateTime.UtcNow.AddDays(7)
         // });
-
+        _logger.LogInformation("Успешный вход в аккаунт: {@Request}", request);
         return new LoginResponse
         {
             AccessToken = accessToken,
