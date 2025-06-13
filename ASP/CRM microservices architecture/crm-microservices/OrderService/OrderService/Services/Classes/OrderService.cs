@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ClientService.Helpers;
 using CRMSolution.Grpc.Client;
 using Microsoft.AspNetCore.SignalR;
 using OrderService.DTO.Requests;
@@ -34,11 +35,12 @@ public class OrderService : IOrderService
     private readonly ClientGrpcService.ClientGrpcServiceClient _clientGrpcClient;
     private readonly TaskGrpcService.TaskGrpcServiceClient _taskGrpcService;
     private readonly TwilioGrpcService.TwilioGrpcServiceClient _twilioGrpcService;
+    private readonly CacheHelper _cacheHelper;
     
     public OrderService(IOrderRep orderRep, IMapper mapper, ILogger<OrderService> logger, 
         IHubContext<NotificationHub> notificationHub, UserService.UserServiceClient userGrpcClient,
         ClientGrpcService.ClientGrpcServiceClient clientGrpcClient, TaskGrpcService.TaskGrpcServiceClient taskGrpcService,
-        TwilioGrpcService.TwilioGrpcServiceClient twilioGrpcService)
+        TwilioGrpcService.TwilioGrpcServiceClient twilioGrpcService, CacheHelper cacheHelper)
     {
         _orderRep = orderRep;
         _mapper = mapper;
@@ -48,13 +50,23 @@ public class OrderService : IOrderService
         _clientGrpcClient = clientGrpcClient;
         _taskGrpcService = taskGrpcService;
         _twilioGrpcService = twilioGrpcService;
+        _cacheHelper = cacheHelper;
     }
     public async Task<Order> GetByIdAsync(int orderId)
     {
         return await _orderRep.GetByIdAsync(orderId);
     }
     
-
+    private async Task ClearClientsCacheAsync()
+    {
+        string[] sortFields = { "id", "totalamount", "status", "username", "clientname", "createdat" };
+        foreach (var field in sortFields)
+        {
+            await _cacheHelper.RemoveAsync($"clients:all:{field}:true");
+            await _cacheHelper.RemoveAsync($"clients:all:{field}:false");
+        }
+        await _cacheHelper.RemoveAsync("dashboard:data");
+    }
     public async Task<GetOrderFullInfoResponse> GetOrderInfo(GetOrderFullInfoRequest request)
     {
         Order order =  await _orderRep.GetByIdAsync(request.OrderId);
@@ -152,7 +164,7 @@ public class OrderService : IOrderService
         };
         var grpcTaskReponse = await _taskGrpcService.CreateTaskAsync(grpcTaskRequest);
         _logger.LogInformation("Задача создана через gRPC: ");
-
+        await ClearClientsCacheAsync();
         return new CreateOrderResponse
         {
             TotalAmount = (double)order.TotalAmount,
@@ -172,7 +184,7 @@ public class OrderService : IOrderService
         }
         order.CallRecord.Add(request.RecordUrl);
         await _orderRep.SaveChangesAsync();
-        
+        await ClearClientsCacheAsync();
     }
 
     public async Task<ChangeOrderDataResponse> ChangeDataOrder(ChangeOrderDataRequest request)
@@ -184,6 +196,7 @@ public class OrderService : IOrderService
         _orderRep.Update(order);
         await _orderRep.SaveChangesAsync();
         _logger.LogInformation("Заказ изменен: {@Order}", order);
+        await ClearClientsCacheAsync();
         return new ChangeOrderDataResponse
         {
             Id = order.Id,
@@ -200,6 +213,7 @@ public class OrderService : IOrderService
         order.IsDeleted = true;
         _logger.LogInformation("Заказ удален: {@Order}", order);
         await _orderRep.SaveChangesAsync();
+        await ClearClientsCacheAsync();
     }
 
     public async Task<ChangeResponsibleResponse> ChangeResponsible(ChangeResponsibleRequest request)
@@ -209,15 +223,28 @@ public class OrderService : IOrderService
         order.UserId = request.UserId;
         await _orderRep.SaveChangesAsync();
         _logger.LogInformation("Ответственный изменен: {@Order}", order);
+        await ClearClientsCacheAsync();
         return new ChangeResponsibleResponse
         {
             UserId = order.UserId.Value,
             OrderId = order.Id,
         };
+        
     }
     
     public async Task<GetLowInfoOrdersListResponse> GetLowInfoOrdersAsync(SortOrdersRequest sortRequest)
     {
+
+        string cacheKey =
+            $"orders:all:{sortRequest.SortBy}:{sortRequest.Descending}";
+        var cached = await _cacheHelper.GetAsync<GetLowInfoOrdersListResponse>(cacheKey);
+        if (cached != null)
+        {
+            _logger.LogInformation("Возвращаем список заказов из кэша: {Key}", cacheKey);
+            return cached;
+        }
+        
+        
         var orders = await _orderRep.GetAllAsync();
         
         var userIds = orders.Where(o => o.UserId.HasValue).Select(o => o.UserId.Value).Distinct().ToList();
@@ -267,10 +294,14 @@ public class OrderService : IOrderService
             _ => orderList
         };
 
-        return new GetLowInfoOrdersListResponse
+
+        var response = new GetLowInfoOrdersListResponse
         {
             Orders = { orderList }
         };
+
+        await _cacheHelper.SetAsync(cacheKey, response, TimeSpan.FromMinutes(5));
+        return response;
     }
 
     public async Task<GetOrdersByUserIdsResponse> GetOrdersByUserIds(GetOrdersByUserIdsRequest request)

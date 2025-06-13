@@ -1,5 +1,6 @@
 using System.Text;
 using AutoMapper;
+using ClientService.Helpers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -38,6 +39,11 @@ Log.Logger = new LoggerConfiguration()
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseSerilog();
+
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = builder.Configuration.GetConnectionString("Redis");
+});
 
 // Controllers
 builder.Services.AddControllers();
@@ -145,6 +151,7 @@ builder.Services.AddValidatorsFromAssemblyContaining<DeleteOrderValidator>();
 builder.Services.AddValidatorsFromAssemblyContaining<FindOrderValidator>();
 
 // Репозитории и Сервисы
+builder.Services.AddScoped<CacheHelper>();
 builder.Services.AddScoped<IOrderService, OrderService.Services.Classes.OrderService>();
 builder.Services.AddScoped<IOrderRep, OrderRep>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
