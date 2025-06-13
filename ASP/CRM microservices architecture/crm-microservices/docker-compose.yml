@@ -10,7 +10,7 @@ services:
       - apigateway
     networks:
       - crm_network
-  
+
   twilio-db:
     image: postgres:16
     container_name: twilio_postgres
@@ -87,11 +87,13 @@ services:
       dockerfile: TwilioService/TwilioService/Dockerfile
     depends_on:
       - twilio-db
+      - redis
     networks:
       - crm_network
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Host=twilio-db;Database=twilio_db;Username=postgres;Password=secret
+      - ConnectionStrings__Redis=redis:6379
 
   authservice:
     build:
@@ -99,11 +101,13 @@ services:
       dockerfile: AuthService/AuthService/Dockerfile
     depends_on:
       - auth-db
+      - redis
     networks:
       - crm_network
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Host=auth-db;Database=auth_db;Username=postgres;Password=secret
+      - ConnectionStrings__Redis=redis:6379
 
   clientservice:
     build:
@@ -111,11 +115,13 @@ services:
       dockerfile: ClientService/ClientService/Dockerfile
     depends_on:
       - client-db
+      - redis
     networks:
       - crm_network
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Host=client-db;Database=client_db;Username=postgres;Password=secret
+      - ConnectionStrings__Redis=redis:6379
 
   orderservice:
     build:
@@ -123,11 +129,13 @@ services:
       dockerfile: OrderService/OrderService/Dockerfile
     depends_on:
       - order-db
+      - redis
     networks:
       - crm_network
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Host=order-db;Database=order_db;Username=postgres;Password=secret
+      - ConnectionStrings__Redis=redis:6379
 
   taskservice:
     build:
@@ -135,11 +143,13 @@ services:
       dockerfile: TaskService/TaskService/Dockerfile
     depends_on:
       - task-db
+      - redis
     networks:
       - crm_network
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Host=task-db;Database=task_db;Username=postgres;Password=secret
+      - ConnectionStrings__Redis=redis:6379
 
   apigateway:
     build:
@@ -150,13 +160,23 @@ services:
       - clientservice
       - orderservice
       - taskservice
+      - redis
     ports:
       - "5241:80"
     networks:
       - crm_network
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-  
+      - ConnectionStrings__Redis=redis:6379
+
+  redis:
+    image: redis:7
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - crm_network
+
   nginx:
     image: nginx:latest
     container_name: nginx

@@ -11,6 +11,7 @@ using ClientService.Data;
 using ClientService.Data.Repository.Interface;
 using ClientService.Data.Repository.SpecialRepClass.ClientRep;
 using ClientService.GrpcServices;
+using ClientService.Helpers;
 using ClientService.Hubs;
 using ClientService.Services;
 using ClientService.Services.Interfaces;
@@ -35,6 +36,11 @@ Log.Logger = new LoggerConfiguration()
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseSerilog();
+
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = builder.Configuration.GetConnectionString("Redis");
+});
 
 // Controllers
 builder.Services.AddControllers();
@@ -131,6 +137,7 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
 // Репозитории и Сервисы
+builder.Services.AddScoped<CacheHelper>();
 builder.Services.AddScoped<IClientService, ClientService.Services.Classes.ClientService>();
 builder.Services.AddScoped<IClientRep, ClientRep>();
 builder.Services.AddScoped<IClientCommentsRep, ClientCommentsRep>();

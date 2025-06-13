@@ -1,8 +1,10 @@
-﻿using AutoMapper;
+﻿using System.Text.Json;
+using AutoMapper;
 using ClientService.Data.Models;
 using ClientService.Data.Repository.SpecialRepClass.ClientRep;
 using ClientService.DTO.Requests.Client;
 using ClientService.DTO.Responses;
+using ClientService.Helpers;
 using ClientService.Hubs;
 using ClientService.Services.Interfaces;
 using CRMSolution.DTO.Requests.Client;
@@ -14,6 +16,7 @@ using Google.Protobuf.WellKnownTypes;
 using Microsoft.AspNetCore.SignalR;
 using TaskDto = CRMSolution.Grpc.Client.TaskDto;
 using CRMSolution.Grpc.Tasks;
+using Microsoft.Extensions.Caching.Distributed;
 
 
 namespace ClientService.Services.Classes;
@@ -28,12 +31,13 @@ public class ClientService : IClientService
     private readonly UserService.UserServiceClient _userGrpcClient;
     private readonly OrderGrpcService.OrderGrpcServiceClient _orderGrpcClient;
     private readonly TaskGrpcService.TaskGrpcServiceClient _taskGrpcClient;
+    private readonly CacheHelper _cacheHelper;
     
     public ClientService(IClientRep clientRepository, IMapper mapper, ILogger<ClientService> logger, IHubContext<NotificationHub> hubContext
     , UserService.UserServiceClient userGrpcClient, 
     OrderGrpcService.OrderGrpcServiceClient orderGrpcClient, 
     TaskGrpcService.TaskGrpcServiceClient taskGrpcClient,
-    IClientCommentsRep clientCommentsRep)
+    IClientCommentsRep clientCommentsRep, CacheHelper cacheHelper)
     {
         _clientRepository = clientRepository;
         _mapper = mapper;
@@ -43,8 +47,21 @@ public class ClientService : IClientService
         _orderGrpcClient = orderGrpcClient;
         _taskGrpcClient = taskGrpcClient;
         _clientCommentsRep = clientCommentsRep;
+        _cacheHelper = cacheHelper;
     }
     
+    private async Task ClearClientsCacheAsync()
+    {
+        string[] sortFields = { "id", "name", "email", "address", "phone", "createdat" };
+        foreach (var field in sortFields)
+        {
+            await _cacheHelper.RemoveAsync($"clients:all:{field}:true");
+            await _cacheHelper.RemoveAsync($"clients:all:{field}:false");
+        }
+        await _cacheHelper.RemoveAsync("dashboard:data");
+    }
+
+
     public async Task<CreateClientResponse> CreateClient(CreateClientRequest request)
     {
         _logger.LogInformation("Запрос на создание клиента: {@Request}", request);
@@ -52,6 +69,8 @@ public class ClientService : IClientService
         await _clientRepository.AddAsync(client);
         await _clientRepository.SaveChangesAsync();
         _logger.LogInformation("Клиент успешно создан с ID: {ClientId}", client.Id);
+        await ClearClientsCacheAsync();
+
         return new CreateClientResponse
         {
             Id = client.Id,
@@ -77,6 +96,7 @@ public class ClientService : IClientService
         _clientRepository.Update(client);
         await _clientRepository.SaveChangesAsync();
         _logger.LogInformation("Клиент обновлён: {ClientId}", client.Id);
+        await ClearClientsCacheAsync();
         return new ChangeDataClientResponse
         {
             Id = client.Id,
@@ -100,6 +120,7 @@ public class ClientService : IClientService
         await _hubContext.Clients.All.SendAsync("ClientDeleted", new { client.Id });
         await _clientRepository.SaveChangesAsync();
         _logger.LogInformation("Клиент удалён: {ClientId}", client.Id);
+        await ClearClientsCacheAsync();
         return new DeleteClientResponse { Id = client.Id };
     }
 
@@ -119,6 +140,15 @@ public class ClientService : IClientService
     public async Task<GetAllClientsResponse> GetAllClients(GetAllClientsRequest getAllClientsRequest)
     {
         _logger.LogInformation("Запрос списка всех клиентов с сортировкой: {@Sort}", getAllClientsRequest.Sort);
+        
+        string cacheKey = $"clients:all:{getAllClientsRequest.Sort.SortBy}:{getAllClientsRequest.Sort.Descending}";
+        var cachedData = await _cacheHelper.GetAsync<GetAllClientsResponse>(cacheKey);
+        if (cachedData != null)
+        {
+            _logger.LogInformation("Данные клиентов взяты из кэша");
+            return cachedData;
+        }
+        
         var tasks = (await _clientRepository.GetAllAsync()).ToList();
         
         var grpcClient = tasks.Select(t => new ClientInfo
@@ -160,11 +190,14 @@ public class ClientService : IClientService
 
             _ => grpcClient
         };
-        _logger.LogInformation("Получено клиентов: {Count}", grpcClient.Count);
-        return new GetAllClientsResponse
+        var response = new GetAllClientsResponse
         {
             Clients = { grpcClient }
         };
+
+        _logger.LogInformation("Получено клиентов: {Count}", grpcClient.Count);
+        await _cacheHelper.SetAsync(cacheKey, response, TimeSpan.FromMinutes(5));
+        return response;
     }
     
     // public async Task<List<ClientWithOrdersAndTasksResponse>> GetClientsWithOrdersAndTasks(HttpContext httpContext)
@@ -220,6 +253,15 @@ public class ClientService : IClientService
     public async Task<GetDashboardDataResponse> GetDashboardData(GetDashboardDataRequest request)
     {
         _logger.LogInformation("Получение данных дашборда");
+        
+        string cacheKey = "dashboard:data";
+        var cached = await _cacheHelper.GetAsync<GetDashboardDataResponse>(cacheKey);
+        if (cached != null)
+        {
+            _logger.LogInformation("Дашборд из кэша");
+            return cached;
+        }
+        
         List<Client> clients = new List<Client>();
         clients.AddRange(await _clientRepository.GetAllAsync());
         var orders = await _orderGrpcClient.GetLowInfoOrdersListAsync(new GetLowInfoOrdersListRequest
@@ -242,6 +284,10 @@ public class ClientService : IClientService
         );
         _logger.LogInformation("Дашборд: клиентов {Clients}, заказов {Orders}, сумма {Sum}, задач {Tasks}", 
             clients.Count, orders.Orders.Count, ordersTotalAmount, tasks.Tasks.Count);
+        
+        await _cacheHelper.SetAsync(cacheKey, response, TimeSpan.FromMinutes(5));
+
+        
         return response;
     }
     public async Task<GetClientsWithOrdersAndTasksResponse> GetClientsWithOrdersAndTasksAsync(string httpContext)
@@ -249,8 +295,8 @@ public class ClientService : IClientService
         _logger.LogInformation("Получение клиентов с заказами и задачами по токену");
         var token = httpContext;
         var username = (await _userGrpcClient.GetNameFromTokenAsync(new GetNameFromTokenRequest { Token = token })).Username;
-        var user = await _userGrpcClient.GetUserByUsernameAsync(new GetUserByEmailRequest { Email = username });
-
+        var user = await _userGrpcClient.GetUserByUsernameAsync(new GetUserByEmailRequest { Email = username });    
+        
         var ordersResponse = await _orderGrpcClient.GetOrdersByUserIdsAsync(
             new GetOrdersByUserIdsRequest { UserIds = { user.Id } });
 
