@@ -234,7 +234,6 @@ public class OrderService : IOrderService
     
     public async Task<GetLowInfoOrdersListResponse> GetLowInfoOrdersAsync(SortOrdersRequest sortRequest)
     {
-
         string cacheKey =
             $"orders:all:{sortRequest.SortBy}:{sortRequest.Descending}";
         var cached = await _cacheHelper.GetAsync<GetLowInfoOrdersListResponse>(cacheKey);

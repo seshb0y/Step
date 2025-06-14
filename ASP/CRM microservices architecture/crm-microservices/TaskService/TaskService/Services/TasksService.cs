@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ClientService.Helpers;
 using CRMSolution.Grpc.Tasks;
 using CRMSolution.Grpc.Users;
 using Google.Protobuf.WellKnownTypes;
@@ -22,17 +23,28 @@ public class TasksService : ITasksService
     private readonly ILogger<TasksService> _logger;
     private readonly IHubContext<NotificationHub>  _hubContext;
     private readonly UserService.UserServiceClient _userService;
+    private readonly CacheHelper _cacheHelper;
 
     public TasksService(ITasksRep tasksRep, IMapper mapper, ILogger<TasksService> logger,  IHubContext<NotificationHub> hubContext,
-        UserService.UserServiceClient userService)
+        UserService.UserServiceClient userService,  CacheHelper cacheHelper)
     {
         _tasksRep = tasksRep;
         _mapper = mapper;
         _logger = logger;
         _hubContext = hubContext;
         _userService = userService;
+        _cacheHelper = cacheHelper;
     }
-    
+    private async Task ClearClientsCacheAsync()
+    {
+        string[] sortFields = { "taskid", "title", "status", "description", "username", "duedate" };
+        foreach (var field in sortFields)
+        {
+            await _cacheHelper.RemoveAsync($"tasks:all:{field}:true");
+            await _cacheHelper.RemoveAsync($"tasks:all:{field}:false");
+        }
+        await _cacheHelper.RemoveAsync("dashboard:data");
+    }
     // public async Task CreateTaskAsync(CreateTaskRequest request)
     // {
     //     _logger.LogInformation("Создаем новую задачу: {@Request}", request);
@@ -115,6 +127,7 @@ public class TasksService : ITasksService
         await _tasksRep.AddAsync(task);
         await _tasksRep.SaveChangesAsync();
         _logger.LogInformation("Задача создана: {@Task}", task);
+        await ClearClientsCacheAsync();
         return new CreateTaskResponse
         {
             OrderId = orderId,
@@ -124,7 +137,7 @@ public class TasksService : ITasksService
             Status = (TasksStatus)task.Status,
             Id = task.Id
         };
-
+    
     }
 
     public async Task<TaskInfo> UpdateTaskAsync(UpdateTaskRequest request)
@@ -135,6 +148,7 @@ public class TasksService : ITasksService
         _tasksRep.Update(task);
         await _tasksRep.SaveChangesAsync();
         _logger.LogInformation("Задача обновлена: {@Task}", task);
+        await ClearClientsCacheAsync();
         return new TaskInfo
         {
             Id = task.Id,
@@ -152,6 +166,7 @@ public class TasksService : ITasksService
         _tasksRep.Delete(task);
         await _tasksRep.SaveChangesAsync();
         _logger.LogInformation("Задача удалена: {@Task}", task);
+        await ClearClientsCacheAsync();
         return new DeleteTaskResponse
         {
             TaskId = request.Id,
@@ -160,6 +175,12 @@ public class TasksService : ITasksService
 
     public async Task<GetAllTasksResponse> GetAllTasks(SortTasksRequest sortTasksRequest)
     {
+        string cacheKey = $"tasks:all:{sortTasksRequest.SortBy}:{sortTasksRequest.Descending}";
+        var cache = await _cacheHelper.GetAsync<GetAllTasksResponse>(cacheKey);
+        if (cache != null)
+        {
+            return cache;
+        }
         var tasks = (await _tasksRep.GetAllAsync()).ToList();
         
         var userIds = tasks
@@ -217,10 +238,12 @@ public class TasksService : ITasksService
             _ => grpcTasks
         };
         
-        return new GetAllTasksResponse
+        var response = new GetAllTasksResponse
         {
             Tasks = { grpcTasks }
         };
+        await _cacheHelper.SetAsync(cacheKey, response);
+        return response;
     }
 
     

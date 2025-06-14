@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ClientService.Helpers;
 using ControllerFirst.DTO.Responses.User;
 using CRMSolution.Data.Models;
 using CRMSolution.Data.Repository.UserRep;
@@ -27,10 +28,11 @@ public class UserService : IUserService
     private readonly OrderGrpcService.OrderGrpcServiceClient _orderGrpcService;
     private readonly TaskGrpcService.TaskGrpcServiceClient _taskGrpcService;
     private readonly ClientGrpcService.ClientGrpcServiceClient _clientGrpcService;
+    private readonly CacheHelper _cacheHelper;
     
     public UserService(IUserRep userRepository, IMapper mapper, ILogger<UserService> logger, IHubContext<NotificationHub> notificationHub
     , OrderGrpcService.OrderGrpcServiceClient orderGrpcService,  TaskGrpcService.TaskGrpcServiceClient taskGrpcService,
-    ClientGrpcService.ClientGrpcServiceClient clientGrpcService)
+    ClientGrpcService.ClientGrpcServiceClient clientGrpcService, CacheHelper cacheHelper)
     {
         _userRepository = userRepository;
         _mapper = mapper;
@@ -39,8 +41,21 @@ public class UserService : IUserService
         _orderGrpcService = orderGrpcService;
         _taskGrpcService = taskGrpcService;
         _clientGrpcService = clientGrpcService;
+        _cacheHelper = cacheHelper;
     }
-
+    
+    private async Task ClearClientsCacheAsync(string username)
+    {
+        string[] sortFields = { "userid", "username", "email", "role", "isemailconfirmed", "createdat" };
+        foreach (var field in sortFields)
+        {
+            await _cacheHelper.RemoveAsync($"users:all:{field}:true");
+            await _cacheHelper.RemoveAsync($"users:all:{field}:false");
+        }
+        await _cacheHelper.RemoveAsync("dashboard:data");
+        await _cacheHelper.RemoveAsync($"user:current:{username}");
+    }
+    
     public async Task<ChangeUserDataResponse> ChangeUserData(ChangeUserDataRequest request)
     {
         _logger.LogInformation("Изменяем данные юзера: {@Request}", request);
@@ -49,6 +64,7 @@ public class UserService : IUserService
         _userRepository.Update(user);
         await _userRepository.SaveChangesAsync();
         _logger.LogInformation("Юзер изменен: {@User}", user);
+        await ClearClientsCacheAsync(user.Username);
         return _mapper.Map<ChangeUserDataResponse>(user);
     }
     
@@ -59,6 +75,7 @@ public class UserService : IUserService
         _userRepository.Delete(user);
         await _userRepository.SaveChangesAsync();
         _logger.LogInformation("Юзер удален: {@User}", user);
+        await ClearClientsCacheAsync(user.Username);
         return new DeleteUserResponse
         {
             UserId = user.UserId
@@ -68,7 +85,6 @@ public class UserService : IUserService
     public async Task<GetUserResponse> GetUserByUsername(GetUserByEmailRequest request)
     {
         User? user;
-        
         if (request.Email.Contains("@"))
         {
             user = await _userRepository.FindByEmailAsync(request.Email);
@@ -130,6 +146,9 @@ public class UserService : IUserService
     public async Task<GetAllUsersResponse> GetAllUsers(SortUsersRequest sortUsersRequest)
     {
         _logger.LogInformation("Получение всех пользователей с сортировкой: {@Sort}", sortUsersRequest);
+        string cacheKey = $"users:all:{sortUsersRequest.SortBy}:{sortUsersRequest.Descending}";
+        var cache = await _cacheHelper.GetAsync<GetAllUsersResponse>(cacheKey);
+        if(cache != null) return cache;
         var users = await _userRepository.GetAllAsync();
         users = sortUsersRequest.SortBy?.ToLower() switch
         {
@@ -190,6 +209,7 @@ public class UserService : IUserService
         }
 
         _logger.LogInformation("Пользователи успешно получены: {Count}", response.Users.Count);
+        await _cacheHelper.SetAsync(cacheKey, response, TimeSpan.FromHours(1));
         return response;
     }
 

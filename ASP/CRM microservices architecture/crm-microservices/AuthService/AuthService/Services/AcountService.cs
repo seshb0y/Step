@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using AutoMapper;
+using ClientService.Helpers;
 using CRMSolution.Data.Models;
 using CRMSolution.Services.Interfaces;
 using ControllerFirst.DTO.Requests;
@@ -25,9 +26,11 @@ public class AccountService : IAccountService
     private readonly ILogger<AccountService> _logger;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IHubContext<NotificationHub> _notificationHub;
+    private readonly CacheHelper _cacheHelper;
 
     public AccountService(IMapper mapper, IUserRep userRep, IConfiguration config, ITokenService tokenService,
-        ILogger<AccountService> logger, IHttpContextAccessor httpContextAccessor, IHubContext<NotificationHub> notificationHub)
+        ILogger<AccountService> logger, IHttpContextAccessor httpContextAccessor, IHubContext<NotificationHub> notificationHub,
+        CacheHelper cacheHelper)
     {
         _mapper = mapper;
         _userRep = userRep;
@@ -36,8 +39,12 @@ public class AccountService : IAccountService
         _logger = logger;
         _httpContextAccessor = httpContextAccessor;
         _notificationHub = notificationHub;
+        _cacheHelper = cacheHelper;
     }
-
+    private async Task ClearClientsCacheAsync(string username)
+    {
+        await _cacheHelper.RemoveAsync($"user:current:{username}");
+    }
     public async Task<RegisterResponse> RegisterAsync(RegisterRequest request)
     {
         _logger.LogInformation("Регистрация пользователя: {@Request}", request);
@@ -114,6 +121,7 @@ public class AccountService : IAccountService
         user.IsEmailConfirmed = true;
         await _userRep.SaveChangesAsync();
         _logger.LogInformation("Email подтвержден: {Username}", username);
+        await ClearClientsCacheAsync(user.Username);
     }
 
     public async Task ResetPasswordAsync(ResetPasswordRequest request)
@@ -143,6 +151,7 @@ public class AccountService : IAccountService
         user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
         await _userRep.SaveChangesAsync();
         _logger.LogInformation("Пароль успешно изменен: {Username}", username);
+        await ClearClientsCacheAsync(user.Username);
     }
 
     public async Task<CurrentUserResponse> GetCurrentUserAsync(string token)
@@ -150,9 +159,18 @@ public class AccountService : IAccountService
         _logger.LogInformation("Получение текущего пользователя по токену");
         string username = await _tokenService.GetNameFromToken(token);
         if (string.IsNullOrEmpty(username)) throw new Exception("Invalid token");
-
+        
+        string cacheKey = $"user:current:{username}";
+        var cached = await _cacheHelper.GetAsync<CurrentUserResponse>(cacheKey);
+        if (cached != null)
+        {
+            _logger.LogInformation("Пользователь взят из кэша: {Username}", username);
+            return cached;
+        }
+    
         var user = await _userRep.FindByNameAsync(username);
         _logger.LogInformation("Текущий пользователь: {Username}", username);
+        await _cacheHelper.SetAsync(cacheKey, user, TimeSpan.FromHours(1));
         return _mapper.Map<CurrentUserResponse>(user);
     }
 
