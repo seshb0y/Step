@@ -35,7 +35,13 @@ const Profile = () => {
           height: 245,
         }}
       >
-        <ProfButtons />
+        <ProfButtons
+          textColor={'white'}
+          headerColor={'white'}
+          headerText="Profile"
+          firstBtnText="Settings"
+          secondBtnText="Logout"
+        />
       </View>
       <View style={{ alignItems: 'center' }}>
         <Avatar />
@@ -64,23 +70,23 @@ const Profile = () => {
       <ScrollBlock isPosts={isPosts} onPress={handleChange} />
 
       {isPosts ? (
-              <FlatList
-              data={DATA}
-              keyExtractor={(item) => item.id}
-              renderItem={({ item }) => (
-                <ScrollPosts header={item.header} time={item.time} text={item.text} />
-              )}
-              showsVerticalScrollIndicator={false}
-            />
+        <FlatList
+          data={DATA}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <ScrollPosts header={item.header} time={item.time} text={item.text} />
+          )}
+          showsVerticalScrollIndicator={false}
+        />
       ) : (
         <FlatList
-        data={DATA}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <ScrollPhotos />
-        )}
-        showsVerticalScrollIndicator={false}
-      />
+          data={DATA}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <ScrollPhotos header={item.header} time={item.time} text={item.text} />
+          )}
+          showsVerticalScrollIndicator={false}
+        />
       )}
 
       <BottomPanel />

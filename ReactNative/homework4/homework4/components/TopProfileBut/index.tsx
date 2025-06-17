@@ -1,44 +1,51 @@
-import { Pressable, Text, View, StyleSheet } from "react-native"
+import { Pressable, Text, View, StyleSheet } from 'react-native';
 
-const ProfButtons = () => {
-    return(
-        <View style={{
-            justifyContent: "center",
-            flexDirection: "row",
-            gap: 90,
-            marginLeft: -20
-        }}>
-            <Pressable>
-                <Text style={style.buttonText}>Settings</Text>
-            </Pressable>
-
-            <Text style={style.profile}>Profile</Text>
-
-            <Pressable>
-                <Text style={style.buttonText}>Logout</Text>
-            </Pressable>
-        </View>
-
-    )
+interface Props {
+  textColor: string;
+  headerColor: string;
+  headerText: string;
+  firstBtnText: string;
+  secondBtnText: string
 }
 
-const style = StyleSheet.create({
-    buttonText: {
-        color: "white",
-        fontWeight: 500,
-        fontSize: 16, 
-        fontFamily: "Inter",
-        lineHeight: 19,
-        marginTop: 32,
-    },
-    profile: {
-        color: "white",
-        fontFamily: "Inter",
-        fontSize: 30,
-        fontWeight: 800,
-        lineHeight: 36,
-        marginTop: 24,
-    }
-})
+const ProfButtons = (props: Props) => {
+  return (
+    <View
+      style={{
+        justifyContent: 'center',
+        flexDirection: 'row',
+        gap: 90,
+        marginLeft: -20,
+      }}
+    >
+      <Pressable>
+        <Text style={[style.buttonText, { color: props.textColor }]}>{props.firstBtnText}</Text>
+      </Pressable>
 
-export default ProfButtons
+      <Text style={[style.profile, { color: props.headerColor }]}>{props.headerText}</Text>
+
+      <Pressable>
+        <Text style={[style.buttonText, { color: props.textColor }]}>{props.secondBtnText}</Text>
+      </Pressable>
+    </View>
+  );
+};
+
+const style = StyleSheet.create({
+  buttonText: {
+    fontWeight: 500,
+    fontSize: 16,
+    fontFamily: 'Inter',
+    lineHeight: 19,
+    marginTop: 32,
+  },
+  profile: {
+    fontFamily: 'Inter',
+    fontSize: 30,
+    fontWeight: 800,
+    lineHeight: 36,
+    marginTop: 24,
+  },
+});
+
+export default ProfButtons;
