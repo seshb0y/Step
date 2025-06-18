@@ -7,7 +7,7 @@ import { Text, View } from "react-native";
 export default function Index() {
   return (
     // <Profile />
-    // <Content show="content"/>
+    // <Content show="content"/> //content or feed in props for change layout
     // <Messages />
     <Market />
   );
