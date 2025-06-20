@@ -175,12 +175,12 @@ public class TasksService : ITasksService
 
     public async Task<GetAllTasksResponse> GetAllTasks(SortTasksRequest sortTasksRequest)
     {
-        string cacheKey = $"tasks:all:{sortTasksRequest.SortBy}:{sortTasksRequest.Descending}";
-        var cache = await _cacheHelper.GetAsync<GetAllTasksResponse>(cacheKey);
-        if (cache != null)
-        {
-            return cache;
-        }
+        // string cacheKey = $"tasks:all:{sortTasksRequest.SortBy}:{sortTasksRequest.Descending}";
+        // var cache = await _cacheHelper.GetAsync<GetAllTasksResponse>(cacheKey);
+        // if (cache != null)
+        // {
+        //     return cache;
+        // }
         var tasks = (await _tasksRep.GetAllAsync()).ToList();
         
         var userIds = tasks
@@ -242,7 +242,7 @@ public class TasksService : ITasksService
         {
             Tasks = { grpcTasks }
         };
-        await _cacheHelper.SetAsync(cacheKey, response);
+        // await _cacheHelper.SetAsync(cacheKey, response);
         return response;
     }
 

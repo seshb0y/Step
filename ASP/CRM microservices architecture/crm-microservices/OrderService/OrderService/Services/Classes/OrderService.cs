@@ -234,14 +234,14 @@ public class OrderService : IOrderService
     
     public async Task<GetLowInfoOrdersListResponse> GetLowInfoOrdersAsync(SortOrdersRequest sortRequest)
     {
-        string cacheKey =
-            $"orders:all:{sortRequest.SortBy}:{sortRequest.Descending}";
-        var cached = await _cacheHelper.GetAsync<GetLowInfoOrdersListResponse>(cacheKey);
-        if (cached != null)
-        {
-            _logger.LogInformation("Возвращаем список заказов из кэша: {Key}", cacheKey);
-            return cached;
-        }
+        // string cacheKey =
+        //     $"orders:all:{sortRequest.SortBy}:{sortRequest.Descending}";
+        // var cached = await _cacheHelper.GetAsync<GetLowInfoOrdersListResponse>(cacheKey);
+        // if (cached != null)
+        // {
+        //     _logger.LogInformation("Возвращаем список заказов из кэша: {Key}", cacheKey);
+        //     return cached;
+        // }
         
         
         var orders = await _orderRep.GetAllAsync();
@@ -299,7 +299,7 @@ public class OrderService : IOrderService
             Orders = { orderList }
         };
 
-        await _cacheHelper.SetAsync(cacheKey, response, TimeSpan.FromMinutes(5));
+        // await _cacheHelper.SetAsync(cacheKey, response, TimeSpan.FromMinutes(5));
         return response;
     }
 

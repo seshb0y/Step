@@ -2,6 +2,7 @@ import { Order } from "./Order"
 import { Task } from "./Task"
 
 export interface User {
+    id: number
     userId: string;
     username: string;
     email: string;

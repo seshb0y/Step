@@ -1,0 +1,26 @@
+2025-06-19 14:24:32.771 +03:00 [WRN] No instantiatable types implementing `IEntityTypeConfiguration` were found while while scanning assembly 'TaskService, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null'.
+2025-06-19 14:24:33.984 +03:00 [WRN] Overriding address(es) 'http://localhost:5295, http://localhost:5296'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-06-19 14:24:45.050 +03:00 [WRN] Failed to determine the https port for redirect.
+2025-06-19 14:41:14.283 +03:00 [WRN] No instantiatable types implementing `IEntityTypeConfiguration` were found while while scanning assembly 'TaskService, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null'.
+2025-06-19 14:41:15.226 +03:00 [WRN] Overriding address(es) 'http://localhost:5295, http://localhost:5296'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-06-19 14:41:28.568 +03:00 [WRN] Failed to determine the https port for redirect.
+2025-06-19 14:46:57.360 +03:00 [INF] Создаем задачу
+2025-06-19 14:46:57.484 +03:00 [INF] Задача создана: {"Id":101,"Title":"First contact","Description":"Connect the client","Status":"New","DueDate":"2025-06-19T11:46:57.3362438Z","OrderId":51,"UserId":7,"$type":"TaskEntity"}
+2025-06-19 14:49:34.133 +03:00 [INF] Обновляем задачу: {"Status":"New","Description":"Connect the clientsda","TaskId":101,"$type":"UpdateTaskRequest"}
+2025-06-19 14:49:34.164 +03:00 [INF] Задача обновлена: {"Id":101,"Title":"First contact","Description":"Connect the clientsda","Status":"New","DueDate":"2025-06-19T11:46:57.3362430Z","OrderId":51,"UserId":7,"$type":"TaskEntity"}
+2025-06-19 14:49:38.073 +03:00 [INF] Обновляем задачу: {"Status":"InProgress","Description":"Connect the clientsda","TaskId":101,"$type":"UpdateTaskRequest"}
+2025-06-19 14:49:38.082 +03:00 [INF] Задача обновлена: {"Id":101,"Title":"First contact","Description":"Connect the clientsda","Status":"InProgress","DueDate":"2025-06-19T11:46:57.3362430Z","OrderId":51,"UserId":7,"$type":"TaskEntity"}
+2025-06-19 14:50:59.091 +03:00 [INF] Создаем задачу
+2025-06-19 14:50:59.094 +03:00 [INF] Задача создана: {"Id":102,"Title":"string","Description":"string","Status":"New","DueDate":"2025-06-19T11:50:37.1990000Z","OrderId":51,"UserId":7,"$type":"TaskEntity"}
+2025-06-19 14:58:08.245 +03:00 [INF] Создаем задачу
+2025-06-19 14:58:08.249 +03:00 [INF] Задача создана: {"Id":103,"Title":"asdasd","Description":"asdsa","Status":"New","DueDate":"2025-06-20T00:00:00.0000000Z","OrderId":51,"UserId":7,"$type":"TaskEntity"}
+2025-06-19 14:58:11.361 +03:00 [INF] Обновляем задачу: {"Status":"New","Description":"asdsaas","TaskId":103,"$type":"UpdateTaskRequest"}
+2025-06-19 14:58:11.370 +03:00 [INF] Задача обновлена: {"Id":103,"Title":"asdasd","Description":"asdsaas","Status":"New","DueDate":"2025-06-20T00:00:00.0000000Z","OrderId":51,"UserId":7,"$type":"TaskEntity"}
+2025-06-19 14:58:14.849 +03:00 [INF] Обновляем задачу: {"Status":"New","Description":"asdsaas223","TaskId":103,"$type":"UpdateTaskRequest"}
+2025-06-19 14:58:14.858 +03:00 [INF] Задача обновлена: {"Id":103,"Title":"asdasd","Description":"asdsaas223","Status":"New","DueDate":"2025-06-20T00:00:00.0000000Z","OrderId":51,"UserId":7,"$type":"TaskEntity"}
+2025-06-19 14:58:17.299 +03:00 [INF] Обновляем задачу: {"Status":"Completed","Description":"asdsaas223","TaskId":103,"$type":"UpdateTaskRequest"}
+2025-06-19 14:58:17.308 +03:00 [INF] Задача обновлена: {"Id":103,"Title":"asdasd","Description":"asdsaas223","Status":"Completed","DueDate":"2025-06-20T00:00:00.0000000Z","OrderId":51,"UserId":7,"$type":"TaskEntity"}
+2025-06-19 14:58:20.778 +03:00 [INF] Удаляем задачу: {"Id":103,"$type":"DeleteTaskRequest"}
+2025-06-19 14:58:20.789 +03:00 [INF] Задача удалена: {"Id":103,"Title":"asdasd","Description":"asdsaas223","Status":"Completed","DueDate":"2025-06-20T00:00:00.0000000Z","OrderId":51,"UserId":7,"$type":"TaskEntity"}
+2025-06-19 14:58:22.682 +03:00 [INF] Удаляем задачу: {"Id":102,"$type":"DeleteTaskRequest"}
+2025-06-19 14:58:22.689 +03:00 [INF] Задача удалена: {"Id":102,"Title":"string","Description":"string","Status":"New","DueDate":"2025-06-19T11:50:37.1990000Z","OrderId":51,"UserId":7,"$type":"TaskEntity"}

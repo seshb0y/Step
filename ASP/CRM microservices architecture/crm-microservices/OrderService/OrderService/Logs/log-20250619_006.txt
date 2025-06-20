@@ -1,0 +1,52 @@
+2025-06-19 14:08:25.085 +03:00 [WRN] No instantiatable types implementing `IEntityTypeConfiguration` were found while while scanning assembly 'OrderService, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null'.
+2025-06-19 14:08:26.311 +03:00 [WRN] Overriding address(es) 'http://localhost:5234,  http://localhost:5235'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-06-19 14:10:16.967 +03:00 [WRN] Failed to determine the https port for redirect.
+2025-06-19 14:10:31.478 +03:00 [ERR] Error when executing service method 'GetLowInfoOrdersList'.
+StackExchange.Redis.RedisConnectionException: The message timed out in the backlog attempting to send because no connection became available (5000ms) - Last Connection Exception: UnableToConnect on redis:6379/Interactive, Initializing/NotStarted, last: NONE, origin: BeginConnectAsync, outstanding: 0, last-read: 2s ago, last-write: 2s ago, keep-alive: 60s, state: Connecting, mgr: 10 of 10 available, last-heartbeat: never, global: 2s ago, v: 2.7.27.49176, command=HMGET, timeout: 5000, inst: 0, qu: 0, qs: 0, aw: False, bw: CheckingForTimeout, rs: NotStarted, ws: Idle, in: 0, last-in: 0, cur-in: 0, sync-ops: 0, async-ops: 1, serverEndpoint: redis:6379, conn-sec: n/a, aoc: 0, mc: 1/1/0, mgr: 10 of 10 available, clientName: SESHBMACHINE(SE.Redis-v2.7.27.49176), IOCP: (Busy=0,Free=1000,Min=1,Max=1000), WORKER: (Busy=0,Free=32767,Min=24,Max=32767), POOL: (Threads=6,QueuedItems=0,CompletedItems=363,Timers=11), v: 2.7.27.49176 (Please take a look at this article for some common client-side issues that can cause timeouts: https://stackexchange.github.io/StackExchange.Redis/Timeouts)
+ ---> StackExchange.Redis.RedisConnectionException: UnableToConnect on redis:6379/Interactive, Initializing/NotStarted, last: NONE, origin: BeginConnectAsync, outstanding: 0, last-read: 2s ago, last-write: 2s ago, keep-alive: 60s, state: Connecting, mgr: 10 of 10 available, last-heartbeat: never, global: 2s ago, v: 2.7.27.49176
+   --- End of inner exception stack trace ---
+   at Microsoft.Extensions.Caching.StackExchangeRedis.RedisCache.GetAndRefreshAsync(String key, Boolean getData, CancellationToken token)
+   at Microsoft.Extensions.Caching.StackExchangeRedis.RedisCache.GetAsync(String key, CancellationToken token)
+   at Microsoft.Extensions.Caching.Distributed.DistributedCacheExtensions.GetStringAsync(IDistributedCache cache, String key, CancellationToken token)
+   at ClientService.Helpers.CacheHelper.GetAsync[T](String key) in C:\Rep\Step\ASP\CRM microservices architecture\crm-microservices\OrderService\OrderService\Helpers\CacheHelper.cs:line 20
+   at OrderService.Services.Classes.OrderService.GetLowInfoOrdersAsync(SortOrdersRequest sortRequest) in C:\Rep\Step\ASP\CRM microservices architecture\crm-microservices\OrderService\OrderService\Services\Classes\OrderService.cs:line 239
+   at OrderService.GrpcServices.OrderGrpcService.GetLowInfoOrdersList(GetLowInfoOrdersListRequest request, ServerCallContext context) in C:\Rep\Step\ASP\CRM microservices architecture\crm-microservices\OrderService\OrderService\GrpcServices\OrderGrpcServices.cs:line 127
+   at Grpc.Shared.Server.UnaryServerMethodInvoker`3.AwaitInvoker(Task`1 invokerTask, GrpcActivatorHandle`1 serviceHandle)
+   at Grpc.Shared.Server.UnaryServerMethodInvoker`3.AwaitInvoker(Task`1 invokerTask, GrpcActivatorHandle`1 serviceHandle)
+   at Grpc.AspNetCore.Server.Internal.CallHandlers.UnaryServerCallHandler`3.HandleCallAsyncCore(HttpContext httpContext, HttpContextServerCallContext serverCallContext)
+   at Grpc.AspNetCore.Server.Internal.CallHandlers.ServerCallHandlerBase`3.<HandleCallAsync>g__AwaitHandleCall|8_0(HttpContextServerCallContext serverCallContext, Method`2 method, Task handleCall)
+2025-06-19 14:24:42.162 +03:00 [WRN] No instantiatable types implementing `IEntityTypeConfiguration` were found while while scanning assembly 'OrderService, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null'.
+2025-06-19 14:24:43.316 +03:00 [WRN] Overriding address(es) 'http://localhost:5234,  http://localhost:5235'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-06-19 14:24:44.423 +03:00 [WRN] Failed to determine the https port for redirect.
+2025-06-19 14:25:09.201 +03:00 [INF] Возвращаем список заказов из кэша: orders:all:createdAt:True
+2025-06-19 14:25:23.592 +03:00 [INF] Возвращаем список заказов из кэша: orders:all:createdAt:True
+2025-06-19 14:25:23.615 +03:00 [INF] Возвращаем список заказов из кэша: orders:all:createdAt:True
+2025-06-19 14:25:50.259 +03:00 [INF] Возвращаем список заказов из кэша: orders:all:createdAt:True
+2025-06-19 14:25:50.305 +03:00 [INF] Возвращаем список заказов из кэша: orders:all:createdAt:True
+2025-06-19 14:28:31.307 +03:00 [INF] Возвращаем список заказов из кэша: orders:all:createdAt:True
+2025-06-19 14:28:39.393 +03:00 [INF] Возвращаем список заказов из кэша: orders:all:createdAt:True
+2025-06-19 14:28:39.440 +03:00 [INF] Возвращаем список заказов из кэша: orders:all:createdAt:True
+2025-06-19 14:28:40.651 +03:00 [INF] Возвращаем список заказов из кэша: orders:all:createdAt:True
+2025-06-19 14:28:40.688 +03:00 [INF] Возвращаем список заказов из кэша: orders:all:createdAt:True
+2025-06-19 14:28:43.963 +03:00 [INF] Возвращаем список заказов из кэша: orders:all:createdAt:True
+2025-06-19 14:28:44.015 +03:00 [INF] Возвращаем список заказов из кэша: orders:all:createdAt:True
+2025-06-19 14:28:55.139 +03:00 [INF] Возвращаем список заказов из кэша: orders:all:createdAt:True
+2025-06-19 14:28:55.165 +03:00 [INF] Возвращаем список заказов из кэша: orders:all:createdAt:True
+2025-06-19 14:28:59.312 +03:00 [INF] Возвращаем список заказов из кэша: orders:all:createdAt:True
+2025-06-19 14:28:59.380 +03:00 [INF] Возвращаем список заказов из кэша: orders:all:createdAt:True
+2025-06-19 14:29:34.203 +03:00 [INF] Возвращаем список заказов из кэша: orders:all:createdAt:True
+2025-06-19 14:29:34.268 +03:00 [INF] Возвращаем список заказов из кэша: orders:all:createdAt:True
+2025-06-19 14:30:58.791 +03:00 [INF] Возвращаем список заказов из кэша: orders:all:createdAt:True
+2025-06-19 14:31:05.033 +03:00 [INF] Возвращаем список заказов из кэша: orders:all:createdAt:True
+2025-06-19 14:31:05.064 +03:00 [INF] Возвращаем список заказов из кэша: orders:all:createdAt:True
+2025-06-19 14:31:07.601 +03:00 [INF] Возвращаем список заказов из кэша: orders:all:createdAt:True
+2025-06-19 14:31:07.651 +03:00 [INF] Возвращаем список заказов из кэша: orders:all:createdAt:True
+2025-06-19 14:31:35.976 +03:00 [INF] Возвращаем список заказов из кэша: orders:all:createdAt:True
+2025-06-19 14:31:53.195 +03:00 [INF] Возвращаем список заказов из кэша: orders:all:createdAt:True
+2025-06-19 14:31:53.274 +03:00 [INF] Возвращаем список заказов из кэша: orders:all:createdAt:True
+2025-06-19 14:32:04.225 +03:00 [INF] Возвращаем список заказов из кэша: orders:all:createdAt:True
+2025-06-19 14:35:48.868 +03:00 [INF] Возвращаем список заказов из кэша: orders:all:createdAt:True
+2025-06-19 14:37:58.316 +03:00 [INF] Возвращаем список заказов из кэша: orders:all:createdAt:True
+2025-06-19 14:37:58.363 +03:00 [INF] Возвращаем список заказов из кэша: orders:all:createdAt:True
+2025-06-19 14:37:58.725 +03:00 [INF] Возвращаем список заказов из кэша: orders:all::True
+2025-06-19 14:37:58.850 +03:00 [INF] Возвращаем список заказов из кэша: orders:all::True

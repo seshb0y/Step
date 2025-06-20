@@ -160,17 +160,17 @@ public class AccountService : IAccountService
         string username = await _tokenService.GetNameFromToken(token);
         if (string.IsNullOrEmpty(username)) throw new Exception("Invalid token");
         
-        string cacheKey = $"user:current:{username}";
-        var cached = await _cacheHelper.GetAsync<CurrentUserResponse>(cacheKey);
-        if (cached != null)
-        {
-            _logger.LogInformation("Пользователь взят из кэша: {Username}", username);
-            return cached;
-        }
+        // string cacheKey = $"user:current:{username}";
+        // var cached = await _cacheHelper.GetAsync<CurrentUserResponse>(cacheKey);
+        // if (cached != null)
+        // {
+        //     _logger.LogInformation("Пользователь взят из кэша: {Username}", username);
+        //     return cached;
+        // }
     
         var user = await _userRep.FindByNameAsync(username);
         _logger.LogInformation("Текущий пользователь: {Username}", username);
-        await _cacheHelper.SetAsync(cacheKey, user, TimeSpan.FromHours(1));
+        // await _cacheHelper.SetAsync(cacheKey, user, TimeSpan.FromHours(1));
         return _mapper.Map<CurrentUserResponse>(user);
     }
 

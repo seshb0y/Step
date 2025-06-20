@@ -1,5 +1,6 @@
 using System.Text;
 using AuthService.Data;
+using ClientService.Helpers;
 using CRMSolution.Data.Repository;
 using CRMSolution.Data.Repository.Interface;
 using CRMSolution.Data.Repository.UserRep;
@@ -35,10 +36,7 @@ Log.Logger = new LoggerConfiguration()
 var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseSerilog();
 
-builder.Services.AddStackExchangeRedisCache(options =>
-{
-    options.Configuration = builder.Configuration.GetConnectionString("Redis");
-});
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -56,6 +54,7 @@ builder.Services.AddSignalR();
 builder.Services.AddDbContext<AuthDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddScoped<CacheHelper>();
 builder.Services.AddScoped<IAuthService, CRMSolution.Services.Classes.AuthService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
@@ -93,6 +92,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddAuthorization();
 builder.Services.AddGrpc();
 var isDocker = Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true";
+
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = isDocker ? "redis:6379" : "localhost:6379";
+});
+
 
 builder.Services.AddGrpcClient<ClientGrpcService.ClientGrpcServiceClient>(o =>
     {

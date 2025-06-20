@@ -1,0 +1,118 @@
+2025-06-19 14:08:20.945 +03:00 [WRN] No instantiatable types implementing `IEntityTypeConfiguration` were found while while scanning assembly 'ClientService, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null'.
+2025-06-19 14:08:22.723 +03:00 [WRN] Overriding address(es) 'http://localhost:5110,  http://localhost:5111'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-06-19 14:10:16.935 +03:00 [WRN] Failed to determine the https port for redirect.
+2025-06-19 14:10:17.105 +03:00 [INF] Получение данных дашборда
+2025-06-19 14:10:26.036 +03:00 [INF] Получение клиентов с заказами и задачами по токену
+2025-06-19 14:10:26.705 +03:00 [INF] Получение данных дашборда
+2025-06-19 14:10:27.260 +03:00 [INF] Получено заказов: 7, клиентов: 6, задач: 14
+2025-06-19 14:10:27.334 +03:00 [INF] Получение клиентов с заказами и задачами по токену
+2025-06-19 14:10:27.381 +03:00 [INF] Получено заказов: 7, клиентов: 6, задач: 14
+2025-06-19 14:10:30.520 +03:00 [ERR] Error when executing service method 'GetDashboardData'.
+StackExchange.Redis.RedisConnectionException: The message timed out in the backlog attempting to send because no connection became available (5000ms) - Last Connection Exception: UnableToConnect on redis:6379/Interactive, Initializing/NotStarted, last: NONE, origin: BeginConnectAsync, outstanding: 0, last-read: 2s ago, last-write: 2s ago, keep-alive: 60s, state: Connecting, mgr: 10 of 10 available, last-heartbeat: never, global: 2s ago, v: 2.7.27.49176, command=HMGET, timeout: 5000, inst: 0, qu: 1, qs: 0, aw: False, bw: CheckingForTimeout, rs: NotStarted, ws: Initializing, in: 0, last-in: 0, cur-in: 0, sync-ops: 0, async-ops: 2, serverEndpoint: redis:6379, conn-sec: n/a, aoc: 0, mc: 1/1/0, mgr: 10 of 10 available, clientName: SESHBMACHINE(SE.Redis-v2.7.27.49176), IOCP: (Busy=0,Free=1000,Min=1,Max=1000), WORKER: (Busy=0,Free=32767,Min=24,Max=32767), POOL: (Threads=6,QueuedItems=0,CompletedItems=516,Timers=13), v: 2.7.27.49176 (Please take a look at this article for some common client-side issues that can cause timeouts: https://stackexchange.github.io/StackExchange.Redis/Timeouts)
+ ---> StackExchange.Redis.RedisConnectionException: UnableToConnect on redis:6379/Interactive, Initializing/NotStarted, last: NONE, origin: BeginConnectAsync, outstanding: 0, last-read: 2s ago, last-write: 2s ago, keep-alive: 60s, state: Connecting, mgr: 10 of 10 available, last-heartbeat: never, global: 2s ago, v: 2.7.27.49176
+   --- End of inner exception stack trace ---
+   at Microsoft.Extensions.Caching.StackExchangeRedis.RedisCache.GetAndRefreshAsync(String key, Boolean getData, CancellationToken token)
+   at Microsoft.Extensions.Caching.StackExchangeRedis.RedisCache.GetAsync(String key, CancellationToken token)
+   at Microsoft.Extensions.Caching.Distributed.DistributedCacheExtensions.GetStringAsync(IDistributedCache cache, String key, CancellationToken token)
+   at ClientService.Helpers.CacheHelper.GetAsync[T](String key) in C:\Rep\Step\ASP\CRM microservices architecture\crm-microservices\ClientService\ClientService\Helpers\CacheHelper.cs:line 21
+   at ClientService.Services.Classes.ClientService.GetDashboardData(GetDashboardDataRequest request) in C:\Rep\Step\ASP\CRM microservices architecture\crm-microservices\ClientService\ClientService\Services\ClientService.cs:line 258
+   at ClientService.GrpcServices.ClientGrpcService.GetDashboardData(GetDashboardDataRequest request, ServerCallContext context) in C:\Rep\Step\ASP\CRM microservices architecture\crm-microservices\ClientService\ClientService\GrpcServices\ClientGrpcServices.cs:line 135
+   at Grpc.Shared.Server.UnaryServerMethodInvoker`3.AwaitInvoker(Task`1 invokerTask, GrpcActivatorHandle`1 serviceHandle)
+   at Grpc.Shared.Server.UnaryServerMethodInvoker`3.AwaitInvoker(Task`1 invokerTask, GrpcActivatorHandle`1 serviceHandle)
+   at Grpc.AspNetCore.Server.Internal.CallHandlers.UnaryServerCallHandler`3.HandleCallAsyncCore(HttpContext httpContext, HttpContextServerCallContext serverCallContext)
+   at Grpc.AspNetCore.Server.Internal.CallHandlers.ServerCallHandlerBase`3.<HandleCallAsync>g__AwaitHandleCall|8_0(HttpContextServerCallContext serverCallContext, Method`2 method, Task handleCall)
+2025-06-19 14:10:32.437 +03:00 [ERR] Error when executing service method 'GetDashboardData'.
+StackExchange.Redis.RedisConnectionException: The message timed out in the backlog attempting to send because no connection became available (5000ms) - Last Connection Exception: UnableToConnect on redis:6379/Interactive, Initializing/NotStarted, last: NONE, origin: BeginConnectAsync, outstanding: 0, last-read: 2s ago, last-write: 2s ago, keep-alive: 60s, state: Connecting, mgr: 10 of 10 available, last-heartbeat: never, global: 2s ago, v: 2.7.27.49176, command=HMGET, timeout: 5000, inst: 0, qu: 0, qs: 0, aw: False, bw: CheckingForTimeout, rs: NotStarted, ws: Initializing, last-in: 0, cur-in: 0, sync-ops: 0, async-ops: 2, serverEndpoint: redis:6379, conn-sec: n/a, aoc: 0, mc: 1/1/0, mgr: 10 of 10 available, clientName: SESHBMACHINE(SE.Redis-v2.7.27.49176), IOCP: (Busy=0,Free=1000,Min=1,Max=1000), WORKER: (Busy=1,Free=32766,Min=24,Max=32767), POOL: (Threads=6,QueuedItems=0,CompletedItems=542,Timers=11), v: 2.7.27.49176 (Please take a look at this article for some common client-side issues that can cause timeouts: https://stackexchange.github.io/StackExchange.Redis/Timeouts)
+ ---> StackExchange.Redis.RedisConnectionException: UnableToConnect on redis:6379/Interactive, Initializing/NotStarted, last: NONE, origin: BeginConnectAsync, outstanding: 0, last-read: 2s ago, last-write: 2s ago, keep-alive: 60s, state: Connecting, mgr: 10 of 10 available, last-heartbeat: never, global: 2s ago, v: 2.7.27.49176
+   --- End of inner exception stack trace ---
+   at Microsoft.Extensions.Caching.StackExchangeRedis.RedisCache.GetAndRefreshAsync(String key, Boolean getData, CancellationToken token)
+   at Microsoft.Extensions.Caching.StackExchangeRedis.RedisCache.GetAsync(String key, CancellationToken token)
+   at Microsoft.Extensions.Caching.Distributed.DistributedCacheExtensions.GetStringAsync(IDistributedCache cache, String key, CancellationToken token)
+   at ClientService.Helpers.CacheHelper.GetAsync[T](String key) in C:\Rep\Step\ASP\CRM microservices architecture\crm-microservices\ClientService\ClientService\Helpers\CacheHelper.cs:line 21
+   at ClientService.Services.Classes.ClientService.GetDashboardData(GetDashboardDataRequest request) in C:\Rep\Step\ASP\CRM microservices architecture\crm-microservices\ClientService\ClientService\Services\ClientService.cs:line 258
+   at ClientService.GrpcServices.ClientGrpcService.GetDashboardData(GetDashboardDataRequest request, ServerCallContext context) in C:\Rep\Step\ASP\CRM microservices architecture\crm-microservices\ClientService\ClientService\GrpcServices\ClientGrpcServices.cs:line 135
+   at Grpc.Shared.Server.UnaryServerMethodInvoker`3.AwaitInvoker(Task`1 invokerTask, GrpcActivatorHandle`1 serviceHandle)
+   at Grpc.Shared.Server.UnaryServerMethodInvoker`3.AwaitInvoker(Task`1 invokerTask, GrpcActivatorHandle`1 serviceHandle)
+   at Grpc.AspNetCore.Server.Internal.CallHandlers.UnaryServerCallHandler`3.HandleCallAsyncCore(HttpContext httpContext, HttpContextServerCallContext serverCallContext)
+   at Grpc.AspNetCore.Server.Internal.CallHandlers.ServerCallHandlerBase`3.<HandleCallAsync>g__AwaitHandleCall|8_0(HttpContextServerCallContext serverCallContext, Method`2 method, Task handleCall)
+2025-06-19 14:24:35.362 +03:00 [WRN] No instantiatable types implementing `IEntityTypeConfiguration` were found while while scanning assembly 'ClientService, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null'.
+2025-06-19 14:24:36.634 +03:00 [WRN] Overriding address(es) 'http://localhost:5110,  http://localhost:5111'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-06-19 14:24:42.963 +03:00 [WRN] Failed to determine the https port for redirect.
+2025-06-19 14:24:43.309 +03:00 [INF] Получение клиентов с заказами и задачами по токену
+2025-06-19 14:24:43.309 +03:00 [INF] Получение клиентов с заказами и задачами по токену
+2025-06-19 14:24:45.938 +03:00 [INF] Получено заказов: 7, клиентов: 6, задач: 14
+2025-06-19 14:24:45.938 +03:00 [INF] Получено заказов: 7, клиентов: 6, задач: 14
+2025-06-19 14:25:08.644 +03:00 [INF] Получение данных дашборда
+2025-06-19 14:25:09.514 +03:00 [INF] Дашборд: клиентов 50, заказов 50, сумма 260310.11, задач 100
+2025-06-19 14:25:09.585 +03:00 [INF] Получение данных дашборда
+2025-06-19 14:25:09.603 +03:00 [INF] Дашборд из кэша
+2025-06-19 14:25:09.604 +03:00 [INF] Сериализованное значение для кэша: {"OrdersTotalAmount":260310.11,"OrdersCount":50,"OrdersCreatedDates":[],"ClientsAmount":50,"TasksStatuses":[],"TasksCount":100}
+2025-06-19 14:25:22.620 +03:00 [INF] Запрос списка всех клиентов с сортировкой: {"SortBy":"id","Descending":false,"$type":"SortClientRequest"}
+2025-06-19 14:25:22.633 +03:00 [INF] Получено клиентов: 50
+2025-06-19 14:25:22.675 +03:00 [INF] Запрос списка всех клиентов с сортировкой: {"SortBy":"id","Descending":false,"$type":"SortClientRequest"}
+2025-06-19 14:25:22.681 +03:00 [INF] Данные клиентов взяты из кэша
+2025-06-19 14:25:25.127 +03:00 [INF] Запрос списка всех клиентов с сортировкой: {"SortBy":"id","Descending":false,"$type":"SortClientRequest"}
+2025-06-19 14:25:25.131 +03:00 [INF] Данные клиентов взяты из кэша
+2025-06-19 14:25:25.181 +03:00 [INF] Запрос списка всех клиентов с сортировкой: {"SortBy":"id","Descending":false,"$type":"SortClientRequest"}
+2025-06-19 14:25:25.186 +03:00 [INF] Данные клиентов взяты из кэша
+2025-06-19 14:25:50.246 +03:00 [INF] Получение данных дашборда
+2025-06-19 14:25:50.247 +03:00 [INF] Получение данных дашборда
+2025-06-19 14:25:50.248 +03:00 [INF] Дашборд из кэша
+2025-06-19 14:25:50.249 +03:00 [INF] Дашборд из кэша
+2025-06-19 14:25:50.250 +03:00 [INF] Сериализованное значение для кэша: {"OrdersTotalAmount":260310.11,"OrdersCount":50,"OrdersCreatedDates":[],"ClientsAmount":50,"TasksStatuses":[],"TasksCount":100}
+2025-06-19 14:25:50.252 +03:00 [INF] Сериализованное значение для кэша: {"OrdersTotalAmount":260310.11,"OrdersCount":50,"OrdersCreatedDates":[],"ClientsAmount":50,"TasksStatuses":[],"TasksCount":100}
+2025-06-19 14:25:58.409 +03:00 [INF] Запрос списка всех клиентов с сортировкой: {"SortBy":"id","Descending":false,"$type":"SortClientRequest"}
+2025-06-19 14:25:58.414 +03:00 [INF] Данные клиентов взяты из кэша
+2025-06-19 14:25:58.438 +03:00 [INF] Запрос списка всех клиентов с сортировкой: {"SortBy":"id","Descending":false,"$type":"SortClientRequest"}
+2025-06-19 14:25:58.442 +03:00 [INF] Данные клиентов взяты из кэша
+2025-06-19 14:28:31.221 +03:00 [INF] Получение данных дашборда
+2025-06-19 14:28:31.393 +03:00 [INF] Дашборд: клиентов 50, заказов 50, сумма 260310.11, задач 100
+2025-06-19 14:28:31.421 +03:00 [INF] Получение данных дашборда
+2025-06-19 14:28:31.424 +03:00 [INF] Дашборд из кэша
+2025-06-19 14:28:31.425 +03:00 [INF] Сериализованное значение для кэша: {"OrdersTotalAmount":260310.11,"OrdersCount":50,"OrdersCreatedDates":[],"ClientsAmount":50,"TasksStatuses":[],"TasksCount":100}
+2025-06-19 14:28:38.169 +03:00 [INF] Запрос списка всех клиентов с сортировкой: {"SortBy":"id","Descending":false,"$type":"SortClientRequest"}
+2025-06-19 14:28:38.177 +03:00 [INF] Получено клиентов: 50
+2025-06-19 14:28:38.211 +03:00 [INF] Запрос списка всех клиентов с сортировкой: {"SortBy":"id","Descending":false,"$type":"SortClientRequest"}
+2025-06-19 14:28:38.215 +03:00 [INF] Данные клиентов взяты из кэша
+2025-06-19 14:28:39.388 +03:00 [INF] Получение данных дашборда
+2025-06-19 14:28:39.391 +03:00 [INF] Дашборд из кэша
+2025-06-19 14:28:39.392 +03:00 [INF] Сериализованное значение для кэша: {"OrdersTotalAmount":260310.11,"OrdersCount":50,"OrdersCreatedDates":[],"ClientsAmount":50,"TasksStatuses":[],"TasksCount":100}
+2025-06-19 14:28:39.432 +03:00 [INF] Получение данных дашборда
+2025-06-19 14:28:39.435 +03:00 [INF] Дашборд из кэша
+2025-06-19 14:28:39.437 +03:00 [INF] Сериализованное значение для кэша: {"OrdersTotalAmount":260310.11,"OrdersCount":50,"OrdersCreatedDates":[],"ClientsAmount":50,"TasksStatuses":[],"TasksCount":100}
+2025-06-19 14:28:40.169 +03:00 [INF] Запрос списка всех клиентов с сортировкой: {"SortBy":"id","Descending":false,"$type":"SortClientRequest"}
+2025-06-19 14:28:40.174 +03:00 [INF] Данные клиентов взяты из кэша
+2025-06-19 14:28:40.196 +03:00 [INF] Запрос списка всех клиентов с сортировкой: {"SortBy":"id","Descending":false,"$type":"SortClientRequest"}
+2025-06-19 14:28:40.201 +03:00 [INF] Данные клиентов взяты из кэша
+2025-06-19 14:28:43.040 +03:00 [INF] Запрос списка всех клиентов с сортировкой: {"SortBy":"id","Descending":false,"$type":"SortClientRequest"}
+2025-06-19 14:28:43.046 +03:00 [INF] Данные клиентов взяты из кэша
+2025-06-19 14:28:43.076 +03:00 [INF] Запрос списка всех клиентов с сортировкой: {"SortBy":"id","Descending":false,"$type":"SortClientRequest"}
+2025-06-19 14:28:43.082 +03:00 [INF] Данные клиентов взяты из кэша
+2025-06-19 14:28:43.964 +03:00 [INF] Получение данных дашборда
+2025-06-19 14:28:43.968 +03:00 [INF] Дашборд из кэша
+2025-06-19 14:28:43.969 +03:00 [INF] Сериализованное значение для кэша: {"OrdersTotalAmount":260310.11,"OrdersCount":50,"OrdersCreatedDates":[],"ClientsAmount":50,"TasksStatuses":[],"TasksCount":100}
+2025-06-19 14:28:44.023 +03:00 [INF] Получение данных дашборда
+2025-06-19 14:28:44.028 +03:00 [INF] Дашборд из кэша
+2025-06-19 14:28:44.030 +03:00 [INF] Сериализованное значение для кэша: {"OrdersTotalAmount":260310.11,"OrdersCount":50,"OrdersCreatedDates":[],"ClientsAmount":50,"TasksStatuses":[],"TasksCount":100}
+2025-06-19 14:28:47.881 +03:00 [INF] Получение клиентов с заказами и задачами по токену
+2025-06-19 14:28:47.913 +03:00 [INF] Получено заказов: 7, клиентов: 6, задач: 14
+2025-06-19 14:28:47.939 +03:00 [INF] Получение клиентов с заказами и задачами по токену
+2025-06-19 14:28:47.965 +03:00 [INF] Получено заказов: 7, клиентов: 6, задач: 14
+2025-06-19 14:28:52.448 +03:00 [INF] Получение клиентов с заказами и задачами по токену
+2025-06-19 14:28:52.482 +03:00 [INF] Получено заказов: 7, клиентов: 6, задач: 14
+2025-06-19 14:28:52.509 +03:00 [INF] Получение клиентов с заказами и задачами по токену
+2025-06-19 14:28:52.536 +03:00 [INF] Получено заказов: 7, клиентов: 6, задач: 14
+2025-06-19 14:28:58.647 +03:00 [INF] Запрос списка всех клиентов с сортировкой: {"SortBy":"id","Descending":false,"$type":"SortClientRequest"}
+2025-06-19 14:28:58.657 +03:00 [INF] Данные клиентов взяты из кэша
+2025-06-19 14:28:58.684 +03:00 [INF] Запрос списка всех клиентов с сортировкой: {"SortBy":"id","Descending":false,"$type":"SortClientRequest"}
+2025-06-19 14:28:58.690 +03:00 [INF] Данные клиентов взяты из кэша
+2025-06-19 14:28:59.285 +03:00 [INF] Получение данных дашборда
+2025-06-19 14:28:59.291 +03:00 [INF] Дашборд из кэша
+2025-06-19 14:28:59.293 +03:00 [INF] Сериализованное значение для кэша: {"OrdersTotalAmount":260310.11,"OrdersCount":50,"OrdersCreatedDates":[],"ClientsAmount":50,"TasksStatuses":[],"TasksCount":100}
+2025-06-19 14:28:59.341 +03:00 [INF] Получение данных дашборда
+2025-06-19 14:28:59.345 +03:00 [INF] Дашборд из кэша
+2025-06-19 14:28:59.346 +03:00 [INF] Сериализованное значение для кэша: {"OrdersTotalAmount":260310.11,"OrdersCount":50,"OrdersCreatedDates":[],"ClientsAmount":50,"TasksStatuses":[],"TasksCount":100}
+2025-06-19 14:29:04.977 +03:00 [INF] Запрос списка всех клиентов с сортировкой: {"SortBy":"id","Descending":false,"$type":"SortClientRequest"}
+2025-06-19 14:29:04.982 +03:00 [INF] Данные клиентов взяты из кэша
+2025-06-19 14:29:05.013 +03:00 [INF] Запрос списка всех клиентов с сортировкой: {"SortBy":"id","Descending":false,"$type":"SortClientRequest"}
+2025-06-19 14:29:05.020 +03:00 [INF] Данные клиентов взяты из кэша

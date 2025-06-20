@@ -40,10 +40,6 @@ Log.Logger = new LoggerConfiguration()
 var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseSerilog();
 
-builder.Services.AddStackExchangeRedisCache(options =>
-{
-    options.Configuration = builder.Configuration.GetConnectionString("Redis");
-});
 
 // Controllers
 builder.Services.AddControllers();
@@ -91,6 +87,11 @@ builder.Services.AddTransient<DataSeeder>();
 // SignalR
 builder.Services.AddSignalR();
 var isDocker = Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true";
+
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = isDocker ? "redis:6379" : "localhost:6379";
+});
 
 // gRPC сервер и клиент
 builder.Services.AddGrpc();

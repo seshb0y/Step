@@ -1,0 +1,27 @@
+2025-06-19 14:41:09.705 +03:00 [WRN] No instantiatable types implementing `IEntityTypeConfiguration` were found while while scanning assembly 'OrderService, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null'.
+2025-06-19 14:41:11.023 +03:00 [WRN] Overriding address(es) 'http://localhost:5234,  http://localhost:5235'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-06-19 14:41:27.845 +03:00 [WRN] Failed to determine the https port for redirect.
+2025-06-19 14:44:23.435 +03:00 [INF] Изменяем заказ: {"TotalAmount":8632,"Status":"Processing","OrderId":38,"$type":"ChangeOrderDataRequest"}
+2025-06-19 14:44:23.533 +03:00 [INF] Заказ изменен: {"Id":38,"TotalAmount":8632,"Status":"Processing","CreatedAt":"2025-01-06T14:30:40.9226470Z","CallRecord":null,"IsDeleted":false,"UserId":8,"ClientId":2,"$type":"Order"}
+2025-06-19 14:44:24.757 +03:00 [INF] Изменяем заказ: {"TotalAmount":8632,"Status":"New","OrderId":38,"$type":"ChangeOrderDataRequest"}
+2025-06-19 14:44:24.770 +03:00 [INF] Заказ изменен: {"Id":38,"TotalAmount":8632,"Status":"New","CreatedAt":"2025-01-06T14:30:40.9226470Z","CallRecord":null,"IsDeleted":false,"UserId":8,"ClientId":2,"$type":"Order"}
+2025-06-19 14:46:57.237 +03:00 [INF] Создаем заказ. Проверка пользователя через gRPC: {"TotalAmount":5600,"ClientEmail":"Maybell.Quigley@yahoo.com","UserEmail":"Claude.Parisian@gmail.com","$type":"CreateOrderRequest"}
+2025-06-19 14:46:57.628 +03:00 [INF] Задача создана через gRPC: 
+2025-06-19 14:47:47.420 +03:00 [INF] Изменяем заказ: {"TotalAmount":6000,"Status":"Completed","OrderId":51,"$type":"ChangeOrderDataRequest"}
+2025-06-19 14:47:47.430 +03:00 [INF] Заказ изменен: {"Id":51,"TotalAmount":6000,"Status":"Completed","CreatedAt":"2025-06-19T11:46:57.2423890Z","CallRecord":null,"IsDeleted":false,"UserId":7,"ClientId":48,"$type":"Order"}
+2025-06-19 14:47:47.548 +03:00 [INF] Изменяем ответственного: {"UserId":3,"OrderId":51,"$type":"ChangeResponsibleRequest"}
+2025-06-19 14:47:47.562 +03:00 [INF] Ответственный изменен: {"Id":51,"TotalAmount":6000,"Status":"Completed","CreatedAt":"2025-06-19T11:46:57.2423890Z","CallRecord":null,"IsDeleted":false,"UserId":3,"ClientId":48,"$type":"Order"}
+2025-06-19 14:48:26.613 +03:00 [INF] Изменяем заказ: {"TotalAmount":6000,"Status":"New","OrderId":51,"$type":"ChangeOrderDataRequest"}
+2025-06-19 14:48:26.621 +03:00 [INF] Заказ изменен: {"Id":51,"TotalAmount":6000,"Status":"New","CreatedAt":"2025-06-19T11:46:57.2423890Z","CallRecord":null,"IsDeleted":false,"UserId":3,"ClientId":48,"$type":"Order"}
+2025-06-19 14:48:26.711 +03:00 [INF] Изменяем ответственного: {"UserId":2,"OrderId":51,"$type":"ChangeResponsibleRequest"}
+2025-06-19 14:48:26.722 +03:00 [INF] Ответственный изменен: {"Id":51,"TotalAmount":6000,"Status":"New","CreatedAt":"2025-06-19T11:46:57.2423890Z","CallRecord":null,"IsDeleted":false,"UserId":2,"ClientId":48,"$type":"Order"}
+2025-06-19 14:49:15.227 +03:00 [INF] Изменяем заказ: {"TotalAmount":6000,"Status":"New","OrderId":51,"$type":"ChangeOrderDataRequest"}
+2025-06-19 14:49:15.235 +03:00 [INF] Заказ изменен: {"Id":51,"TotalAmount":6000,"Status":"New","CreatedAt":"2025-06-19T11:46:57.2423890Z","CallRecord":null,"IsDeleted":false,"UserId":2,"ClientId":48,"$type":"Order"}
+2025-06-19 14:49:15.311 +03:00 [INF] Изменяем ответственного: {"UserId":7,"OrderId":51,"$type":"ChangeResponsibleRequest"}
+2025-06-19 14:49:15.326 +03:00 [INF] Ответственный изменен: {"Id":51,"TotalAmount":6000,"Status":"New","CreatedAt":"2025-06-19T11:46:57.2423890Z","CallRecord":null,"IsDeleted":false,"UserId":7,"ClientId":48,"$type":"Order"}
+2025-06-19 14:58:28.403 +03:00 [INF] Изменяем заказ: {"TotalAmount":8130.12,"Status":"Completed","OrderId":43,"$type":"ChangeOrderDataRequest"}
+2025-06-19 14:58:28.412 +03:00 [INF] Заказ изменен: {"Id":43,"TotalAmount":8130.12,"Status":"Completed","CreatedAt":"2025-05-21T19:14:17.7455990Z","CallRecord":null,"IsDeleted":false,"UserId":8,"ClientId":20,"$type":"Order"}
+2025-06-19 14:58:31.319 +03:00 [INF] Изменяем заказ: {"TotalAmount":3157.52,"Status":"New","OrderId":6,"$type":"ChangeOrderDataRequest"}
+2025-06-19 14:58:31.331 +03:00 [INF] Заказ изменен: {"Id":6,"TotalAmount":3157.52,"Status":"New","CreatedAt":"2024-11-04T13:51:49.7511350Z","CallRecord":null,"IsDeleted":false,"UserId":8,"ClientId":42,"$type":"Order"}
+2025-06-19 14:58:32.550 +03:00 [INF] Изменяем заказ: {"TotalAmount":5894.82,"Status":"Processing","OrderId":16,"$type":"ChangeOrderDataRequest"}
+2025-06-19 14:58:32.558 +03:00 [INF] Заказ изменен: {"Id":16,"TotalAmount":5894.82,"Status":"Processing","CreatedAt":"2025-06-03T07:56:52.7948580Z","CallRecord":null,"IsDeleted":false,"UserId":8,"ClientId":20,"$type":"Order"}

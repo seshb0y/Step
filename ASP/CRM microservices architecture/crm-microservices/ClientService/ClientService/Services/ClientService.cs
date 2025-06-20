@@ -141,13 +141,13 @@ public class ClientService : IClientService
     {
         _logger.LogInformation("Запрос списка всех клиентов с сортировкой: {@Sort}", getAllClientsRequest.Sort);
         
-        string cacheKey = $"clients:all:{getAllClientsRequest.Sort.SortBy}:{getAllClientsRequest.Sort.Descending}";
-        var cachedData = await _cacheHelper.GetAsync<GetAllClientsResponse>(cacheKey);
-        if (cachedData != null)
-        {
-            _logger.LogInformation("Данные клиентов взяты из кэша");
-            return cachedData;
-        }
+        // string cacheKey = $"clients:all:{getAllClientsRequest.Sort.SortBy}:{getAllClientsRequest.Sort.Descending}";
+        // var cachedData = await _cacheHelper.GetAsync<GetAllClientsResponse>(cacheKey);
+        // if (cachedData != null)
+        // {
+        //     _logger.LogInformation("Данные клиентов взяты из кэша");
+        //     return cachedData;
+        // }
         
         var tasks = (await _clientRepository.GetAllAsync()).ToList();
         
@@ -196,7 +196,7 @@ public class ClientService : IClientService
         };
 
         _logger.LogInformation("Получено клиентов: {Count}", grpcClient.Count);
-        await _cacheHelper.SetAsync(cacheKey, response, TimeSpan.FromMinutes(5));
+        // await _cacheHelper.SetAsync(cacheKey, response, TimeSpan.FromMinutes(5));
         return response;
     }
     
@@ -254,13 +254,15 @@ public class ClientService : IClientService
     {
         _logger.LogInformation("Получение данных дашборда");
         
-        string cacheKey = "dashboard:data";
-        var cached = await _cacheHelper.GetAsync<GetDashboardDataResponse>(cacheKey);
-        if (cached != null)
-        {
-            _logger.LogInformation("Дашборд из кэша");
-            return cached;
-        }
+        // string cacheKey = "dashboard:data";
+        // var cached = await _cacheHelper.GetAsync<GetDashboardDataResponse>(cacheKey);
+        // if (cached != null)
+        // {
+        //     _logger.LogInformation("Дашборд из кэша");
+        //     var json = JsonSerializer.Serialize(cached);
+        //     _logger.LogInformation("Сериализованное значение для кэша: {Json}", json);
+        //     return cached;
+        // }
         
         List<Client> clients = new List<Client>();
         clients.AddRange(await _clientRepository.GetAllAsync());
@@ -269,7 +271,7 @@ public class ClientService : IClientService
         var tasks = await _taskGrpcClient.GetAllTasksAsync(new GetAllTasksRequest{Sort =  new SortTasksRequest() { SortBy = "", Descending = true }});
 
         var ordersTotalAmount = orders.Orders.Sum(o => o.TotalAmount);
-        var ordersCreatedDates = orders.Orders.Select(o => o.CreatedAt).ToList();
+        var ordersCreatedDates = orders.Orders.Select(o => o.CreatedAt.ToDateTime()).ToList();
         var taskStatuses = tasks.Tasks.Select(t => t.Status).ToList();
         var response =  new GetDashboardDataResponse
         {
@@ -285,9 +287,15 @@ public class ClientService : IClientService
         _logger.LogInformation("Дашборд: клиентов {Clients}, заказов {Orders}, сумма {Sum}, задач {Tasks}", 
             clients.Count, orders.Orders.Count, ordersTotalAmount, tasks.Tasks.Count);
         
-        await _cacheHelper.SetAsync(cacheKey, response, TimeSpan.FromMinutes(5));
-
-        
+        // _logger.LogInformation("OrdersCreatedDates Count: {Count}", response.OrdersCreatedDates.Count);
+        // _logger.LogInformation("Sample CreatedAt: {Sample}", response.OrdersCreatedDates.FirstOrDefault());
+        // _logger.LogInformation("TasksStatuses Count: {Count}", response.TasksStatuses.Count);
+        // _logger.LogInformation("Sample TaskStatus: {Sample}", response.TasksStatuses.FirstOrDefault());
+        //
+        // string serialized = JsonSerializer.Serialize(response);
+        // _logger.LogInformation("Сохраняем в кэш ключ {Key} со значением: {Json}", cacheKey, serialized);
+        //
+        // await _cacheHelper.SetAsync(cacheKey, response, TimeSpan.FromMinutes(5));
         return response;
     }
     public async Task<GetClientsWithOrdersAndTasksResponse> GetClientsWithOrdersAndTasksAsync(string httpContext)

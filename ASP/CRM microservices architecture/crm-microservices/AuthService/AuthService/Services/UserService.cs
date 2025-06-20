@@ -146,9 +146,9 @@ public class UserService : IUserService
     public async Task<GetAllUsersResponse> GetAllUsers(SortUsersRequest sortUsersRequest)
     {
         _logger.LogInformation("Получение всех пользователей с сортировкой: {@Sort}", sortUsersRequest);
-        string cacheKey = $"users:all:{sortUsersRequest.SortBy}:{sortUsersRequest.Descending}";
-        var cache = await _cacheHelper.GetAsync<GetAllUsersResponse>(cacheKey);
-        if(cache != null) return cache;
+        // string cacheKey = $"users:all:{sortUsersRequest.SortBy}:{sortUsersRequest.Descending}";
+        // var cache = await _cacheHelper.GetAsync<GetAllUsersResponse>(cacheKey);
+        // if(cache != null) return cache;
         var users = await _userRepository.GetAllAsync();
         users = sortUsersRequest.SortBy?.ToLower() switch
         {
@@ -209,7 +209,7 @@ public class UserService : IUserService
         }
 
         _logger.LogInformation("Пользователи успешно получены: {Count}", response.Users.Count);
-        await _cacheHelper.SetAsync(cacheKey, response, TimeSpan.FromHours(1));
+        // await _cacheHelper.SetAsync(cacheKey, response, TimeSpan.FromHours(1));
         return response;
     }
 

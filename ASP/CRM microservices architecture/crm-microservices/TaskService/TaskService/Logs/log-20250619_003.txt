@@ -1,0 +1,5 @@
+2025-06-19 14:07:45.040 +03:00 [WRN] No instantiatable types implementing `IEntityTypeConfiguration` were found while while scanning assembly 'TaskService, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null'.
+2025-06-19 14:07:49.683 +03:00 [ERR] An error occurred using the connection to database 'task_db' on server 'tcp://localhost:5446'.
+2025-06-19 14:08:24.112 +03:00 [WRN] No instantiatable types implementing `IEntityTypeConfiguration` were found while while scanning assembly 'TaskService, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null'.
+2025-06-19 14:08:25.540 +03:00 [WRN] Overriding address(es) 'http://localhost:5295, http://localhost:5296'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-06-19 14:10:26.575 +03:00 [WRN] Failed to determine the https port for redirect.

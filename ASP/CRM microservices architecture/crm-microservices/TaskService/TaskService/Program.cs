@@ -1,4 +1,5 @@
 using System.Text;
+using ClientService.Helpers;
 using CRMSolution.Data.Validators.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -33,11 +34,6 @@ Log.Logger = new LoggerConfiguration()
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseSerilog();
-
-builder.Services.AddStackExchangeRedisCache(options =>
-{
-    options.Configuration = builder.Configuration.GetConnectionString("Redis");
-});
 
 // Controllers
 builder.Services.AddControllers();
@@ -88,6 +84,11 @@ builder.Services.AddSignalR();
 // gRPC сервер и клиент
 var isDocker = Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true";
 
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = isDocker ? "redis:6379" : "localhost:6379";
+});
+
 builder.Services.AddGrpc();
 builder.Services.AddGrpcClient<UserService.UserServiceClient>(o =>
     {
@@ -123,6 +124,7 @@ builder.Services.AddValidatorsFromAssemblyContaining<FindTaskValidator>();
 builder.Services.AddValidatorsFromAssemblyContaining<UpdateTaskValidator>();
 
 // Репозитории и Сервисы
+builder.Services.AddScoped<CacheHelper>();
 builder.Services.AddScoped<ITasksService, TaskService.Services.Classes.TasksService>();
 builder.Services.AddScoped<ITasksRep, TasksRep>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
