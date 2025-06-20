@@ -1,6 +1,17 @@
 version: "3.9"
 
 services:
+  frontend:
+    image: seshb0y/frontend:latest
+    platform: windows/amd64
+    container_name: crm_frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - apigateway
+    networks:
+      - crm_network
+
   twilio-db:
     image: postgres:16
     container_name: twilio_postgres
@@ -71,20 +82,9 @@ services:
     networks:
       - crm_network
 
-  frontend:
-    image: seshb0y/frontend:latest
-    platform: linux/amd64
-    container_name: crm_frontend
-    ports:
-      - "3000:80"
-    depends_on:
-      - apigateway
-    networks:
-      - crm_network
-
   twilioservice:
     image: seshb0y/twilioservice:latest
-    platform: linux/amd64
+    platform: windows/amd64
     depends_on:
       - twilio-db
     networks:
@@ -95,7 +95,7 @@ services:
 
   authservice:
     image: seshb0y/authservice:latest
-    platform: linux/amd64
+    platform: windows/amd64
     depends_on:
       - auth-db
     networks:
@@ -106,7 +106,7 @@ services:
 
   clientservice:
     image: seshb0y/clientservice:latest
-    platform: linux/amd64
+    platform: windows/amd64
     depends_on:
       - client-db
     networks:
@@ -117,7 +117,7 @@ services:
 
   orderservice:
     image: seshb0y/orderservice:latest
-    platform: linux/amd64
+    platform: windows/amd64
     depends_on:
       - order-db
     networks:
@@ -128,7 +128,7 @@ services:
 
   taskservice:
     image: seshb0y/taskservice:latest
-    platform: linux/amd64
+    platform: windows/amd64
     depends_on:
       - task-db
     networks:
@@ -139,7 +139,7 @@ services:
 
   apigateway:
     image: seshb0y/apigateway:latest
-    platform: linux/amd64
+    platform: windows/amd64
     depends_on:
       - authservice
       - clientservice
