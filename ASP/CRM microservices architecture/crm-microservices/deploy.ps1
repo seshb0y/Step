@@ -2,22 +2,22 @@
 $Namespace = "crm-system"
 $ManifestDir = "k8s/"
 $FrontendPath = "CRMFront"
-$ImageName = "crm-microservices-frontend:latest"
+$ImageName = "seshb0y/frontend:latest"
 
 Write-Host "Step 1: Connecting to Minikube docker daemon..."
 & minikube -p minikube docker-env --shell powershell | Invoke-Expression
 
 Write-Host "Step 2: Building frontend (npm run build)..."
-Set-Location $FrontendPath
+# Set-Location $FrontendPath
 
-# Build the project
-$npmBuildResult = npm run build
+# # Build the project
+# $npmBuildResult = npm run build
 
-# Check for errors
-if ($LASTEXITCODE -ne 0) {
-    Write-Error "npm run build failed. Check the output above."
-    exit 1
-}
+# # Check for errors
+# if ($LASTEXITCODE -ne 0) {
+#     Write-Error "npm run build failed. Check the output above."
+#     exit 1
+# }
 
 Write-Host "Build completed successfully."
 

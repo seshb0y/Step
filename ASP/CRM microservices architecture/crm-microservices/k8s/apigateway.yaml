@@ -14,28 +14,28 @@ spec:
         app: apigateway
     spec:
       containers:
-      - name: apigateway
-        image: crm-microservices-apigateway:latest
-        imagePullPolicy: Never
-        ports:
-        - containerPort: 80
-        env:
-        - name: ASPNETCORE_ENVIRONMENT
-          value: "Development"
-        - name: ASPNETCORE_URLS
-          value: "http://+:80"
-        - name: CORS__AllowedOrigins
-          value: "*"
-        - name: Grpc__Auth
-          value: "http://authservice:5171"
-        - name: Grpc__Client
-          value: "http://client-service:80"
-        - name: Grpc__Order
-          value: "http://order-service:80"
-        - name: Grpc__Task
-          value: "http://task-service:80"
-        - name: Grpc__Twilio
-          value: "http://twilio-service:80"
+        - name: apigateway
+          image: seshb0y/apigateway:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: "Development"
+            - name: ASPNETCORE_URLS
+              value: "http://+:80"
+            - name: CORS__AllowedOrigins
+              value: "*"
+            - name: Grpc__Auth
+              value: "http://authservice:5171"
+            - name: Grpc__Client
+              value: "http://client-service:80"
+            - name: Grpc__Order
+              value: "http://order-service:80"
+            - name: Grpc__Task
+              value: "http://task-service:80"
+            - name: Grpc__Twilio
+              value: "http://twilio-service:80"
 
 ---
 apiVersion: v1
@@ -44,11 +44,10 @@ metadata:
   name: apigateway
   namespace: crm-system
 spec:
-  type: NodePort 
+  type: NodePort
   selector:
     app: apigateway
   ports:
     - port: 80
       targetPort: 80
-      nodePort: 30081 
-
+      nodePort: 30081

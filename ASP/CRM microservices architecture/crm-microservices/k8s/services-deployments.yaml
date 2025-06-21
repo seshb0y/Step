@@ -15,8 +15,8 @@ spec:
     spec:
       containers:
         - name: auth-service
-          image: crm-microservices-authservice:latest
-          imagePullPolicy: Never
+          image: seshb0y/authservice:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 5171
               name: http
@@ -48,8 +48,8 @@ spec:
     spec:
       containers:
         - name: client-service
-          image: crm-microservices-clientservice:latest
-          imagePullPolicy: Never
+          image: seshb0y/clientservice:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 80
           env:
@@ -78,8 +78,8 @@ spec:
     spec:
       containers:
         - name: order-service
-          image: crm-microservices-orderservice:latest
-          imagePullPolicy: Never
+          image: seshb0y/orderservice:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 80
           env:
@@ -108,8 +108,8 @@ spec:
     spec:
       containers:
         - name: task-service
-          image: crm-microservices-taskservice:latest
-          imagePullPolicy: Never
+          image: seshb0y/taskservice:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 80
           env:
@@ -138,8 +138,8 @@ spec:
     spec:
       containers:
         - name: twilio-service
-          image: crm-microservices-twilioservice:latest
-          imagePullPolicy: Never
+          image: seshb0y/twilioservice:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 80
           env:
