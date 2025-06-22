@@ -1,0 +1,2 @@
+2025-06-22 14:02:48.033 +03:00 [WRN] No instantiatable types implementing `IEntityTypeConfiguration` were found while while scanning assembly 'OrderService, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null'.
+2025-06-22 14:02:50.808 +03:00 [WRN] Overriding address(es) 'http://localhost:5234,  http://localhost:5235'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.

@@ -1,2 +1,0 @@
-2025-06-19 13:02:57.103 +03:00 [WRN] No instantiatable types implementing `IEntityTypeConfiguration` were found while while scanning assembly 'TaskService, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null'.
-2025-06-19 13:02:58.632 +03:00 [WRN] Overriding address(es) 'http://localhost:5295, http://localhost:5296'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
