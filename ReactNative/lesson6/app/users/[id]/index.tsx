@@ -14,12 +14,12 @@ const UserDetails = () => {
   useEffect(() => {
     const getUsers = async () => {
       const response = await axios.get(`https://jsonplaceholder.typicode.com/users/${id}`);
-      console.log(response.data)
+      console.log(response.data);
       setUser(response.data);
     };
     const getPosts = async () => {
       const response = await axios.get(`https://jsonplaceholder.typicode.com/posts?userId=${id}`);
-      console.log(response.data)
+      console.log(response.data);
       setPosts(response.data);
     };
 
@@ -42,7 +42,12 @@ const UserDetails = () => {
           data={posts}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
-            <Link href={{ pathname: '/posts/[postId]', params: { id: item.id.toString() } }}>
+            <Link
+              href={{
+                pathname: '/users/[id]/posts/[postId]',
+                params: { id: String(id), postId: item.id.toString() },
+              }}
+            >
               {item.title}
             </Link>
           )}
