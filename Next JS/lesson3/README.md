@@ -55,6 +55,5 @@ lesson3/
 
 ---
 
-**Автор:** [Ваше имя]
 
 **Стиль:** Inspired by Rick and Morty™
