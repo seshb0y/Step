@@ -95,12 +95,10 @@ div > div {
   outline: 4px solid #a259ff44;
   position: relative;
   overflow: hidden;
-  animation: jelly 0.7s cubic-bezier(0.68, -0.55, 0.27, 1.55);
 }
 div > div:hover {
   border: 4px solid #fff700;
   box-shadow: 0 0 48px #fff70099, 0 0 0 10px #7fff0044;
-  transform: scale(1.04) rotate(1.5deg) skewY(-1deg);
   z-index: 2;
 }
 
