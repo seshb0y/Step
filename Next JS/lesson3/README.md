@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Rick and Morty Next.js Showcase
 
-## Getting Started
+Этот проект — учебное приложение на **Next.js** (App Router, TypeScript), стилизованное в кислотном мультяшном стиле "Рика и Морти". Он демонстрирует работу с серверными и клиентскими компонентами, собственными API-роутами, переиспользуемыми карточками и современным UI/UX.
 
-First, run the development server:
+## Основные возможности
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **Типы данных**: Character, Location, Episode — полностью соответствуют спецификации Rick and Morty API.
+- **API-роуты**: Собственные эндпоинты `/api/character`, `/api/location`, `/api/episode` для получения списков и отдельных сущностей.
+- **Детальные страницы**: Для каждого персонажа, эпизода и локации есть подробная страница с красивой карточкой и списком связанных сущностей (эпизоды, жители и т.д.).
+- **Переиспользуемые компоненты**: Универсальные компоненты Card и DetailCard для отображения любой сущности.
+- **Стилизация**: Кислотные цвета, неоновые акценты, мультяшные рамки, анимация "желе", адаптивная сетка карточек, высокая читаемость.
+- **Серверные и клиентские компоненты**: Используется best practice Next.js 13+ (app router, async server components, client components для интерактива).
+
+## Структура проекта
+
+```
+lesson3/
+  src/
+    app/
+      api/         # API-роуты Next.js (character, episode, location)
+      characters/  # Страницы персонажей (список и [id])
+      episode/     # Страницы эпизодов (список и [id])
+      location/    # Страницы локаций (список и [id])
+      components/
+        common/
+          Card.tsx        # Универсальная карточка
+          DetailCard.tsx  # Детальная карточка для сущности
+      globals.css   # Глобальные стили (кислотный стиль)
+    types/          # Типы данных (Character, Episode, Location)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Как запустить
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Установите зависимости:
+   ```bash
+   npm install
+   ```
+2. Запустите dev-сервер:
+   ```bash
+   npm run dev
+   ```
+3. Откройте [http://localhost:3000](http://localhost:3000) в браузере.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Особенности UI/UX
 
-## Learn More
+- Кислотные цвета, неоновые рамки, плавная анимация "желе".
+- Карточки не сдвигают сетку при наведении (чистый CSS hover).
+- Все списки связей (эпизоды, жители) отображаются карточками с данными, а не просто ссылками.
+- Высокая читаемость текста и контрастность.
 
-To learn more about Next.js, take a look at the following resources:
+## Для чего этот проект
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Учебный пример для освоения Next.js 13+, серверных компонентов, кастомного UI и архитектуры с переиспользуемыми компонентами.
+- Демонстрация best practice по работе с API, типами, SSR/SSG и стилизацией.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+**Автор:** [Ваше имя]
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**Стиль:** Inspired by Rick and Morty™
