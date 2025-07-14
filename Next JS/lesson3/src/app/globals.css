@@ -1,0 +1,129 @@
+@import url("https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap");
+
+:root {
+  --portal-green: #7fff00;
+  --portal-green2: #39ff14;
+  --portal-yellow: #fff700;
+  --portal-blue: #00e6ff;
+  --portal-purple: #a259ff;
+  --portal-bg: radial-gradient(
+    circle at 60% 40%,
+    #7fff00 0%,
+    #39ff14 40%,
+    #fff700 70%,
+    #00e6ff 100%
+  );
+  --card-bg: linear-gradient(135deg, #eaffd0 60%, #fff700 100%);
+  --nav-bg: linear-gradient(90deg, #7fff00 0%, #00e6ff 100%);
+}
+
+body {
+  margin: 0;
+  font-family: "Luckiest Guy", cursive, Arial, sans-serif;
+  background: var(--portal-bg),
+    url("https://www.transparenttextures.com/patterns/stardust.png");
+  min-height: 100vh;
+  color: #222;
+  overflow-x: hidden;
+}
+
+main {
+  max-width: 1100px;
+  margin: 40px auto;
+  padding: 40px;
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 32px;
+  box-shadow: 0 12px 60px #7fff00a0, 0 0 0 8px #fff70044;
+  border: 4px solid #39ff14;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: "Luckiest Guy", cursive, Arial, sans-serif;
+  color: var(--portal-purple);
+  text-shadow: 2px 2px 0 #fff700, 0 0 12px #7fff00, 0 0 2px #fff;
+  letter-spacing: 2px;
+}
+
+nav {
+  background: var(--nav-bg);
+  border-radius: 0 0 32px 32px;
+  box-shadow: 0 4px 32px #7fff00a0, 0 0 0 4px #fff70044;
+  padding: 22px 48px;
+  margin-bottom: 48px;
+  display: flex;
+  gap: 40px;
+  justify-content: center;
+  border: 3px solid #fff700;
+}
+
+nav a {
+  color: #222;
+  font-size: 1.4rem;
+  font-family: "Luckiest Guy", cursive, Arial, sans-serif;
+  text-shadow: 2px 2px 0 #fff, 0 0 8px #7fff00;
+  background: #fff700;
+  border-radius: 16px;
+  padding: 14px 32px;
+  border: 3px solid #39ff14;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.15s;
+  box-shadow: 0 2px 12px #00e6ff44;
+  outline: 3px solid #a259ff44;
+  position: relative;
+}
+
+nav a:hover {
+  background: #39ff14;
+  color: #fff;
+  box-shadow: 0 0 24px #00e6ff, 0 0 0 6px #fff70077;
+  transform: scale(1.08) rotate(-2deg);
+  z-index: 2;
+}
+
+/* Cartoon Card Style */
+div > div {
+  background: var(--card-bg);
+  border: 4px solid #7fff00;
+  border-radius: 24px;
+  margin-bottom: 32px;
+  padding: 28px 24px 24px 24px;
+  box-shadow: 0 0 32px #7fff00a0, 0 0 0 6px #fff70055;
+  transition: border 0.2s, box-shadow 0.2s,
+    transform 0.18s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  outline: 4px solid #a259ff44;
+  position: relative;
+  overflow: hidden;
+  animation: jelly 0.7s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+div > div:hover {
+  border: 4px solid #fff700;
+  box-shadow: 0 0 48px #fff70099, 0 0 0 10px #7fff0044;
+  transform: scale(1.04) rotate(1.5deg) skewY(-1deg);
+  z-index: 2;
+}
+
+@keyframes jelly {
+  0% {
+    transform: scale(0.95) skewY(-2deg);
+  }
+  40% {
+    transform: scale(1.05) skewY(2deg);
+  }
+  60% {
+    transform: scale(0.98) skewY(-1deg);
+  }
+  100% {
+    transform: scale(1) skewY(0);
+  }
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  background: #eaffd0;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--portal-green2);
+  border-radius: 8px;
+}
