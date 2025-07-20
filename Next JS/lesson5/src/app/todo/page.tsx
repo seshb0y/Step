@@ -1,10 +1,13 @@
-const TodoForm = () => {
-    return(
-        <form action="">
-            <input type="text" name="title" className="border px-2 py-1"/>
-            <button></button>
-        </form>
+import TodoForm from "../components/TodoForm"
+import TodoList from "../components/TodoList"
+
+const Page = () => {
+    return (
+        <div>
+            <TodoForm/>
+            <TodoList/>
+        </div>
     )
 }
 
-export default TodoForm
+export default Page
