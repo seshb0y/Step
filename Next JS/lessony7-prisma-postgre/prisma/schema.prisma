@@ -1,0 +1,64 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  // output   = "/app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  MODERATOR
+  USER
+}
+
+model User {
+  id                Int         @id @default(autoincrement())
+  email             String      @unique
+  name              String?
+  role              Role        @default(USER)
+  registerDate      DateTime    @default(now())
+  announcementCount Int         @default(0)
+  telegram          String
+  whatsApp          String
+  viber             String
+  phoneNumber       String
+  stars             String
+  apartments        Apartment[]
+}
+
+model Apartment {
+  id             Int       @id @default(autoincrement())
+  address        String
+  price1         Int
+  price2         Int
+  price3         Int
+  sleepPlaces    Int
+  room           Int
+  metro          String
+  features       String[]
+  User           User?     @relation(fields: [userId], references: [id])
+  userId         Int?
+  settlementTime String
+  settlementCond Boolean[]
+  description    String
+  images         String[]
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  isActive       Boolean   @default(true)
+  isDeleted      Boolean   @default(false)
+  isPublic       Boolean   @default(false)
+  isPremium      Boolean   @default(false)
+  mainArea       Int
+  livingSpace    Int
+  kitchenSpace   Int
+  landmarks      String[]
+}
