@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load note_extras %}
+
+{% block title %}{{ note.title }} - Каталог заметок{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h1 class="h3 mb-0">{{ note.title }}</h1>
+                {% if user.is_authenticated %}
+                <div class="btn-group" role="group">
+                    <a href="{% url 'note_update' note.pk %}" class="btn btn-outline-primary">✏️ Редактировать</a>
+                    <a href="{% url 'note_delete' note.pk %}" class="btn btn-outline-danger">🗑️ Удалить</a>
+                </div>
+                {% endif %}
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    {% if note.tags.all %}
+                        <div class="mb-3">
+                            <strong>Теги:</strong>
+                            {% for tag in note.tags.all %}
+                                <a href="{% url 'tag_notes' tag.slug %}" class="badge bg-primary text-decoration-none me-1">
+                                    {{ tag.name }}
+                                </a>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    
+                    <div class="text-muted mb-3">
+                        <small>
+                            📅 Создано: {{ note.created_at|date:"d.m.Y в H:i" }}
+                            {% if note.updated_at != note.created_at %}
+                                | Обновлено: {{ note.updated_at|date:"d.m.Y в H:i" }}
+                            {% endif %}
+                            | ⏱️ Время чтения: {{ note.body|readtime }}
+                        </small>
+                    </div>
+                </div>
+                
+                <div class="note-content">
+                    {{ note.body|linebreaks }}
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-4">
+            <a href="{% url 'note_list' %}" class="btn btn-secondary">← Назад к списку</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
