@@ -1,0 +1,476 @@
+{
+	"info": {
+		"_postman_id": "restaurant-api-collection",
+		"name": "Restaurant API",
+		"description": "Коллекция для тестирования API ресторана",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Health Check",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/health",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"health"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Menu Items",
+			"item": [
+				{
+					"name": "Get All Menu Items",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/menus/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"menus",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Menu Items with Filters",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/menus/?category=main&min_price=10&max_price=30&is_available=true&q=стейк&sort=price&page=1&per_page=20",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"menus",
+								""
+							],
+							"query": [
+								{
+									"key": "category",
+									"value": "main"
+								},
+								{
+									"key": "min_price",
+									"value": "10"
+								},
+								{
+									"key": "max_price",
+									"value": "30"
+								},
+								{
+									"key": "is_available",
+									"value": "true"
+								},
+								{
+									"key": "q",
+									"value": "стейк"
+								},
+								{
+									"key": "sort",
+									"value": "price"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "per_page",
+									"value": "20"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Menu Item",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Том Ям\",\n  \"description\": \"Острый суп с креветками\",\n  \"category\": \"main\",\n  \"price\": 14.90,\n  \"is_available\": true\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/menus/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"menus",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Menu Item by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/menus/{{menu_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"menus",
+								"{{menu_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Menu Item (PUT)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Том Ям Суп\",\n  \"description\": \"Острый суп с креветками и грибами\",\n  \"category\": \"main\",\n  \"price\": 16.90,\n  \"is_available\": true\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/menus/{{menu_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"menus",
+								"{{menu_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Menu Item (PATCH)",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"price\": 15.90,\n  \"is_available\": false\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/menus/{{menu_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"menus",
+								"{{menu_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Menu Item",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/menus/{{menu_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"menus",
+								"{{menu_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Validation Error Example",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"\",\n  \"price\": -10,\n  \"category\": \"invalid_category\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/menus/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"menus",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Chefs",
+			"item": [
+				{
+					"name": "Get All Chefs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/chefs/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"chefs",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Chefs with Filters",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/chefs/?specialty=Азиатская&is_active=true&q=Иван&sort=name&page=1&per_page=20",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"chefs",
+								""
+							],
+							"query": [
+								{
+									"key": "specialty",
+									"value": "Азиатская"
+								},
+								{
+									"key": "is_active",
+									"value": "true"
+								},
+								{
+									"key": "q",
+									"value": "Иван"
+								},
+								{
+									"key": "sort",
+									"value": "name"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "per_page",
+									"value": "20"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Chef",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"full_name\": \"Иван Петров\",\n  \"rank\": \"senior\",\n  \"specialties\": [\"Азиатская кухня\", \"Супы\"],\n  \"is_active\": true\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/chefs/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"chefs",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Chef by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/chefs/{{chef_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"chefs",
+								"{{chef_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Chef (PUT)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"full_name\": \"Иван Петров\",\n  \"rank\": \"chef-de-cuisine\",\n  \"specialties\": [\"Азиатская кухня\", \"Супы\", \"Жаркое\"],\n  \"is_active\": true\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/chefs/{{chef_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"chefs",
+								"{{chef_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Chef (PATCH)",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"specialties\": [\"Азиатская кухня\", \"Супы\"],\n  \"is_active\": false\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/chefs/{{chef_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"chefs",
+								"{{chef_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Chef",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/chefs/{{chef_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"chefs",
+								"{{chef_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:5000"
+		},
+		{
+			"key": "menu_id",
+			"value": "1"
+		},
+		{
+			"key": "chef_id",
+			"value": "1"
+		}
+	]
+}
+
+
