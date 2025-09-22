@@ -1,0 +1,102 @@
+import type { Workflow } from "@/entities/workflow/model/workflow";
+
+export const wfSeed: Workflow[] = [
+  {
+    id: crypto.randomUUID(),
+    name: "Order Process",
+    description: "Create → Approve → Notify",
+    isActive: true,
+    isArchived: false,
+    createdAt: new Date().toISOString(),
+    updatedAt: null,
+    nodes: [
+      {
+        id: "n1",
+        uniqueCode: "start",
+        name: "Start",
+        type: "Start",
+        x: 80,
+        y: 120,
+        inputPorts: [],
+        outputPorts: ["out"],
+      },
+      {
+        id: "n2",
+        uniqueCode: "approve",
+        name: "Approve",
+        type: "Manual",
+        x: 320,
+        y: 110,
+        inputPorts: ["in"],
+        outputPorts: ["ok", "reject"],
+      },
+      {
+        id: "n3",
+        uniqueCode: "notify",
+        name: "Notify",
+        type: "Notification",
+        x: 560,
+        y: 120,
+        inputPorts: ["in"],
+        outputPorts: [],
+      },
+    ],
+    connections: [
+      {
+        id: "c1",
+        sourceNodeId: "n1",
+        sourcePort: "out",
+        targetNodeId: "n2",
+        targetPort: "in",
+      },
+      {
+        id: "c2",
+        sourceNodeId: "n2",
+        sourcePort: "ok",
+        targetNodeId: "n3",
+        targetPort: "in",
+      },
+    ],
+  },
+  {
+    id: crypto.randomUUID(),
+    name: "Leave Request",
+    description: "Request → Manager → HR",
+    isActive: true,
+    isArchived: false,
+    createdAt: new Date().toISOString(),
+    updatedAt: null,
+    nodes: [],
+    connections: [],
+  },
+];
+
+export const nodeTypesSeed = [
+  {
+    type: "Start",
+    name: "Start",
+    description: "",
+    icon: "Play",
+    category: "Core",
+    inputPorts: [],
+    outputPorts: ["out"],
+  },
+  {
+    type: "Manual",
+    name: "Manual Task",
+    description: "",
+    icon: "Hand",
+    category: "Tasks",
+    inputPorts: ["in"],
+    outputPorts: ["ok", "reject"],
+  },
+  {
+    type: "Notification",
+    name: "Notification",
+    description: "",
+    icon: "Bell",
+    category: "Tasks",
+    inputPorts: ["in"],
+    outputPorts: [],
+  },
+];

@@ -1,0 +1,47 @@
+:root {
+    --bg: #ffffff;
+    --fg: #0a0a0a;
+    --muted: #f5f5f5;
+    --border: #e5e7eb;
+
+    --overlay: rgba(0, 0, 0, .32);
+    --modal-bg: var(--bg);
+    --modal-fg: var(--fg);
+    --modal-border: var(--border);
+
+    --btn-primary-bg: #111827;
+    --btn-primary-fg: #ffffff;
+    --btn-primary-hover-bg: #0a0a0a;
+
+    --btn-outline-bg: #ffffff;
+    --btn-outline-fg: #0a0a0a;
+    --btn-outline-border: #d1d5db;
+    --btn-outline-hover-bg: #f3f4f6;
+
+    --btn-ghost-fg: #0a0a0a;
+    --btn-ghost-hover-bg: #f3f4f6;
+}
+
+:root.dark {
+    --bg: #0a0a0a;
+    --fg: #f5f5f5;
+    --muted: #111111;
+    --border: #262626;
+
+    --overlay: rgba(0, 0, 0, .5);
+    --modal-bg: var(--bg);
+    --modal-fg: var(--fg);
+    --modal-border: var(--border);
+
+    --btn-primary-bg: #f5f5f5;
+    --btn-primary-fg: #0a0a0a;
+    --btn-primary-hover-bg: #e5e5e5;
+
+    --btn-outline-bg: #0a0a0a;
+    --btn-outline-fg: #f5f5f5;
+    --btn-outline-border: #3f3f46;
+    --btn-outline-hover-bg: #1a1a1a;
+
+    --btn-ghost-fg: #f5f5f5;
+    --btn-ghost-hover-bg: #1a1a1a;
+}
