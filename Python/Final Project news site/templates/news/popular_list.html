@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}Популярные статьи{% endblock %}
+{% block content %}
+<h2>Популярные статьи (рейтинг 4+)</h2>
+{% if articles %}
+<ul>
+  {% for article in articles %}
+  <li>
+    <a href="{% url 'news:article_detail' slug=article.slug %}">{{ article.title }}</a>
+    — {{ article.category.name }} — {{ article.created_at|date:'d.m.Y H:i' }} —
+    рейтинг: {{ article.average_rating|floatformat:1 }}
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<p>Пока нет популярных статей.</p>
+{% endif %}
+{% endblock %}

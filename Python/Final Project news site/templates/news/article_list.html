@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}Все статьи{% endblock %}
+{% block content %}
+<h2>Все статьи</h2>
+{% if articles %}
+<ul>
+  {% for article in articles %}
+  <li>
+    <a href="{% url 'news:article_detail' slug=article.slug %}">{{ article.title }}</a>
+    — {{ article.category.name }} — {{ article.created_at|date:'d.m.Y H:i' }} —
+    автор: {{ article.author.username }} — рейтинг: {{ article.average_rating|floatformat:1 }}
+  </li>
+  {% endfor %}
+</ul>
+{% if is_paginated %}
+<div>
+  {% if page_obj.has_previous %}
+  <a href="?page={{ page_obj.previous_page_number }}">Назад</a>
+  {% endif %} Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
+  {% if page_obj.has_next %}
+  <a href="?page={{ page_obj.next_page_number }}">Вперёд</a>
+  {% endif %}
+</div>
+{% endif %}
+{% else %}
+<p>Пока нет опубликованных статей.</p>
+{% endif %}
+{% endblock %}

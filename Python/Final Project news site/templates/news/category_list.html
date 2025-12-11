@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}Категории{% endblock %}
+{% block content %}
+<h2>Категории</h2>
+<ul>
+  {% for category in categories %}
+  <li>
+    <a href="{% url 'news:category_detail' slug=category.slug %}">{{ category.name }}</a>
+  </li>
+  {% empty %}
+  <li>Категорий пока нет.</li>
+  {% endfor %}
+</ul>
+{% endblock %}

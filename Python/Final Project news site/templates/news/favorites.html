@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Избранное{% endblock %}
+{% block content %}
+<h2>Избранные статьи</h2>
+{% if bookmarks %}
+<ul>
+  {% for bookmark in bookmarks %}
+  <li>
+    <a href="{% url 'news:article_detail' slug=bookmark.article.slug %}">{{ bookmark.article.title }}</a>
+    — {{ bookmark.article.category.name }} — {{ bookmark.article.created_at|date:'d.m.Y H:i' }} — рейтинг: {{ bookmark.article.average_rating|floatformat:1 }}
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<p>У вас пока нет избранных статей.</p>
+{% endif %}
+{% endblock %}

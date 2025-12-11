@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block title %}{{ article.title }}{% endblock %}
+{% block content %}
+<article>
+  <h2>{{ article.title }}</h2>
+  <p>
+    Автор: {{ article.author.username }} | Категория: {{ article.category.name }} | Создано: {{ article.created_at|date:'d.m.Y H:i' }} | Рейтинг: {{ article.average_rating|floatformat:1 }}
+  </p>
+  {% if article.image %}
+  <p>
+    <img src="{{ article.image.url }}" alt="{{ article.title }}" style="max-width: 400px" />
+  </p>
+  {% endif %}
+  <div>{{ article.content|linebreaks }}</div>
+</article>
+{% if user.is_authenticated %}
+<section>
+  <form method="post" action="{% url 'news:rate_article' slug=article.slug %}">
+    {% csrf_token %}
+    <button type="submit" name="action" value="like">Нравится</button>
+    <button type="submit" name="action" value="dislike">Не нравится</button>
+  </form>
+  <form method="post" action="{% url 'news:bookmark_toggle' slug=article.slug %}">
+    {% csrf_token %}
+    <button type="submit">
+      {% if is_bookmarked %}Убрать из закладок{% else %}В закладки{% endif %}
+    </button>
+  </form>
+  {% if user_rating %}
+  <p>Ваша оценка: {{ user_rating.value }}</p>
+  {% endif %}
+</section>
+{% else %}
+<p>
+  Чтобы оценивать статьи и добавлять их в избранное,
+  <a href="{% url 'login' %}">войдите</a>.
+</p>
+{% endif %}
+{% if user.is_authenticated %}
+  {% if user.is_staff or user == article.author %}
+  <p>
+    <a href="{% url 'news:article_update' slug=article.slug %}">Редактировать статью</a>
+    <a href="{% url 'news:article_delete' slug=article.slug %}">Удалить статью</a>
+  </p>
+  {% endif %}
+{% endif %}
+{% endblock %}

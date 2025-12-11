@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}Авторы{% endblock %}
+{% block content %}
+<h2>Авторы</h2>
+<ul>
+  {% for author in authors %}
+  <li>
+    <a href="{% url 'news:author_detail' username=author.username %}">{{ author.username }}</a>
+  </li>
+  {% empty %}
+  <li>Авторов пока нет.</li>
+  {% endfor %}
+</ul>
+{% endblock %}

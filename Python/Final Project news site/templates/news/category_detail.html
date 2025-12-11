@@ -1,0 +1,19 @@
+{% extends 'base.html' %} {% block title %}Категория {{ category.name }}{%
+endblock %} {% block content %}
+<h2>Категория: {{ category.name }}</h2>
+{% if articles %}
+<ul>
+  {% for article in articles %}
+  <li>
+    <a href="{% url 'news:article_detail' slug=article.slug %}"
+      >{{ article.title }}</a
+    >
+    — {{ article.created_at|date:'d.m.Y H:i' }} — автор: {{
+    article.author.username }} — рейтинг: {{
+    article.average_rating|floatformat:1 }}
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<p>В этой категории пока нет статей.</p>
+{% endif %} {% endblock %}
